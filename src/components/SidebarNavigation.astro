@@ -25,14 +25,17 @@ const sortedProjects = allProjects
 ---
 
 <div class="nav-spacer"></div>
-<div class="nav-bento-wrapper">
+<div
+    class={`nav-bento-wrapper ${isHome ? "home-mode" : ""}`}
+    data-is-home={isHome.toString()}
+>
     <div
         id="nav-trigger"
-        class="nav-trigger"
+        class={`nav-trigger ${isHome ? "home-trigger" : ""}`}
         aria-expanded="false"
         aria-controls="nav-dropdown"
-        role="button"
-        tabindex="0"
+        role={isHome ? undefined : "button"}
+        tabindex={isHome ? undefined : "0"}
     >
         <div class="nav-content">
             <a href="/" class="logo link-item nav-header-icon-container">
@@ -49,318 +52,319 @@ const sortedProjects = allProjects
 
             {
                 isHome ? (
-                    <span id="nav-section-label" class="crumb-current">HOME</span>
+                    <div class="nav-inline-links">
+                        <a
+                            href="#"
+                            id="nav-home-link"
+                            class="nav-inline-link"
+                            data-section="home"
+                        >
+                            HOME
+                        </a>
+                        <a
+                            href="#about"
+                            id="nav-about-link"
+                            class="nav-inline-link"
+                            data-section="about"
+                        >
+                            ABOUT
+                        </a>
+                        <a
+                            href="#works"
+                            id="nav-works-link"
+                            class="nav-inline-link"
+                            data-section="works"
+                        >
+                            WORKS
+                        </a>
+                    </div>
                 ) : (
                     <>
                         <a href="/#works" class="crumb-link link-item">
                             Works
                         </a>
-                        <span class="crumb-current nav-header-label">{title}</span>
+                        <span class="crumb-current nav-header-label">
+                            {title}
+                        </span>
                     </>
                 )
             }
         </div>
-        <div class="nav-icon">
-            <svg
-                width="12"
-                height="12"
-                viewBox="0 0 12 12"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                class="arrow-icon"
-            >
-                <path
-                    d="M2.5 4.5L6 8L9.5 4.5"
-                    stroke="currentColor"
-                    stroke-width="1.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"></path>
-            </svg>
-        </div>
+        {
+            !isHome && (
+                <div class="nav-icon">
+                    <svg
+                        width="12"
+                        height="12"
+                        viewBox="0 0 12 12"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="arrow-icon"
+                    >
+                        <path
+                            d="M2.5 4.5L6 8L9.5 4.5"
+                            stroke="currentColor"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        />
+                    </svg>
+                </div>
+            )
+        }
     </div>
 
-    <!-- Tree View Dropdown -->
-    <div
-        id="nav-dropdown"
-        class="nav-dropdown hidden"
-    >
-        <nav class="tree-menu">
-            <!-- 1. Home (Only show if NOT home) -->
-            {
-                !isHome && (
+    {/* Tree View Dropdown - Only for project pages */}
+    {
+        !isHome && (
+            <div id="nav-dropdown" class="nav-dropdown hidden">
+                <nav class="tree-menu">
+                    {/* 1. Home */}
                     <div class="tree-item">
                         <a href="/" class="tree-link single-action">
                             <span class="tree-icon nav-item-icon-container">
-                                <!-- Home Icon (Lucide) -->
-                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                                <svg
+                                    width="15"
+                                    height="15"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                >
+                                    <>
+                                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                                        <polyline points="9 22 9 12 15 12 15 22" />
+                                    </>
+                                </svg>
                             </span>
                             <span class="tree-label nav-item-text">HOME</span>
                         </a>
                     </div>
-                )
-            }
 
-            <!-- 2. About (Abstract Circle Icon) -->
-            <div class="tree-item">
-                <a href="/#about" id="nav-about" class="tree-link single-action">
-                    <span class="tree-icon">
-                         <!-- Info Icon (Lucide) -->
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
-                    </span>
-                    <span class="tree-label">ABOUT</span>
-                </a>
-            </div>
-
-            <!-- 3. Works (Folder with Split Interaction) -->
-            <div class="tree-item folder">
-                <div class="tree-link split-action">
-                    <!-- Link Area (Left) -->
-                    <a href="/#works" class="split-link">
-                        <span class="tree-icon folder-icon">
-                             <!-- Folder Icon (Lucide) -->
-                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
-                        </span>
-                        <span class="tree-label nav-item-text">WORKS</span>
-                    </a>
-                    
-                    <!-- Toggle Area (Right - The Rail) -->
-                    <div class="toggle-container right-rail">
-                        <button class="split-toggle folder-trigger" aria-label="Toggle Works">
-                            <svg width="10" height="6" viewBox="0 0 10 6" fill="none" class="toggle-chevron">
-                                 <path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="tree-children-wrapper">
-                    <div class="tree-children">
-                         <div class="tree-guide-line"></div> <!-- Left Guide Line for Tree -->
-                        {sortedProjects.map((project) => (
-                            <div class="tree-item">
-                                <a
-                                    href={`/works/${project.slug}`}
-                                    class="tree-link single-action file-link"
+                    {/* 2. About */}
+                    <div class="tree-item">
+                        <a
+                            href="/#about"
+                            id="nav-about"
+                            class="tree-link single-action"
+                        >
+                            <span class="tree-icon">
+                                <svg
+                                    width="15"
+                                    height="15"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
                                 >
-                                    <span class="tree-label nav-item-text">
-                                        {project.data.title}
-                                    </span>
-                                </a>
-                            </div>
-                        ))}
+                                    <>
+                                        <circle cx="12" cy="12" r="10" />
+                                        <line x1="12" y1="16" x2="12" y2="12" />
+                                        <line
+                                            x1="12"
+                                            y1="8"
+                                            x2="12.01"
+                                            y2="8"
+                                        />
+                                    </>
+                                </svg>
+                            </span>
+                            <span class="tree-label">ABOUT</span>
+                        </a>
                     </div>
-                </div>
-            </div>
 
-            <!-- 4. Contact (Person Icon) -->
-            <div class="tree-item">
-                <a href="/#contact" class="tree-link single-action">
-                    <span class="tree-icon">
-                        <!-- User Icon (Lucide) -->
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                    </span>
-                    <span class="tree-label">CONTACT</span>
-                </a>
+                    {/* 3. Works (Folder with Split Interaction) */}
+                    <div class="tree-item folder">
+                        <div class="tree-link split-action">
+                            <a href="/#works" class="split-link">
+                                <span class="tree-icon folder-icon">
+                                    <svg
+                                        width="15"
+                                        height="15"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    >
+                                        <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
+                                    </svg>
+                                </span>
+                                <span class="tree-label nav-item-text">
+                                    WORKS
+                                </span>
+                            </a>
+
+                            <div class="toggle-container right-rail">
+                                <button
+                                    class="split-toggle folder-trigger"
+                                    aria-label="Toggle Works"
+                                >
+                                    <svg
+                                        width="10"
+                                        height="6"
+                                        viewBox="0 0 10 6"
+                                        fill="none"
+                                        class="toggle-chevron"
+                                    >
+                                        <path
+                                            d="M1 1L5 5L9 1"
+                                            stroke="currentColor"
+                                            stroke-width="1.5"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                        />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="tree-children-wrapper">
+                            <div class="tree-children">
+                                <div class="tree-guide-line" />
+                                {sortedProjects.map((project) => (
+                                    <div class="tree-item">
+                                        <a
+                                            href={`/works/${project.slug}`}
+                                            class="tree-link single-action file-link"
+                                        >
+                                            <span class="tree-label nav-item-text">
+                                                {project.data.title}
+                                            </span>
+                                        </a>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </nav>
             </div>
-        </nav>
-    </div>
+        )
+    }
 </div>
 
 <script>
+    const wrapper = document.querySelector(".nav-bento-wrapper");
+    const isHomePage = wrapper?.getAttribute("data-is-home") === "true";
     const trigger = document.getElementById("nav-trigger");
     const dropdown = document.getElementById("nav-dropdown");
 
-    // Toggle main menu
-    trigger?.addEventListener("click", (e) => {
-        if (window.innerWidth <= 1024) return;
-        if ((e.target as HTMLElement).closest("a")) return;
+    if (!isHomePage) {
+        // ===== PROJECT PAGE: Dropdown toggle logic =====
+        trigger?.addEventListener("click", (e) => {
+            if (window.innerWidth <= 1024) return;
+            if ((e.target as HTMLElement).closest("a")) return;
 
-        e.stopPropagation();
-        const isExpanded = trigger?.getAttribute("aria-expanded") === "true";
-        const navLabel = document.getElementById('nav-section-label');
+            e.stopPropagation();
+            const isExpanded =
+                trigger?.getAttribute("aria-expanded") === "true";
 
-        trigger?.setAttribute("aria-expanded", (!isExpanded).toString());
-        dropdown?.classList.toggle("hidden");
-        trigger?.classList.toggle("active");
-        
-        // Update label based on menu state
-        if (!isExpanded) {
-            // Opening menu - set to HOME
-            if (navLabel) navLabel.textContent = 'HOME';
-        } else {
-            // Closing menu - restore active section
-            if (typeof updateActiveState === 'function') {
-                updateActiveState();
+            trigger?.setAttribute("aria-expanded", (!isExpanded).toString());
+            dropdown?.classList.toggle("hidden");
+            trigger?.classList.toggle("active");
+        });
+
+        // Close on click outside
+        document.addEventListener("click", (e) => {
+            if (
+                !trigger?.contains(e.target as Node) &&
+                !dropdown?.contains(e.target as Node)
+            ) {
+                trigger?.setAttribute("aria-expanded", "false");
+                dropdown?.classList.add("hidden");
+                trigger?.classList.remove("active");
             }
-        }
-    });
+        });
 
-    // Close on click outside
-    document.addEventListener("click", (e) => {
-        // Don't close if clicking Read More button - preserve nav state
+        // Toggle Folders (Accordion Behavior)
+        const folderTriggers = document.querySelectorAll(".folder-trigger");
+        folderTriggers.forEach((ft) => {
+            ft.addEventListener("click", (e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                const currentFolder = ft.closest(".folder");
+                if (!currentFolder) return;
+
+                if (currentFolder.classList.contains("subfolder")) {
+                    const parentList = currentFolder.closest(".tree-children");
+                    const siblings = parentList?.querySelectorAll(
+                        ":scope > .subfolder.expanded",
+                    );
+                    siblings?.forEach((sibling) => {
+                        if (sibling !== currentFolder) {
+                            sibling.classList.remove("expanded");
+                            const btn =
+                                sibling.querySelector(".folder-trigger");
+                            btn?.classList.remove("active");
+                        }
+                    });
+                }
+
+                currentFolder.classList.toggle("expanded");
+                ft.classList.toggle("active");
+            });
+        });
+    }
+
+    // ===== SCROLL HIGHLIGHT LOGIC (Homepage only) =====
+    if (isHomePage) {
+        const homeLink = document.getElementById("nav-home-link");
+        const aboutLink = document.getElementById("nav-about-link");
+        const worksLink = document.getElementById("nav-works-link");
         const readMoreBtn = document.getElementById("read-more-btn");
-        const clickedReadMore = readMoreBtn?.contains(e.target as Node);
-        
-        if (
-            !trigger?.contains(e.target as Node) &&
-            !dropdown?.contains(e.target as Node) &&
-            !clickedReadMore
-        ) {
-            trigger?.setAttribute("aria-expanded", "false");
-            dropdown?.classList.add("hidden");
-            trigger?.classList.remove("active");
-            
-            // Restore active section label
-            if (typeof updateActiveState === 'function') {
-                updateActiveState();
-            }
+
+        let isReadMoreExpanded = false;
+
+        if (readMoreBtn) {
+            const mutationObserver = new MutationObserver(() => {
+                isReadMoreExpanded = readMoreBtn.classList.contains("active");
+                updateHomeActiveState();
+            });
+            mutationObserver.observe(readMoreBtn, {
+                attributes: true,
+                attributeFilter: ["class"],
+            });
         }
-    });
 
-    // Toggle Folders (Accordion Behavior)
-    const folderTriggers = document.querySelectorAll(".folder-trigger");
-    folderTriggers.forEach((ft) => {
-        ft.addEventListener("click", (e) => {
-            e.stopPropagation(); 
-            e.preventDefault();
-            const currentFolder = ft.closest(".folder");
-            if (!currentFolder) return;
+        function updateHomeActiveState() {
+            // Reset all inline link highlights
+            homeLink?.classList.remove("active-scroll");
+            aboutLink?.classList.remove("active-scroll");
+            worksLink?.classList.remove("active-scroll");
 
-            // Accordion: Close other siblings
-            const parent = currentFolder.parentElement;
-            // The parent of the folder is likely .tree-children (because of the wrapper)
-             // or .tree-menu for top level
-            
-            // If we are in the "Works" list (subfolders), close siblings
-            if (currentFolder.classList.contains("subfolder")) {
-                 // The parent of subfolders is .tree-children (inside the wrapper)
-                 const parentList = currentFolder.closest('.tree-children');
-                 const siblings = parentList?.querySelectorAll(":scope > .subfolder.expanded");
-                 siblings?.forEach(sibling => {
-                     if (sibling !== currentFolder) {
-                         sibling.classList.remove("expanded");
-                         const btn = sibling.querySelector(".folder-trigger");
-                         btn?.classList.remove("active");
-                     }
-                 });
+            // 1. Read More expanded → ABOUT
+            if (isReadMoreExpanded) {
+                aboutLink?.classList.add("active-scroll");
+                return;
             }
 
-            currentFolder.classList.toggle("expanded");
-            ft.classList.toggle("active");
+            // 2. Home Zone (top of page, before works)
+            const worksSection = document.getElementById("works");
+            const worksTop = worksSection
+                ? worksSection.offsetTop - 100
+                : 99999;
+
+            if (window.scrollY < worksTop) {
+                homeLink?.classList.add("active-scroll");
+                return;
+            }
+
+            // 3. Works Zone
+            worksLink?.classList.add("active-scroll");
+        }
+
+        window.addEventListener("scroll", () => {
+            window.requestAnimationFrame(updateHomeActiveState);
         });
-    });
 
-    // --- Priority State Manager for Navigation ---
-    
-    const navTrigger = document.getElementById("nav-trigger");
-    const aboutLink = document.getElementById("nav-about");
-    const readMoreBtn = document.getElementById("read-more-btn");
-    
-    // Track read more state
-    let isReadMoreExpanded = false;
-
-    // Listen to Read More Toggle (Manual Event)
-    if (readMoreBtn) {
-        // Use MutationObserver to be 100% sure of state change
-        const mutationObserver = new MutationObserver(() => {
-            isReadMoreExpanded = readMoreBtn.classList.contains('active');
-            updateActiveState(); // Force update immediately
-        });
-        mutationObserver.observe(readMoreBtn, { attributes: true, attributeFilter: ['class'] });
-        
-        // Also listen to click for immediate feedback if needed, but observer covers it.
+        // Initial call
+        updateHomeActiveState();
     }
-
-    function updateActiveState() {
-        if (!navTrigger) return;
-        
-        const navLabel = document.getElementById('nav-section-label');
-        const isMenuOpen = navTrigger.getAttribute("aria-expanded") === "true";
-
-        // ============================================
-        // STEP 1: RESET ALL HIGHLIGHTS (Radio Button Rule)
-        // Clear everything FIRST, then apply the correct one.
-        // ============================================
-        navTrigger.classList.remove('active-highlight');
-        aboutLink?.classList.remove('active-scroll');
-        document.querySelectorAll('.active-scroll').forEach(el => el.classList.remove('active-scroll'));
-
-        // ============================================
-        // STEP 2: Apply the correct highlight based on priority
-        // ============================================
-
-        // PRIORITY 0: Menu Open State (Label Override)
-        if (isMenuOpen) {
-             if (navLabel) navLabel.textContent = 'HOME';
-        }
-
-        // 1. PRIORITY: Read More (About Section)
-        if (isReadMoreExpanded) {
-            aboutLink?.classList.add('active-scroll');
-            
-            if (!isMenuOpen) {
-                if (navLabel) navLabel.textContent = 'ABOUT';
-            }
-            return; // STOP here.
-        }
-
-        // 2. PRIORITY: Home Zone (Top of Page)
-        const worksSection = document.getElementById('works');
-        const worksTop = worksSection ? (worksSection.offsetTop - 100) : 99999; 
-        
-        if (window.scrollY < worksTop) {
-            // Home/Bio Zone
-            
-            // Always highlight Home trigger
-            navTrigger.classList.add('active-highlight');
-            
-            if (!isMenuOpen) {
-                if (navLabel) navLabel.textContent = 'HOME';
-            }
-            return; // STOP here.
-        }
-
-        // 3. PRIORITY: Works / Contact Zone
-        const contactSection = document.getElementById('contact');
-        const contactTop = contactSection ? (contactSection.offsetTop - 300) : 99999; 
-        
-        if (window.scrollY >= contactTop) {
-            // Contact Zone
-            if (!isMenuOpen) {
-                if (navLabel) navLabel.textContent = 'CONTACT';
-            }
-            const contactLink = document.querySelector('a[href="/#contact"]');
-            contactLink?.classList.add('active-scroll');
-        } else {
-            // Works Zone
-            if (!isMenuOpen) {
-                 if (navLabel) navLabel.textContent = 'WORKS';
-            }
-            
-            // Highlight Works box (Target the PARENT split-action container)
-            const worksLink = document.querySelector('.split-link[href="/#works"]')?.closest('.split-action');
-            worksLink?.classList.add('active-scroll');
-            
-            
-        }
-    }
-
-    // Scroll Listener (Throttled?)
-    window.addEventListener('scroll', () => {
-        window.requestAnimationFrame(updateActiveState);
-    });
-    
-    // Initial Call
-    updateActiveState();
-
-</script>
-
-<style>
-    .nav-spacer {
-        display: none;
-    }
-    /* Styles continue... */
-
 </script>
 
 <style>
@@ -371,6 +375,58 @@ const sortedProjects = allProjects
     .nav-bento-wrapper {
         position: relative;
         margin-bottom: var(--space-md);
+    }
+
+    /* ===== Inline Links (Homepage Mode) ===== */
+    .nav-inline-links {
+        display: flex;
+        align-items: center;
+        flex: 1;
+        gap: 0;
+    }
+
+    .nav-inline-link {
+        color: var(--text-secondary);
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        padding: 4px 10px;
+        border-radius: var(--radius-sm);
+        transition:
+            background 0.2s ease,
+            color 0.2s ease;
+        flex: 1;
+        text-align: center;
+    }
+
+    .nav-inline-link:hover {
+        color: var(--text-primary);
+        background: var(--bg-surface-hover);
+    }
+
+    .nav-inline-link.active-scroll {
+        background: var(--bg-surface-hover);
+        color: var(--text-primary);
+    }
+
+    /* Homepage trigger: no pointer cursor, no hover effects */
+    .home-trigger {
+        cursor: default;
+    }
+
+    .home-trigger .nav-content {
+        overflow: visible;
+    }
+
+    .home-trigger:hover {
+        background: var(--bg-surface);
+        border-color: var(--border-subtle);
+        box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.05),
+            0 2px 4px rgba(0, 0, 0, 0.1),
+            0 4px 12px rgba(0, 0, 0, 0.05);
     }
 
     /* Base Styles */
@@ -388,13 +444,22 @@ const sortedProjects = allProjects
         color: inherit;
         font-family: inherit;
         border-radius: var(--radius-md);
+        /* Bevel Effect: Inner highlight + tight shadow + ambient shadow */
+        box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.05),
+            0 2px 4px rgba(0, 0, 0, 0.1),
+            0 4px 12px rgba(0, 0, 0, 0.05);
     }
 
     .nav-trigger:hover {
         border-color: var(--border-focus);
         background: var(--bg-surface-hover);
+        box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.08),
+            0 4px 8px rgba(0, 0, 0, 0.15),
+            0 8px 16px rgba(0, 0, 0, 0.08);
     }
-    
+
     /* Highlight State (Background Color) */
     .nav-trigger.active-highlight {
         background: var(--bg-surface-hover);
@@ -406,13 +471,13 @@ const sortedProjects = allProjects
         border-bottom-left-radius: 0;
         border-bottom-right-radius: 0;
     }
-    
+
     /* Active Scroll State for Links */
     .active-scroll {
         background: var(--bg-surface-hover);
         color: var(--text-primary) !important; /* Force override */
     }
-    
+
     /* Ensure icon inside active link also lights up */
     .active-scroll .tree-icon {
         opacity: 1;
@@ -485,7 +550,7 @@ const sortedProjects = allProjects
         background: var(--bg-surface);
         border: 1px solid var(--border-subtle);
         border-top: none;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
         z-index: 50;
         border-bottom-left-radius: var(--radius-md);
         border-bottom-right-radius: var(--radius-md);
@@ -508,7 +573,7 @@ const sortedProjects = allProjects
         position: relative;
         border-bottom: 1px solid var(--border-subtle); /* Separator Line */
     }
-    
+
     .tree-item:last-child {
         border-bottom: none;
     }
@@ -522,14 +587,16 @@ const sortedProjects = allProjects
         text-decoration: none;
         color: var(--text-secondary);
         font-size: 12px;
-        transition: background 0.2s ease, color 0.2s ease;
+        transition:
+            background 0.2s ease,
+            color 0.2s ease;
         gap: 12px; /* Control spacing here */
     }
-    
+
     .single-action {
         padding: 10px 16px 10px 9px; /* top right bottom left */
     }
-    
+
     .single-action:hover {
         background: var(--bg-surface-hover);
         color: var(--accent-secondary);
@@ -575,12 +642,12 @@ const sortedProjects = allProjects
         padding: 10px 16px 10px 10px; /* matched to single-action */
         gap: 12px; /* Add spacing between Icon and Text */
     }
-    
+
     .split-link:hover {
         background: var(--bg-surface-hover);
         color: var(--accent-secondary);
     }
-    
+
     .toggle-container {
         border-left: none; /* Removed border as requested */
         display: flex;
@@ -597,18 +664,20 @@ const sortedProjects = allProjects
         border: none;
         cursor: pointer;
         color: var(--text-secondary);
-        transition: background 0.2s ease, color 0.2s ease;
+        transition:
+            background 0.2s ease,
+            color 0.2s ease;
     }
-    
+
     .split-toggle:hover {
         background: var(--bg-surface-hover);
         color: var(--text-primary);
     }
-    
+
     .toggle-chevron {
         transition: transform 0.2s ease;
     }
-    
+
     .split-toggle.active .toggle-chevron {
         transform: rotate(180deg);
     }
@@ -640,16 +709,16 @@ const sortedProjects = allProjects
         opacity: 0.5;
         z-index: 1;
     }
-    
+
     .tree-guide-line.nested {
         left: 41px; /* Align with center of subfolder icon (32px padding + 9px half-width) */
     }
 
     /* Subfolder Items */
     .subfolder.tree-item {
-        border-bottom: none; 
+        border-bottom: none;
     }
-    
+
     /* Remove borders for all children inside the dropdown (Categories & Projects) */
     .tree-children .tree-item {
         border-bottom: none;
@@ -658,38 +727,38 @@ const sortedProjects = allProjects
     /* Indentation for Sub-Items (Tree View) */
     .subfolder .split-link {
         padding-left: 30px; /* Reduced by 2px (32->30) */
-        padding-top: 6px;   /* Reduced Vertical Padding */
+        padding-top: 6px; /* Reduced Vertical Padding */
         padding-bottom: 6px;
     }
-    
+
     .subfolder .tree-label {
         text-transform: none; /* Sentence case! */
         font-weight: 400;
         font-size: 13px;
         color: var(--text-primary);
     }
-    
+
     /* File Links (Projects) */
     .file-link.tree-link {
         padding-left: 36px; /* Align direct project items under Works */
-        padding-top: 6px;   /* Reduced Vertical Padding */
+        padding-top: 6px; /* Reduced Vertical Padding */
         padding-bottom: 6px;
     }
-    
+
     .file-link .tree-label {
         font-weight: 400;
         color: var(--text-secondary);
         text-transform: none;
         font-size: 13px; /* Matched to Category Font Size */
     }
-    
+
     /* Spacing: Tighten Parent->Child */
     /* Handled by reduced padding in items if needed, or margin. 
        Currently using padding inside links. */
-    
+
     /* Ensure Right Rail aligns continuously */
     /* The .toggle-container borders align because they are all right-aligned flex items width 40px */
-    
+
     /* Subfolder Icons */
     .subfolder .tree-icon {
         width: 18px; /* Slightly smaller */
@@ -701,7 +770,7 @@ const sortedProjects = allProjects
         background: var(--bg-surface-hover);
         color: var(--text-primary) !important;
     }
-    
+
     /* When parent is active, children should be transparent/inherit */
     .split-action.active-scroll .split-link,
     .split-action.active-scroll .toggle-container {
@@ -757,24 +826,24 @@ const sortedProjects = allProjects
 
     /* --- UI Refinements --- */
     /* 1. Alignment Fix (Refactored) */
-    .nav-item-icon-container, 
+    .nav-item-icon-container,
     .nav-header-icon-container {
         /* Removed fixed width 48px */
         display: flex;
-        justify-content: center; 
+        justify-content: center;
         align-items: center;
-        flex-shrink: 0; 
+        flex-shrink: 0;
         width: 24px; /* Standardize icon box size */
     }
 
     /* 2. Logo Resize */
     .nav-logo {
-        width: 22px ; 
-        height: 22px ;
+        width: 22px;
+        height: 22px;
     }
 
     /* 3. Text Alignment */
-    .nav-item-text, 
+    .nav-item-text,
     .nav-header-label {
         padding-left: 0px; /* Remove extra padding, rely on the container width */
         text-align: left;

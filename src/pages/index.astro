@@ -105,38 +105,33 @@ const musibuddyProject = allProjects.find(
 
 				<div class="bio-content">
 					<div class="hero-headline bio-short">
-						👋 I’m Narayan, a Designer and graduate student at
-						Carnegie Mellon University focused on building playful
+						👋 I'm Narayan, an interaction designer focused on
+						building playful
 						<span class="emoji-hover" data-emoji="🤝"
 							>human-human</span
 						> and
 						<span class="emoji-hover" data-emoji="😄🤖"
-							>human-machine</span
-						> interactions. With a foundation in architecture, I use <span
-							class="highlight"
-							><span class="u-item"
-								><span class="emoji-hover" data-emoji="⚙️"
-									>systems thinking</span
-								></span
-							></span
-						> and <span class="highlight"
-							><span class="u-item"
-								><span class="emoji-hover" data-emoji="🛠️"
-									>rapid prototyping</span
-								></span
-							></span
-						> to create digital products that feel responsive, intentional
-						and are grounded in existing ecosystems.
+							>human-computer</span
+						> interactions.<br />
+						<span class="bio-subtext"
+							>With a foundation in architecture, I apply
+							<span class="emoji-hover" data-emoji="⚙️"
+								>systems thinking</span
+							> and <span class="emoji-hover" data-emoji="🛠️"
+								>rapid prototyping</span
+							> to create digital products that feel responsive, intentional
+							and are grounded in existing ecosystems.</span
+						>
 					</div>
 					<div class="hero-headline bio-long">
 						<div class="bio-text">
-							I'm Narayan, a Designer and graduate student at
-							Carnegie Mellon University focused on building
-							playful <span class="emoji-hover" data-emoji="🤝"
-								>human-human</span
+							👋 I'm Narayan, an interaction designer focused on
+							building playful <span
+								class="emoji-hover"
+								data-emoji="🤝">human-human</span
 							> and <span class="emoji-hover" data-emoji="😄🤖"
 								>human-machine</span
-							> interactions. With a foundation in architecture, I use
+							> interactions. With a foundation in architecture, I apply
 							<span class="emoji-hover" data-emoji="⚙️"
 								>systems thinking</span
 							> and <span class="emoji-hover" data-emoji="🛠️"
@@ -175,6 +170,12 @@ const musibuddyProject = allProjects.find(
 						</div>
 					</div>
 					<div class="emoji-display"></div>
+				</div>
+
+				<div class="cmu-pill">
+					<span class="cmu-pill-text"
+						><span class="cmu-name">@ CMU</span> until May 2026 🎓</span
+					>
 				</div>
 
 				<div class="hero-actions-row">
@@ -422,15 +423,10 @@ const musibuddyProject = allProjects.find(
 		width: 280px; /* 320px col - 40px padding = 280px content width */
 	}
 
-	/* Desktop (3-col): shrink sidebar to maintain 3rem gap with content */
+	/* Desktop (3-col): fixed sidebar width */
 	@media (min-width: 1200px) {
 		.fixed-nav-top-right {
-			/* 
-			   Aligned to Right:
-			   - Available Space = 33vw (Col 3) - 20px (Right) - 3rem (Gap) - SocialWidth (~140px)
-			   - 33vw - 210px
-			*/
-			width: clamp(200px, calc(33vw - 210px), 280px);
+			width: 280px;
 		}
 	}
 
@@ -542,6 +538,29 @@ const musibuddyProject = allProjects.find(
 		padding-top: 0;
 		padding-left: 20px;
 		max-width: 100%; /* Matches Game Width */
+	}
+
+	.cmu-pill {
+		padding-left: 20px;
+		margin-top: -0.5em;
+	}
+
+	.cmu-pill-text {
+		font-family: "Public Sans", sans-serif;
+		font-size: 14px;
+		color: var(--text-secondary);
+		letter-spacing: 0.01em;
+		background: var(--bg-surface);
+		border: 1px solid var(--border-subtle);
+		border-radius: var(--radius-md);
+		padding: 6px 14px;
+		display: inline-block;
+	}
+
+	.cmu-name {
+		font-family: "Source Serif 4", "Georgia", serif;
+		color: #c2152f;
+		font-weight: 600;
 	}
 
 	.hero-actions-row {
@@ -728,7 +747,9 @@ const musibuddyProject = allProjects.find(
 		max-width: 100%;
 		font-weight: 500;
 		letter-spacing: 0em;
-		color: var(--text-secondary); /* Darker Grey base */
+		color: var(
+			--pure-bg-inverse
+		); /* Pure white (dark mode) / Pure black (light mode) */
 	}
 
 	.bio-content {
@@ -739,9 +760,17 @@ const musibuddyProject = allProjects.find(
 
 	.bio-short {
 		width: 100%;
-		font-size: 32px;
-		line-height: 1.1;
+		font-size: 36px;
+		line-height: 1;
 		display: block; /* Default visible */
+	}
+
+	.bio-subtext {
+		font-size: 16px;
+		color: var(--text-secondary);
+		line-height: 1.2;
+		display: inline-block;
+		margin-top: 0.5em;
 	}
 
 	.bio-short .highlight {
@@ -1005,11 +1034,16 @@ const musibuddyProject = allProjects.find(
 				}
 			}
 
-			// About Link Click - Use Native Redirect
-			let isNavigatingToAbout = false; // Flag to prevent auto-collapse during navigation
+			// About Link Click handler (works for both dropdown and inline nav)
+			let isNavigatingToAbout = false;
 
-			if (navAbout) {
-				navAbout.addEventListener("click", (e) => {
+			const aboutClickTargets = [
+				document.getElementById("nav-about"),
+				document.getElementById("nav-about-link"),
+			].filter(Boolean);
+
+			aboutClickTargets.forEach((aboutEl) => {
+				aboutEl!.addEventListener("click", (e) => {
 					e.preventDefault();
 
 					// Set flag to prevent auto-collapse
@@ -1023,9 +1057,29 @@ const musibuddyProject = allProjects.find(
 						toggleBio();
 					}
 
-					// 2. Force Native Navigation (Hard Redirect)
-					// This uses the browser's anchor behavior to jump to #about
-					window.location.href = "/#about";
+					// 2. Scroll to top to show the bio
+					window.scrollTo({ top: 0, behavior: "smooth" });
+
+					// 3. Clear flag after a delay
+					setTimeout(() => {
+						isNavigatingToAbout = false;
+					}, 1500);
+				});
+			});
+
+			// HOME Link Click - collapse long bio back to short
+			const homeLink = document.getElementById("nav-home-link");
+			if (homeLink) {
+				homeLink.addEventListener("click", (e) => {
+					e.preventDefault();
+					// If long bio is showing, collapse it
+					if (readMoreBtn.classList.contains("active")) {
+						const scrollY = window.scrollY;
+						toggleBio();
+						window.scrollTo(0, scrollY);
+					}
+					// Scroll to top
+					window.scrollTo({ top: 0, behavior: "smooth" });
 				});
 			}
 			// Auto-Collapse Logic (Silent with Scroll Compensation)
