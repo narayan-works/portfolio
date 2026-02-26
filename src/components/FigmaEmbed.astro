@@ -32,7 +32,8 @@ const embedUrl = `https://www.figma.com/embed?embed_host=share&url=${encodeURICo
             ? `aspect-ratio: ${aspectRatio}; height: auto;`
             : `height: ${height};`}
     >
-        <iframe src={embedUrl} allowfullscreen title={title} loading="lazy"></iframe>
+        <iframe src={embedUrl} allowfullscreen title={title} loading="lazy"
+        ></iframe>
 
         <!-- Click Hint Icon -->
         <img
@@ -122,6 +123,13 @@ const embedUrl = `https://www.figma.com/embed?embed_host=share&url=${encodeURICo
     }
 
     @media (max-width: 768px) {
+        .figma-wrapper {
+            /* On mobile, override fixed height and use aspect-ratio so
+               the embed scales with viewport width instead of cropping */
+            height: auto !important;
+            aspect-ratio: 9 / 16;
+        }
+
         .click-icon {
             width: 24px !important;
         }
