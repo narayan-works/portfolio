@@ -45,6 +45,14 @@ const {
 		</script>
 		<title>{title}</title>
 		<script defer src="/_vercel/insights/script.js"></script>
+		<!-- Google tag (gtag.js) -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=G-E94KJKFM6G"></script>
+		<script>
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());
+			gtag('config', 'G-E94KJKFM6G');
+		</script>
 	</head>
 	<body>
 		<CustomCursor />
