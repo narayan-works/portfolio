@@ -8,6 +8,8 @@ interface Props {
     caption?: string;
     height?: string;
     loading?: "eager" | "lazy";
+    fetchPriority?: "high" | "low" | "auto";
+    sizes?: string;
     constrain?: boolean;
     marginTop?: string;
     scale?: number;
@@ -23,6 +25,8 @@ const {
     caption,
     height = "auto",
     loading = "lazy",
+    fetchPriority = "auto",
+    sizes = "(min-width: 1200px) 900px, (min-width: 768px) 85vw, 100vw",
     constrain = true,
     marginTop,
     scale = 1,
@@ -32,6 +36,11 @@ const {
     overflow = "hidden",
     lockHeight = false,
 } = Astro.props;
+
+const resolvedFetchPriority =
+    loading === "eager" && fetchPriority === "auto"
+        ? "high"
+        : fetchPriority;
 ---
 
 <figure
@@ -56,6 +65,9 @@ const {
                     height={1080}
                     class="optimized-image"
                     loading={loading}
+                    decoding="async"
+                    fetchpriority={resolvedFetchPriority}
+                    sizes={sizes}
                     style={{
                         transform: `scale(${scale})`,
                         objectFit: objectFit,

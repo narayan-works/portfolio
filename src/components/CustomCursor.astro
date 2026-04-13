@@ -134,8 +134,10 @@
 <script>
     const cursor = document.getElementById("custom-cursor");
     const cursorWrapper = document.querySelector(".cursor-wrapper");
+    const isCoarsePointer =
+        window.matchMedia("(hover: none), (pointer: coarse)").matches;
 
-    if (cursor && cursorWrapper) {
+    if (cursor && cursorWrapper && !isCoarsePointer) {
         let isVisible = false;
         let isTextHover = false;
         let isGameHover = false; // New flag for game area

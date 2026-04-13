@@ -16,7 +16,6 @@ import deturHero from "../assets/projects/detur/hero-detur.png";
 import pikoHero from "../assets/projects/piko/hero-piko.gif";
 import sanctuaryHero from "../assets/projects/santuary/hero-santuary.png";
 import tirupatiHero from "../assets/projects/tirupati/hero-tirupati.gif";
-import serendipityHero from "../assets/projects/serendipity/hero-serendipidity.png";
 
 // Fetch all projects
 const allProjects = (await getCollection("projects"))
@@ -39,7 +38,6 @@ const heroImages: Record<string, ImageMetadata> = {
 	piko: pikoHero,
 	"skywalk-sanctuary": sanctuaryHero,
 	"tirupati-campus": tirupatiHero,
-	serendipidity: serendipityHero,
 };
 
 // Home bento sizing override so cards keep simple proportions / layout
@@ -139,7 +137,7 @@ const musibuddyProject = allProjects.find(
 							<br /><br />
 							🔧 I'm currently working as a Design Researcher at Lab 4
 							Cybernetics with <a href="https://pangaro.com/" target="_blank" rel="noopener noreferrer">Paul Pangaro</a>, building the lab's digital
-							infrastructure: <a href="https://l4cybernetics.vercel.app/" target="_blank" rel="noopener noreferrer">the website</a>, a practitioner-scholar <a href="https://l4cybernetics.vercel.app/matching" target="_blank" rel="noopener noreferrer">matching platform</a>,
+							infrastructure: <a href="https://lab4cybernetics.vercel.app" target="_blank" rel="noopener noreferrer">the website</a>, a practitioner-scholar <a href="https://l4cybernetics.vercel.app/matching" target="_blank" rel="noopener noreferrer">matching platform</a>,
 							and a knowledge graph system organizing <a href="https://publish.obsidian.md/lab4c" target="_blank" rel="noopener noreferrer">cybernetics concepts</a>.
 							<br /><br />
 							🤖 My thesis project, supported by the <a href="https://studioforcreativeinquiry.org/frff-grants-microgrants" target="_blank" rel="noopener noreferrer">Frank-Ratchye Further Fund</a>, explores how physically embodied AI can
@@ -283,8 +281,8 @@ const musibuddyProject = allProjects.find(
 										heroImages[detourProject.slug] ||
 										detourProject.data.heroImage
 									}
-									loading="eager"
-									fetchPriority="high"
+									loading="lazy"
+									fetchPriority="auto"
 									href={`/works/${detourProject.slug}`}
 									size={
 										homeBentoSizeBySlug[
@@ -306,8 +304,8 @@ const musibuddyProject = allProjects.find(
 										heroImages[serendipityProject.slug] ||
 										serendipityProject.data.heroImage
 									}
-									loading="eager"
-									fetchPriority="high"
+									loading="lazy"
+									fetchPriority="auto"
 									href={`/works/${serendipityProject.slug}`}
 									size={
 										homeBentoSizeBySlug[
@@ -330,8 +328,8 @@ const musibuddyProject = allProjects.find(
 										heroImages[sanctuaryProject.slug] ||
 										sanctuaryProject.data.heroImage
 									}
-									loading="eager"
-									fetchPriority="high"
+									loading="lazy"
+									fetchPriority="auto"
 									href={`/works/${sanctuaryProject.slug}`}
 									size={
 										homeBentoSizeBySlug[
@@ -356,8 +354,8 @@ const musibuddyProject = allProjects.find(
 										heroImages[pikoProject.slug] ||
 										pikoProject.data.heroImage
 									}
-									loading="eager"
-									fetchPriority="high"
+									loading="lazy"
+									fetchPriority="auto"
 									href={`/works/${pikoProject.slug}`}
 									size={
 										homeBentoSizeBySlug[pikoProject.slug] ||
@@ -377,8 +375,8 @@ const musibuddyProject = allProjects.find(
 										heroImages[musibuddyProject.slug] ||
 										musibuddyProject.data.heroImage
 									}
-									loading="eager"
-									fetchPriority="high"
+									loading="lazy"
+									fetchPriority="auto"
 									href={`/works/${musibuddyProject.slug}`}
 									size={
 										homeBentoSizeBySlug[

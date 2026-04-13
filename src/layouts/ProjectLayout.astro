@@ -12,9 +12,19 @@ interface Props {
     ctaUrl?: string;
     ctaText?: string;
     sections?: { id: string; label: string }[];
+    heroImage?: string;
 }
 
-const { title, description, meta = {}, tags = [], ctaUrl, ctaText, sections: propSections } = Astro.props;
+const {
+    title,
+    description,
+    meta = {},
+    tags = [],
+    ctaUrl,
+    ctaText,
+    sections: propSections,
+    heroImage,
+} = Astro.props;
 
 // Convert meta object to array for iteration
 const metaEntries = Object.entries(meta).filter(
@@ -33,7 +43,7 @@ const defaultSections = [
 const sections = propSections || defaultSections;
 ---
 
-<Layout title={`${title} | Narayan Ashanahalli`}>
+<Layout title={`${title} | Narayan Ashanahalli`} preloadImageHref={heroImage}>
     <!-- LEFT SIDEBAR SLOT -->
     <div slot="sidebar" class="project-sidebar-content">
         <div class="sidebar-scroll-container">
@@ -239,7 +249,7 @@ const sections = propSections || defaultSections;
 
     .sidebar-tags span {
         font-size: 0.75rem; /* 12px */
-        color: var(--text-muted);x
+        color: var(--text-muted);
         text-transform: uppercase;
         letter-spacing: 0.05em;
         font-weight: 500;

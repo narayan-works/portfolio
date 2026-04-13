@@ -15,6 +15,7 @@
     const overlay = document.getElementById("game-overlay");
     const cursor = document.getElementById("game-cursor");
 
+    const bootGame = () => {
     if (canvas && overlay) {
         const ctx = canvas.getContext("2d");
 
@@ -881,6 +882,19 @@
                 cursor.style.opacity = "0";
             });
         }
+    }
+    };
+
+    const shouldDeferBoot = window.matchMedia(
+        "(hover: none), (pointer: coarse)",
+    ).matches;
+
+    if (shouldDeferBoot && "requestIdleCallback" in window) {
+        window.requestIdleCallback(() => bootGame(), { timeout: 1500 });
+    } else if (shouldDeferBoot) {
+        window.setTimeout(bootGame, 250);
+    } else {
+        bootGame();
     }
 </script>
 
