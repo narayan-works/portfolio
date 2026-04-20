@@ -32,6 +32,32 @@ import VideoEmbed from '../../components/VideoEmbed.astro';
     </p>
 </div>
 
+<ProjectSection title="Outcome" id="outcome">
+    <h3>Shipped Product</h3>
+    <p>Dot Threads launched on Chrome Web Store in September 2024 and has been actively maintained through January 2026. Currently at version 1.3.3 with 10 active users.</p>
+    <FullWidthImage src="/assets/projects/dot-threads/chrome-store.png" height="400px" caption="Chrome Web Store listing" constrain={true} />
+</ProjectSection>
+
+<ProjectSection title="Outcome" id="outcome-shipped" hideTitle={true} group="outcome">
+    <h3>User Feedback</h3>
+    <ReviewContainer>
+        <ReviewBubble quote="The design is very effective and intuitive once the user gets used to it." />
+        <ReviewBubble quote="It's visually clear and thoughtfully crafted, with a strong focus on making bookmarking more engaging and intuitive. The idea of using thumbnails and interactive elements adds personalization to the experience." />
+    </ReviewContainer>
+</ProjectSection>
+
+<ProjectSection title="Outcome" id="outcome-iterations" hideTitle={true} group="outcome">
+    <h3>Iterations Based on Feedback</h3>
+    <p>The reviews surfaced two key areas for improvement:</p>
+    <p><strong>Connection clarity:</strong> Users found the lines between colored nodes unclear. Added visual hierarchy (bold/medium/faint opacity) to distinguish connection depths and updated the trails sidebar to explicitly label primary/secondary/tertiary relationships.</p>
+    <p><strong>Multi-bookmark workflows:</strong> Request for connected bookmarks to open together. This validated the export/import feature—users can now share entire research threads as portable JSON files rather than individual links.</p>
+    <hr class="feature-divider" />
+    <h3>Project Demo</h3>
+    <p>A walkthrough of the live product experience, highlighting core flows and the spatial browsing interactions.</p>
+    <VideoEmbed type="vimeo" id="1164888480" title="Dot Threads Demo" constrain={true} />
+</ProjectSection>
+
+
 <ProjectSection title="The Problem" id="problem-opportunity">
 
 <p>
@@ -184,27 +210,3 @@ import VideoEmbed from '../../components/VideoEmbed.astro';
     <p><a href="https://github.com/narayan-works/dot.threads" target="_blank" rel="noopener noreferrer" class="bento-button">View source on GitHub <span style="margin-left: 6px;">↗</span></a></p>
 </ProjectSection>
 
-<ProjectSection title="Outcome" id="outcome">
-    <h3>Shipped Product</h3>
-    <p>Dot Threads launched on Chrome Web Store in September 2024 and has been actively maintained through January 2026. Currently at version 1.3.3 with 10 active users.</p>
-    <FullWidthImage src="/assets/projects/dot-threads/chrome-store.png" height="400px" caption="Chrome Web Store listing" constrain={true} />
-</ProjectSection>
-
-<ProjectSection title="Outcome" id="outcome-shipped" hideTitle={true} group="outcome">
-    <h3>User Feedback</h3>
-    <ReviewContainer>
-        <ReviewBubble quote="The design is very effective and intuitive once the user gets used to it." />
-        <ReviewBubble quote="It's visually clear and thoughtfully crafted, with a strong focus on making bookmarking more engaging and intuitive. The idea of using thumbnails and interactive elements adds personalization to the experience." />
-    </ReviewContainer>
-</ProjectSection>
-
-<ProjectSection title="Outcome" id="outcome-iterations" hideTitle={true} group="outcome">
-    <h3>Iterations Based on Feedback</h3>
-    <p>The reviews surfaced two key areas for improvement:</p>
-    <p><strong>Connection clarity:</strong> Users found the lines between colored nodes unclear. Added visual hierarchy (bold/medium/faint opacity) to distinguish connection depths and updated the trails sidebar to explicitly label primary/secondary/tertiary relationships.</p>
-    <p><strong>Multi-bookmark workflows:</strong> Request for connected bookmarks to open together. This validated the export/import feature—users can now share entire research threads as portable JSON files rather than individual links.</p>
-    <hr class="feature-divider" />
-    <h3>Project Demo</h3>
-    <p>A walkthrough of the live product experience, highlighting core flows and the spatial browsing interactions.</p>
-    <VideoEmbed type="vimeo" id="1164888480" title="Dot Threads Demo" constrain={true} />
-</ProjectSection>

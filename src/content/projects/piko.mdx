@@ -14,6 +14,9 @@ meta:
   Advisor: "Mayank Goel, Yuvraj Agarwal"
   Year: "2025"
 sections:
+
+  - id: "outcome"
+    label: "What's the outcome?"
   - id: "problem-opportunity"
     label: "Why build it?"
   - id: "approach"
@@ -22,8 +25,6 @@ sections:
     label: "How does it work?"
   - id: "interaction-model"
     label: "How is it built?"
-  - id: "outcome"
-    label: "What's the outcome?"
 ---
 
 import ProjectSection from '../../components/ProjectSection.astro';
@@ -40,6 +41,13 @@ import PlaceholderImage from '../../components/PlaceholderImage.astro';
         </p>
     </div>
 </ProjectSection>
+
+<ProjectSection title="Project Demo" id="outcome">
+    <p>A walkthrough of the fully functional prototype, demonstrating the computer vision detection triggers and the robot's emotive feedback loops in real-time.</p>
+    
+    <VideoEmbed type="vimeo" id="1163205367" title="Piko Interaction Flow" />
+</ProjectSection>
+
 
 <ProjectSection title="The Infinite Scroll Trap" id="problem-opportunity">
     <p>
@@ -155,8 +163,3 @@ import PlaceholderImage from '../../components/PlaceholderImage.astro';
     <FullWidthImage src="/assets/projects/piko/architecture.gif" height="400px" caption="System communication flow" constrain={true} />
 </ProjectSection>
 
-<ProjectSection title="Project Demo" id="outcome">
-    <p>A walkthrough of the fully functional prototype, demonstrating the computer vision detection triggers and the robot's emotive feedback loops in real-time.</p>
-    
-    <VideoEmbed type="vimeo" id="1163205367" title="Piko Interaction Flow" />
-</ProjectSection>

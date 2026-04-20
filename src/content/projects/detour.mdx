@@ -14,6 +14,9 @@ meta:
   Advisor: "Paul Pangaro"
   Year: "2024"
 sections:
+
+  - id: "outcome"
+    label: "What's the outcome?"
   - id: "problem-opportunity"
     label: "Why build it?"
   - id: "approach"
@@ -22,8 +25,6 @@ sections:
     label: "How does it work?"
   - id: "interaction-model"
     label: "How is it built?"
-  - id: "outcome"
-    label: "What's the outcome?"
 ---
 
 import ProjectSection from '../../components/ProjectSection.astro';
@@ -156,6 +157,35 @@ import PdfEmbed from '../../components/PdfEmbed.astro';
     </p>
 </div>
 
+<ProjectSection title="Outcome" id="outcome">
+    <p>The accompanying bodystorming and persona study validate the core hypothesis: that efficiency and exploration can coexist. By contrasting a standard commute with a Detour-enabled journey, the narrative highlights how "Artifact" collection shifts attention from the destination to the immediate environment. This habit is further reinforced through collaborative trails, where shared wayfinding creates enhanced scores—transforming a solitary walk into a collective ritual.</p>
+
+    <p class="centered-tagline">Shifting focus from the destination to the journey.</p>
+
+    <FigmaEmbed 
+        src="https://www.figma.com/deck/D7RI2elOtVZww3FeSMIBxS/IxD-Final?node-id=16-392&viewport=-144%2C-104%2C0.67&t=bzRk8Cs5FPHLEiLt-1&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1" 
+        aspectRatio="16/9"
+        title="Detour Final Presentation"
+    />
+
+    <ReviewContainer>
+        <ReviewBubble quote="It feels like a tool that brings to life a thought many people have had at least once: 'What if we could feel the joy of traveling in our everyday lives?'" />
+        <ReviewBubble quote="Well reasoned and helpful to achieve the problem of the user in trying to spice up navigation in daily life." />
+    </ReviewContainer>
+
+    <h3>Interaction Model</h3>
+    <p>The prototype build demonstrates the core loop in real-time: filtering intent, engaging with quests, and navigating generative paths.</p>
+
+    <FigmaEmbed 
+        src="https://www.figma.com/proto/U7Q19OfYZC42ioyAsme8i7/IxD?page-id=655%3A5588&scaling=contain&content-scaling=fixed&show-proto-sidebar=0&hide-ui=1&t=fgaXnQBrnzCQjb7Z-9&node-id=927-2990&starting-point-node-id=927%3A2990" 
+        height="900px"
+        title="Detour Interactive Prototype"
+        iconPosition="center"
+    />
+</ProjectSection>
+
+
+
 <ProjectSection title="Premise" id="problem-opportunity">
     <p>Commutes follow the same routes, optimized for speed. People pass potential detours—parks, cafes, trails—but rarely deviate. Not because options don't exist, but because choosing where to go and what to do adds cognitive load to an already routine decision.</p>
     <p class="centered-tagline">What if small nudges during movement you're already doing could shift behavior from pure efficiency to occasional unwinding experiences?</p>
@@ -241,31 +271,4 @@ import FigmaEmbed from '../../components/FigmaEmbed.astro';
 
 import ReviewBubble from '../../components/ReviewBubble.astro';
 import ReviewContainer from '../../components/ReviewContainer.astro';
-
-<ProjectSection title="Outcome" id="outcome">
-    <p>The accompanying bodystorming and persona study validate the core hypothesis: that efficiency and exploration can coexist. By contrasting a standard commute with a Detour-enabled journey, the narrative highlights how "Artifact" collection shifts attention from the destination to the immediate environment. This habit is further reinforced through collaborative trails, where shared wayfinding creates enhanced scores—transforming a solitary walk into a collective ritual.</p>
-
-    <p class="centered-tagline">Shifting focus from the destination to the journey.</p>
-
-    <FigmaEmbed 
-        src="https://www.figma.com/deck/D7RI2elOtVZww3FeSMIBxS/IxD-Final?node-id=16-392&viewport=-144%2C-104%2C0.67&t=bzRk8Cs5FPHLEiLt-1&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1" 
-        aspectRatio="16/9"
-        title="Detour Final Presentation"
-    />
-
-    <ReviewContainer>
-        <ReviewBubble quote="It feels like a tool that brings to life a thought many people have had at least once: 'What if we could feel the joy of traveling in our everyday lives?'" />
-        <ReviewBubble quote="Well reasoned and helpful to achieve the problem of the user in trying to spice up navigation in daily life." />
-    </ReviewContainer>
-
-    <h3>Interaction Model</h3>
-    <p>The prototype build demonstrates the core loop in real-time: filtering intent, engaging with quests, and navigating generative paths.</p>
-
-    <FigmaEmbed 
-        src="https://www.figma.com/proto/U7Q19OfYZC42ioyAsme8i7/IxD?page-id=655%3A5588&scaling=contain&content-scaling=fixed&show-proto-sidebar=0&hide-ui=1&t=fgaXnQBrnzCQjb7Z-9&node-id=927-2990&starting-point-node-id=927%3A2990" 
-        height="900px"
-        title="Detour Interactive Prototype"
-        iconPosition="center"
-    />
-</ProjectSection>
 

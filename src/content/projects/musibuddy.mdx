@@ -12,6 +12,9 @@ meta:
   Prior Art: "Cybernetics & MusiColour (1953)"
   Year: "2024"
 sections:
+
+  - id: "outcome"
+    label: "What's the outcome?"
   - id: "premise"
     label: "Why build it?"
   - id: "approach"
@@ -20,8 +23,6 @@ sections:
     label: "How does it work?"
   - id: "product-vision"
     label: "How is it built?"
-  - id: "outcome"
-    label: "What's the outcome?"
 ---
 
 import ProjectSection from '../../components/ProjectSection.astro';
@@ -32,7 +33,25 @@ import ImageToggle from '../../components/ImageToggle.astro';
 <FullWidthImage src="/assets/projects/musibuddy/hero.png" constrain={false} />
 
 <div class="musibuddy-project">
-  <ProjectSection title="Premise" id="premise" wide={true}>
+  <ProjectSection title="Outcome" id="outcome" wide={true}>
+    <FullWidthImage src="/assets/projects/musibuddy/interaction.gif" caption="Interaction Model" background="#000000" padding="40px" scale={0.9} constrain={false} />
+    <h3>Prototyping Iterations</h3>
+        
+    <VideoSwitcher 
+      videos={[
+        { label: "1.47 PM", src: "/assets/projects/musibuddy/1.47pm.mp4" },
+        { label: "1.50 PM", src: "/assets/projects/musibuddy/1.50pm.mp4" },
+        { label: "2.32 PM", src: "/assets/projects/musibuddy/2.32pm.mp4" },
+        { label: "4.47 PM", src: "/assets/projects/musibuddy/4.47pm.mp4" },
+        { label: "Party\nOff", src: "/assets/projects/musibuddy/partytime-off.mp4" },
+        { label: "Party\nOn", src: "/assets/projects/musibuddy/partytime-on.mp4" }
+      ]}
+    />
+  </ProjectSection>
+</div>
+
+
+<ProjectSection title="Premise" id="premise" wide={true}>
     <p>MusicBuddy is an attempt to build a machine with "aesthetic intelligence." Inspired by Gordon Pask's MusiColour (1953), this prototype deconstructs audio into deep structural data (Tatums, Beats, Bars) to create a feedback loop where the machine doesn't just display the music, but "performs" it—getting bored if the song is too repetitive, or overwhelmed if it's too complex.</p>
     <FullWidthImage src="/assets/projects/musibuddy/premise.png" constrain={false} />
   </ProjectSection>
@@ -56,19 +75,4 @@ import ImageToggle from '../../components/ImageToggle.astro';
     <FullWidthImage src="/assets/projects/musibuddy/How is it built-2.png" constrain={false} />
   </ProjectSection>
 
-  <ProjectSection title="Outcome" id="outcome" wide={true}>
-    <FullWidthImage src="/assets/projects/musibuddy/interaction.gif" caption="Interaction Model" background="#000000" padding="40px" scale={0.9} constrain={false} />
-    <h3>Prototyping Iterations</h3>
-        
-    <VideoSwitcher 
-      videos={[
-        { label: "1.47 PM", src: "/assets/projects/musibuddy/1.47pm.mp4" },
-        { label: "1.50 PM", src: "/assets/projects/musibuddy/1.50pm.mp4" },
-        { label: "2.32 PM", src: "/assets/projects/musibuddy/2.32pm.mp4" },
-        { label: "4.47 PM", src: "/assets/projects/musibuddy/4.47pm.mp4" },
-        { label: "Party\nOff", src: "/assets/projects/musibuddy/partytime-off.mp4" },
-        { label: "Party\nOn", src: "/assets/projects/musibuddy/partytime-on.mp4" }
-      ]}
-    />
-  </ProjectSection>
-</div>
+  
