@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PointoBot — Try Me!</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f3ee;
+    --surface: #ffffff;
+    --surface2: #f9f8f5;
+    --border: rgba(0,0,0,0.08);
+    --red: oklch(55% 0.22 25);
+    --red-light: oklch(96% 0.04 25);
+    --red-mid: oklch(92% 0.07 25);
+    --text: #1a1818;
+    --muted: #8a8680;
+    --green: oklch(55% 0.14 155);
+    --green-light: oklch(95% 0.05 155);
+    --blue: oklch(55% 0.14 240);
+    --blue-light: oklch(95% 0.04 240);
+    --yellow: oklch(75% 0.14 80);
+    --yellow-light: oklch(97% 0.05 80);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Space Grotesk', sans-serif;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    padding: 24px 32px 20px;
+    gap: 16px;
+  }
+
+  /* ── HEADER ── */
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+    animation: fadeDown 0.5s ease both;
+  }
+
+  .logo-area {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .laser-dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--red);
+    box-shadow: 0 0 0 4px oklch(55% 0.22 25 / 0.15);
+    animation: pulse 2s ease-in-out infinite;
+    flex-shrink: 0;
+  }
+
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 4px oklch(55% 0.22 25 / 0.15); }
+    50%       { box-shadow: 0 0 0 8px oklch(55% 0.22 25 / 0.05); }
+  }
+
+  .logo-text {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+  }
+
+  .logo-text span { color: var(--red); }
+
+  .wake-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--red-mid);
+    border: 1.5px solid oklch(55% 0.22 25 / 0.25);
+    border-radius: 100px;
+    padding: 8px 20px;
+  }
+
+  .wake-label {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .wake-word {
+    font-family: 'Space Mono', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--red);
+  }
+
+  /* ── HERO ── */
+  .hero {
+    flex-shrink: 0;
+    animation: fadeDown 0.5s 0.05s ease both;
+  }
+
+  .hero h1 {
+    font-size: clamp(28px, 3.2vw, 46px);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 1.05;
+  }
+
+  .hero h1 em {
+    font-style: normal;
+    color: var(--red);
+  }
+
+  .hero p {
+    margin-top: 6px;
+    font-size: 14.5px;
+    color: var(--muted);
+  }
+
+  /* ── MAIN GRID ── */
+  .grid {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 14px;
+    flex: 1;
+    min-height: 0;
+  }
+
+  .panel {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 20px;
+    padding: 20px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    overflow: hidden;
+    animation: fadeUp 0.5s ease both;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.05);
+  }
+
+  .panel:nth-child(2) { animation-delay: 0.08s; }
+
+  .panel-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+
+  .panel-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 17px;
+    flex-shrink: 0;
+  }
+
+  .panel-icon.red { background: var(--red-light); }
+
+  .panel-title-block {}
+  .panel-eyebrow {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+  }
+
+  .panel-title {
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-top: 1px;
+  }
+
+  /* ── TARGET GRID ── */
+  .targets {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 7px;
+    overflow-y: auto;
+  }
+
+  .target {
+    background: var(--surface2);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 10px 13px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    transition: border-color 0.18s, background 0.18s, transform 0.18s;
+    cursor: default;
+  }
+
+  .target:hover {
+    border-color: oklch(55% 0.22 25 / 0.4);
+    background: var(--red-light);
+    transform: translateY(-1px);
+  }
+
+  .target-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .target-example {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    text-wrap: pretty;
+  }
+
+  /* ── PROJECTOR GROUP ── */
+  .target-group-label {
+    grid-column: 1 / -1;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    padding: 4px 0 2px;
+    border-top: 1px solid var(--border);
+    margin-top: 2px;
+  }
+
+  .target-group-label:first-child {
+    border-top: none;
+    margin-top: 0;
+    padding-top: 0;
+  }
+
+  /* projector trio — spans full width, 3 even cols */
+  .projector-row {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 7px;
+  }
+
+  .target.accent {
+    background: oklch(96% 0.04 240);
+    border-color: oklch(55% 0.14 240 / 0.3);
+  }
+
+  .target.accent:hover {
+    background: oklch(92% 0.07 240);
+    border-color: oklch(55% 0.14 240 / 0.6);
+  }
+
+  .target.accent .target-name { color: oklch(40% 0.14 240); }
+
+  /* ── GESTURE CARDS ── */
+  .gestures {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    overflow-y: auto;
+  }
+
+  .gesture {
+    border-radius: 14px;
+    padding: 12px 16px;
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    align-items: center;
+    gap: 12px;
+    border: 1.5px solid transparent;
+    transition: transform 0.18s;
+  }
+
+  .gesture:hover { transform: translateX(3px); }
+
+  .gesture.yes  { background: var(--green-light);  border-color: oklch(55% 0.14 155 / 0.2); }
+  .gesture.no   { background: var(--red-light);    border-color: oklch(55% 0.22 25 / 0.2); }
+  .gesture.yay  { background: var(--yellow-light); border-color: oklch(75% 0.14 80 / 0.3); }
+  .gesture.idk  { background: var(--blue-light);   border-color: oklch(55% 0.14 240 / 0.2); }
+
+  .gesture-symbol {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+
+  .gesture.yes .gesture-symbol  { background: var(--green-light);  border: 1.5px solid oklch(55% 0.14 155 / 0.25); }
+  .gesture.no  .gesture-symbol  { background: var(--red-light);    border: 1.5px solid oklch(55% 0.22 25 / 0.25); }
+  .gesture.yay .gesture-symbol  { background: var(--yellow-light); border: 1.5px solid oklch(75% 0.14 80 / 0.3); }
+  .gesture.idk .gesture-symbol  { background: var(--blue-light);   border: 1.5px solid oklch(55% 0.14 240 / 0.25); }
+
+  .gesture-body {}
+
+  .gesture-name {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 5px;
+  }
+
+  .gesture.yes .gesture-name  { color: oklch(38% 0.14 155); }
+  .gesture.no  .gesture-name  { color: oklch(38% 0.22 25); }
+  .gesture.yay .gesture-name  { color: oklch(45% 0.14 80); }
+  .gesture.idk .gesture-name  { color: oklch(38% 0.14 240); }
+
+  .gesture-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  .tag {
+    border-radius: 100px;
+    font-family: 'Space Mono', monospace;
+    font-size: 9.5px;
+    padding: 2px 8px;
+    white-space: nowrap;
+  }
+
+  .gesture.yes .tag { background: oklch(88% 0.09 155 / 0.5); color: oklch(35% 0.14 155); }
+  .gesture.no  .tag { background: oklch(88% 0.1  25  / 0.5); color: oklch(35% 0.22 25); }
+  .gesture.yay .tag { background: oklch(88% 0.1  80  / 0.5); color: oklch(38% 0.14 80); }
+  .gesture.idk .tag { background: oklch(88% 0.09 240 / 0.5); color: oklch(35% 0.14 240); }
+
+  /* ── FOOTER ── */
+  footer {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .footer-line { height: 1px; flex: 1; background: var(--border); }
+
+  .footer-text {
+    font-size: 11.5px;
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+
+  @keyframes fadeUp   { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes fadeDown { from { opacity:0; transform:translateY(-8px);  } to { opacity:1; transform:translateY(0); } }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-area">
+    <div class="laser-dot"></div>
+    <div class="logo-text">Pointo<span>Bot</span></div>
+  </div>
+  <div class="wake-badge">
+    <span class="wake-label">Wake word</span>
+    <span class="wake-word">"Pointo…"</span>
+  </div>
+</header>
+
+<div class="hero">
+  <h1>Ask it. It <em>points</em>. 🎯</h1>
+  <p>Just speak naturally — no buttons, no apps. Ask where something is and watch it go!</p>
+</div>
+
+<div class="grid">
+
+  <!-- LEFT: POINTING -->
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-icon red">📍</div>
+      <div class="panel-title-block">
+        <div class="panel-eyebrow">Try asking</div>
+        <div class="panel-title">Where is…?</div>
+      </div>
+    </div>
+
+    <div class="targets">
+
+      <div class="target-group-label">Room &amp; furniture</div>
+
+      <div class="target">
+        <div class="target-name">Door</div>
+        <div class="target-example">"Where is the door?"</div>
+      </div>
+
+      <div class="target">
+        <div class="target-name">Table</div>
+        <div class="target-example">"Point at the table"</div>
+      </div>
+
+      <div class="target">
+        <div class="target-name">Shelves</div>
+        <div class="target-example">"Where are the shelves?"</div>
+      </div>
+
+      <div class="target-group-label">Equipment</div>
+
+      <div class="target">
+        <div class="target-name">Computer</div>
+        <div class="target-example">"Where is the computer?"</div>
+      </div>
+
+      <div class="target">
+        <div class="target-name">Tracking Camera</div>
+        <div class="target-example">"Where's the camera?"</div>
+      </div>
+
+      <div class="target">
+        <div class="target-name">Light Switch</div>
+        <div class="target-example">"Where is the light switch?"</div>
+      </div>
+
+      <div class="target">
+        <div class="target-name">Speaker</div>
+        <div class="target-example">"Where is the speaker?"</div>
+      </div>
+
+      <div class="target">
+        <div class="target-name">IoT Devices</div>
+        <div class="target-example">"Where are the IoT things?"</div>
+      </div>
+
+      <div class="target">
+        <div class="target-name">OptiTrack</div>
+        <div class="target-example">"Point at OptiTrack"</div>
+      </div>
+
+      <div class="target-group-label">Projectors — pick any one!</div>
+
+      <div class="projector-row">
+        <div class="target accent">
+          <div class="target-name">Projector 1</div>
+          <div class="target-example">"Where is projector 1?"</div>
+        </div>
+        <div class="target accent">
+          <div class="target-name">Projector 2</div>
+          <div class="target-example">"Point at projector 2"</div>
+        </div>
+        <div class="target accent">
+          <div class="target-name">Projector 3</div>
+          <div class="target-example">"Show me projector 3"</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- RIGHT: GESTURES -->
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-icon red">🤖</div>
+      <div class="panel-title-block">
+        <div class="panel-eyebrow">It also reacts!</div>
+        <div class="panel-title">Talk to it</div>
+      </div>
+    </div>
+
+    <div class="gestures">
+
+      <div class="gesture yes">
+        <div class="gesture-symbol">🙂</div>
+        <div class="gesture-body">
+          <div class="gesture-name">Nods — yes &amp; greets</div>
+          <div class="gesture-tags">
+            <span class="tag">"Hello!"</span>
+            <span class="tag">"Can you hear me?"</span>
+            <span class="tag">"Are you awake?"</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="gesture no">
+        <div class="gesture-symbol">🙅</div>
+        <div class="gesture-body">
+          <div class="gesture-name">Shakes — no &amp; can't do</div>
+          <div class="gesture-tags">
+            <span class="tag">"Can you walk?"</span>
+            <span class="tag">"Is there a pool here?"</span>
+            <span class="tag">"Stop"</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="gesture yay">
+        <div class="gesture-symbol">🎉</div>
+        <div class="gesture-body">
+          <div class="gesture-name">Celebrates — thanks &amp; praise</div>
+          <div class="gesture-tags">
+            <span class="tag">"Thank you!"</span>
+            <span class="tag">"Good job"</span>
+            <span class="tag">"Goodbye!"</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="gesture idk">
+        <div class="gesture-symbol">🤷</div>
+        <div class="gesture-body">
+          <div class="gesture-name">Shrugs — doesn't know</div>
+          <div class="gesture-tags">
+            <span class="tag">"Where's the fridge?"</span>
+            <span class="tag">"What's 42?"</span>
+            <span class="tag">Unknown objects</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-line"></div>
+  <div class="footer-text">no button to press — just talk! 🎤</div>
+  <div class="footer-line"></div>
+</footer>
+
+</body>
+</html>

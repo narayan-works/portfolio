@@ -25,6 +25,7 @@ const allProjects = (await getCollection("projects"))
 			"tirupati-campus",
 			"skywalk-sanctuary",
 			"dot-threads",
+			"pointo",
 			"serendipidity",
 			"piko",
 			"musibuddy",
@@ -48,6 +49,7 @@ const homeBentoSizeBySlug: Record<
 	"dot-threads": "medium",
 	detour: "medium",
 	piko: "medium",
+	pointo: "medium",
 	"skywalk-sanctuary": "medium",
 	"tirupati-campus": "medium",
 	serendipidity: "medium",
@@ -66,6 +68,7 @@ const tirupatiProject = allProjects.find(
 	(project) => project.slug === "tirupati-campus",
 );
 const pikoProject = allProjects.find((project) => project.slug === "piko");
+const pointoProject = allProjects.find((project) => project.slug === "pointo");
 const serendipityProject = allProjects.find(
 	(project) => project.slug === "serendipidity",
 );
@@ -223,6 +226,27 @@ const musibuddyProject = allProjects.find(
 			<div class="works-container">
 				<BentoGrid>
 					<div>
+						{
+							pointoProject && (
+								<BentoCard
+									title={pointoProject.data.title}
+									image={
+										heroImages[pointoProject.slug] ||
+										pointoProject.data.heroImage
+									}
+									loading="eager"
+									fetchPriority="high"
+									href={`/works/${pointoProject.slug}`}
+									size={
+										homeBentoSizeBySlug[pointoProject.slug] ||
+										(pointoProject.data.bentoSize as any) ||
+										"small"
+									}
+									tags={pointoProject.data.tags}
+								/>
+							)
+						}
+
 						{
 							dotThreadsProject && (
 								<BentoCard

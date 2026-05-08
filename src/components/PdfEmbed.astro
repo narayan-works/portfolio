@@ -3,9 +3,16 @@ interface Props {
     src: string;
     alt?: string;
     fullWidth?: boolean;
+    showControls?: boolean;
+    pauseOnHover?: boolean;
 }
 
-const { src, fullWidth = true } = Astro.props;
+const {
+    src,
+    fullWidth = true,
+    showControls = true,
+    pauseOnHover = true,
+} = Astro.props;
 const uniqueId = "pdf-" + Math.random().toString(36).substr(2, 9);
 ---
 
@@ -17,38 +24,45 @@ const uniqueId = "pdf-" + Math.random().toString(36).substr(2, 9);
         <!-- Pages Container -->
         <div id={`pdf-pages-${uniqueId}`} class="pdf-pages"></div>
 
-        <!-- Controls Overlay -->
-        <div class="pdf-controls">
-            <button
-                id={`pdf-prev-${uniqueId}`}
-                class="nav-btn"
-                aria-label="Previous page"
-            >
-                <span class="nav-btn-inner">←</span>
-            </button>
-            <div id={`pdf-page-indicator-${uniqueId}`} class="page-indicator">
-                1 / 1
-            </div>
-            <button
-                id={`pdf-next-${uniqueId}`}
-                class="nav-btn"
-                aria-label="Next page"
-            >
-                <span class="nav-btn-inner">→</span>
-            </button>
-        </div>
+        {showControls && (
+            <>
+                <!-- Controls Overlay -->
+                <div class="pdf-controls">
+                    <button
+                        id={`pdf-prev-${uniqueId}`}
+                        class="nav-btn"
+                        aria-label="Previous page"
+                    >
+                        <span class="nav-btn-inner">←</span>
+                    </button>
+                    <div
+                        id={`pdf-page-indicator-${uniqueId}`}
+                        class="page-indicator"
+                    >
+                        1 / 1
+                    </div>
+                    <button
+                        id={`pdf-next-${uniqueId}`}
+                        class="nav-btn"
+                        aria-label="Next page"
+                    >
+                        <span class="nav-btn-inner">→</span>
+                    </button>
+                </div>
 
-        <!-- Click Overlay (Invisible) -->
-        <div id={`pdf-click-area-${uniqueId}`} class="click-area"></div>
+                <!-- Click Overlay (Invisible) -->
+                <div id={`pdf-click-area-${uniqueId}`} class="click-area"></div>
 
-        <!-- First Page Click Icon -->
-        <img
-            id={`pdf-click-icon-${uniqueId}`}
-            src="/assets/logos/click.png"
-            class="click-icon"
-            alt="Click to navigate"
-            loading="lazy"
-        />
+                <!-- First Page Click Icon -->
+                <img
+                    id={`pdf-click-icon-${uniqueId}`}
+                    src="/assets/logos/click.png"
+                    class="click-icon"
+                    alt="Click to navigate"
+                    loading="lazy"
+                />
+            </>
+        )}
     </div>
 </div>
 
@@ -141,6 +155,13 @@ const uniqueId = "pdf-" + Math.random().toString(36).substr(2, 9);
             pagesContainer.appendChild(canvas);
 
             const ctx = canvas.getContext("2d");
+            const backgroundColor = getComputedStyle(wrapper).getPropertyValue(
+                "--pdf-viewer-background",
+            ).trim() || getComputedStyle(wrapper).backgroundColor || "#090909";
+            ctx.save();
+            ctx.fillStyle = backgroundColor;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.restore();
             await page.render({
                 canvasContext: ctx,
                 viewport: renderViewport,
@@ -160,17 +181,21 @@ const uniqueId = "pdf-" + Math.random().toString(36).substr(2, 9);
             });
 
             // Update page indicator
-            if (totalPages > 1) {
+            if (pageIndicator && totalPages > 1) {
                 pageIndicator.textContent = `${pageNum} / ${totalPages}`;
-            } else {
+            } else if (pageIndicator) {
                 pageIndicator.style.display = "none";
             }
 
             // Update nav buttons state
-            prevBtn.disabled = pageNum <= 1;
-            nextBtn.disabled = pageNum >= totalPages;
-            prevBtn.style.opacity = pageNum <= 1 ? "0.5" : "1";
-            nextBtn.style.opacity = pageNum >= totalPages ? "0.5" : "1";
+            if (prevBtn) {
+                prevBtn.disabled = pageNum <= 1;
+                prevBtn.style.opacity = pageNum <= 1 ? "0.5" : "1";
+            }
+            if (nextBtn) {
+                nextBtn.disabled = pageNum >= totalPages;
+                nextBtn.style.opacity = pageNum >= totalPages ? "0.5" : "1";
+            }
 
             // Click Icon Visibility (Only on Page 1)
             if (clickIcon) {
@@ -191,15 +216,19 @@ const uniqueId = "pdf-" + Math.random().toString(36).substr(2, 9);
             }
         }
 
-        prevBtn.addEventListener("click", (e) => {
-            e.stopPropagation();
-            changePage(-1, true);
-        });
+        if (prevBtn) {
+            prevBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                changePage(-1, true);
+            });
+        }
 
-        nextBtn.addEventListener("click", (e) => {
-            e.stopPropagation();
-            changePage(1, true);
-        });
+        if (nextBtn) {
+            nextBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                changePage(1, true);
+            });
+        }
 
         // Keyboard Interaction
         window.addEventListener("keydown", (e) => {
@@ -216,19 +245,21 @@ const uniqueId = "pdf-" + Math.random().toString(36).substr(2, 9);
             }
         });
 
-        clickArea.addEventListener("click", (e) => {
-            const rect = clickArea.getBoundingClientRect();
-            const clickX = e.clientX - rect.left;
-            const halfWidth = rect.width / 2;
+        if (clickArea) {
+            clickArea.addEventListener("click", (e) => {
+                const rect = clickArea.getBoundingClientRect();
+                const clickX = e.clientX - rect.left;
+                const halfWidth = rect.width / 2;
 
-            if (clickX < halfWidth) {
-                // Left side - go to previous
-                changePage(-1, true);
-            } else {
-                // Right side - go to next
-                changePage(1, true);
-            }
-        });
+                if (clickX < halfWidth) {
+                    // Left side - go to previous
+                    changePage(-1, true);
+                } else {
+                    // Right side - go to next
+                    changePage(1, true);
+                }
+            });
+        }
 
         // Click Icon interaction
         if (clickIcon) {
@@ -250,7 +281,9 @@ const uniqueId = "pdf-" + Math.random().toString(36).substr(2, 9);
         try {
             pdfDoc = await window.pdfjsLib.getDocument(src).promise;
             totalPages = pdfDoc.numPages;
-            pageIndicator.textContent = `1 / ${totalPages}`;
+            if (pageIndicator) {
+                pageIndicator.textContent = `1 / ${totalPages}`;
+            }
 
             // Get first page done, but rely on renderAllPages to draw
             // const firstPage = await pdfDoc.getPage(1);
@@ -263,24 +296,26 @@ const uniqueId = "pdf-" + Math.random().toString(36).substr(2, 9);
 
             // Visibility-based autoplay: only advance when 40% of viewer is visible
 
-            wrapper.addEventListener("mouseenter", () => {
-                isHovered = true;
-                stopAutoplay();
-            });
+            if (pauseOnHover) {
+                wrapper.addEventListener("mouseenter", () => {
+                    isHovered = true;
+                    stopAutoplay();
+                });
 
-            wrapper.addEventListener("mouseleave", () => {
-                isHovered = false;
-                if (isVisible && !isPaused) {
-                    startAutoplay();
-                }
-            });
+                wrapper.addEventListener("mouseleave", () => {
+                    isHovered = false;
+                    if (isVisible && !isPaused) {
+                        startAutoplay();
+                    }
+                });
+            }
 
             function startAutoplay() {
                 if (
                     autoplayInterval ||
                     totalPages <= 1 ||
                     isPaused ||
-                    isHovered
+                    (pauseOnHover && isHovered)
                 )
                     return;
                 autoplayInterval = setInterval(() => {
@@ -290,7 +325,7 @@ const uniqueId = "pdf-" + Math.random().toString(36).substr(2, 9);
                         pageNum++;
                     }
                     updateView();
-                }, 1500);
+                }, 2500);
             }
 
             function stopAutoplay() {
@@ -305,7 +340,7 @@ const uniqueId = "pdf-" + Math.random().toString(36).substr(2, 9);
                 isPaused = e.detail.paused;
                 if (isPaused) {
                     stopAutoplay();
-                } else if (isVisible && !isHovered) {
+                } else if (isVisible && (!pauseOnHover || !isHovered)) {
                     startAutoplay();
                 }
             });
@@ -327,7 +362,9 @@ const uniqueId = "pdf-" + Math.random().toString(36).substr(2, 9);
             observer.observe(wrapper);
         } catch (error) {
             console.error("Error loading PDF:", error);
-            pageIndicator.textContent = "Error";
+            if (pageIndicator) {
+                pageIndicator.textContent = "Error";
+            }
         }
     }
 
@@ -344,6 +381,7 @@ const uniqueId = "pdf-" + Math.random().toString(36).substr(2, 9);
         width: 100%;
         margin-top: 4rem;
         margin-bottom: 2rem;
+        --pdf-viewer-background: #090909;
         /* Constrain to 900px body width */
         padding-inline: max(0rem, calc(50% - 450px));
         box-sizing: border-box;
@@ -355,7 +393,7 @@ const uniqueId = "pdf-" + Math.random().toString(36).substr(2, 9);
     .pdf-container {
         width: 100%;
         position: relative;
-        background: var(--surface-secondary, #f5f5f5);
+        background: var(--pdf-viewer-background, var(--surface-secondary, #f5f5f5));
         border-radius: var(--radius-md, 8px);
         overflow: hidden;
         /* Min-height to prevent collapse during load */
@@ -385,33 +423,55 @@ const uniqueId = "pdf-" + Math.random().toString(36).substr(2, 9);
         border-radius: 4px;
     }
 
-    .pause-btn {
+    .pdf-controls {
         position: absolute;
-        top: 0.75rem;
-        right: 0.75rem;
-        width: 28px;
-        height: 28px;
-        background: var(--bg-secondary, rgba(30, 30, 30, 0.8));
-        backdrop-filter: blur(8px);
-        border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.1));
-        border-radius: var(--radius-sm, 4px);
-        color: rgba(255, 255, 255, 0.9);
-        cursor: pointer;
+        inset: auto 0 0 0;
         display: flex;
         align-items: center;
         justify-content: center;
+        gap: 1rem;
+        padding: 1rem;
         z-index: 10;
-        transition: all 0.2s ease;
+        pointer-events: none;
     }
 
-    .pause-btn:hover {
-        background: var(--accent-secondary, #42bd49);
-        border-color: var(--accent-secondary, #42bd49);
+    .pdf-controls :global(button),
+    .pdf-controls .page-indicator {
+        pointer-events: auto;
     }
 
-    .pause-icon {
-        font-size: 0.6rem;
+    .nav-btn {
+        width: 2.25rem;
+        height: 2.25rem;
+        border: 0;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.88);
+        color: #1a1a1a;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        cursor: pointer;
+    }
+
+    .nav-btn:disabled {
+        cursor: default;
+    }
+
+    .nav-btn-inner {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1rem;
         line-height: 1;
+    }
+
+    .page-indicator {
+        padding: 0.4rem 0.7rem;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.88);
+        font-size: 0.8rem;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        color: #1a1a1a;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
     }
 
     .click-area {
@@ -489,7 +549,7 @@ const uniqueId = "pdf-" + Math.random().toString(36).substr(2, 9);
     }
 
     :global([data-theme="dark"]) .pdf-container {
-        background: rgba(255, 255, 255, 0.03);
+        background: var(--pdf-viewer-background, #090909);
     }
 
     :global([data-theme="dark"] .pdf-page) {
