@@ -3,15 +3,11 @@ interface Props {
     src: string;
     alt?: string;
     fullWidth?: boolean;
-    showControls?: boolean;
-    pauseOnHover?: boolean;
 }
 
 const {
     src,
     fullWidth = true,
-    showControls = true,
-    pauseOnHover = true,
 } = Astro.props;
 const uniqueId = "pdf-" + Math.random().toString(36).substr(2, 9);
 ---
@@ -24,45 +20,35 @@ const uniqueId = "pdf-" + Math.random().toString(36).substr(2, 9);
         <!-- Pages Container -->
         <div id={`pdf-pages-${uniqueId}`} class="pdf-pages"></div>
 
-        {showControls && (
-            <>
-                <!-- Controls Overlay -->
-                <div class="pdf-controls">
-                    <button
-                        id={`pdf-prev-${uniqueId}`}
-                        class="nav-btn"
-                        aria-label="Previous page"
-                    >
-                        <span class="nav-btn-inner">←</span>
-                    </button>
-                    <div
-                        id={`pdf-page-indicator-${uniqueId}`}
-                        class="page-indicator"
-                    >
-                        1 / 1
-                    </div>
-                    <button
-                        id={`pdf-next-${uniqueId}`}
-                        class="nav-btn"
-                        aria-label="Next page"
-                    >
-                        <span class="nav-btn-inner">→</span>
-                    </button>
-                </div>
+        <!-- Click Overlay (Invisible) - for left/right navigation -->
+        <div id={`pdf-click-area-${uniqueId}`} class="click-area"></div>
 
-                <!-- Click Overlay (Invisible) -->
-                <div id={`pdf-click-area-${uniqueId}`} class="click-area"></div>
-
-                <!-- First Page Click Icon -->
-                <img
-                    id={`pdf-click-icon-${uniqueId}`}
-                    src="/assets/logos/click.png"
-                    class="click-icon"
-                    alt="Click to navigate"
-                    loading="lazy"
-                />
-            </>
-        )}
+        <!-- UI Elements (Commented Out) -->
+        {/* 
+        <!-- Controls Overlay -->
+        <div class="pdf-controls">
+            <button
+                id={`pdf-prev-${uniqueId}`}
+                class="nav-btn"
+                aria-label="Previous page"
+            >
+                <span class="nav-btn-inner">←</span>
+            </button>
+            <div
+                id={`pdf-page-indicator-${uniqueId}`}
+                class="page-indicator"
+            >
+                1 / 1
+            </div>
+            <button
+                id={`pdf-next-${uniqueId}`}
+                class="nav-btn"
+                aria-label="Next page"
+            >
+                <span class="nav-btn-inner">→</span>
+            </button>
+        </div>
+        */}
     </div>
 </div>
 
@@ -82,13 +68,7 @@ const uniqueId = "pdf-" + Math.random().toString(36).substr(2, 9);
         }
 
         const pagesContainer = document.getElementById(`pdf-pages-${uniqueId}`);
-        const prevBtn = document.getElementById(`pdf-prev-${uniqueId}`);
-        const nextBtn = document.getElementById(`pdf-next-${uniqueId}`);
-        const pageIndicator = document.getElementById(
-            `pdf-page-indicator-${uniqueId}`,
-        );
         const clickArea = document.getElementById(`pdf-click-area-${uniqueId}`);
-        const clickIcon = document.getElementById(`pdf-click-icon-${uniqueId}`);
         const wrapper = document.getElementById(`wrapper-${uniqueId}`);
         const container = wrapper.querySelector(".pdf-container");
 
@@ -97,7 +77,6 @@ const uniqueId = "pdf-" + Math.random().toString(36).substr(2, 9);
         let totalPages = 0;
         let isRendered = false;
         let isVisible = false;
-        let isPaused = window.pdfAutoplayPaused || false;
         let isHovered = false;
         let autoplayInterval = null;
 
@@ -174,34 +153,10 @@ const uniqueId = "pdf-" + Math.random().toString(36).substr(2, 9);
             canvases.forEach((canvas) => {
                 if (canvas.classList.contains(`page-${pageNum}`)) {
                     canvas.style.display = "block";
-                    // Natural flow handles height
                 } else {
                     canvas.style.display = "none";
                 }
             });
-
-            // Update page indicator
-            if (pageIndicator && totalPages > 1) {
-                pageIndicator.textContent = `${pageNum} / ${totalPages}`;
-            } else if (pageIndicator) {
-                pageIndicator.style.display = "none";
-            }
-
-            // Update nav buttons state
-            if (prevBtn) {
-                prevBtn.disabled = pageNum <= 1;
-                prevBtn.style.opacity = pageNum <= 1 ? "0.5" : "1";
-            }
-            if (nextBtn) {
-                nextBtn.disabled = pageNum >= totalPages;
-                nextBtn.style.opacity = pageNum >= totalPages ? "0.5" : "1";
-            }
-
-            // Click Icon Visibility (Only on Page 1)
-            if (clickIcon) {
-                clickIcon.style.opacity = pageNum === 1 ? "1" : "0";
-                clickIcon.style.pointerEvents = pageNum === 1 ? "auto" : "none"; // Make clickable only on page 1
-            }
         }
 
         function changePage(delta, allowLoop = false) {
@@ -214,20 +169,6 @@ const uniqueId = "pdf-" + Math.random().toString(36).substr(2, 9);
                 pageNum = newPage;
                 updateView();
             }
-        }
-
-        if (prevBtn) {
-            prevBtn.addEventListener("click", (e) => {
-                e.stopPropagation();
-                changePage(-1, true);
-            });
-        }
-
-        if (nextBtn) {
-            nextBtn.addEventListener("click", (e) => {
-                e.stopPropagation();
-                changePage(1, true);
-            });
         }
 
         // Keyboard Interaction
@@ -261,14 +202,6 @@ const uniqueId = "pdf-" + Math.random().toString(36).substr(2, 9);
             });
         }
 
-        // Click Icon interaction
-        if (clickIcon) {
-            clickIcon.addEventListener("click", (e) => {
-                e.stopPropagation();
-                changePage(1, true); // Go to next page
-            });
-        }
-
         // Re-render on resize (debounced)
         let resizeTimeout;
         window.addEventListener("resize", () => {
@@ -281,42 +214,13 @@ const uniqueId = "pdf-" + Math.random().toString(36).substr(2, 9);
         try {
             pdfDoc = await window.pdfjsLib.getDocument(src).promise;
             totalPages = pdfDoc.numPages;
-            if (pageIndicator) {
-                pageIndicator.textContent = `1 / ${totalPages}`;
-            }
-
-            // Get first page done, but rely on renderAllPages to draw
-            // const firstPage = await pdfDoc.getPage(1);
-            // const viewport = firstPage.getViewport({ scale: 1 });
-            // const aspectRatio = (viewport.height / viewport.width) * 100;
-            // container.style.paddingTop = aspectRatio + "%";
+            const canAutoplay = totalPages > 1;
 
             await renderAllPages();
             updateView();
 
-            // Visibility-based autoplay: only advance when 40% of viewer is visible
-
-            if (pauseOnHover) {
-                wrapper.addEventListener("mouseenter", () => {
-                    isHovered = true;
-                    stopAutoplay();
-                });
-
-                wrapper.addEventListener("mouseleave", () => {
-                    isHovered = false;
-                    if (isVisible && !isPaused) {
-                        startAutoplay();
-                    }
-                });
-            }
-
             function startAutoplay() {
-                if (
-                    autoplayInterval ||
-                    totalPages <= 1 ||
-                    isPaused ||
-                    (pauseOnHover && isHovered)
-                )
+                if (!canAutoplay || autoplayInterval || isHovered)
                     return;
                 autoplayInterval = setInterval(() => {
                     if (pageNum >= totalPages) {
@@ -335,36 +239,39 @@ const uniqueId = "pdf-" + Math.random().toString(36).substr(2, 9);
                 }
             }
 
-            // Listen for global pause/resume events
-            window.addEventListener("pdfAutoplayToggle", (e) => {
-                isPaused = e.detail.paused;
-                if (isPaused) {
+            if (canAutoplay) {
+                // Visibility-based autoplay: only advance when 40% of viewer is visible
+                // Pause on hover, resume on mouse leave
+                wrapper.addEventListener("mouseenter", () => {
+                    isHovered = true;
                     stopAutoplay();
-                } else if (isVisible && (!pauseOnHover || !isHovered)) {
-                    startAutoplay();
-                }
-            });
+                });
 
-            const observer = new IntersectionObserver(
-                (entries) => {
-                    entries.forEach((entry) => {
-                        isVisible = entry.isIntersecting;
-                        if (isVisible && !isPaused) {
-                            startAutoplay();
-                        } else {
-                            stopAutoplay();
-                        }
-                    });
-                },
-                { threshold: 0.4 },
-            );
+                wrapper.addEventListener("mouseleave", () => {
+                    isHovered = false;
+                    if (isVisible) {
+                        startAutoplay();
+                    }
+                });
 
-            observer.observe(wrapper);
+                const observer = new IntersectionObserver(
+                    (entries) => {
+                        entries.forEach((entry) => {
+                            isVisible = entry.isIntersecting;
+                            if (isVisible && !isHovered) {
+                                startAutoplay();
+                            } else {
+                                stopAutoplay();
+                            }
+                        });
+                    },
+                    { threshold: 0.4 },
+                );
+
+                observer.observe(wrapper);
+            }
         } catch (error) {
             console.error("Error loading PDF:", error);
-            if (pageIndicator) {
-                pageIndicator.textContent = "Error";
-            }
         }
     }
 

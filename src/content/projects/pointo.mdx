@@ -33,7 +33,7 @@ import ProjectSection from '../../components/ProjectSection.astro';
 import FullWidthImage from '../../components/FullWidthImage.astro';
 import PdfEmbed from '../../components/PdfEmbed.astro';
 
-<FullWidthImage src="/assets/projects/pointo/cover.gif" height="520px" loading="eager" constrain={false} />
+<FullWidthImage src="/assets/projects/pointo/cover.gif" height="520px" loading="eager" constrain={false}/>
 
 <div slot="intro">
     <p>
@@ -45,20 +45,20 @@ import PdfEmbed from '../../components/PdfEmbed.astro';
     <p>
         The final output is a working proof of concept for an embodied AI presence that can direct attention into a shared room. Pointo combines a kiosk interface, a pointing behavior, and a small interaction library that makes the system readable without needing a long explanation.
     </p>
-    <FullWidthImage src="/assets/projects/pointo/demos.gif" height="420px" caption="Final demo moments from the prototype" constrain={true} />
-    <PdfEmbed src="/assets/projects/pointo/findings.pdf" showControls={false} pauseOnHover={false} />
-    <PdfEmbed src="/assets/projects/pointo/thankyou.pdf" showControls={false} pauseOnHover={false} />
+    <FullWidthImage src="/assets/projects/pointo/demos.gif" height="420px" caption="Final demo moments from the prototype" constrain={true}/>
+    <PdfEmbed src="/assets/projects/pointo/findings.pdf"/>
+    <PdfEmbed src="/assets/projects/pointo/thankyou.pdf"/>
 </ProjectSection>
 
 <ProjectSection title="Why build it?" id="problem-opportunity">
     <p>
 We are at a moment where AI has genuinely moved beyond the screen. Spatial computing, ambient intelligence, AI in physical workflows — these aren't speculative anymore. But the way we actually interact with these systems hasn't shifted. It's still chat boxes, voice assistants, screens. The interface layer hasn't caught up with what the technology can now do. And that gap is most visible when the work you're doing is physical — when you're standing in a space, trying to navigate it, build something, find where something is. Language consistently falls short. You can describe where something is, but the person always has to do the translation from words into physical reality themselves. The AI knows, but it cannot show. This thesis asks what it affords when it can.
     </p>
-    <PdfEmbed src="/assets/projects/pointo/Research%20Q.pdf" showControls={false} pauseOnHover={false} />
+    <PdfEmbed src="/assets/projects/pointo/Research%20Q.pdf"/>
     <p>
         Pointing has always been central to how we interact with computers. From the very beginning, it's been the human doing the pointing. AI made it abstract. Endless capability, endless possibility —All of it locked inside a text box. The interface got smaller as the intelligence got larger.
     </p>
-    <FullWidthImage src="/assets/projects/pointo/premise.gif" height="400px" caption="Premise exploration" constrain={true} />
+    <FullWidthImage src="/assets/projects/pointo/premise.gif" height="400px" caption="Premise exploration" constrain={true}/>
 </ProjectSection>
 
 <ProjectSection title="What's the approach?" id="approach">
@@ -68,9 +68,9 @@ We are at a moment where AI has genuinely moved beyond the screen. Spatial compu
     <p>
         The SXL framing helped narrow the work around a single interaction loop: establish presence, indicate direction, and let the pointing gesture do the communicative work. From there, the testing loop was used to tighten the gesture vocabulary and remove anything that competed with the core spatial signal.
     </p>
-    <FullWidthImage src="/assets/projects/pointo/testing-pivot.gif" height="400px" caption="Testing pivot iterations" constrain={true} />
-    <PdfEmbed src="/assets/projects/pointo/why%20sxl.pdf" showControls={false} pauseOnHover={false} />
-    <FullWidthImage src="/assets/projects/pointo/testing.gif" height="420px" caption="Iteration and correction during testing" constrain={true} />
+    <FullWidthImage src="/assets/projects/pointo/testing-pivot.gif" height="400px" caption="Testing pivot iterations" constrain={true}/>
+    <PdfEmbed src="/assets/projects/pointo/why%20sxl.pdf"/>
+    <FullWidthImage src="/assets/projects/pointo/testing.gif" height="420px" caption="Iteration and correction during testing" constrain={true}/>
 </ProjectSection>
 
 <ProjectSection title="How does it work?" id="interaction-model">
@@ -80,25 +80,25 @@ We are at a moment where AI has genuinely moved beyond the screen. Spatial compu
     <p>
         That split matters because the system is trying to do something subtle. It has to communicate where attention should go while still feeling like a single coherent presence in the room. The architecture therefore prioritizes a simple visible front end, a reliable interaction loop, and a compact set of behaviors that can be tested in sequence.
     </p>
-    <PdfEmbed src="/assets/projects/pointo/architecture-1.pdf" showControls={false} pauseOnHover={false} />
-    <PdfEmbed src="/assets/projects/pointo/architecture-2.pdf" showControls={false} pauseOnHover={false} />
-    <PdfEmbed src="/assets/projects/pointo/architecture-3.pdf" showControls={false} pauseOnHover={false} />
+    <PdfEmbed src="/assets/projects/pointo/architecture-1.pdf"/>
+    <PdfEmbed src="/assets/projects/pointo/architecture-2.pdf"/>
+    <PdfEmbed src="/assets/projects/pointo/architecture-3.pdf"/>
 </ProjectSection>
 
 <ProjectSection title="What can it do?" id="implementation">
     <p>
         The prototype can situate itself in context, load a kiosk-style interface, and express a small set of gestures that make its intent legible. The kiosk became the place where the interaction gets grounded: it gives the pointing behavior a visible center of gravity and turns the AI from a floating idea into something people can read in space.
     </p>
-    <PdfEmbed src="/assets/projects/pointo/context.pdf" showControls={false} pauseOnHover={false} />
+    <PdfEmbed src="/assets/projects/pointo/context.pdf"/>
     <FullWidthImage
         src="/assets/projects/pointo/koisk.html.png"
         alt="Pointo kiosk interface"
         caption="Kiosk interface preview"
         loading="eager"
         constrain={true}
-    />
-    <FullWidthImage src="/assets/projects/pointo/gesture_1.gif" height="400px" caption="Gesture library 1" constrain={true} />
-    <FullWidthImage src="/assets/projects/pointo/gesture_2.gif" height="400px" caption="Gesture library 2" constrain={true} />
+   />
+    <FullWidthImage src="/assets/projects/pointo/gesture_1.gif" height="400px" caption="Gesture library 1" constrain={true}/>
+    <FullWidthImage src="/assets/projects/pointo/gesture_2.gif" height="400px" caption="Gesture library 2" constrain={true}/>
 </ProjectSection>
 
 <ProjectSection title="How is it built?" id="build">
@@ -108,6 +108,6 @@ We are at a moment where AI has genuinely moved beyond the screen. Spatial compu
     <p>
         PointoBot is built on the <a href="https://medium.com/@lucasochoa_63776/assembling-emoto-hardware-15c136276a11" target="_blank" rel="noopener noreferrer"><strong>open-source Emoto v2 hardware</strong></a> foundation by Lucas, Gautam and Marisa. I adapted that platform for this thesis by replacing the phone mount with a laser pointer and shaping a custom gesture library for spatial communication in a shared room.
     </p>
-    <PdfEmbed src="/assets/projects/pointo/pointo-how.pdf" showControls={false} pauseOnHover={false} />
-    <PdfEmbed src="/assets/projects/pointo/sketches.pdf" showControls={false} pauseOnHover={false} />
+    <PdfEmbed src="/assets/projects/pointo/pointo-how.pdf" />
+    <PdfEmbed src="/assets/projects/pointo/sketches.pdf" />
 </ProjectSection>
