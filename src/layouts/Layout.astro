@@ -33,7 +33,7 @@ const {
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link
-			href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400&family=Public+Sans:wght@300;400;600;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap"
+			href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400&family=Geist:wght@300;400;500;600;700;800;900&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap"
 			rel="stylesheet"
 		/>
 		{
@@ -96,6 +96,39 @@ const {
 			</main>
 		</div>
 		<SpeedInsights />
+		<script>
+			import Lenis from 'lenis';
+
+			// Initialize Lenis for buttery smooth scrolling
+			const w = window as any;
+			if (!w.lenis) {
+				const lenis = new Lenis({
+					duration: 1.2,
+					easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+					orientation: 'vertical',
+					gestureOrientation: 'vertical',
+					smoothWheel: true,
+					wheelMultiplier: 1,
+					touchMultiplier: 2,
+					infinite: false,
+				});
+
+				function raf(time: number) {
+					lenis.raf(time);
+					requestAnimationFrame(raf);
+				}
+
+				requestAnimationFrame(raf);
+				w.lenis = lenis;
+			}
+			
+			// Reset scroll on Astro view transitions
+			document.addEventListener("astro:after-swap", () => {
+				if (w.lenis) {
+					w.lenis.scrollTo(0, { immediate: true });
+				}
+			});
+		</script>
 	</body>
 </html>
 
@@ -123,7 +156,7 @@ const {
 
 	.universal-layout {
 		display: grid;
-		grid-template-columns: minmax(0, 1fr) 320px; /* Fluid Content (Left), 320px Fixed Sidebar (Right) */
+		grid-template-columns: 320px minmax(0, 1fr); /* Fixed Sidebar (Left), Fluid Content (Right) */
 		min-height: 100vh;
 	}
 
@@ -133,8 +166,8 @@ const {
 
 	.layout-sidebar {
 		background: var(--bg-primary);
-		border-left: 1px solid var(--border-subtle); /* Changed from Right to Left */
-		border-right: none;
+		border-right: 1px solid var(--border-subtle);
+		border-left: none;
 		padding: var(--space-md);
 		position: sticky;
 		top: 0;
@@ -144,15 +177,15 @@ const {
 		flex-direction: column;
 		width: 320px; /* Explicit width constraint */
 		box-sizing: border-box; /* Include padding in width */
-		/* Ensure it sits in the second column */
-		grid-column: 2 / 3;
+		/* Ensure it sits in the first column */
+		grid-column: 1 / 2;
 		grid-row: 1;
 	}
 
 	.layout-content {
 		min-width: 0; /* Prevent grid blowout */
-		/* Ensure it sits in the first column */
-		grid-column: 1 / 2;
+		/* Ensure it sits in the second column */
+		grid-column: 2 / 3;
 		grid-row: 1;
 	}
 

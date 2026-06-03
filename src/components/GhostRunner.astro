@@ -16,873 +16,962 @@
     const cursor = document.getElementById("game-cursor");
 
     const bootGame = () => {
-    if (canvas && overlay) {
-        const ctx = canvas.getContext("2d");
+        if (canvas && overlay) {
+            const ctx = canvas.getContext("2d");
 
-        // Assets
-        const sprites = {
-            happy: [new Image(), new Image(), new Image()],
-            sad: [new Image()],
-            dead: [new Image(), new Image(), new Image()],
-        };
+            // Assets
+            const sprites = {
+                happy: [new Image(), new Image(), new Image()],
+                sad: [new Image()],
+                dead: [new Image(), new Image(), new Image()],
+            };
 
-        sprites.happy[0].src = "/logos/happy 1.png";
-        sprites.happy[1].src = "/logos/happy 2.png";
-        sprites.happy[2].src = "/logos/happy 3.png";
-        sprites.sad[0].src = "/logos/sad 1.png";
-        sprites.dead[0].src = "/logos/dead 1.png";
-        sprites.dead[1].src = "/logos/dead 2.png";
-        sprites.dead[2].src = "/logos/dead 3.png";
+            sprites.happy[0].src = "/logos/happy 1.png";
+            sprites.happy[1].src = "/logos/happy 2.png";
+            sprites.happy[2].src = "/logos/happy 3.png";
+            sprites.sad[0].src = "/logos/sad 1.png";
+            sprites.dead[0].src = "/logos/dead 1.png";
+            sprites.dead[1].src = "/logos/dead 2.png";
+            sprites.dead[2].src = "/logos/dead 3.png";
 
-        // Configuration
-        const GHOST_SIZE = 60; // Increased from 40
-        const SPEED_BASE = 4;
-        const BAR_WIDTH_BASE = 60; // Base width
-        const BAR_HEIGHT = 12;
+            // Configuration
+            const GHOST_SIZE = 60; // Increased from 40
+            const SPEED_BASE = 5;
+            const BAR_WIDTH_BASE = 60; // Base width
+            const BAR_HEIGHT = 12;
 
-        // Colors
-        const COLOR_GOOD = "#42BD49"; // Green
-        const COLOR_BAD = "#FF5F5F"; // Red/Salmon
-        // Lighter green for front terrain in light mode
-        const COLOR_GROUND_FRONT = "#6ED478";
-        const COLOR_GROUND_BACK = "#A5E8A9"; // Even lighter back to maintain contrast
-        const COLOR_GRASS = "#4CAF50"; // Slightly lighter grass to match
+            // Colors
+            const COLOR_GOOD = "#42BD49"; // Green
+            const COLOR_BAD = "#FF5F5F"; // Red/Salmon
+            // Lighter green for front terrain in light mode
+            const COLOR_GROUND_FRONT = "#6ED478";
+            const COLOR_GROUND_BACK = "#A5E8A9"; // Even lighter back to maintain contrast
+            const COLOR_GRASS = "#4CAF50"; // Slightly lighter grass to match
 
-        // Game State
-        let isPlaying = false;
-        let isGameOver = false;
-        let score = 0;
-        let highScore = 0;
-        let lives = 3;
-        const MAX_LIVES = 3;
-        let gameSpeed = SPEED_BASE;
-        let frameId: number;
-        let time = 0;
+            // Game State
+            let isPlaying = false;
+            let isGameOver = false;
+            let score = 0;
+            let highScore = 0;
+            let lives = 3;
+            const MAX_LIVES = 3;
+            let gameSpeed = SPEED_BASE;
+            let frameId: number;
+            let time = 0;
+            let heartsY = [45, 45, 45];
 
-        // Terrain State
-        interface TerrainPoint {
-            x: number;
-            y: number;
-            hasGrass: boolean;
-            grassType: 0 | 1 | 2; // 0=blade, 1=tuft, 2=curve
-        }
-        let terrainBack: TerrainPoint[] = [];
-        let terrainFront: TerrainPoint[] = [];
-        const TERRAIN_STEP = 20; // Distance between points
-
-        // Mechanics
-        let isHolding = false;
-        let hurtTimer = 0;
-
-        // Player
-        const player = {
-            x: 20,
-            y: 10,
-            targetY: 0,
-            frameIndex: 0,
-            frameTimer: 0,
-        };
-
-        interface Bar {
-            x: number;
-            lane: "top" | "bottom";
-            type: "good" | "bad";
-            width: number;
-            height: number;
-            collected: boolean;
-            eatenWidth: number;
-        }
-
-        let bars: Bar[] = [];
-        let spawnTimer = 0;
-
-        // Layout Dimensions
-        let topLaneY = 0;
-        let bottomLaneY = 0;
-        let groundY = 0;
-
-        // Terrain Generation
-        const generateTerrain = (
-            width: number,
-            targetY: number,
-            points: TerrainPoint[],
-            isFront: boolean,
-        ) => {
-            // Fill until offscreen
-            let lastX =
-                points.length > 0 ? points[points.length - 1].x : -TERRAIN_STEP;
-            let lastY =
-                points.length > 0 ? points[points.length - 1].y : targetY;
-
-            // Base curve offset to keep layers distinct
-            const yOffset = isFront ? 0 : -25;
-            const baseTarget = targetY + yOffset;
-
-            // Noise parameters
-            const amplitude = isFront ? 15 : 25; // Back layer wilder? Or smoother?
-
-            while (lastX < width + 100) {
-                lastX += TERRAIN_STEP;
-
-                // Random walk somewhat tethered to baseTarget
-                // Move towards baseTarget if too far
-                const drift = (baseTarget - lastY) * 0.05;
-                const noise = (Math.random() - 0.5) * (isFront ? 10 : 15);
-
-                lastY += drift + noise;
-
-                // Clamp
-                // Front layer strict clamping
-                if (isFront) {
-                    // Top Limit (don't block bottom lane)
-                    if (lastY < bottomLaneY + 5) lastY = bottomLaneY + 5;
-
-                    // Bottom Limit: Ensure ground is always "above" (smaller Y) the shadow top
-                    // Shadow Top = bottomLaneY + GHOST_SIZE - 4 (approx radius)
-                    const shadowTop = bottomLaneY + GHOST_SIZE - 5;
-                    if (lastY > shadowTop) lastY = shadowTop;
-                }
-
-                points.push({
-                    x: lastX,
-                    y: lastY,
-                    hasGrass: isFront && Math.random() > 0.7, // 30% chance of grass
-                    grassType: Math.floor(Math.random() * 3) as 0 | 1 | 2,
-                });
+            // Terrain State
+            interface TerrainPoint {
+                x: number;
+                y: number;
+                hasGrass: boolean;
+                grassType: 0 | 1 | 2; // 0=blade, 1=tuft, 2=curve
             }
-        };
+            let terrainBack: TerrainPoint[] = [];
+            let terrainFront: TerrainPoint[] = [];
+            const TERRAIN_STEP = 20; // Distance between points
 
-        const updateTerrain = () => {
-            // Move all points left by gameSpeed
-            // Note: Back layer should maybe move slower for parallax?
-            // User said: "speed of the landscape should be same as the bars speed"
-            // But usually background is slower.
-            // "back layer a lghter green" implies distance.
-            // Im implementing parallax for back (0.5x speed) and front (1.0x speed == bar speed)
-            // wait, user said "speed... same as bars speed". Maybe they mean the foreground?
-            // Let's do front = gameSpeed, back = gameSpeed * 0.5 for nice parallax.
+            // Mechanics
+            let isHolding = false;
+            let hurtTimer = 0;
 
-            const frontSpeed = gameSpeed;
-            const backSpeed = gameSpeed * 0.5;
+            // Player
+            const player = {
+                x: 20,
+                y: 10,
+                targetY: 0,
+                frameIndex: 0,
+                frameTimer: 0,
+            };
 
-            // Update Front
-            for (let i = 0; i < terrainFront.length; i++) {
-                terrainFront[i].x -= frontSpeed;
-            }
-            // Remove offscreen
-            if (terrainFront.length > 0 && terrainFront[0].x < -TERRAIN_STEP) {
-                terrainFront.shift();
-            }
-            generateTerrain(canvas.width, groundY, terrainFront, true);
-
-            // Update Back
-            for (let i = 0; i < terrainBack.length; i++) {
-                terrainBack[i].x -= backSpeed;
-            }
-            if (terrainBack.length > 0 && terrainBack[0].x < -TERRAIN_STEP) {
-                terrainBack.shift();
-            }
-            generateTerrain(canvas.width, groundY, terrainBack, false);
-        };
-
-        const resize = () => {
-            const parent = canvas.parentElement;
-            if (parent) {
-                canvas.width = parent.clientWidth;
-                canvas.height = parent.clientHeight;
-
-                groundY = canvas.height - 15;
-                bottomLaneY = groundY - GHOST_SIZE + 5;
-                topLaneY = 20;
-
-                if (!isPlaying) {
-                    player.y = bottomLaneY;
-                    player.targetY = bottomLaneY;
-
-                    // Reset terrain
-                    terrainFront = [];
-                    terrainBack = [];
-                    generateTerrain(canvas.width, groundY, terrainBack, false);
-                    generateTerrain(canvas.width, groundY, terrainFront, true);
-                }
-            }
-        };
-        window.addEventListener("resize", resize);
-        // Call resize initially
-        setTimeout(resize, 0); // Defer slightly to ensure parent exists/sized
-
-        // Input
-        const startHold = (e: Event) => {
-            if (isGameOver) {
-                resetGame();
-                return;
-            }
-            if (!isPlaying) {
-                isPlaying = true;
-                overlay.style.opacity = "0";
-                // Only start loop if one isn't already running
-                if (!frameId) {
-                    loop();
-                }
-            }
-            isHolding = true;
-        };
-
-        const endHold = (e: Event) => {
-            isHolding = false;
-        };
-
-        canvas.addEventListener("mousedown", startHold);
-        window.addEventListener("mouseup", endHold);
-
-        canvas.addEventListener(
-            "touchstart",
-            (e) => {
-                e.preventDefault();
-                startHold(e);
-            },
-            { passive: false },
-        );
-        window.addEventListener("touchend", endHold);
-
-        window.addEventListener("keydown", (e) => {
-            if (e.code === "Space") {
-                e.preventDefault();
-                startHold(e);
-            }
-        });
-        window.addEventListener("keyup", (e) => {
-            if (e.code === "Space") endHold(e);
-        });
-
-        const resetGame = () => {
-            // Cancel any existing game loop to prevent speed accumulation
-            if (frameId) {
-                cancelAnimationFrame(frameId);
-                frameId = 0;
+            interface Bar {
+                x: number;
+                lane: "top" | "bottom";
+                type: "good" | "bad";
+                width: number;
+                height: number;
+                collected: boolean;
+                eatenWidth: number;
             }
 
-            isGameOver = false;
-            isPlaying = false;
-            score = 0;
-            lives = 3;
-            gameSpeed = SPEED_BASE;
-            bars = [];
-            player.y = bottomLaneY;
-            player.targetY = bottomLaneY;
-            isHolding = false;
-            hurtTimer = 0;
-            overlay.style.opacity = "0";
-            overlay.innerHTML = ""; // Clean - no instruction text
+            let bars: Bar[] = [];
+            let spawnTimer = 0;
 
-            // Reset Terrain
-            terrainFront = [];
-            terrainBack = [];
-            generateTerrain(canvas.width, groundY, terrainBack, false);
-            generateTerrain(canvas.width, groundY, terrainFront, true);
+            // Layout Dimensions
+            let topLaneY = 0;
+            let bottomLaneY = 0;
+            let groundY = 0;
 
-            draw();
-        };
+            // Terrain Generation
+            const generateTerrain = (
+                width: number,
+                targetY: number,
+                points: TerrainPoint[],
+                isFront: boolean,
+            ) => {
+                // Fill until offscreen
+                let lastX =
+                    points.length > 0
+                        ? points[points.length - 1].x
+                        : -TERRAIN_STEP;
+                let lastY =
+                    points.length > 0 ? points[points.length - 1].y : targetY;
 
-        const update = () => {
-            time += 0.1;
+                // Base curve offset to keep layers distinct
+                const yOffset = isFront ? 0 : -25;
+                const baseTarget = targetY + yOffset;
 
-            // 1. Player Movement
-            player.targetY = isHolding ? topLaneY : bottomLaneY;
-            player.y += (player.targetY - player.y) * 0.15;
+                // Noise parameters
+                const amplitude = isFront ? 15 : 25; // Back layer wilder? Or smoother?
 
-            // 2. Hurt Timer (Animation handled in loop())
-            if (hurtTimer > 0) {
-                hurtTimer--;
-            }
+                while (lastX < width + 100) {
+                    lastX += TERRAIN_STEP;
 
-            // 3. Terrain
-            updateTerrain();
+                    // Random walk somewhat tethered to baseTarget
+                    // Move towards baseTarget if too far
+                    const drift = (baseTarget - lastY) * 0.05;
+                    const noise = (Math.random() - 0.5) * (isFront ? 10 : 15);
 
-            // 4. Spawning
-            spawnTimer--;
-            if (spawnTimer <= 0) {
-                const isTop = Math.random() > 0.5;
-                const isGood = Math.random() > 0.4;
+                    lastY += drift + noise;
 
-                // Random Width: 40px to 100px
-                const randomWidth = 40 + Math.random() * 60;
+                    // Clamp
+                    // Front layer strict clamping
+                    if (isFront) {
+                        // Top Limit (don't block bottom lane)
+                        if (lastY < bottomLaneY + 5) lastY = bottomLaneY + 5;
 
-                bars.push({
-                    x: canvas.width,
-                    lane: isTop ? "top" : "bottom",
-                    type: isGood ? "good" : "bad",
-                    width: randomWidth,
-                    height: BAR_HEIGHT,
-                    collected: false,
-                    eatenWidth: 0,
-                });
-
-                spawnTimer = 40 + Math.random() * 40;
-            }
-
-            // 5. Collision
-            for (let i = bars.length - 1; i >= 0; i--) {
-                const bar = bars[i];
-                bar.x -= gameSpeed;
-
-                const barY = bar.lane === "top" ? topLaneY : bottomLaneY;
-                const gx = player.x + GHOST_SIZE / 2;
-                const gy = player.y + GHOST_SIZE / 2;
-                const bx = bar.x + bar.width / 2;
-                const by = barY + GHOST_SIZE / 2;
-
-                const distX = Math.abs(gx - bx);
-                const distY = Math.abs(gy - by);
-                const hitX = distX < GHOST_SIZE / 2 + bar.width / 2 - 10;
-                const hitY = distY < 20;
-
-                // [NEW] Continuous Consumption Logic
-                if (hitX && hitY) {
-                    const splitX = player.x + GHOST_SIZE / 2;
-                    // Calculate how much depth we have eaten into the bar
-                    // splitX is the "cutter". The bar starts at bar.x.
-                    const currentEat = splitX - bar.x;
-                    const clampedEat = Math.max(
-                        0,
-                        Math.min(bar.width, currentEat),
-                    );
-
-                    // Score is proportional to amount eaten (delta)
-                    const eatDelta = Math.max(0, clampedEat - bar.eatenWidth);
-                    if (bar.type === "good") {
-                        // 1 pixel = 1 point
-                        score += eatDelta;
+                        // Bottom Limit: Ensure ground is always "above" (smaller Y) the shadow top
+                        // Shadow Top = bottomLaneY + GHOST_SIZE - 4 (approx radius)
+                        const shadowTop = bottomLaneY + GHOST_SIZE - 5;
+                        if (lastY > shadowTop) lastY = shadowTop;
                     }
 
-                    bar.eatenWidth = Math.max(bar.eatenWidth, clampedEat);
+                    points.push({
+                        x: lastX,
+                        y: lastY,
+                        hasGrass: isFront && Math.random() > 0.7, // 30% chance of grass
+                        grassType: Math.floor(Math.random() * 3) as 0 | 1 | 2,
+                    });
+                }
+            };
+
+            const updateTerrain = () => {
+                // Move all points left by gameSpeed
+                // Note: Back layer should maybe move slower for parallax?
+                // User said: "speed of the landscape should be same as the bars speed"
+                // But usually background is slower.
+                // "back layer a lghter green" implies distance.
+                // Im implementing parallax for back (0.5x speed) and front (1.0x speed == bar speed)
+                // wait, user said "speed... same as bars speed". Maybe they mean the foreground?
+                // Let's do front = gameSpeed, back = gameSpeed * 0.5 for nice parallax.
+
+                const frontSpeed = gameSpeed;
+                const backSpeed = gameSpeed * 0.5;
+
+                // Update Front
+                for (let i = 0; i < terrainFront.length; i++) {
+                    terrainFront[i].x -= frontSpeed;
+                }
+                // Remove offscreen
+                if (
+                    terrainFront.length > 0 &&
+                    terrainFront[0].x < -TERRAIN_STEP
+                ) {
+                    terrainFront.shift();
+                }
+                generateTerrain(canvas.width, groundY, terrainFront, true);
+
+                // Update Back
+                for (let i = 0; i < terrainBack.length; i++) {
+                    terrainBack[i].x -= backSpeed;
+                }
+                if (
+                    terrainBack.length > 0 &&
+                    terrainBack[0].x < -TERRAIN_STEP
+                ) {
+                    terrainBack.shift();
+                }
+                generateTerrain(canvas.width, groundY, terrainBack, false);
+            };
+
+            const resize = () => {
+                const parent = canvas.parentElement;
+                if (parent) {
+                    canvas.width = parent.clientWidth;
+                    canvas.height = parent.clientHeight;
+
+                    groundY = canvas.height - 15;
+                    bottomLaneY = groundY - GHOST_SIZE + 5;
+                    topLaneY = bottomLaneY - 100; // Fixed distance from bottom lane
+
+                    if (!isPlaying) {
+                        player.y = bottomLaneY;
+                        player.targetY = bottomLaneY;
+
+                        // Reset terrain
+                        terrainFront = [];
+                        terrainBack = [];
+                        generateTerrain(
+                            canvas.width,
+                            groundY,
+                            terrainBack,
+                            false,
+                        );
+                        generateTerrain(
+                            canvas.width,
+                            groundY,
+                            terrainFront,
+                            true,
+                        );
+                    }
+                }
+            };
+            window.addEventListener("resize", resize);
+            // Call resize initially
+            setTimeout(resize, 0); // Defer slightly to ensure parent exists/sized
+
+            // Input
+            const startHold = (e: Event) => {
+                if (isGameOver) {
+                    resetGame();
+                    return;
+                }
+                if (!isPlaying) {
+                    isPlaying = true;
+                    overlay.style.opacity = "0";
+                    // Only start loop if one isn't already running
+                    if (!frameId) {
+                        loop();
+                    }
+                }
+                isHolding = true;
+            };
+
+            const endHold = (e: Event) => {
+                isHolding = false;
+            };
+
+            canvas.addEventListener("mousedown", startHold);
+            window.addEventListener("mouseup", endHold);
+
+            canvas.addEventListener(
+                "touchstart",
+                (e) => {
+                    e.preventDefault();
+                    startHold(e);
+                },
+                { passive: false },
+            );
+            window.addEventListener("touchend", endHold);
+
+            window.addEventListener("keydown", (e) => {
+                if (e.code === "Space") {
+                    e.preventDefault();
+                    startHold(e);
+                }
+            });
+            window.addEventListener("keyup", (e) => {
+                if (e.code === "Space") endHold(e);
+            });
+
+            const resetGame = () => {
+                // Cancel any existing game loop to prevent speed accumulation
+                if (frameId) {
+                    cancelAnimationFrame(frameId);
+                    frameId = 0;
                 }
 
-                if (!bar.collected && hitX && hitY) {
-                    if (bar.type === "good") {
-                        bar.collected = true;
-                        // Score happens in continuous logic now
-                    } else {
-                        // BAD BAR
-                        if (hurtTimer <= 0) {
+                isGameOver = false;
+                isPlaying = false;
+                score = 0;
+                lives = 3;
+                gameSpeed = SPEED_BASE;
+                bars = [];
+                player.y = bottomLaneY;
+                player.targetY = bottomLaneY;
+                isHolding = false;
+                hurtTimer = 0;
+                heartsY = [45, 45, 45];
+                overlay.style.opacity = "0";
+                overlay.innerHTML = ""; // Clean - no instruction text
+
+                // Reset Terrain
+                terrainFront = [];
+                terrainBack = [];
+                generateTerrain(canvas.width, groundY, terrainBack, false);
+                generateTerrain(canvas.width, groundY, terrainFront, true);
+
+                draw();
+            };
+
+            const update = () => {
+                time += 0.1;
+
+                // 1. Player Movement
+                player.targetY = isHolding ? topLaneY : bottomLaneY;
+                player.y += (player.targetY - player.y) * 0.15;
+
+                // 2. Hurt Timer (Animation handled in loop())
+                if (hurtTimer > 0) {
+                    hurtTimer--;
+                }
+
+                // 3. Terrain
+                updateTerrain();
+
+                // 4. Spawning
+                spawnTimer--;
+                if (spawnTimer <= 0) {
+                    const isTop = Math.random() > 0.5;
+                    const isGood = Math.random() > 0.4;
+
+                    // Random Width: 40px to 100px
+                    const randomWidth = 40 + Math.random() * 60;
+
+                    bars.push({
+                        x: canvas.width,
+                        lane: isTop ? "top" : "bottom",
+                        type: isGood ? "good" : "bad",
+                        width: randomWidth,
+                        height: BAR_HEIGHT,
+                        collected: false,
+                        eatenWidth: 0,
+                    });
+
+                    spawnTimer = 40 + Math.random() * 40;
+                }
+
+                // 5. Collision
+                for (let i = bars.length - 1; i >= 0; i--) {
+                    const bar = bars[i];
+                    bar.x -= gameSpeed;
+
+                    const barY = bar.lane === "top" ? topLaneY : bottomLaneY;
+                    const gx = player.x + GHOST_SIZE / 2;
+                    const gy = player.y + GHOST_SIZE / 2;
+                    const bx = bar.x + bar.width / 2;
+                    const by = barY + GHOST_SIZE / 2;
+
+                    const distX = Math.abs(gx - bx);
+                    const distY = Math.abs(gy - by);
+                    const hitX = distX < GHOST_SIZE / 2 + bar.width / 2 - 10;
+                    const hitY = distY < 20;
+
+                    // [NEW] Continuous Consumption Logic
+                    if (hitX && hitY) {
+                        const splitX = player.x + GHOST_SIZE / 2;
+                        // Calculate how much depth we have eaten into the bar
+                        // splitX is the "cutter". The bar starts at bar.x.
+                        const currentEat = splitX - bar.x;
+                        const clampedEat = Math.max(
+                            0,
+                            Math.min(bar.width, currentEat),
+                        );
+
+                        // Score is proportional to amount eaten (delta)
+                        const eatDelta = Math.max(
+                            0,
+                            clampedEat - bar.eatenWidth,
+                        );
+                        if (bar.type === "good") {
+                            // 1 pixel = 1 point
+                            score += eatDelta;
+                        }
+
+                        bar.eatenWidth = Math.max(bar.eatenWidth, clampedEat);
+                    }
+
+                    if (!bar.collected && hitX && hitY) {
+                        if (bar.type === "good") {
                             bar.collected = true;
-                            lives--;
-                            hurtTimer = 45; // Invulnerable period blinking
-                            if (lives <= 0) {
-                                gameOver();
+                            // Score happens in continuous logic now
+                        } else {
+                            // BAD BAR
+                            if (hurtTimer <= 0) {
+                                bar.collected = true;
+                                lives--;
+                                hurtTimer = 45; // Invulnerable period blinking
+                                if (lives <= 0) {
+                                    gameOver();
+                                }
                             }
                         }
                     }
-                }
 
-                // Remove only if off-screen (past -100)
-                if (bar.x + bar.width < -100) {
-                    bars.splice(i, 1);
-                }
-            }
-        };
-
-        const gameOver = () => {
-            isGameOver = true;
-            // Update high score
-            if (Math.floor(score) > highScore) {
-                highScore = Math.floor(score);
-            }
-            overlay.style.opacity = "0";
-            overlay.innerHTML = "";
-        };
-
-        const drawTerrainLayer = (
-            points: TerrainPoint[],
-            color: string,
-            drawGrass: boolean,
-            grassColor: string = COLOR_GRASS,
-        ) => {
-            if (points.length < 2) return;
-
-            ctx.fillStyle = color;
-            ctx.beginPath();
-            ctx.moveTo(points[0].x, canvas.height); // Start bottom left
-            ctx.lineTo(points[0].x, points[0].y); // Line to first point
-
-            for (let i = 0; i < points.length - 1; i++) {
-                const p0 = points[i];
-                const p1 = points[i + 1];
-                const midX = (p0.x + p1.x) / 2;
-                const midY = (p0.y + p1.y) / 2;
-                ctx.quadraticCurveTo(p0.x, p0.y, midX, midY);
-            }
-
-            const last = points[points.length - 1];
-            ctx.lineTo(last.x, last.y);
-            ctx.lineTo(last.x, canvas.height); // Bottom right
-            ctx.closePath();
-            ctx.fill();
-
-            // Grass
-            if (drawGrass) {
-                ctx.strokeStyle = grassColor;
-                ctx.lineWidth = 2;
-                points.forEach((p) => {
-                    if (p.hasGrass && p.x > -50 && p.x < canvas.width + 50) {
-                        const gx = p.x;
-                        const gy = p.y;
-
-                        ctx.beginPath();
-
-                        if (p.grassType === 0) {
-                            // Type 0: Classic V shape
-                            ctx.moveTo(gx, gy);
-                            ctx.lineTo(gx - 5, gy - 10);
-                            ctx.moveTo(gx, gy);
-                            ctx.lineTo(gx + 3, gy - 8);
-                        } else if (p.grassType === 1) {
-                            // Type 1: Single tall curved blade
-                            ctx.moveTo(gx, gy);
-                            ctx.quadraticCurveTo(
-                                gx - 2,
-                                gy - 10,
-                                gx + 5,
-                                gy - 14,
-                            );
-                        } else {
-                            // Type 2: Small Tufts (3 small blades)
-                            ctx.moveTo(gx, gy);
-                            ctx.lineTo(gx - 4, gy - 6);
-                            ctx.moveTo(gx, gy);
-                            ctx.lineTo(gx, gy - 8);
-                            ctx.moveTo(gx, gy);
-                            ctx.lineTo(gx + 4, gy - 6);
-                        }
-
-                        ctx.stroke();
+                    // Remove only if off-screen (past -100)
+                    if (bar.x + bar.width < -100) {
+                        bars.splice(i, 1);
                     }
-                });
-            }
-        };
-
-        const draw = () => {
-            if (!ctx) return;
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            // Draw Terrain Layers
-            // ThemeToggle removes data-theme for dark mode (default) and adds "light" for light mode
-            // So isDark is true if data-theme is NOT "light"
-            const isDark =
-                document.documentElement.getAttribute("data-theme") !== "light";
-
-            // Darker greens for night mode (Deep Night Palette)
-            // Lighter than before, but still dark forest vibes
-            const cBack = isDark ? "#2C6E34" : COLOR_GROUND_BACK;
-            const cFront = isDark ? "#1A5220" : COLOR_GROUND_FRONT;
-            const cGrass = isDark ? "#0D2E11" : COLOR_GRASS;
-
-            // Back Layer
-            drawTerrainLayer(terrainBack, cBack, false, cGrass);
-            // Front Layer
-            drawTerrainLayer(terrainFront, cFront, true, cGrass);
-
-            // (Removed Overlay)
-
-            // Bars (Only draw if Playing or GameOver - hide in "Rest Mode")
-            if (isPlaying || isGameOver) {
-                bars.forEach((bar) => {
-                    const bY =
-                        (bar.lane === "top" ? topLaneY : bottomLaneY) +
-                        (GHOST_SIZE / 2 - bar.height / 2);
-
-                    const color = bar.type === "good" ? COLOR_GOOD : COLOR_BAD;
-
-                    // Interaction Point: Center of ghost
-                    const splitX = player.x + GHOST_SIZE / 2;
-
-                    if (bar.collected) {
-                        // PROGRESS BAR EFFECT
-                        ctx.beginPath();
-                        if (ctx.roundRect)
-                            ctx.roundRect(bar.x, bY, bar.width, bar.height, 4);
-                        else ctx.rect(bar.x, bY, bar.width, bar.height);
-
-                        // 1. Clip to Bar Shape
-                        ctx.save();
-                        ctx.clip();
-
-                        // 2. Fill Background (Grey - The "Empty" part)
-                        ctx.fillStyle = "rgba(0, 0, 0, 0.2)";
-                        ctx.fillRect(bar.x, bY, bar.width, bar.height);
-
-                        // 3. Fill Remaining (Color - The "Future" part)
-                        // Use stored eatenWidth instead of dynamic splitX
-                        const fillX = bar.x + bar.eatenWidth;
-
-                        if (fillX < bar.x + bar.width) {
-                            ctx.fillStyle = color;
-                            ctx.fillRect(
-                                fillX,
-                                bY,
-                                bar.x + bar.width - fillX,
-                                bar.height,
-                            );
-                        }
-                        ctx.restore();
-                    } else {
-                        // Full Fill (Standard)
-                        ctx.fillStyle = color;
-                        ctx.beginPath();
-                        if (ctx.roundRect)
-                            ctx.roundRect(bar.x, bY, bar.width, bar.height, 4);
-                        else ctx.fillRect(bar.x, bY, bar.width, bar.height);
-                        ctx.fill();
-                    }
-                });
-            }
-
-            // Player Animation State
-            let currentImage;
-
-            if (isGameOver && lives <= 0) {
-                // Dead Stride
-                currentImage = sprites.dead[player.frameIndex];
-                ctx.globalAlpha = 0.6;
-            } else if (hurtTimer > 0) {
-                // Solid Sad State
-                currentImage = sprites.sad[0];
-                if (Math.floor(hurtTimer / 4) % 2 === 0) {
-                    ctx.globalAlpha = 0.6;
                 }
-            } else {
-                currentImage = sprites.happy[player.frameIndex];
-            }
+            };
 
-            // Dynamic Shadow
-            ctx.fillStyle = "rgba(0,0,0,0.1)";
-            ctx.beginPath();
+            const gameOver = () => {
+                isGameOver = true;
+                // Update high score
+                if (Math.floor(score) > highScore) {
+                    highScore = Math.floor(score);
+                }
+                overlay.style.opacity = "0";
+                overlay.innerHTML = "";
+            };
 
-            const totalH = bottomLaneY - topLaneY;
-            const currentH = bottomLaneY - player.y;
-            const flightProgress = Math.min(Math.max(currentH / totalH, 0), 1);
-            const shadowScale = 1.0 - flightProgress * 0.5;
+            const drawTerrainLayer = (
+                points: TerrainPoint[],
+                color: string,
+                drawGrass: boolean,
+                grassColor: string = COLOR_GRASS,
+            ) => {
+                if (points.length < 2) return;
 
-            const shadowY = bottomLaneY + GHOST_SIZE;
-            const shadowWidth = (GHOST_SIZE / 3) * shadowScale;
+                ctx.fillStyle = color;
+                ctx.beginPath();
+                ctx.moveTo(points[0].x, canvas.height); // Start bottom left
+                ctx.lineTo(points[0].x, points[0].y); // Line to first point
 
-            ctx.ellipse(
-                player.x + GHOST_SIZE / 2,
-                shadowY,
-                shadowWidth,
-                4 * shadowScale,
-                0,
-                0,
-                Math.PI * 2,
-            );
-            ctx.fill();
+                for (let i = 0; i < points.length - 1; i++) {
+                    const p0 = points[i];
+                    const p1 = points[i + 1];
+                    const midX = (p0.x + p1.x) / 2;
+                    const midY = (p0.y + p1.y) / 2;
+                    ctx.quadraticCurveTo(p0.x, p0.y, midX, midY);
+                }
 
-            if (currentImage && currentImage.complete) {
-                ctx.drawImage(
-                    currentImage,
-                    player.x,
-                    player.y,
-                    GHOST_SIZE,
-                    GHOST_SIZE,
-                );
-            } else {
-                ctx.fillStyle = "#333";
-                ctx.fillRect(player.x, player.y, GHOST_SIZE, GHOST_SIZE);
-            }
-            ctx.globalAlpha = 1.0;
+                const last = points[points.length - 1];
+                ctx.lineTo(last.x, last.y);
+                ctx.lineTo(last.x, canvas.height); // Bottom right
+                ctx.closePath();
+                ctx.fill();
 
-            // HUD
-            // HUD
-            // Show HUD during play OR game over
-            // HUD
-            // Show HUD during play OR game over
-            // HUD
-            // Always show HUD (for Click to Play state)
-            if (true) {
-                // Determine theme first to avoid ReferenceError
-                const isDarkHUD =
+                // Grass
+                if (drawGrass) {
+                    ctx.strokeStyle = grassColor;
+                    ctx.lineWidth = 2;
+                    points.forEach((p) => {
+                        if (
+                            p.hasGrass &&
+                            p.x > -50 &&
+                            p.x < canvas.width + 50
+                        ) {
+                            const gx = p.x;
+                            const gy = p.y;
+
+                            ctx.beginPath();
+
+                            if (p.grassType === 0) {
+                                // Type 0: Classic V shape
+                                ctx.moveTo(gx, gy);
+                                ctx.lineTo(gx - 5, gy - 10);
+                                ctx.moveTo(gx, gy);
+                                ctx.lineTo(gx + 3, gy - 8);
+                            } else if (p.grassType === 1) {
+                                // Type 1: Single tall curved blade
+                                ctx.moveTo(gx, gy);
+                                ctx.quadraticCurveTo(
+                                    gx - 2,
+                                    gy - 10,
+                                    gx + 5,
+                                    gy - 14,
+                                );
+                            } else {
+                                // Type 2: Small Tufts (3 small blades)
+                                ctx.moveTo(gx, gy);
+                                ctx.lineTo(gx - 4, gy - 6);
+                                ctx.moveTo(gx, gy);
+                                ctx.lineTo(gx, gy - 8);
+                                ctx.moveTo(gx, gy);
+                                ctx.lineTo(gx + 4, gy - 6);
+                            }
+
+                            ctx.stroke();
+                        }
+                    });
+                }
+            };
+
+            const draw = () => {
+                if (!ctx) return;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                ctx.save();
+                ctx.translate(canvas.width, 0);
+                ctx.scale(-1, 1);
+
+                // Draw Terrain Layers
+                // ThemeToggle removes data-theme for dark mode (default) and adds "light" for light mode
+                // So isDark is true if data-theme is NOT "light"
+                const isDark =
                     document.documentElement.getAttribute("data-theme") !==
                     "light";
 
-                // 1.5 Sun/Moon (Top Right) - Theme Indicator (Canvas Drawn)
-                const iconX = canvas.width - 40;
-                const iconY = 40;
-                const iconR = 9; // Bigger size
-                ctx.globalAlpha = 0.7;
+                // Darker greens for night mode (Deep Night Palette)
+                // Lighter than before, but still dark forest vibes
+                const cBack = isDark ? "#2C6E34" : COLOR_GROUND_BACK;
+                const cFront = isDark ? "#1A5220" : COLOR_GROUND_FRONT;
+                const cGrass = isDark ? "#0D2E11" : COLOR_GRASS;
 
-                if (isDarkHUD) {
-                    // Moon (Two Circles) - Simple approach, full opacity
-                    ctx.globalAlpha = 1.0;
-                    // 1. Draw full moon
-                    ctx.fillStyle = "#DADDD0";
-                    ctx.beginPath();
-                    ctx.arc(iconX, iconY, iconR, 0, Math.PI * 2);
-                    ctx.fill();
-                    // 2. Draw cutout circle with container bg color
-                    ctx.fillStyle = "#333333";
-                    ctx.beginPath();
-                    ctx.arc(iconX + 4, iconY - 2, iconR - 2, 0, Math.PI * 2);
-                    ctx.fill();
-                } else {
-                    // Sun (Circle + Rays)
-                    ctx.fillStyle = "#F5A623";
-                    ctx.strokeStyle = "#F5A623";
-                    ctx.lineWidth = 1.5;
-                    // Core
-                    ctx.beginPath();
-                    ctx.arc(iconX, iconY, iconR - 2, 0, Math.PI * 2);
-                    ctx.fill();
-                    // Rays
-                    const rayLength = 4;
-                    for (let i = 0; i < 8; i++) {
-                        const angle = (i * Math.PI) / 4;
-                        ctx.beginPath();
-                        ctx.moveTo(
-                            iconX + Math.cos(angle) * (iconR - 1),
-                            iconY + Math.sin(angle) * (iconR - 1),
-                        );
-                        ctx.lineTo(
-                            iconX + Math.cos(angle) * (iconR + rayLength - 2),
-                            iconY + Math.sin(angle) * (iconR + rayLength - 2),
-                        );
-                        ctx.stroke();
+                // Back Layer
+                drawTerrainLayer(terrainBack, cBack, false, cGrass);
+                // Front Layer
+                drawTerrainLayer(terrainFront, cFront, true, cGrass);
+
+                // (Removed Overlay)
+
+                // Bars (Only draw if Playing or GameOver - hide in "Rest Mode")
+                if (isPlaying || isGameOver) {
+                    bars.forEach((bar) => {
+                        const bY =
+                            (bar.lane === "top" ? topLaneY : bottomLaneY) +
+                            (GHOST_SIZE / 2 - bar.height / 2);
+
+                        const color =
+                            bar.type === "good" ? COLOR_GOOD : COLOR_BAD;
+
+                        // Interaction Point: Center of ghost
+                        const splitX = player.x + GHOST_SIZE / 2;
+
+                        if (bar.collected) {
+                            // PROGRESS BAR EFFECT
+                            ctx.beginPath();
+                            if (ctx.roundRect)
+                                ctx.roundRect(
+                                    bar.x,
+                                    bY,
+                                    bar.width,
+                                    bar.height,
+                                    4,
+                                );
+                            else ctx.rect(bar.x, bY, bar.width, bar.height);
+
+                            // 1. Clip to Bar Shape
+                            ctx.save();
+                            ctx.clip();
+
+                            // 2. Fill Background (Grey - The "Empty" part)
+                            ctx.fillStyle = "rgba(0, 0, 0, 0.2)";
+                            ctx.fillRect(bar.x, bY, bar.width, bar.height);
+
+                            // 3. Fill Remaining (Color - The "Future" part)
+                            // Use stored eatenWidth instead of dynamic splitX
+                            const fillX = bar.x + bar.eatenWidth;
+
+                            if (fillX < bar.x + bar.width) {
+                                ctx.fillStyle = color;
+                                ctx.fillRect(
+                                    fillX,
+                                    bY,
+                                    bar.x + bar.width - fillX,
+                                    bar.height,
+                                );
+                            }
+                            ctx.restore();
+                        } else {
+                            // Full Fill (Standard)
+                            ctx.fillStyle = color;
+                            ctx.beginPath();
+                            if (ctx.roundRect)
+                                ctx.roundRect(
+                                    bar.x,
+                                    bY,
+                                    bar.width,
+                                    bar.height,
+                                    4,
+                                );
+                            else ctx.fillRect(bar.x, bY, bar.width, bar.height);
+                            ctx.fill();
+                        }
+                    });
+                }
+
+                // Player Animation State
+                let currentImage;
+
+                if (isGameOver && lives <= 0) {
+                    // Dead Stride
+                    currentImage = sprites.dead[player.frameIndex];
+                    ctx.globalAlpha = 0.6;
+                } else if (hurtTimer > 0) {
+                    // Solid Sad State
+                    currentImage = sprites.sad[0];
+                    if (Math.floor(hurtTimer / 4) % 2 === 0) {
+                        ctx.globalAlpha = 0.6;
                     }
+                } else {
+                    currentImage = sprites.happy[player.frameIndex];
+                }
+
+                // Dynamic Shadow
+                ctx.fillStyle = "rgba(0,0,0,0.1)";
+                ctx.beginPath();
+
+                const totalH = bottomLaneY - topLaneY;
+                const currentH = bottomLaneY - player.y;
+                const flightProgress = Math.min(
+                    Math.max(currentH / totalH, 0),
+                    1,
+                );
+                const shadowScale = 1.0 - flightProgress * 0.5;
+
+                const shadowY = bottomLaneY + GHOST_SIZE;
+                const shadowWidth = (GHOST_SIZE / 3) * shadowScale;
+
+                ctx.ellipse(
+                    player.x + GHOST_SIZE / 2,
+                    shadowY,
+                    shadowWidth,
+                    4 * shadowScale,
+                    0,
+                    0,
+                    Math.PI * 2,
+                );
+                ctx.fill();
+
+                if (currentImage && currentImage.complete) {
+                    ctx.drawImage(
+                        currentImage,
+                        player.x,
+                        player.y,
+                        GHOST_SIZE,
+                        GHOST_SIZE,
+                    );
+                } else {
+                    ctx.fillStyle = "#333";
+                    ctx.fillRect(player.x, player.y, GHOST_SIZE, GHOST_SIZE);
                 }
                 ctx.globalAlpha = 1.0;
 
-                // High Score (beside sun/moon)
-                if (highScore > 0) {
-                    ctx.font = "bold 10px 'Space Mono', monospace";
-                    ctx.fillStyle = isDarkHUD
-                        ? "rgba(218,221,208,0.6)"
-                        : "rgba(40,40,40,0.6)";
-                    ctx.textAlign = "right";
-                    ctx.textBaseline = "middle";
-                    ctx.fillText(`HI: ${highScore}`, iconX - 18, iconY);
-                }
+                ctx.restore();
 
-                // 1. Hearts (Top Left)
-                ctx.textAlign = "left";
-                ctx.font = "14px serif";
-                // Ensure specific color/alpha for emoji rendering
-                ctx.fillStyle = isDarkHUD ? "#ffffff" : "#333333";
+                // HUD
+                // HUD
+                // Show HUD during play OR game over
+                // HUD
+                // Show HUD during play OR game over
+                // HUD
+                // Always show HUD (for Click to Play state)
+                if (true) {
+                    // Determine theme first to avoid ReferenceError
+                    const isDarkHUD =
+                        document.documentElement.getAttribute("data-theme") !==
+                        "light";
 
-                let heartsDrawX = 40;
-                const heartSpacing = 25;
+                    // 1.5 Sun/Moon (Top Left) - Theme Indicator (Canvas Drawn) - Mirrored position
+                    const iconX = 40;
+                    const iconY = 40;
+                    const iconR = 9; // Bigger size
+                    ctx.globalAlpha = 0.7;
 
-                for (let i = 0; i < MAX_LIVES; i++) {
-                    let char = "❤️";
-                    let alpha = 1.0;
-
-                    if (i >= lives) {
-                        char = "💔";
-                        alpha = 0.4; // Faded/Lighter for broken hearts
-
-                        if (hurtTimer > 0 && i === lives) {
-                            const blinkPhase = Math.floor(hurtTimer / 10);
-                            if (blinkPhase % 2 !== 0) {
-                                char = "❤️";
-                                alpha = 1.0;
-                            }
+                    if (isDarkHUD) {
+                        // Moon (Two Circles) - Simple approach, full opacity
+                        ctx.globalAlpha = 1.0;
+                        // 1. Draw full moon
+                        ctx.fillStyle = "#DADDD0";
+                        ctx.beginPath();
+                        ctx.arc(iconX, iconY, iconR, 0, Math.PI * 2);
+                        ctx.fill();
+                        // 2. Draw cutout circle with container bg color
+                        ctx.fillStyle = "#333333";
+                        ctx.beginPath();
+                        ctx.arc(
+                            iconX - 4,
+                            iconY - 2,
+                            iconR - 2,
+                            0,
+                            Math.PI * 2,
+                        );
+                        ctx.fill();
+                    } else {
+                        // Sun (Circle + Rays)
+                        ctx.fillStyle = "#F5A623";
+                        ctx.strokeStyle = "#F5A623";
+                        ctx.lineWidth = 1.5;
+                        // Core
+                        ctx.beginPath();
+                        ctx.arc(iconX, iconY, iconR - 2, 0, Math.PI * 2);
+                        ctx.fill();
+                        // Rays
+                        const rayLength = 4;
+                        for (let i = 0; i < 8; i++) {
+                            const angle = (i * Math.PI) / 4;
+                            ctx.beginPath();
+                            ctx.moveTo(
+                                iconX + Math.cos(angle) * (iconR - 1),
+                                iconY + Math.sin(angle) * (iconR - 1),
+                            );
+                            ctx.lineTo(
+                                iconX +
+                                    Math.cos(angle) * (iconR + rayLength - 2),
+                                iconY +
+                                    Math.sin(angle) * (iconR + rayLength - 2),
+                            );
+                            ctx.stroke();
                         }
                     }
+                    ctx.globalAlpha = 1.0;
 
-                    ctx.save();
-                    ctx.globalAlpha = alpha;
-                    ctx.fillText(char, heartsDrawX + i * heartSpacing, 45);
-                    ctx.restore();
-                }
-
-                // 2. Score Bento (Bottom Right)
-                const scoreText = Math.floor(score).toString().padStart(4, "0");
-
-                ctx.font = "bold 12px 'Space Mono', monospace";
-                // Smaller box for 12px font
-                const boxW = 100;
-                const boxH = 26; // Reduced height (was 32)
-                // Padding from corner
-                const boxX = canvas.width - boxW - 20;
-                const boxY = canvas.height - boxH - 20;
-
-                // Bento Box Background
-                ctx.fillStyle = isDarkHUD
-                    ? "rgba(30,30,30, 0.9)"
-                    : "rgba(255, 255, 255, 0.95)";
-
-                // Rounded Rect
-                ctx.beginPath();
-                if (ctx.roundRect)
-                    ctx.roundRect(boxX, boxY, boxW, boxH, 4); // Smaller radius
-                else ctx.rect(boxX, boxY, boxW, boxH);
-                ctx.fill();
-
-                // Border
-                ctx.strokeStyle = isDarkHUD
-                    ? "rgba(255,255,255,0.15)"
-                    : "rgba(51,51,51,0.15)"; // #333 based
-                ctx.lineWidth = 1;
-                ctx.stroke();
-
-                // Text
-                ctx.fillStyle = isDarkHUD ? "#fff" : "#333"; // No pure black
-
-                // Centering Logic
-                ctx.textAlign = "center";
-                ctx.textBaseline = "middle";
-
-                if (!isPlaying && !isGameOver) {
-                    // Idle State: Show "HOLD TO FLY"
-                    // Use smaller font if needed or keep same style
-                    ctx.font = "bold 11px 'Space Mono', monospace";
-                    ctx.fillText(
-                        "HOLD TO FLY",
-                        boxX + boxW / 2,
-                        boxY + boxH / 2 + 1, // Moved down 2px
-                    );
-                } else {
-                    // Active Game
-                    ctx.fillText(
-                        `SCORE ${scoreText}`,
-                        boxX + boxW / 2,
-                        boxY + boxH / 2 + 1, // Moved down 2px
-                    );
-                }
-
-                // 3. Thought Bubble (Game Over)
-                if (isGameOver) {
-                    // Single Line - Slightly Smaller
-                    const bubbleW = 190;
-                    const bubbleH = 30;
-
-                    // Determine Lane Position
-                    const isTopLane = player.y < 50;
-
-                    // --- POSITIONING CONTROLS (Tweak these numbers!) ---
-
-                    // X Axis: Controls horizontal distance from ghost
-                    // -25 means "Start 25px to the LEFT of the Ghost's Right Edge" (Overlap)
-                    let bubbleX = player.x + GHOST_SIZE - 8;
-
-                    // Y Axis: Controls vertical height
-                    let bubbleY;
-                    if (isTopLane) {
-                        // Top Lane: Fixed distance from top of screen
-                        bubbleY = 10;
-                    } else {
-                        // Bottom Lane: Position relative to ghost head
-                        // +20 pushes it DOWN closer to the ghost
-                        bubbleY = player.y - bubbleH + 10;
+                    // High Score (beside sun/moon)
+                    if (highScore > 0) {
+                        ctx.font = "bold 10px 'Space Mono', monospace";
+                        ctx.fillStyle = isDarkHUD
+                            ? "rgba(218,221,208,0.6)"
+                            : "rgba(40,40,40,0.6)";
+                        ctx.textAlign = "left";
+                        ctx.textBaseline = "middle";
+                        ctx.fillText(`HI: ${highScore}`, iconX + 18, iconY);
                     }
 
-                    // --- END CONTROLS ---
+                    // Update Hearts positions with smooth glides (no spring oscillation)
+                    for (let i = 0; i < MAX_LIVES; i++) {
+                        let targetY = 45;
+                        let speed = 0.15;
 
-                    // Screen Edge Clamping
-                    const safeX = Math.min(bubbleX, canvas.width - bubbleW - 5);
-                    const safeY = Math.max(bubbleY, 2);
+                        if (i === 1) {
+                            // Middle heart: bounces fully, tight offset (3px), fast glide
+                            targetY = Math.min(45, player.y - 3);
+                            speed = 0.22;
+                        } else if (i === 0 || i === 2) {
+                            // Leftmost and rightmost hearts: bounce slightly less (85% height), slower glide for cascade
+                            const fullRise = 45 - Math.min(45, player.y - 3);
+                            targetY = 45 - fullRise * 0.85;
+                            speed = 0.14;
+                        }
 
-                    // Bubble BG (Secondary / Surface)
-                    // Dark: #333333, Light: #E6E8E0
-                    ctx.fillStyle = isDarkHUD ? "#333333" : "#E6E8E0";
+                        heartsY[i] += (targetY - heartsY[i]) * speed;
+                    }
 
-                    ctx.beginPath();
-                    // Round Rect
-                    if (ctx.roundRect)
-                        ctx.roundRect(
-                            safeX,
-                            safeY,
-                            bubbleW,
-                            bubbleH,
-                            [10, 10, 10, 0],
+                    // 1. Hearts (Top Right) - Mirrored position
+                    ctx.textAlign = "left";
+                    ctx.font = "14px serif";
+                    // Ensure specific color/alpha for emoji rendering
+                    ctx.fillStyle = isDarkHUD ? "#ffffff" : "#333333";
+
+                    const heartSpacing = 25;
+                    let heartsDrawX =
+                        canvas.width - 40 - (MAX_LIVES - 1) * heartSpacing;
+
+                    for (let i = 0; i < MAX_LIVES; i++) {
+                        let char = "❤️";
+                        let alpha = 1.0;
+
+                        if (i >= lives) {
+                            char = "💔";
+                            alpha = 0.4; // Faded/Lighter for broken hearts
+
+                            if (hurtTimer > 0 && i === lives) {
+                                const blinkPhase = Math.floor(hurtTimer / 10);
+                                if (blinkPhase % 2 !== 0) {
+                                    char = "❤️";
+                                    alpha = 1.0;
+                                }
+                            }
+                        }
+
+                        ctx.save();
+                        ctx.globalAlpha = alpha;
+                        // Draw using each heart's own independent spring height
+                        ctx.fillText(
+                            char,
+                            heartsDrawX + i * heartSpacing,
+                            heartsY[i],
                         );
-                    else ctx.rect(safeX, safeY, bubbleW, bubbleH);
+                        ctx.restore();
+                    }
+
+                    // 2. Score Bento (Bottom Left) - Mirrored position
+                    const scoreText = Math.floor(score)
+                        .toString()
+                        .padStart(4, "0");
+
+                    ctx.font = "bold 12px 'Space Mono', monospace";
+                    // Smaller box for 12px font
+                    const boxW = 100;
+                    const boxH = 26; // Reduced height (was 32)
+                    // Padding from corner
+                    const boxX = 20;
+                    const boxY = canvas.height - boxH - 20;
+
+                    // Bento Box Background
+                    ctx.fillStyle = isDarkHUD
+                        ? "rgba(30,30,30, 0.9)"
+                        : "rgba(255, 255, 255, 0.95)";
+
+                    // Rounded Rect
+                    ctx.beginPath();
+                    if (ctx.roundRect)
+                        ctx.roundRect(boxX, boxY, boxW, boxH, 4); // Smaller radius
+                    else ctx.rect(boxX, boxY, boxW, boxH);
                     ctx.fill();
 
-                    // Bubble Border (Primary)
-                    // Dark: #DADDD0, Light: #282828
-                    ctx.strokeStyle = isDarkHUD ? "#DADDD0" : "#282828";
-                    ctx.lineWidth = 1.5; // Slightly finer border to match theme
+                    // Border
+                    ctx.strokeStyle = isDarkHUD
+                        ? "rgba(255,255,255,0.15)"
+                        : "rgba(51,51,51,0.15)"; // #333 based
+                    ctx.lineWidth = 1;
                     ctx.stroke();
 
-                    // Text (Primary)
-                    ctx.fillStyle = isDarkHUD ? "#DADDD0" : "#282828";
+                    // Text
+                    ctx.fillStyle = isDarkHUD ? "#fff" : "#333"; // No pure black
+
+                    // Centering Logic
                     ctx.textAlign = "center";
                     ctx.textBaseline = "middle";
 
-                    const cx = safeX + bubbleW / 2;
-                    const cy = safeY + bubbleH / 2;
+                    if (!isPlaying && !isGameOver) {
+                        // Idle State: Show "HOLD TO FLY"
+                        // Use smaller font if needed or keep same style
+                        ctx.font = "bold 11px 'Space Mono', monospace";
+                        ctx.fillText(
+                            "HOLD TO FLY",
+                            boxX + boxW / 2,
+                            boxY + boxH / 2 + 1, // Moved down 2px
+                        );
+                    } else {
+                        // Active Game
+                        ctx.fillText(
+                            `SCORE ${scoreText}`,
+                            boxX + boxW / 2,
+                            boxY + boxH / 2 + 1, // Moved down 2px
+                        );
+                    }
 
-                    // "GAME OVER! SCORE = 123"
-                    ctx.font = "bold 13px 'Space Mono', monospace";
-                    ctx.fillText(
-                        `GAME OVER! SCORE = ${Math.floor(score)}`,
-                        cx,
-                        cy + 1,
-                    );
+                    // 3. Thought Bubble (Game Over)
+                    if (isGameOver) {
+                        // Single Line - Slightly Smaller
+                        const bubbleW = 190;
+                        const bubbleH = 30;
+
+                        // Determine Lane Position
+                        const isTopLane = player.y < 50;
+
+                        // --- POSITIONING CONTROLS (Tweak these numbers!) ---
+
+                        // X Axis: Controls horizontal distance from ghost - Mirrored position
+                        // In mirrored view, ghost is at canvas.width - player.x - GHOST_SIZE
+                        let bubbleX =
+                            canvas.width - player.x - GHOST_SIZE - bubbleW + 8;
+
+                        // Y Axis: Controls vertical height
+                        let bubbleY;
+                        if (isTopLane) {
+                            // Top Lane: Fixed distance from top of screen
+                            bubbleY = 10;
+                        } else {
+                            // Bottom Lane: Position relative to ghost head
+                            // +20 pushes it DOWN closer to the ghost
+                            bubbleY = player.y - bubbleH + 10;
+                        }
+
+                        // --- END CONTROLS ---
+
+                        // Screen Edge Clamping - clamp on both edges
+                        const safeX = Math.max(
+                            5,
+                            Math.min(bubbleX, canvas.width - bubbleW - 5),
+                        );
+                        const safeY = Math.max(bubbleY, 2);
+
+                        // Bubble BG (Secondary / Surface)
+                        // Dark: #333333, Light: #E6E8E0
+                        ctx.fillStyle = isDarkHUD ? "#333333" : "#E6E8E0";
+
+                        ctx.beginPath();
+                        // Round Rect - sharp corner on bottom-right [topLeft, topRight, bottomRight, bottomLeft]
+                        if (ctx.roundRect)
+                            ctx.roundRect(
+                                safeX,
+                                safeY,
+                                bubbleW,
+                                bubbleH,
+                                [10, 10, 0, 10],
+                            );
+                        else ctx.rect(safeX, safeY, bubbleW, bubbleH);
+                        ctx.fill();
+
+                        // Bubble Border (Primary)
+                        // Dark: #DADDD0, Light: #282828
+                        ctx.strokeStyle = isDarkHUD ? "#DADDD0" : "#282828";
+                        ctx.lineWidth = 1.5; // Slightly finer border to match theme
+                        ctx.stroke();
+
+                        // Text (Primary)
+                        ctx.fillStyle = isDarkHUD ? "#DADDD0" : "#282828";
+                        ctx.textAlign = "center";
+                        ctx.textBaseline = "middle";
+
+                        const cx = safeX + bubbleW / 2;
+                        const cy = safeY + bubbleH / 2;
+
+                        // "GAME OVER! SCORE = 123"
+                        ctx.font = "bold 13px 'Space Mono', monospace";
+                        ctx.fillText(
+                            `GAME OVER! SCORE = ${Math.floor(score)}`,
+                            cx,
+                            cy + 1,
+                        );
+                    }
+
+                    // Reset defaults
+                    ctx.textBaseline = "alphabetic";
+                }
+            };
+
+            const loop = () => {
+                // Always update animation frames (for happy, sad, OR dead stride)
+                player.frameTimer++;
+
+                // Slower stride when in Rest Mode (Idle)
+                // Idle: 25 - Active: 20
+                const timerThreshold = !isPlaying && !isGameOver ? 25 : 20;
+
+                if (player.frameTimer > timerThreshold) {
+                    player.frameIndex = (player.frameIndex + 1) % 3;
+                    player.frameTimer = 0;
                 }
 
-                // Reset defaults
-                ctx.textBaseline = "alphabetic";
+                if (isPlaying && !isGameOver) {
+                    update();
+                }
+
+                draw();
+                frameId = requestAnimationFrame(loop);
+            };
+
+            const startLoop = () => {
+                if (frameId) return; // Prevent double loops
+                updateTerrain();
+                loop();
+            };
+
+            // Start loop immediately or fallback
+            if (sprites.happy[0].complete) {
+                startLoop();
+            } else {
+                sprites.happy[0].onload = startLoop;
+                // Fallback just in case onload misses or errors
+                setTimeout(startLoop, 500);
             }
-        };
 
-        const loop = () => {
-            // Always update animation frames (for happy, sad, OR dead stride)
-            player.frameTimer++;
+            // Custom Cursor Logic
+            const container = document.querySelector(
+                ".ghost-game-container",
+            ) as HTMLElement;
 
-            // Slower stride when in Rest Mode (Idle)
-            // Idle: 25 - Active: 20
-            const timerThreshold = !isPlaying && !isGameOver ? 25 : 20;
+            if (container && cursor) {
+                container.addEventListener("mouseenter", () => {
+                    cursor.style.opacity = "1";
+                });
 
-            if (player.frameTimer > timerThreshold) {
-                player.frameIndex = (player.frameIndex + 1) % 3;
-                player.frameTimer = 0;
+                container.addEventListener("mousemove", (e) => {
+                    const rect = container.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    cursor.style.transform = `translate(${x}px, ${y}px)`;
+                });
+
+                container.addEventListener("mouseleave", () => {
+                    cursor.style.opacity = "0";
+                });
             }
-
-            if (isPlaying && !isGameOver) {
-                update();
-            }
-
-            draw();
-            frameId = requestAnimationFrame(loop);
-        };
-
-        const startLoop = () => {
-            if (frameId) return; // Prevent double loops
-            updateTerrain();
-            loop();
-        };
-
-        // Start loop immediately or fallback
-        if (sprites.happy[0].complete) {
-            startLoop();
-        } else {
-            sprites.happy[0].onload = startLoop;
-            // Fallback just in case onload misses or errors
-            setTimeout(startLoop, 500);
         }
-
-        // Custom Cursor Logic
-        const container = document.querySelector(
-            ".ghost-game-container",
-        ) as HTMLElement;
-
-        if (container && cursor) {
-            container.addEventListener("mouseenter", () => {
-                cursor.style.opacity = "1";
-            });
-
-            container.addEventListener("mousemove", (e) => {
-                const rect = container.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                cursor.style.transform = `translate(${x}px, ${y}px)`;
-            });
-
-            container.addEventListener("mouseleave", () => {
-                cursor.style.opacity = "0";
-            });
-        }
-    }
     };
 
     const shouldDeferBoot = window.matchMedia(
@@ -901,13 +990,13 @@
 <style>
     .ghost-game-container {
         width: 100%;
-        height: 170px; /* Reduced slightly to be tighter */
+        height: 255px; /* Increased 1.5x from 170px */
         position: relative;
         cursor: none; /* Hide default cursor */
         background: var(--bg-surface); /* Bento Style Background */
         border: 1px solid var(--border-subtle);
         border-radius: var(--radius-md);
-        margin-bottom: 20px; /* Requested gap */
+        margin-bottom: 0px;
         overflow: hidden;
         /* box-shadow? */
     }

@@ -41,6 +41,20 @@ const defaultSections = [
 ];
 
 const sections = propSections || defaultSections;
+
+// Map project slugs to their category-specific active colors (matching homepage WorksFilter colors)
+const slug = Astro.url.pathname.split("/").filter(Boolean).pop() || "";
+const categoryColors: Record<string, string> = {
+    pointo: "#68B5ED", // physical-ixd
+    piko: "#68B5ED", // physical-ixd
+    musibuddy: "#68B5ED", // physical-ixd
+    "dot-threads": "#F6631A", // web-ux
+    detour: "#FACC09", // mobile-ux
+    serendipidity: "#FACC09", // mobile-ux
+    "tirupati-campus": "#2B923D", // spatial-xd
+    "skywalk-sanctuary": "#2B923D", // spatial-xd
+};
+const activeColor = categoryColors[slug] || "var(--accent-secondary)";
 ---
 
 <Layout title={`${title} | Narayan Ashanahalli`} preloadImageHref={heroImage}>
@@ -83,7 +97,12 @@ const sections = propSections || defaultSections;
 
                 {
                     ctaUrl && (
-                        <a href={ctaUrl} target="_blank" rel="noopener noreferrer" class="sidebar-cta-button">
+                        <a
+                            href={ctaUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="sidebar-cta-button"
+                        >
                             {ctaText || "Try it out"}
                         </a>
                     )
@@ -92,16 +111,19 @@ const sections = propSections || defaultSections;
         </div>
 
         <div class="sidebar-bottom">
-            <nav class="toc-nav">
-                <ul>
-                    <div class="active-indicator"></div>
+            <nav class="toc-nav" style={`--toc-active-color: ${activeColor};`}>
+                <ul class="toc-track">
                     {
-                        sections.map((section) => (
-                            <li>
+                        sections.map((section, i) => (
+                            <li class="toc-item">
+                                <span class="toc-pill-wrap">
+                                    <span class="toc-pill" />
+                                </span>
                                 <a
                                     href={`#${section.id}`}
                                     class="toc-link"
                                     data-target={section.id}
+                                    data-index={i}
                                 >
                                     {section.label}
                                 </a>
@@ -124,76 +146,143 @@ const sections = propSections || defaultSections;
 </Layout>
 
 <script>
-    document.addEventListener("DOMContentLoaded", () => {
-        const tocLinks = document.querySelectorAll(".toc-link");
-        const sections = document.querySelectorAll("section.project-section");
-        const indicator = document.querySelector(".active-indicator");
+    let cleanupTOC: (() => void) | null = null;
+    let cleanupThemeToggle: (() => void) | null = null;
 
-        const updateIndicator = (activeLi) => {
-            if (activeLi && indicator) {
-                const top = activeLi.offsetTop;
-                const height = activeLi.offsetHeight;
-                indicator.style.top = `${top}px`;
-                indicator.style.height = `${height}px`;
-                indicator.style.opacity = "1";
-            }
-        };
+    function setupTOCScroll() {
+        if (cleanupTOC) {
+            cleanupTOC();
+            cleanupTOC = null;
+        }
 
-        const observerOptions = {
-            root: null,
-            rootMargin: "-20% 0px -60% 0px", // Trigger when section is near top/middle
-            threshold: 0,
-        };
+        const tocLinks = Array.from(
+            document.querySelectorAll(".toc-link"),
+        ) as HTMLAnchorElement[];
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    const group = entry.target.getAttribute("data-toc-group");
-                    const id = group || entry.target.getAttribute("id");
+        const targets = tocLinks
+            .map((link) => {
+                const targetId = link.getAttribute("data-target");
+                const element = targetId
+                    ? document.getElementById(targetId)
+                    : null;
+                const pill = link.parentElement?.querySelector(
+                    ".toc-pill",
+                ) as HTMLElement | null;
+                return { link, element, pill };
+            })
+            .filter((item) => item.element && item.pill) as {
+            link: HTMLAnchorElement;
+            element: HTMLElement;
+            pill: HTMLElement;
+        }[];
 
-                    // Remove active class from all links
-                    tocLinks.forEach((link) => {
-                        link.classList.remove("active");
-                        link.parentElement?.classList.remove("active-item");
-                    });
+        if (targets.length === 0) return;
 
-                    // Add active class to current link AND update indicator
-                    if (id) {
-                        const activeLink = document.querySelector(
-                            `.toc-link[data-target="${id}"]`,
-                        );
-                        if (activeLink) {
-                            activeLink.classList.add("active");
-                            const parentLi = activeLink.parentElement;
-                            parentLi?.classList.add("active-item");
-                            if (parentLi) updateIndicator(parentLi);
-                        }
+        function updateActiveDotStates() {
+            // Compare card/section centers with viewport center
+            const centers = targets.map((t) => {
+                const rect = t.element.getBoundingClientRect();
+                return rect.top + window.scrollY + rect.height / 2;
+            });
+            const T = window.scrollY + window.innerHeight / 2;
+
+            // Find fractional index P
+            let P = 0;
+
+            // Check if user is scrolled near top of the page
+            if (window.scrollY < 120) {
+                P = 0;
+            } else if (
+                window.scrollY + window.innerHeight >=
+                document.documentElement.scrollHeight - 60
+            ) {
+                // If at the very bottom, highlight the last section
+                P = centers.length - 1;
+            } else {
+                for (let z = 0; z < centers.length - 1; z++) {
+                    const G = centers[z];
+                    const Y = centers[z + 1];
+                    if (T >= G && T < Y) {
+                        P = z + (T - G) / (Y - G);
+                        break;
                     }
                 }
+                if (T >= centers[centers.length - 1]) {
+                    P = centers.length - 1;
+                }
+            }
+
+            P = Math.max(0, Math.min(centers.length - 1, P));
+
+            // Apply continuous transition heights and opacities
+            targets.forEach((t, index) => {
+                const diff = Math.abs(P - index);
+                if (diff < 1) {
+                    // Morph from dot (5px) to line (16px)
+                    const height = 5 + (16 - 5) * (1 - diff);
+                    const alpha = 0.35 + 0.65 * (1 - diff);
+                    t.pill.style.height = `${height}px`;
+                    t.pill.style.opacity = `${alpha}`;
+                    t.pill.style.backgroundColor = `var(--toc-active-color, var(--accent-secondary))`;
+
+                    // Also dim/brighten the link text
+                    const linkAlpha = 0.4 + 0.6 * (1 - diff);
+                    t.link.style.opacity = `${linkAlpha}`;
+                    t.link.style.fontWeight = diff < 0.5 ? "600" : "500";
+                } else {
+                    t.pill.style.height = "5px";
+                    t.pill.style.opacity = "0.35";
+                    t.pill.style.backgroundColor = "var(--text-muted)";
+
+                    t.link.style.opacity = "0.4";
+                    t.link.style.fontWeight = "500";
+                }
             });
-        }, observerOptions);
+        }
 
-        sections.forEach((section) => {
-            observer.observe(section);
-        });
+        const handleScroll = () => {
+            updateActiveDotStates();
+        };
 
-        // Keep theme toggle above footer when scrolled to bottom (mobile only)
-        const themeToggleWrapper = document.querySelector(".theme-toggle-wrapper");
+        const handleResize = () => {
+            updateActiveDotStates();
+        };
+
+        window.addEventListener("scroll", handleScroll, { passive: true });
+        window.addEventListener("resize", handleResize);
+
+        cleanupTOC = () => {
+            window.removeEventListener("scroll", handleScroll);
+            window.removeEventListener("resize", handleResize);
+        };
+
+        updateActiveDotStates();
+    }
+
+    function setupThemeTogglePosition() {
+        if (cleanupThemeToggle) {
+            cleanupThemeToggle();
+            cleanupThemeToggle = null;
+        }
+
+        const themeToggleWrapper = document.querySelector(
+            ".theme-toggle-wrapper",
+        ) as HTMLElement;
         const footer = document.querySelector(".site-footer");
-        
+        if (!themeToggleWrapper || !footer) return;
+
         function updateThemeTogglePosition() {
             if (!footer || !themeToggleWrapper) return;
-            // Only apply on mobile when theme toggle is fixed
             const isMobile = window.innerWidth <= 1024;
             if (!isMobile) {
                 themeToggleWrapper.style.bottom = "";
                 return;
             }
-            
+
             const footerRect = footer.getBoundingClientRect();
             const windowHeight = window.innerHeight;
             const margin = 10;
-            
+
             if (footerRect.top < windowHeight) {
                 const offset = windowHeight - footerRect.top + margin;
                 themeToggleWrapper.style.bottom = offset + "px";
@@ -202,10 +291,32 @@ const sections = propSections || defaultSections;
             }
         }
 
-        window.addEventListener("scroll", updateThemeTogglePosition);
-        window.addEventListener("resize", updateThemeTogglePosition);
+        const handleScroll = () => {
+            updateThemeTogglePosition();
+        };
+        const handleResize = () => {
+            updateThemeTogglePosition();
+        };
+
+        window.addEventListener("scroll", handleScroll, { passive: true });
+        window.addEventListener("resize", handleResize);
+
+        cleanupThemeToggle = () => {
+            window.removeEventListener("scroll", handleScroll);
+            window.removeEventListener("resize", handleResize);
+        };
+
         updateThemeTogglePosition();
-    });
+    }
+
+    function init() {
+        setupTOCScroll();
+        setupThemeTogglePosition();
+    }
+
+    // Run initial setup and listen for page loads (Astro view transitions support)
+    document.addEventListener("DOMContentLoaded", init);
+    document.addEventListener("astro:page-load", init);
 </script>
 
 <style>
@@ -280,7 +391,9 @@ const sections = propSections || defaultSections;
         font-size: 0.875rem;
         margin-top: 1.5rem;
         margin-bottom: 1rem;
-        transition: box-shadow 0.2s ease, opacity 0.2s;
+        transition:
+            box-shadow 0.2s ease,
+            opacity 0.2s;
         text-align: center;
         width: 100%;
         box-sizing: border-box;
@@ -307,65 +420,78 @@ const sections = propSections || defaultSections;
     }
 
     .toc-nav {
-        margin: 1rem 0;
+        margin: 0.5rem 0;
     }
 
-    .toc-nav ul {
+    .toc-track {
         list-style: none;
         padding: 0;
         display: flex;
         flex-direction: column;
-        gap: 6px; /* Reduced from 1rem to 6px */
-        /* Line moved to LEFT (Sidebar is on Right, so content side is Left) */
-        border-left: 1px solid var(--border-subtle);
-        border-right: none;
-        margin-right: 0;
-        padding-left: 1.5rem; /* Add padding to separate text from left border */
-        position: relative; /* Essential for absolute indicator */
+        gap: 6px; /* Highly compressed gap */
+        margin: 0;
+        position: relative;
     }
 
-    .toc-nav li {
-        margin-left: 0;
-        margin-right: 0;
-        padding-right: 0;
-        padding-left: 0;
-        border-right: none;
-        border-left: none;
-        transition: all 0.2s;
+    .toc-item {
+        display: flex;
+        align-items: center;
+        gap: 16px; /* Compressed gap between dot and text */
+        margin: 0;
+        padding: 0;
         text-align: left;
-        position: relative; /* For pseudo-element positioning */
+        position: relative;
+        cursor: pointer;
     }
 
-    /* Active State Indicator (Sliding) */
-    .active-indicator {
-        position: absolute;
-        left: -2px; /* Centered on LEFT border */
-        width: 3px;
-        background-color: var(--accent-secondary);
-        border-radius: 1px;
-        transition: top 0.25s cubic-bezier(0.25, 0.8, 0.25, 1), height 0.25s ease, opacity 0.2s;
-        opacity: 0;
-        pointer-events: none;
+    .toc-pill-wrap {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 8px;
+        height: 16px; /* Compressed boundary */
+        position: relative;
     }
 
-    .toc-nav a {
-        color: var(--text-muted);
-        text-decoration: none;
-        font-size: 0.75rem; /* 14px */
-        transition: color 0.2s;
+    .toc-pill {
         display: block;
+        width: 5px; /* Slightly smaller dot */
+        height: 5px;
+        background-color: var(--text-muted);
+        opacity: 0.35;
+        border-radius: 2.5px;
+        will-change: height, opacity;
+        transition:
+            height 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+            background-color 0.25s ease,
+            opacity 0.25s ease;
+    }
+
+    .toc-link {
+        color: var(--text-primary);
+        text-decoration: none;
+        font-size: 24px; /* Compressed font size */
+        line-height: 1.2;
+        transition:
+            opacity 0.25s ease,
+            font-weight 0.25s ease;
+        display: inline-block;
         font-weight: 500;
-        /* text-transform: lowercase; Removed to allow AI capitalization */
+        opacity: 0.4; /* Default muted opacity */
     }
 
-    .toc-nav a:hover {
-        color: var(--text-primary);
+    .toc-item:hover .toc-pill {
+        height: 16px !important;
+        opacity: 1 !important;
+        background-color: var(
+            --toc-active-color,
+            var(--accent-secondary)
+        ) !important;
     }
 
-    /* Active State */
-    .toc-nav a.active {
-        color: var(--text-primary);
-        font-weight: 600;
+    .toc-item:hover .toc-link {
+        opacity: 1 !important;
+        font-weight: 600 !important;
     }
 
     /* META TABLE STYLES */
@@ -409,12 +535,12 @@ const sections = propSections || defaultSections;
     }
 
     /* RIGHT CONTENT STYLES (Hero Section) */
-    /* Note: Content is technically on LEFT now due to Grid Swap */
+    /* Note: Content is positioned on the right side on desktop */
     .right-content {
-        padding: 20px 20px 4rem 20px; /* 20px top/left/right, bottom 4rem */
+        padding: 20px 20px 0px 20px; /* 20px top/left/right, bottom 0px */
         max-width: none; /* Use full available width */
         margin: 0;
-        font-family: "Public Sans", sans-serif;
+        font-family: "Geist", sans-serif;
         scroll-behavior: smooth;
     }
 
@@ -446,7 +572,6 @@ const sections = propSections || defaultSections;
             z-index: 90;
             margin-top: 0;
         }
-
 
         /* Allow sidebar to collapse vertically */
         .project-sidebar-content {

@@ -32,8 +32,11 @@
 
     .segmented-control {
         display: inline-flex;
+        align-items: center;
         background: var(--bg-surface);
-        padding: 6px; /* Reverted offset */
+        height: 35px;
+        padding: 4px;
+        box-sizing: border-box;
         border-radius: var(--radius-md); /* Match Navigation Box Curve */
         border: 1px solid var(--border-subtle);
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
@@ -42,9 +45,9 @@
 
     .glider {
         position: absolute;
-        top: 6px; /* Increased offset */
-        left: 6px; /* Increased offset */
-        height: calc(100% - 12px); /* Adjusted for new padding */
+        top: 4px;
+        left: 4px;
+        height: calc(100% - 8px);
         background: var(--text-primary);
         border-radius: var(--radius-sm); /* Inner concentric curve */
         transition:

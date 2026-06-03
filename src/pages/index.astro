@@ -3,9 +3,11 @@ import Layout from "../layouts/Layout.astro";
 import GhostRunner from "../components/GhostRunner.astro";
 import BentoGrid from "../components/BentoGrid.astro";
 import BentoCard from "../components/BentoCard.astro";
+import HomeProjectCard from "../components/HomeProjectCard.astro";
 import SidebarNavigation from "../components/SidebarNavigation.astro";
 import ThemeToggle from "../components/ThemeToggle.astro";
 import Footer from "../components/Footer.astro";
+import WorksFilter from "../components/WorksFilter.astro";
 import { getCollection } from "astro:content";
 import { Image } from "astro:assets";
 import type { ImageMetadata } from "astro";
@@ -41,21 +43,6 @@ const heroImages: Record<string, ImageMetadata> = {
 	"tirupati-campus": tirupatiHero,
 };
 
-// Home bento sizing override so cards keep simple proportions / layout
-const homeBentoSizeBySlug: Record<
-	string,
-	"small" | "medium" | "large" | "wide" | "tall"
-> = {
-	"dot-threads": "medium",
-	detour: "medium",
-	piko: "medium",
-	pointo: "medium",
-	"skywalk-sanctuary": "medium",
-	"tirupati-campus": "medium",
-	serendipidity: "medium",
-	musibuddy: "medium",
-};
-
 // Convenience references by slug for manual column layout
 const dotThreadsProject = allProjects.find(
 	(project) => project.slug === "dot-threads",
@@ -82,8 +69,8 @@ const musibuddyProject = allProjects.find(
 	description="Hi! I’m a graduate student at CMU HCI & SoA. I work at the intersection of sensing, computing, and IxD to create playful, intentional experiences between human -human and human - AI interactions"
 	fullWidth={true}
 >
-	<!-- Fixed Nav: Top Right -->
-	<div class="fixed-nav-top-right">
+	<!-- Fixed Nav: Top Left -->
+	<div class="fixed-nav-top-left">
 		<div class="nav-wrapper-mobile">
 			<SidebarNavigation isHome={true} />
 		</div>
@@ -99,38 +86,43 @@ const musibuddyProject = allProjects.find(
 		<!-- LAYER 1: HERO / INTRO -->
 		<section class="hero" id="about">
 			<div class="hero-container">
-				<!-- Game: Full Width Top -->
-				<div class="game-fullbleed">
-					<GhostRunner />
-				</div>
+				<!-- Game moved to footer -->
 
 				<div class="bio-content">
 					<div class="hero-headline bio-short">
-						👋 I'm Narayan, an interaction designer focused on
-						building playful
-						<span class="emoji-hover" data-emoji="🤝"
-							>human-human</span
-						> and
-						<span class="emoji-hover" data-emoji="😄🤖"
-							>human-computer</span
-						> interactions.<br />
-						<span class="bio-subtext"
-							>With a foundation in architecture, I apply
-							<span class="emoji-hover" data-emoji="⚙️"
-								>systems thinking</span
-							> and <span class="emoji-hover" data-emoji="🛠️"
-								>rapid prototyping</span
-							> to create digital products that feel responsive, intentional
-							and are grounded in existing ecosystems.</span
-						>
+						<div class="bio-line-1">
+							<span class="dynamic-color-text"
+								>👋 I'm Narayan, an interaction designer</span
+							>
+						</div>
+						<div class="bio-line-2">
+							who builds my way through design <span
+								class="bracket-hover-wrapper"
+								><span class="bracket">[</span><span
+									class="bracket-content"
+									><span class="bracket-inner"
+										>from idea to artifact</span
+									></span
+								><span class="bracket">]</span></span
+							> across interfaces, tools, and hardware.
+						</div>
 					</div>
 					<div class="hero-headline bio-long">
 						<div class="bio-text">
-							👋 I'm Narayan, an interaction designer focused on building
-							playful human-human and human-machine interactions. With a
-							foundation in architecture, I apply systems thinking and
-							rapid prototyping to create digital products that feel
-							responsive and grounded in existing ecosystems.
+							<span class="dynamic-color-text"
+								>👋 I'm Narayan, an interaction designer</span
+							> who builds my way through design <span
+								class="bracket-hover-wrapper"
+								><span class="bracket">[</span><span
+									class="bracket-content"
+									><span class="bracket-inner"
+										>from idea to artifact</span
+									></span
+								><span class="bracket">]</span></span
+							> across interfaces, tools, and hardware. With a foundation
+							in architecture, I apply systems thinking and rapid prototyping
+							to create digital products that feel responsive and grounded
+							in existing ecosystems.
 							<br /><br />
 							🎯 The question I keep coming back to: how do we make
 							technology feel present in the physical world rather than
@@ -138,97 +130,115 @@ const musibuddyProject = allProjects.find(
 							that feel natural, where the interface fades and people
 							focus on what they're actually doing.
 							<br /><br />
-							🔧 I'm currently working as a Design Researcher at Lab 4
-							Cybernetics with <a href="https://pangaro.com/" target="_blank" rel="noopener noreferrer">Paul Pangaro</a>, building the lab's digital
-							infrastructure: <a href="https://lab4cybernetics.vercel.app" target="_blank" rel="noopener noreferrer">the website</a>, a practitioner-scholar <a href="https://l4cybernetics.vercel.app/matching" target="_blank" rel="noopener noreferrer">matching platform</a>,
-							and a knowledge graph system organizing <a href="https://publish.obsidian.md/lab4c" target="_blank" rel="noopener noreferrer">cybernetics concepts</a>.
+							🔧 I'm currently working as a Design Researcher at Lab
+							4 Cybernetics with <a
+								href="https://pangaro.com/"
+								target="_blank"
+								rel="noopener noreferrer">Paul Pangaro</a
+							>, building the lab's digital infrastructure: <a
+								href="https://lab4cybernetics.vercel.app"
+								target="_blank"
+								rel="noopener noreferrer">the website</a
+							>, a practitioner-scholar <a
+								href="https://l4cybernetics.vercel.app/matching"
+								target="_blank"
+								rel="noopener noreferrer">matching platform</a
+							>, and a knowledge graph system organizing <a
+								href="https://publish.obsidian.md/lab4c"
+								target="_blank"
+								rel="noopener noreferrer"
+								>cybernetics concepts</a
+							>.
 							<br /><br />
-							🤖 My thesis project, supported by the <a href="https://studioforcreativeinquiry.org/frff-grants-microgrants" target="_blank" rel="noopener noreferrer">Frank-Ratchye Further Fund</a>, explores how physically embodied AI can
-							provide spatial task assistance through laser-pointing,
-							bridging LLM reasoning with physical spatial referencing.
+							🤖 My thesis project, supported by the <a
+								href="https://studioforcreativeinquiry.org/frff-grants-microgrants"
+								target="_blank"
+								rel="noopener noreferrer"
+								>Frank-Ratchye Further Fund</a
+							>, explores how physically embodied AI can provide
+							spatial task assistance through laser-pointing,
+							bridging LLM reasoning with physical spatial
+							referencing.
 							<br /><br />
 							💡 I'm learning that the best design work happens in the
 							infrastructure: building repositories, systems, and tools
 							that let others create and scale. I want to build tools
-							that feel like extensions of how people naturally think and
-							interact, not systems they have to manage.
+							that feel like extensions of how people naturally think
+							and interact, not systems they have to manage.
 						</div>
 					</div>
 					<div class="emoji-display"></div>
 				</div>
 
-				<div class="cmu-pill">
-					<span class="cmu-pill-text"
-						><span class="cmu-name">@ CMU</span> until May 2026 🎓</span
-					>
-				</div>
-
 				<div class="hero-actions-row">
-					<button id="read-more-btn" class="action-link read-more">
-						Read more
-						<svg
-							width="12"
-							height="12"
-							viewBox="0 0 12 12"
-							fill="none"
-							xmlns="http://www.w3.org/2000/svg"
-							class="chevron"
+					<div class="hero-actions-left">
+						<button
+							id="read-more-btn"
+							class="action-link read-more"
 						>
-							<path
-								d="M2.5 4.5L6 8L9.5 4.5"
-								stroke="currentColor"
-								stroke-width="1.5"
-								stroke-linecap="round"
-								stroke-linejoin="round"></path>
-						</svg>
-					</button>
+							Read more
+							<svg
+								width="12"
+								height="12"
+								viewBox="0 0 12 12"
+								fill="none"
+								xmlns="http://www.w3.org/2000/svg"
+								class="chevron"
+							>
+								<path
+									d="M2.5 4.5L6 8L9.5 4.5"
+									stroke="currentColor"
+									stroke-width="1.5"
+									stroke-linecap="round"
+									stroke-linejoin="round"></path>
+							</svg>
+						</button>
 
-					<div class="hero-actions">
-						<a
-							href="https://linkedin.com/in/narayan-ashanahalli/"
-							target="_blank"
-							rel="noopener noreferrer"
-							class="action-link">LinkedIn</a
-						>
-						<a
-							href="https://www.instagram.com/narayan.3dm/"
-							target="_blank"
-							rel="noopener noreferrer"
-							class="action-link">Instagram</a
-						>
-						<a
-							href="https://github.com/narayan-works"
-							target="_blank"
-							rel="noopener noreferrer"
-							class="action-link">GitHub</a
-						>
+						<div class="hero-actions">
+							<a href="#footer" class="action-link">Contact ↙</a>
 
-						<a
-							href="https://narayanthinks.notion.site/welcome-to-my-head-31b1da77c6ce809aaff4ddeb0afd9ba2"
-							target="_blank"
-							rel="noopener noreferrer"
-							class="action-link">Blog</a
-						>
+							<a
+								href="https://substack.com/@narayanthinks"
+								target="_blank"
+								rel="noopener noreferrer"
+								class="action-link">Blog ↗</a
+							>
 
-						<a
-							href="https://drive.google.com/file/d/1PcdJ52A1hec-0XFzHHCelg89N1d4cDHw/view?usp=sharing"
-							target="_blank"
-							rel="noopener noreferrer"
-							class="action-link">CV</a
-						>
+							<a
+								href="https://drive.google.com/file/d/1PcdJ52A1hec-0XFzHHCelg89N1d4cDHw/view?usp=sharing"
+								target="_blank"
+								rel="noopener noreferrer"
+								class="action-link">CV ↗</a
+							>
+						</div>
+					</div>
+
+					<div class="cmu-pill">
+						<span class="cmu-pill-text">
+							<span class="status-indicator"></span>
+							Actively looking for full-time roles
+						</span>
 					</div>
 				</div>
 			</div>
+			<div class="hero-divider"></div>
 		</section>
 
 		<!-- LAYER 2: WORKS -->
 		<section id="works" class="layer-works">
 			<div class="works-container">
-				<BentoGrid>
-					<div>
-						{
-							pointoProject && (
-								<BentoCard
+				<h2 class="works-title">WORK</h2>
+				<div class="works-header-sticky">
+					<WorksFilter />
+				</div>
+				<div class="home-project-list">
+					{
+						pointoProject && (
+							<div
+								class="project-card-wrapper"
+								data-categories="physical-ixd"
+							>
+								<HomeProjectCard
 									title={pointoProject.data.title}
 									image={
 										heroImages[pointoProject.slug] ||
@@ -237,217 +247,255 @@ const musibuddyProject = allProjects.find(
 									loading="eager"
 									fetchPriority="high"
 									href={`/works/${pointoProject.slug}`}
-									size={
-										homeBentoSizeBySlug[pointoProject.slug] ||
-										(pointoProject.data.bentoSize as any) ||
-										"small"
-									}
 									tags={pointoProject.data.tags}
+									meta={pointoProject.data.meta}
+									description={pointoProject.data.description}
+									categories={["physical-ixd"]}
 								/>
-							)
-						}
-
-						{
-							dotThreadsProject && (
-								<BentoCard
+							</div>
+						)
+					}
+					{
+						pikoProject && (
+							<div
+								class="project-card-wrapper"
+								data-categories="physical-ixd"
+							>
+								<HomeProjectCard
+									title={pikoProject.data.title}
+									image={
+										heroImages[pikoProject.slug] ||
+										pikoProject.data.heroImage
+									}
+									loading="eager"
+									fetchPriority="high"
+									href={`/works/${pikoProject.slug}`}
+									tags={pikoProject.data.tags}
+									meta={pikoProject.data.meta}
+									description={pikoProject.data.description}
+									categories={["physical-ixd"]}
+								/>
+							</div>
+						)
+					}
+					{
+						dotThreadsProject && (
+							<div
+								class="project-card-wrapper"
+								data-categories="web-ux"
+							>
+								<HomeProjectCard
 									title={dotThreadsProject.data.title}
 									image={
 										heroImages[dotThreadsProject.slug] ||
 										dotThreadsProject.data.heroImage
 									}
-									loading="eager"
-									fetchPriority="high"
+									loading="lazy"
 									href={`/works/${dotThreadsProject.slug}`}
-									size={
-										homeBentoSizeBySlug[
-											dotThreadsProject.slug
-										] ||
-										(dotThreadsProject.data
-											.bentoSize as any) ||
-										"small"
-									}
 									tags={dotThreadsProject.data.tags}
-								/>
-							)
-						}
-
-						{
-							tirupatiProject && (
-								<BentoCard
-									title={tirupatiProject.data.title}
-									image={
-										heroImages[tirupatiProject.slug] ||
-										tirupatiProject.data.heroImage
+									meta={dotThreadsProject.data.meta}
+									description={
+										dotThreadsProject.data.description
 									}
-									loading="eager"
-									fetchPriority="high"
-									href={`/works/${tirupatiProject.slug}`}
-									size={
-										homeBentoSizeBySlug[
-											tirupatiProject.slug
-										] ||
-										(tirupatiProject.data
-											.bentoSize as any) ||
-										"small"
-									}
-									tags={tirupatiProject.data.tags}
+									categories={["web-ux"]}
 								/>
-							)
-						}
-					</div>
-
-					<div>
-						{
-							detourProject && (
-								<BentoCard
+							</div>
+						)
+					}
+					{
+						detourProject && (
+							<div
+								class="project-card-wrapper"
+								data-categories="mobile-ux"
+							>
+								<HomeProjectCard
 									title={detourProject.data.title}
 									image={
 										heroImages[detourProject.slug] ||
 										detourProject.data.heroImage
 									}
 									loading="lazy"
-									fetchPriority="auto"
 									href={`/works/${detourProject.slug}`}
-									size={
-										homeBentoSizeBySlug[
-											detourProject.slug
-										] ||
-										(detourProject.data.bentoSize as any) ||
-										"small"
-									}
 									tags={detourProject.data.tags}
+									meta={detourProject.data.meta}
+									description={detourProject.data.description}
+									categories={["mobile-ux"]}
 								/>
-							)
-						}
-
-						{
-							serendipityProject && (
-								<BentoCard
-									title={serendipityProject.data.title}
+							</div>
+						)
+					}
+					{
+						tirupatiProject && (
+							<div
+								class="project-card-wrapper"
+								data-categories="spatial-xd"
+							>
+								<HomeProjectCard
+									title={tirupatiProject.data.title}
 									image={
-										heroImages[serendipityProject.slug] ||
-										serendipityProject.data.heroImage
+										heroImages[tirupatiProject.slug] ||
+										tirupatiProject.data.heroImage
 									}
 									loading="lazy"
-									fetchPriority="auto"
-									href={`/works/${serendipityProject.slug}`}
-									size={
-										homeBentoSizeBySlug[
-											serendipityProject.slug
-										] ||
-										(serendipityProject.data
-											.bentoSize as any) ||
-										"small"
+									href={`/works/${tirupatiProject.slug}`}
+									tags={tirupatiProject.data.tags}
+									meta={tirupatiProject.data.meta}
+									description={
+										tirupatiProject.data.description
 									}
-									tags={serendipityProject.data.tags}
+									categories={["spatial-xd"]}
 								/>
-							)
-						}
-
-						{
-							sanctuaryProject && (
-								<BentoCard
+							</div>
+						)
+					}
+					{
+						sanctuaryProject && (
+							<div
+								class="project-card-wrapper"
+								data-categories="spatial-xd"
+							>
+								<HomeProjectCard
 									title={sanctuaryProject.data.title}
 									image={
 										heroImages[sanctuaryProject.slug] ||
 										sanctuaryProject.data.heroImage
 									}
 									loading="lazy"
-									fetchPriority="auto"
 									href={`/works/${sanctuaryProject.slug}`}
-									size={
-										homeBentoSizeBySlug[
-											sanctuaryProject.slug
-										] ||
-										(sanctuaryProject.data
-											.bentoSize as any) ||
-										"small"
-									}
 									tags={sanctuaryProject.data.tags}
+									meta={sanctuaryProject.data.meta}
+									description={
+										sanctuaryProject.data.description
+									}
+									categories={["spatial-xd"]}
 								/>
-							)
-						}
-					</div>
-
-					<div>
-						{
-							pikoProject && (
-								<BentoCard
-									title={pikoProject.data.title}
+							</div>
+						)
+					}
+					{
+						serendipityProject && (
+							<div
+								class="project-card-wrapper"
+								data-categories="mobile-ux"
+							>
+								<HomeProjectCard
+									title={serendipityProject.data.title}
 									image={
-										heroImages[pikoProject.slug] ||
-										pikoProject.data.heroImage
+										heroImages[serendipityProject.slug] ||
+										serendipityProject.data.heroImage
 									}
 									loading="lazy"
-									fetchPriority="auto"
-									href={`/works/${pikoProject.slug}`}
-									size={
-										homeBentoSizeBySlug[pikoProject.slug] ||
-										(pikoProject.data.bentoSize as any) ||
-										"small"
+									href={`/works/${serendipityProject.slug}`}
+									tags={serendipityProject.data.tags}
+									meta={serendipityProject.data.meta}
+									description={
+										serendipityProject.data.description
 									}
-									tags={pikoProject.data.tags}
+									categories={["mobile-ux"]}
 								/>
-							)
-						}
-
-						{
-							musibuddyProject && (
-								<BentoCard
+							</div>
+						)
+					}
+					{
+						musibuddyProject && (
+							<div
+								class="project-card-wrapper"
+								data-categories="physical-ixd"
+							>
+								<HomeProjectCard
 									title={musibuddyProject.data.title}
 									image={
 										heroImages[musibuddyProject.slug] ||
 										musibuddyProject.data.heroImage
 									}
 									loading="lazy"
-									fetchPriority="auto"
 									href={`/works/${musibuddyProject.slug}`}
-									size={
-										homeBentoSizeBySlug[
-											musibuddyProject.slug
-										] ||
-										(musibuddyProject.data
-											.bentoSize as any) ||
-										"small"
-									}
 									tags={musibuddyProject.data.tags}
+									meta={musibuddyProject.data.meta}
+									description={
+										musibuddyProject.data.description
+									}
 									fit="cover"
 									scale={1.5}
+									categories={["physical-ixd"]}
 								/>
-							)
-						}
-					</div>
-				</BentoGrid>
+							</div>
+						)
+					}
+				</div>
+
+				<!-- See More button: visible only when a filter is active and hides some projects -->
+				<div
+					id="see-more-wrap"
+					class="see-more-wrap"
+					aria-hidden="true"
+				>
+					<button
+						id="see-more-btn"
+						class="see-more-btn"
+						type="button"
+					>
+						<span class="see-more-circle">
+							<svg
+								width="12"
+								height="12"
+								viewBox="0 0 12 12"
+								fill="none"
+								xmlns="http://www.w3.org/2000/svg"
+							>
+								<path
+									d="M6 2V10M6 10L3 7M6 10L9 7"
+									stroke="currentColor"
+									stroke-width="1.5"
+									stroke-linecap="round"
+									stroke-linejoin="round"></path>
+							</svg>
+						</span>
+						<span class="see-more-label">See More</span>
+					</button>
+				</div>
 			</div>
 		</section>
 
-		<div class="footer-alignment-wrapper">
-			<Footer />
+		<Footer />
+		<div class="game-bottom-wrapper">
+			<GhostRunner />
 		</div>
 	</div>
+
+	<!-- Project scroll dot indicator (fixed, viewport-centred) -->
+	<nav
+		id="project-scroll-nav"
+		class="projects-nav"
+		aria-label="Project navigation"
+		aria-hidden="true"
+	>
+		<div class="projects-nav__track"></div>
+	</nav>
 </Layout>
 
 <style>
 	/* Fixed Nav Positions */
-	.fixed-nav-top-right {
+	.fixed-nav-top-left {
 		position: fixed;
 		top: 20px;
-		right: 20px;
+		left: 50%;
+		transform: translateX(-50%);
 		z-index: 200;
-		width: 280px; /* 320px col - 40px padding = 280px content width */
+		width: auto;
 	}
 
 	/* Desktop (3-col): fixed sidebar width */
 	@media (min-width: 1200px) {
-		.fixed-nav-top-right {
-			width: 280px;
+		.fixed-nav-top-left {
+			width: auto;
 		}
 	}
 
 	.fixed-nav-bottom-right {
 		position: fixed;
-		bottom: 20px;
-		right: 20px;
+		bottom: 128px;
+		right: 128px;
 		z-index: 100;
 		width: auto; /* Allow it to shrink to content */
 		display: flex; /* Ensure proper stacking if multiple items */
@@ -456,14 +504,15 @@ const musibuddyProject = allProjects.find(
 	}
 
 	.toggle-floater {
-		position: fixed;
-		bottom: 20px;
-		right: 20px;
+		position: fixed !important;
+		top: 20px !important;
+		right: 20px !important;
+		margin: 0 !important;
+		padding: 0 !important;
 		z-index: 100;
 		width: auto;
 		display: flex;
 		justify-content: flex-end;
-		transition: bottom 0.1s ease-out;
 	}
 
 	.sidebar-controls {
@@ -473,36 +522,28 @@ const musibuddyProject = allProjects.find(
 	}
 
 	/* Content Area */
-	/* Content Area */
 	.home-content {
-		padding: 20px 20px 0; /* Match 20px nav offset, 0 bottom padding so footer margin controls spacing */
+		padding: 272px var(--total-side-padding) 0 var(--total-side-padding); /* Dynamic side padding to keep middle width constant */
 		max-width: 100%;
 		margin: 0;
 		width: 100%;
-		position: relative; /* Context for absolute game */
+		position: relative;
+		box-sizing: border-box;
 	}
 
-	/* Hero Section - Grid Layout to Match Bento */
-	.hero-container {
-		display: grid;
-		grid-template-columns: 1fr; /* Mobile Default */
-		gap: var(--space-md);
-		width: 100%;
-		padding-top: 160px; /* Game height spacer */
-	}
-
-	.game-fullbleed {
-		grid-column: 1 / -1;
-		width: 100%;
-		position: absolute;
-		top: 0;
-		left: 0;
+	.game-bottom-wrapper {
+		position: relative;
+		width: calc(100% + 2 * var(--total-side-padding));
+		margin-left: calc(-1 * var(--total-side-padding));
+		margin-top: 0px;
+		margin-bottom: 0px;
 		z-index: 0;
 	}
 
-	.game-fullbleed :global(.ghost-game-container) {
+	.game-bottom-wrapper :global(.ghost-game-container) {
 		border-radius: 0;
 		border: none;
+		border-top: 1px solid var(--border-subtle);
 		width: 100%;
 	}
 
@@ -514,8 +555,8 @@ const musibuddyProject = allProjects.find(
 		grid-template-columns: 1fr; /* Mobile Default */
 		gap: var(--space-md);
 		width: 100%;
-		padding-top: 185px; /* 165px game + 20px gap */
-		position: static; /* Let absolute child allow positioning relative to home-content if needed? */
+		padding-top: 0; /* Reset since game is gone */
+		position: static;
 	}
 
 	/* Desktop: 3 Columns, Content starts at Col 1 (Span 2) */
@@ -528,6 +569,10 @@ const musibuddyProject = allProjects.find(
 		/* Game, Bio, Actions span first 2 columns */
 		.hero-container > :global(*) {
 			grid-column: 1 / 3;
+		}
+
+		.hero-container > .hero-actions-row {
+			grid-column: 1 / -1;
 		}
 	}
 
@@ -550,25 +595,133 @@ const musibuddyProject = allProjects.find(
 	/* Bio Content */
 	.bio-content {
 		padding-top: 0;
-		padding-left: 20px;
+		padding-inline: 0;
+		grid-column: 1 / -1;
 		max-width: 100%; /* Matches Game Width */
 	}
 
 	.cmu-pill {
-		padding-left: 20px;
-		margin-top: -0.5em;
+		margin: 0;
 	}
 
 	.cmu-pill-text {
-		font-family: "Public Sans", sans-serif;
-		font-size: 14px;
+		font-family: "Geist", sans-serif;
+		font-size: 12px;
 		color: var(--text-secondary);
 		letter-spacing: 0.01em;
-		background: var(--bg-surface);
+		background: transparent;
 		border: 1px solid var(--border-subtle);
 		border-radius: var(--radius-md);
 		padding: 6px 14px;
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+	}
+
+	.status-indicator {
 		display: inline-block;
+		width: 8px;
+		height: 8px;
+		border-radius: 50%;
+		background-color: var(--accent-secondary);
+		box-shadow: 0 0 8px var(--accent-secondary);
+		position: relative;
+	}
+
+	.status-indicator::after {
+		content: "";
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		border-radius: 50%;
+		background-color: var(--accent-secondary);
+		animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+		z-index: -1;
+	}
+
+	@keyframes pulse-ring {
+		0% {
+			transform: scale(1);
+			opacity: 0.8;
+		}
+		100% {
+			transform: scale(2.5);
+			opacity: 0;
+		}
+	}
+
+	/* Bracket Hover Animation */
+	.bracket-hover-wrapper {
+		display: inline-flex;
+		align-items: baseline;
+		cursor: pointer;
+		vertical-align: baseline;
+		color: var(--text-secondary);
+		transition: color 0.3s ease 0.15s;
+	}
+
+	.bracket-hover-wrapper.is-hovered {
+		color: var(--text-primary);
+		transition: color 0.3s ease 0s;
+	}
+
+	.bracket {
+		display: inline-block;
+		transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1) 0.15s;
+	}
+
+	.bracket-hover-wrapper.is-hovered .bracket {
+		transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1) 0s;
+	}
+
+	.bracket-hover-wrapper.is-hovered .bracket:first-child {
+		transform: translateX(-2px);
+	}
+
+	.bracket-hover-wrapper.is-hovered .bracket:last-child {
+		transform: translateX(2px);
+	}
+
+	.bracket-content {
+		display: inline-block;
+		max-width: 0;
+		overflow: hidden;
+		white-space: nowrap;
+		opacity: 0;
+		transition:
+			max-width 0.4s cubic-bezier(0.25, 1, 0.5, 1) 0.15s,
+			opacity 0.25s ease-out 0.15s;
+		will-change: max-width, opacity;
+	}
+
+	.bracket-inner {
+		display: inline-block;
+		white-space: nowrap;
+		transform: translateX(-8px);
+		transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1) 0.15s;
+		will-change: transform;
+	}
+
+	.bracket-hover-wrapper.is-hovered .bracket-content {
+		max-width: var(--expanded-width, 13.5em);
+		opacity: 1;
+		transition:
+			max-width 0.4s cubic-bezier(0.25, 1, 0.5, 1) 0s,
+			opacity 0.25s ease-out 0s;
+	}
+
+	.bracket-hover-wrapper.is-hovered .bracket-inner {
+		transform: translateX(0);
+		transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1) 0s;
+	}
+
+	/* Custom Tooltip Styling */
+	.custom-tooltip {
+		font-family: "Source Serif 4", "Georgia", serif;
+		color: #c2152f;
+		font-weight: 600;
 	}
 
 	.cmu-name {
@@ -579,51 +732,46 @@ const musibuddyProject = allProjects.find(
 
 	.hero-actions-row {
 		display: flex;
-		align-items: baseline;
+		justify-content: space-between;
+		align-items: flex-end;
 		flex-wrap: wrap;
 		gap: 1.5rem;
-		margin-top: 1rem;
-		padding-left: 20px;
+		margin-top: 2rem;
+		padding-inline: 0;
+		width: 100%;
+		box-sizing: border-box;
+	}
+
+	.hero-actions-left {
+		display: flex;
+		align-items: flex-end;
+		gap: 1.5rem;
 	}
 
 	.hero-actions {
 		display: flex;
 		justify-content: flex-start; /* Align links to left */
-		align-items: baseline;
+		align-items: flex-end;
 		gap: 1.5rem;
-	}
-
-	/* Footer Alignment - Move to Left? Or keep Right? */
-	/* If Layout Flipped, Footer usually follows main flow. */
-	/* But footer is usually site-wide. Let's align left now? */
-	.footer-alignment-wrapper {
-		display: flex;
-		justify-content: flex-start; /* Align Footer to Left */
-		margin-top: 2rem;
-	}
-
-	/* Footer width matching right alignment preference */
-	.footer-alignment-wrapper :global(.site-footer) {
-		width: 100%; /* Full Width as requested */
-		margin-bottom: 20px;
-		margin-top: 240px !important; /* Restore valid top margin from previous global style */
 	}
 
 	/* Responsive */
 	@media (max-width: 1024px) {
-		.fixed-nav-top-right {
-			position: static;
-			width: 100%;
-			margin-bottom: 2rem;
-			display: flex;
-			flex-direction: row;
-			flex-wrap: nowrap; /* Prevent wrapping */
-			justify-content: space-between; /* Sidebar Left, Socials Right */
-			align-items: center;
-			gap: 20px; /* Padding between items */
-			padding: 20px; /* Padding all sides */
-			box-sizing: border-box; /* Include padding in width */
-			margin-bottom: 0; /* 0 Margin + 20px Padding = 20px Visual Gap */
+		.fixed-nav-top-left {
+			position: fixed;
+			top: 20px;
+			left: 50% !important;
+			transform: translateX(-50%) !important;
+			width: auto;
+			margin-bottom: 0;
+			display: block;
+			padding: 0;
+			box-sizing: border-box;
+		}
+
+		.toggle-floater {
+			right: 48px !important;
+			top: 20px !important;
 		}
 
 		.nav-wrapper-mobile {
@@ -634,7 +782,7 @@ const musibuddyProject = allProjects.find(
 		}
 
 		/* Override Sidebar Fixed Position on Mobile Home */
-		.fixed-nav-top-right :global(.nav-bento-wrapper) {
+		.fixed-nav-top-left :global(.nav-bento-wrapper) {
 			position: static !important; /* Force into flow */
 			width: 100% !important;
 			margin: 0 !important;
@@ -649,12 +797,12 @@ const musibuddyProject = allProjects.find(
 		}
 
 		/* Hide the spacer which pushes content down */
-		.fixed-nav-top-right :global(.nav-spacer) {
+		.fixed-nav-top-left :global(.nav-spacer) {
 			display: none !important;
 		}
 
 		/* Override width: 100% on nav trigger for mobile horizontal layout */
-		.fixed-nav-top-right :global(.nav-trigger) {
+		.fixed-nav-top-left :global(.nav-trigger) {
 			width: 100%; /* Fill the wrapper */
 		}
 
@@ -670,23 +818,35 @@ const musibuddyProject = allProjects.find(
 		}
 
 		.bio-content {
-			padding-left: 20px;
 			padding-top: 0;
 		}
+	}
 
-		.footer-alignment-wrapper {
-			justify-content: center;
-			padding-left: 0;
+	@media (max-width: 768px) {
+		.fixed-nav-top-left {
+			left: 50% !important;
+			transform: translateX(-50%) !important;
+			top: 16px !important;
+		}
+		.toggle-floater {
+			right: 24px !important;
+			top: 16px !important;
 		}
 	}
 
 	/* Hero Section */
 	.hero {
-		padding: 0 0 3rem; /* EXACTLY 20px top padding as requested */
+		padding: 0;
 		font-weight: 400;
-		font-size: 32px;
-		border-bottom: 1px solid var(--border-subtle); /* Hero Separator */
-		margin-bottom: 20px; /* Gap below line */
+		font-size: 36px;
+		margin-bottom: 0px; /* Gap below line */
+	}
+
+	.hero-divider {
+		height: 1px;
+		background: var(--border-subtle);
+		margin-inline: 0;
+		margin-top: 20px;
 	}
 
 	.hero-intro {
@@ -707,24 +867,46 @@ const musibuddyProject = allProjects.find(
 		scroll-margin-top: 0; /* Ensure flush alignment with viewport top */
 	}
 
+	.works-container {
+		padding: 40px 0 136px 0;
+	}
+
+	.works-title {
+		font-family: var(--font-sans);
+		font-size: 36px;
+		font-weight: 700;
+		color: var(--pure-bg-inverse);
+		text-align: center;
+		text-transform: uppercase;
+		margin: 0 0 40px 0;
+		letter-spacing: 0.05em;
+	}
+
+	@media (max-width: 1024px) {
+		.works-title {
+			font-size: 20px;
+			margin-bottom: 24px;
+		}
+	}
+
 	.works-header-sticky {
 		position: sticky;
-		top: 0;
+		top: 65px;
 		z-index: 5;
 		padding: 0; /* Remove padding to be precise */
-		margin-bottom: 36px; /* 36px gap to content */
+		margin-bottom: 20px; /* 20px gap to content */
 		pointer-events: none; /* Let clicks pass through the empty areas */
 	}
 
 	@media (max-width: 1024px) {
 		.works-header-sticky {
-			top: 5rem !important; /* 80px: Force clear fixed nav (Tablet) */
+			top: 65px !important;
 		}
 	}
 
 	@media (max-width: 768px) {
 		.works-header-sticky {
-			top: 5rem !important; /* 80px: Force clear fixed nav (Mobile) */
+			top: 61px !important;
 		}
 	}
 
@@ -739,10 +921,341 @@ const musibuddyProject = allProjects.find(
 		gap: var(--space-4xl);
 	}
 
-	/* Tablet View */
+	/* Home project list — vertical stack of wide 2-col cards */
+	.home-project-list {
+		display: flex;
+		flex-direction: column;
+		gap: 40px;
+		width: 100%;
+	}
+
+	/* See More Button */
+	.see-more-wrap {
+		display: flex;
+		justify-content: center;
+		padding: 0;
+		margin-top: 0;
+		overflow: hidden;
+		max-height: 0;
+		opacity: 0;
+		transition:
+			max-height 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+			opacity 0.4s ease,
+			margin-top 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+		pointer-events: none;
+		position: relative;
+		z-index: 20;
+	}
+
+	.see-more-wrap.visible {
+		max-height: 120px;
+		opacity: 1;
+		margin-top: 32px;
+		pointer-events: all;
+	}
+
+	.see-more-btn {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		background: none;
+		border: none;
+		cursor: pointer;
+		color: var(--text-secondary);
+		font-family: var(--font-sans);
+		font-size: 13px;
+		font-weight: 500;
+		letter-spacing: 0.02em;
+		padding: 8px 16px;
+		border-radius: var(--radius-full);
+		transition: color 0.2s ease;
+		outline: none;
+	}
+
+	.see-more-btn:hover {
+		color: var(--text-primary);
+	}
+
+	.see-more-btn:hover .see-more-circle {
+		background: var(--bg-surface-hover);
+		border-color: var(--border-focus);
+		transform: translateY(2px);
+	}
+
+	.see-more-circle {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 40px;
+		height: 40px;
+		border-radius: 50%;
+		border: 1px solid var(--border-subtle);
+		background: var(--accent-secondary);
+		transition:
+			background 0.2s ease,
+			border-color 0.2s ease,
+			transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+	}
+
+	.see-more-label {
+		font-family: "Geist", sans-serif;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		font-size: 12px;
+		font-weight: 600;
+	}
+
+	.project-card-wrapper {
+		display: grid;
+		grid-template-rows: 1fr;
+		transform: scale(0.96) translateY(0);
+		max-height: 1500px;
+		position: relative;
+		transition:
+			grid-template-rows 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+			opacity 0.4s ease,
+			transform 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+			max-height 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+			margin-bottom 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+			filter 0.4s ease;
+		overflow: visible;
+		filter: blur(0px);
+	}
+
+	.project-card-wrapper::after {
+		content: "";
+		position: absolute;
+		inset: 0;
+		background: linear-gradient(
+			to bottom,
+			transparent 10%,
+			var(--bg-primary) 90%
+		);
+		pointer-events: none;
+		opacity: 0;
+		transition: opacity 0.6s ease;
+		z-index: 10;
+	}
+
+	.project-card-wrapper.sneak-peek {
+		max-height: 180px !important;
+		opacity: 0.35 !important;
+		pointer-events: none !important;
+		overflow: hidden !important;
+		transform: scale(0.96) translateY(0) !important;
+		margin-bottom: -100px !important;
+	}
+
+	.project-card-wrapper.sneak-peek::after {
+		opacity: 1;
+	}
+
+	.project-card-wrapper.is-centered {
+		transform: scale(1) translateY(0);
+		opacity: 1;
+		filter: blur(0px);
+	}
+
+	.project-card-wrapper:hover {
+		filter: blur(0px) !important;
+		opacity: 1 !important;
+	}
+
+	.project-card-wrapper > :global(*) {
+		min-height: 0;
+	}
+
+	.project-card-wrapper.collapsed {
+		grid-template-rows: 0fr;
+		opacity: 0;
+		transform: scale(0.97) translateY(8px);
+		margin-bottom: -40px; /* Collapse the 40px list gap */
+		pointer-events: none;
+		overflow: hidden;
+	}
+
+	/* ── Clément Rozé Style Projects Navigation (Global Scopes for Dynamic JS Elements) ── */
+	:global(.projects-nav) {
+		position: fixed;
+		right: 28px;
+		top: 0;
+		height: 100vh;
+		display: flex;
+		align-items: flex-start;
+		z-index: 50;
+		pointer-events: none;
+		opacity: 0;
+		transition: opacity 0.4s ease;
+	}
+
+	:global(.projects-nav.visible) {
+		opacity: 1;
+		pointer-events: all;
+	}
+
+	:global(.projects-nav__track) {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 2px;
+		padding: 10px 8px;
+		border-radius: 12px;
+		position: relative;
+		z-index: 1;
+		will-change: transform;
+		transition: background 0.2s ease;
+	}
+
+	:global(.projects-nav__track:hover) {
+		background: var(--border-subtle);
+	}
+
+	:global(.projects-nav__dot-wrap) {
+		background: none;
+		border: none;
+		padding: 4px 14px;
+		margin: 0 -14px;
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		position: relative;
+		outline: none;
+		transition: transform 0.25s cubic-bezier(0.34, 1.5, 0.64, 1);
+	}
+
+	:global(.projects-nav__dot-wrap:hover) {
+		transform: scale(1.2);
+	}
+
+	:global(.projects-nav__pill) {
+		--pill-alpha: 0.35;
+		--pill-ink: 218, 221, 208; /* Fallback to match text-primary */
+		width: 6px;
+		height: 6px;
+		border-radius: 3px;
+		background: var(--text-primary);
+		opacity: var(--pill-alpha);
+		position: relative;
+		will-change: height, opacity;
+		transition:
+			height 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+			opacity 0.25s ease,
+			background-color 0.25s ease;
+	}
+
+	:global([data-theme="light"] .projects-nav__pill) {
+		--pill-ink: 40, 40, 40;
+	}
+
+	/* Force hover state on individual pill when dot-wrap is hovered */
+	:global(.projects-nav__dot-wrap:hover .projects-nav__pill) {
+		height: 20px !important;
+		opacity: 0.75 !important;
+		background-color: var(--text-primary) !important;
+	}
+
+	:global(.projects-nav__label) {
+		position: absolute;
+		right: 50%;
+		top: 50%;
+		margin-right: 20px;
+		transform: translateY(-50%) translate(4px);
+		transform-origin: right center;
+		font-family: var(--font-sans);
+		font-size: 13px;
+		font-weight: 500;
+		line-height: 1;
+		white-space: nowrap;
+		letter-spacing: -0.01em;
+		opacity: 0;
+		pointer-events: none;
+		color: var(--text-primary);
+		background: var(--bg-surface);
+		padding: 6px 10px;
+		border-radius: 4px;
+		border: 1px solid var(--border-subtle);
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+		transition:
+			opacity 0.2s ease,
+			transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+	}
+
+	:global(.projects-nav__dot-wrap:hover .projects-nav__label) {
+		opacity: 1;
+		transform: translateY(-50%) translate(0);
+	}
+
+	/* ── Project card enter animation ── */
+	.project-card-wrapper:not(.collapsed) {
+		animation: none;
+	}
+
+	.project-card-wrapper.card-entering {
+		animation: cardEnter 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+	}
+
+	@keyframes cardEnter {
+		from {
+			opacity: 0.6;
+			transform: translateY(12px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	/* Hide indicator on mobile */
+	@media (max-width: 900px) {
+		.projects-nav {
+			display: none;
+		}
+	}
+
 	@media (max-width: 1024px) {
 		.home-content {
-			padding: 20px 20px 0 20px;
+			padding: 136px 48px 0 48px;
+		}
+		.bio-content {
+			padding-inline: 48px;
+		}
+		.hero-actions-row {
+			padding-inline: 48px;
+			flex-direction: column !important;
+			align-items: center !important;
+			text-align: center !important;
+			gap: 12px !important;
+			margin-top: 1.5rem !important;
+		}
+		.hero-actions-left {
+			flex-wrap: wrap;
+			justify-content: center !important;
+			align-items: baseline !important;
+			gap: 1.25rem !important;
+		}
+		.hero-divider {
+			margin-inline: 48px;
+			margin-top: 16px !important;
+		}
+		.works-container {
+			padding: 40px 48px 48px 48px;
+		}
+		.see-more-wrap {
+			padding: 0 48px;
+		}
+		.game-bottom-wrapper {
+			width: calc(100% + 96px);
+			margin-left: -48px;
+		}
+		.bio-line-1 {
+			font-size: 42px;
+		}
+		.bio-line-2 {
+			font-size: 32px;
+		}
+		.bio-text {
+			font-size: 22px;
 		}
 	}
 
@@ -751,13 +1264,44 @@ const musibuddyProject = allProjects.find(
 			font-size: 32px;
 		}
 		.home-content {
-			padding: 20px 20px 0 20px;
+			padding: 136px 24px 0 24px;
+		}
+		.bio-content {
+			padding-inline: 24px;
+		}
+		.hero-actions-row {
+			padding-inline: 24px;
+			flex-direction: column !important;
+			align-items: center !important;
+			text-align: center !important;
+			gap: 12px !important;
+			margin-top: 1.5rem !important;
+		}
+		.hero-actions-left {
+			flex-wrap: wrap;
+			justify-content: center !important;
+			align-items: baseline !important;
+			gap: 1.25rem !important;
+		}
+		.hero-divider {
+			margin-inline: 24px;
+			margin-top: 16px !important;
+		}
+		.works-container {
+			padding: 40px 24px 24px 24px;
+		}
+		.see-more-wrap {
+			padding: 0 24px;
+		}
+		.game-bottom-wrapper {
+			width: calc(100% + 48px);
+			margin-left: -24px;
 		}
 	}
 
 	/* Hero Headline Styles */
 	.hero-headline {
-		text-align: left;
+		text-align: center;
 		max-width: 100%;
 		font-weight: 500;
 		letter-spacing: 0em;
@@ -774,21 +1318,42 @@ const musibuddyProject = allProjects.find(
 
 	.bio-short {
 		width: 100%;
-		font-size: 36px;
-		line-height: 1;
 		display: block; /* Default visible */
+		font-family: "Geist", sans-serif;
+		font-weight: 550; /* Bold */
+		letter-spacing: -0.05em;
 	}
 
-	.bio-subtext {
-		font-size: 16px;
-		color: var(--text-secondary);
-		line-height: 1.2;
-		display: inline-block;
-		margin-top: 0.5em;
+	.bio-line-1 {
+		font-size: 64px;
+		line-height: 0.9;
+		margin-bottom: 0.15em;
 	}
 
-	.bio-short .highlight {
-		color: #e5e5e5;
+	.dynamic-color-text {
+		color: #42be4a; /* Default color (#42BE4A) */
+		transition: color 0.4s ease;
+	}
+
+	.bio-line-2 {
+		font-size: 64px;
+		line-height: 0.9;
+		color: var(--pure-bg-inverse);
+	}
+
+	@media (max-width: 768px) {
+		.bio-line-1 {
+			font-size: 24px;
+		}
+		.bio-line-2 {
+			font-size: 24px;
+		}
+		.bio-text {
+			font-size: 12px;
+		}
+		.action-link {
+			font-size: 12px !important;
+		}
 	}
 
 	/* Emoji Hover Effect */
@@ -853,7 +1418,7 @@ const musibuddyProject = allProjects.find(
 
 	.bio-text {
 		/* grid-column: 1 / 3; */ /* No longer needed if container is constrained */
-		font-size: 18px; /* Mobile default */
+		font-size: 16px; /* Mobile default */
 		line-height: 1.3;
 		color: var(--text-secondary);
 	}
@@ -887,27 +1452,6 @@ const musibuddyProject = allProjects.find(
 		}
 	}
 
-	/* Sidebar Controls */
-	.sidebar-controls {
-		display: flex;
-		align-items: center;
-		gap: 0.5rem;
-	}
-
-	@media (min-width: 1025px) {
-		.sidebar-controls {
-			margin-top: auto;
-			padding-top: var(--space-lg);
-		}
-	}
-
-	@media (min-width: 1025px) {
-		.sidebar-controls {
-			width: 100%;
-			justify-content: space-between;
-		}
-	}
-
 	/* Hero Actions (Links) */
 	.hero-actions {
 		display: flex;
@@ -918,7 +1462,7 @@ const musibuddyProject = allProjects.find(
 
 	.action-link {
 		color: var(--text-secondary);
-		font-size: 0.95rem; /* Slightly larger text */
+		font-size: 16px;
 		text-decoration: none;
 		position: relative;
 		background: none;
@@ -931,15 +1475,6 @@ const musibuddyProject = allProjects.find(
 		line-height: 1;
 		gap: 0.5rem;
 		transition: color 0.2s ease;
-	}
-
-	.hero-actions .action-link {
-		text-decoration: underline;
-		text-underline-offset: 3px;
-	}
-
-	.hero-actions .action-link::after {
-		display: none;
 	}
 
 	.action-link:hover {
@@ -1206,44 +1741,582 @@ const musibuddyProject = allProjects.find(
 			if (emojiDisplay) {
 				emojiDisplay.classList.add("hidden");
 			}
+
+			// Bracket Hover Transition Width Measurement & State Management
+			const bracketWrappers = document.querySelectorAll(
+				".bracket-hover-wrapper",
+			);
+			bracketWrappers.forEach((wrapper) => {
+				const content = wrapper.querySelector(
+					".bracket-content",
+				) as HTMLElement;
+				const inner = wrapper.querySelector(
+					".bracket-inner",
+				) as HTMLElement;
+				const container =
+					wrapper.closest(".bio-line-2") ||
+					wrapper.closest(".bio-text");
+
+				if (content && inner) {
+					const setWidth = () => {
+						const width = inner.scrollWidth;
+						if (width > 0) {
+							content.style.setProperty(
+								"--expanded-width",
+								`${width}px`,
+							);
+						}
+					};
+					// Measure immediately on DOMContentLoaded
+					setWidth();
+					// Fallbacks to handle font loading or dynamic adjustments
+					wrapper.addEventListener("mouseenter", setWidth);
+					window.addEventListener("load", setWidth);
+
+					// Trigger expand when mouse enters the bracket itself
+					wrapper.addEventListener("mouseenter", () => {
+						wrapper.classList.add("is-hovered");
+					});
+
+					// Only collapse when mouse leaves the broader container (preventing layout shift flicker)
+					if (container) {
+						container.addEventListener("mouseleave", () => {
+							wrapper.classList.remove("is-hovered");
+						});
+					} else {
+						// Fallback if no container is found
+						wrapper.addEventListener("mouseleave", () => {
+							wrapper.classList.remove("is-hovered");
+						});
+					}
+				}
+			});
+
+			// Dynamic Bio Text Color based on filter selection
+			const FILTER_COLORS: Record<string, string> = {
+				all: "#42BE4A", // Default state color (#42BE4A)
+				"physical-ixd": "#0D8CE9", // Hover state blue color
+				"web-ux": "#F6631A",
+				"mobile-ux": "#FACC09",
+				"spatial-xd": "#2B923D",
+			};
+
+			const hash = window.location.hash.slice(1);
+			const initialColor = FILTER_COLORS[hash] || FILTER_COLORS["all"];
+			const dynamicTexts = document.querySelectorAll(
+				".dynamic-color-text",
+			);
+			dynamicTexts.forEach((el) => {
+				(el as HTMLElement).style.color = initialColor;
+			});
+
+			const onWorksFilterChangeColor = (e: any) => {
+				const filter = e.detail.filter;
+				const color = FILTER_COLORS[filter] || FILTER_COLORS["all"];
+				const dynamicTexts = document.querySelectorAll(
+					".dynamic-color-text",
+				);
+				dynamicTexts.forEach((el) => {
+					(el as HTMLElement).style.color = color;
+				});
+			};
+
+			if ((window as any)._worksFilterColorListener) {
+				window.removeEventListener(
+					"works-filter-change",
+					(window as any)._worksFilterColorListener,
+				);
+			}
+			(window as any)._worksFilterColorListener =
+				onWorksFilterChangeColor;
+			window.addEventListener(
+				"works-filter-change",
+				onWorksFilterChangeColor,
+			);
 		}
 	});
 </script>
 
 <script>
-	// Sticky Theme Toggle Collision Logic (desktop, tablet, and phone)
-	function updateThemeTogglePosition() {
-		const toggleContainer = document.querySelector(
-			".toggle-floater",
-		) as HTMLElement;
-		// Target the actual .site-footer to ignore the wrapper margins/flex alignment
-		const footer = document.querySelector(".site-footer") as HTMLElement;
+	function setupWorksGridFilter() {
+		const list = document.querySelector(".home-project-list");
+		if (!list) return;
 
-		if (!toggleContainer || !footer) return;
+		const wrappers = Array.from(
+			list.querySelectorAll(".project-card-wrapper"),
+		) as HTMLElement[];
+		if (wrappers.length === 0) return;
 
-		const footerRect = footer.getBoundingClientRect();
-		const windowHeight = window.innerHeight;
-		const baseBottom = 20;
-		const gap = 20;
+		const seeMoreWrap = document.getElementById("see-more-wrap");
+		const seeMoreBtn = document.getElementById("see-more-btn");
 
-		// If footer enters viewport
-		if (footerRect.top < windowHeight) {
-			// We want bottom to be such that button is 'gap' px above footer top
-			// newBottom = (windowHeight - footerRect.top) + gap
-			const newBottom = windowHeight - footerRect.top + gap;
-			toggleContainer.style.bottom = `${Math.max(
-				baseBottom,
-				newBottom,
-			)}px`;
-		} else {
-			toggleContainer.style.bottom = `${baseBottom}px`;
+		// Store original order of wrappers
+		const originalOrder = [...wrappers];
+
+		// Store category data for each wrapper
+		const wrapperData = wrappers.map((wrapper) => {
+			const categories = (wrapper.getAttribute("data-categories") || "")
+				.split(" ")
+				.filter(Boolean);
+			return { wrapper, categories };
+		});
+
+		let currentFilter = "all";
+		let isExpanded = false;
+
+		function applyFilter(filter: string) {
+			currentFilter = filter;
+
+			// Always restore original order first so successive filters start from a clean baseline
+			originalOrder.forEach((w) => list.appendChild(w));
+			isExpanded = false;
+
+			let matching: typeof wrapperData = [];
+			let nonMatching: typeof wrapperData = [];
+
+			if (filter === "all") {
+				matching = [...wrapperData];
+				nonMatching = [];
+			} else if (filter === "mobile-ux" || filter === "web-ux") {
+				// Selected filter is primary
+				const primary = wrapperData.filter((d) =>
+					d.categories.includes(filter),
+				);
+				// The other UX filter is secondary (continuing the list)
+				const otherFilter =
+					filter === "mobile-ux" ? "web-ux" : "mobile-ux";
+				const secondary = wrapperData.filter((d) =>
+					d.categories.includes(otherFilter),
+				);
+
+				matching = [...primary, ...secondary];
+				// Non-matching are items that belong to neither UX category
+				nonMatching = wrapperData.filter(
+					(d) =>
+						!d.categories.includes("mobile-ux") &&
+						!d.categories.includes("web-ux"),
+				);
+			} else {
+				matching = wrapperData.filter((d) =>
+					d.categories.includes(filter),
+				);
+				nonMatching = wrapperData.filter(
+					(d) => !d.categories.includes(filter),
+				);
+			}
+
+			// Reorder in DOM: matching first, then non-matching
+			matching.forEach((d) => list.appendChild(d.wrapper));
+			nonMatching.forEach((d) => list.appendChild(d.wrapper));
+
+			// Reset classes first
+			wrappers.forEach((w) => {
+				w.classList.remove("collapsed");
+				w.classList.remove("sneak-peek");
+			});
+
+			if (filter !== "all") {
+				// For non-matching:
+				// - The first one becomes a sneak-peek
+				// - The rest are collapsed
+				nonMatching.forEach(({ wrapper }, index) => {
+					if (index === 0) {
+						wrapper.classList.add("sneak-peek");
+					} else {
+						wrapper.classList.add("collapsed");
+					}
+				});
+			}
+
+			// Show see-more button only when a filter is active and hides some items
+			const hasHidden = filter !== "all" && nonMatching.length > 0;
+			if (seeMoreWrap) {
+				seeMoreWrap.classList.toggle("visible", hasHidden);
+				seeMoreWrap.setAttribute(
+					"aria-hidden",
+					hasHidden ? "false" : "true",
+				);
+			}
 		}
+
+		// See More click: expand to show all below matching ones
+		if (seeMoreBtn) {
+			seeMoreBtn.addEventListener("click", () => {
+				isExpanded = true;
+
+				// Hide the "See More" button section
+				if (seeMoreWrap) {
+					seeMoreWrap.classList.remove("visible");
+					seeMoreWrap.setAttribute("aria-hidden", "true");
+				}
+
+				// Show all projects smoothly with a stagger
+				let delay = 0;
+				wrappers.forEach((w) => {
+					w.classList.remove("sneak-peek");
+					if (w.classList.contains("collapsed")) {
+						setTimeout(() => {
+							w.classList.remove("collapsed");
+						}, delay);
+						delay += 75; // Stagger effect
+					}
+				});
+
+				// Notify scroll nav & lenis to rebuild after transitions start
+				setTimeout(() => {
+					window.dispatchEvent(
+						new CustomEvent("works-filter-change", {
+							detail: { filter: "__expanded" },
+						}),
+					);
+				}, delay + 50);
+			});
+		}
+
+		// Determine active filter from URL hash on load
+		const hash = window.location.hash.slice(1);
+		const validFilters = [
+			"physical-ixd",
+			"web-ux",
+			"mobile-ux",
+			"spatial-xd",
+		];
+		const activeFilter = validFilters.includes(hash) ? hash : "all";
+
+		applyFilter(activeFilter);
+
+		if (activeFilter !== "all") {
+			const worksSection = document.getElementById("works");
+			if (worksSection) {
+				setTimeout(() => {
+					worksSection.scrollIntoView({ behavior: "smooth" });
+				}, 100);
+			}
+		}
+
+		// Listen for filter changes dispatched from WorksFilter
+		const onWorksGridFilterChange = ((e: CustomEvent) => {
+			// Don't re-process our own synthetic events
+			if (e.detail.filter === "__expanded") return;
+			applyFilter(e.detail.filter);
+		}) as EventListener;
+
+		if ((window as any)._worksGridFilterListener) {
+			window.removeEventListener(
+				"works-filter-change",
+				(window as any)._worksGridFilterListener,
+			);
+		}
+		(window as any)._worksGridFilterListener = onWorksGridFilterChange;
+		window.addEventListener("works-filter-change", onWorksGridFilterChange);
 	}
 
-	window.addEventListener("scroll", updateThemeTogglePosition, {
-		passive: true,
-	});
-	window.addEventListener("resize", updateThemeTogglePosition);
-	// Initial call (slight delay to ensure layout is ready)
-	setTimeout(updateThemeTogglePosition, 100);
+	// Run initial setup and listen for page loads (Astro view transitions support)
+	setupWorksGridFilter();
+	document.addEventListener("astro:page-load", setupWorksGridFilter);
+</script>
+
+<script>
+	let cleanupProjectScroll: (() => void) | null = null;
+	let cleanupLenisFriction: (() => void) | null = null;
+
+	/* ─── Project Scroll Dot Indicator (Clément Rozé Style) ─── */
+	function setupProjectScrollNav() {
+		if (cleanupProjectScroll) {
+			cleanupProjectScroll();
+			cleanupProjectScroll = null;
+		}
+
+		const nav = document.getElementById("project-scroll-nav");
+		if (!nav) return;
+
+		const track = nav.querySelector(".projects-nav__track");
+		if (!track) return;
+
+		const worksSection = document.getElementById("works");
+		const wrappers = Array.from(
+			document.querySelectorAll(".project-card-wrapper"),
+		) as HTMLElement[];
+
+		if (wrappers.length === 0) return;
+
+		// Build dots dynamically inside track
+		track.innerHTML = "";
+		const dots = wrappers.map((wrapper, i) => {
+			const dotWrap = document.createElement("button");
+			dotWrap.className = "projects-nav__dot-wrap";
+			dotWrap.setAttribute("aria-label", `Scroll to project ${i + 1}`);
+
+			const pill = document.createElement("span");
+			pill.className = "projects-nav__pill";
+
+			const label = document.createElement("span");
+			label.className = "projects-nav__label";
+
+			// Find title from within the card's markup
+			const titleEl = wrapper.querySelector(".meta-project-title");
+			label.textContent = titleEl
+				? titleEl.textContent
+				: `Project ${i + 1}`;
+
+			dotWrap.appendChild(pill);
+			dotWrap.appendChild(label);
+
+			dotWrap.addEventListener("click", (e) => {
+				e.preventDefault();
+				wrapper.scrollIntoView({ behavior: "smooth", block: "center" });
+			});
+
+			track.appendChild(dotWrap);
+			return { dotWrap, pill, wrapper };
+		});
+
+		// Dynamically position and show/hide the track based on scroll
+		function updateVisibilityAndPosition() {
+			// Toggle visibility when scrolled past a small threshold
+			const isVisible = window.scrollY > 50;
+			nav.classList.toggle("visible", isVisible);
+
+			// Position the Y offset of the track
+			const H = window.innerHeight;
+			const Th = (track as HTMLElement).offsetHeight || 180;
+			const paddingBottom = 40; // padding from the bottom edge
+			const Y_bottom = H - Th - paddingBottom;
+			const Y_center = (H - Th) / 2;
+
+			// We want it to be fully centered when we scroll to the works section
+			const W_top = worksSection ? worksSection.offsetTop : 400;
+			const scrollThreshold = Math.max(100, W_top - 200);
+			const S = window.scrollY;
+
+			const progress = Math.max(0, Math.min(1, S / scrollThreshold));
+			let Y = Y_bottom + (Y_center - Y_bottom) * progress;
+
+			// Keep 20px padding between the bottom of the track and the footer divider (top edge of footer)
+			const footer = document.querySelector(".site-footer");
+			if (footer) {
+				const footerRect = footer.getBoundingClientRect();
+				// footerRect.top is the top boundary of the footer relative to the viewport
+				const maxAllowedY = footerRect.top - Th - 20;
+				if (Y > maxAllowedY) {
+					Y = maxAllowedY;
+				}
+			}
+
+			(track as HTMLElement).style.transform = `translateY(${Y}px)`;
+		}
+
+		// Dynamically morph dot sizes and opacities as user scrolls
+		function updateActiveDotStates() {
+			const visibleWrappers = wrappers.filter(
+				(w) =>
+					!w.classList.contains("collapsed") &&
+					!w.classList.contains("sneak-peek"),
+			);
+			const visibleDots = dots.filter(
+				(d) =>
+					!d.wrapper.classList.contains("collapsed") &&
+					!d.wrapper.classList.contains("sneak-peek"),
+			);
+
+			if (visibleWrappers.length === 0) return;
+
+			// Store heights and update visibility
+			dots.forEach(({ dotWrap, wrapper }) => {
+				if (
+					wrapper.classList.contains("collapsed") ||
+					wrapper.classList.contains("sneak-peek")
+				) {
+					dotWrap.style.display = "none";
+				} else {
+					dotWrap.style.display = "";
+				}
+			});
+
+			// Compare card centers with viewport center
+			const centers = visibleWrappers.map((w) => {
+				const rect = w.getBoundingClientRect();
+				return rect.top + window.scrollY + rect.height / 2;
+			});
+			const T = window.scrollY + window.innerHeight / 2;
+
+			// Find fractional index P
+			let P = 0;
+			for (let z = 0; z < centers.length - 1; z++) {
+				const G = centers[z];
+				const Y = centers[z + 1];
+				if (T >= G && T < Y) {
+					P = z + (T - G) / (Y - G);
+					break;
+				}
+			}
+			if (T >= centers[centers.length - 1]) {
+				P = centers.length - 1;
+			}
+			P = Math.max(0, Math.min(centers.length - 1, P));
+
+			// Apply continuous transition heights and opacities
+			visibleDots.forEach((d, index) => {
+				const diff = Math.abs(P - index);
+				if (diff < 1) {
+					// Morph from dot (6px) to line (20px)
+					const height = 6 + (20 - 6) * (1 - diff);
+					const alpha = 0.35 + 0.65 * (1 - diff);
+					d.pill.style.height = `${height}px`;
+					d.pill.style.setProperty("--pill-alpha", alpha.toFixed(2));
+				} else {
+					d.pill.style.height = "6px";
+					d.pill.style.setProperty("--pill-alpha", "0.35");
+				}
+			});
+		}
+
+		const handleScroll = () => {
+			updateActiveDotStates();
+			updateVisibilityAndPosition();
+		};
+
+		const handleResize = () => {
+			updateActiveDotStates();
+			updateVisibilityAndPosition();
+		};
+
+		window.addEventListener("scroll", handleScroll, { passive: true });
+		window.addEventListener("resize", handleResize);
+
+		updateActiveDotStates();
+		updateVisibilityAndPosition();
+
+		// Refresh when filter updates
+		const handleFilterChange = () => {
+			setupProjectScrollNav();
+			setupLenisFriction();
+		};
+		window.addEventListener(
+			"works-filter-change",
+			handleFilterChange as EventListener,
+		);
+
+		cleanupProjectScroll = () => {
+			window.removeEventListener("scroll", handleScroll);
+			window.removeEventListener("resize", handleResize);
+			window.removeEventListener(
+				"works-filter-change",
+				handleFilterChange as EventListener,
+			);
+		};
+	}
+
+	/* ─── Lenis Scroll Friction & Visual Emphasis ─── */
+	function setupLenisFriction() {
+		if (cleanupLenisFriction) {
+			cleanupLenisFriction();
+			cleanupLenisFriction = null;
+		}
+
+		const w = window as any;
+		const wrappers = Array.from(
+			document.querySelectorAll(".project-card-wrapper:not(.collapsed)"),
+		) as HTMLElement[];
+
+		if (wrappers.length === 0) return;
+
+		// 1. Visual Emphasis via IntersectionObserver
+		const observer = new IntersectionObserver(
+			(entries) => {
+				entries.forEach((entry) => {
+					if (entry.isIntersecting) {
+						entry.target.classList.add("is-centered");
+					} else {
+						entry.target.classList.remove("is-centered");
+					}
+				});
+			},
+			{
+				rootMargin: "-25% 0px -25% 0px", // Only trigger when card is in the middle 50% of screen
+				threshold: 0,
+			},
+		);
+
+		wrappers.forEach((w) => observer.observe(w));
+
+		// 2. Dynamic Scroll Blur & Opacity (Gradient Blur)
+		const updateScrollVisuals = () => {
+			const worksSection = document.getElementById("works");
+			const worksTop = worksSection
+				? worksSection.getBoundingClientRect().top + window.scrollY
+				: 0;
+			const isNearTop = window.scrollY < worksTop - 150;
+
+			const viewportCenter = window.scrollY + window.innerHeight / 2;
+			let closestDist = Infinity;
+
+			for (const wrapper of wrappers) {
+				if (wrapper.classList.contains("collapsed")) continue;
+				const rect = wrapper.getBoundingClientRect();
+				const cardCenter = rect.top + window.scrollY + rect.height / 2;
+				const dist = Math.abs(viewportCenter - cardCenter);
+
+				if (dist < closestDist) {
+					closestDist = dist;
+				}
+
+				// Apply dynamic gradient blur & opacity based on distance from screen center (desktop only)
+				if (window.innerWidth > 768 && !isNearTop) {
+					const maxDist = window.innerHeight * 0.6; // Distance at which effect is fully saturated
+					const t = Math.min(dist / maxDist, 1);
+					const easeT = t * t; // Quadratic easing for a smoother focus transition near the center
+
+					const blurVal = (easeT * 3.5).toFixed(1);
+					const opacityVal = (1 - easeT * 0.45).toFixed(2);
+
+					wrapper.style.filter = `blur(${blurVal}px)`;
+					wrapper.style.opacity = opacityVal;
+				} else {
+					wrapper.style.filter = "";
+					wrapper.style.opacity = "";
+				}
+			}
+
+			// 3. Physical Friction via Lenis
+			if (w.lenis) {
+				const radius = 150;
+				if (closestDist < radius) {
+					const ratio = closestDist / radius;
+					w.lenis.options.wheelMultiplier =
+						0.25 + 0.75 * (ratio * ratio);
+				} else {
+					w.lenis.options.wheelMultiplier = 1;
+				}
+			}
+		};
+
+		window.addEventListener("scroll", updateScrollVisuals, {
+			passive: true,
+		});
+		// Initial execution to align states immediately
+		updateScrollVisuals();
+
+		cleanupLenisFriction = () => {
+			wrappers.forEach((wrapper) => {
+				observer.unobserve(wrapper);
+				wrapper.style.filter = "";
+				wrapper.style.opacity = "";
+			});
+			observer.disconnect();
+			window.removeEventListener("scroll", updateScrollVisuals);
+			if (w.lenis) {
+				w.lenis.options.wheelMultiplier = 1;
+			}
+		};
+	}
+
+	function init() {
+		setupProjectScrollNav();
+		setupLenisFriction();
+	}
+
+	// Run initial setup and listen for page loads (Astro view transitions support)
+	document.addEventListener("DOMContentLoaded", init);
+	document.addEventListener("astro:page-load", init);
 </script>
