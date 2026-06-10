@@ -2,73 +2,93 @@
 
 ---
 
-<footer class="site-footer">
-    <div class="footer-top">
-        <p class="contact-message">
-            Let's build something together. 👋 Say hi! I'm always down to talk
-            design.
-        </p>
-
-        <p class="built-message">
-            Designed in Figma. Built with <a
-                href="https://astro.build"
-                target="_blank"
-                rel="noopener noreferrer">Astro</a
-            > in <a
-                href="https://antigravity.google"
-                target="_blank"
-                rel="noopener noreferrer">Antigravity</a
-            >.
-        </p>
-    </div>
-
+<footer class="site-footer" id="footer">
     <div class="footer-divider"></div>
 
-    <div class="footer-bottom">
-        <div class="contact-buttons">
-            <button
-                class="copy-btn"
-                data-clipboard-text="nashanah@andrew.cmu.edu"
-            >
-                <span class="btn-text">nashanah@andrew.cmu.edu</span>
-                <span class="copy-icon">
-                    <svg
-                        width="12"
-                        height="12"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                    >
-                        <rect x="9" y="9" width="13" height="13" rx="2"></rect>
-                        <path
-                            d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2-2v1"
-                        ></path>
-                    </svg>
-                </span>
-            </button>
-            <button class="copy-btn" data-clipboard-text="412-626-2332">
-                <span class="btn-text">412-626-2332</span>
-                <span class="copy-icon">
-                    <svg
-                        width="12"
-                        height="12"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                    >
-                        <rect x="9" y="9" width="13" height="13" rx="2"></rect>
-                        <path
-                            d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2-2v1"
-                        ></path>
-                    </svg>
-                </span>
-            </button>
+    <div class="footer-content">
+        <div class="footer-left">
+            <p class="contact-message">
+                Let's build something worth caring about. Say hi! 👀
+            </p>
+            <div class="contact-buttons">
+                <button
+                    class="copy-btn"
+                    data-clipboard-text="narayan.ashanahalli@gmail.com"
+                >
+                    <span class="btn-text">narayan.ashanahalli@gmail.com</span>
+                    <span class="copy-icon">
+                        <svg
+                            width="12"
+                            height="12"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        >
+                            <rect x="9" y="9" width="13" height="13" rx="2"
+                            ></rect>
+                            <path
+                                d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2-2v1"
+                            ></path>
+                        </svg>
+                    </span>
+                </button>
+                <button class="copy-btn" data-clipboard-text="412-626-2332">
+                    <span class="btn-text">412-626-2332</span>
+                    <span class="copy-icon">
+                        <svg
+                            width="12"
+                            height="12"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        >
+                            <rect x="9" y="9" width="13" height="13" rx="2"
+                            ></rect>
+                            <path
+                                d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2-2v1"
+                            ></path>
+                        </svg>
+                    </span>
+                </button>
+                <a
+                    href="https://linkedin.com/in/narayan-ashanahalli/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="social-footer-link"
+                >
+                    <span class="btn-text">LinkedIn ↗</span>
+                </a>
+                <a
+                    href="https://www.instagram.com/narayan.3dm/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="social-footer-link"
+                >
+                    <span class="btn-text">Instagram ↗</span>
+                </a>
+                <a
+                    href="https://github.com/narayan-works"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="social-footer-link"
+                >
+                    <span class="btn-text">GitHub ↗</span>
+                </a>
+            </div>
         </div>
-        <div class="footer-text">
-            <p class="tagline">
-                Trying to make cool sh*t for people to fu*k with.
+        <div class="footer-right">
+            <p class="built-message">
+                Designed in Figma. Built with <a
+                    href="https://astro.build"
+                    target="_blank"
+                    rel="noopener noreferrer">Astro</a
+                > in <a
+                    href="https://antigravity.google"
+                    target="_blank"
+                    rel="noopener noreferrer">Antigravity</a
+                >.
             </p>
             <p class="copyright">
                 © {new Date().getFullYear()} Narayan Ashnahalli
@@ -96,30 +116,71 @@
 
 <style>
     .site-footer {
-        margin-top: var(--space-4xl);
+        display: flex;
+        flex-direction: column;
+        margin-top: 128px;
+        margin-bottom: 0px !important;
+        width: calc(100% + 40px) !important;
+        margin-left: -20px !important;
+        margin-right: -20px !important;
+        padding-top: 0px !important;
+        padding-left: 20px !important;
+        padding-right: 20px !important;
+        padding-bottom: 20px !important;
+        background: var(--bg-surface);
+        box-sizing: border-box;
     }
 
-    .footer-top {
+    :global(.home-content) .site-footer {
+        width: calc(100% + 2 * var(--total-side-padding)) !important;
+        margin-left: calc(-1 * var(--total-side-padding)) !important;
+        margin-right: calc(-1 * var(--total-side-padding)) !important;
+        padding-top: 0px !important;
+        padding-left: 20px !important;
+        padding-right: 20px !important;
+        padding-bottom: 20px !important;
+        margin-bottom: 0px !important;
+    }
+
+    .footer-content {
         display: flex;
         justify-content: space-between;
+        align-items: stretch;
+        gap: 40px;
+    }
+
+    .footer-left {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        gap: 20px;
+    }
+
+    .footer-right {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
         align-items: flex-end;
-        margin-bottom: 4px; /* Consistent spacing above divider */
+        gap: 4px;
+        text-align: right;
     }
 
     .contact-message {
-        font-size: 14px;
-        color: var(--text-secondary);
+        font-size: 48px;
+        color: var(--text-primary);
         margin: 0;
-        line-height: 1.4;
+        line-height: 0.9;
         text-align: left;
-        max-width: 60%; /* Prevent overlap on smaller desktops */
+        max-width: 850px;
+        font-weight: 600;
     }
 
     .built-message {
         font-size: 14px;
         color: var(--text-secondary);
         margin: 0;
-        line-height: 1.4;
+        line-height: 1.3;
         text-align: right;
     }
 
@@ -137,30 +198,27 @@
 
     .footer-divider {
         height: 1px;
-        background: var(--border-subtle);
-        margin-bottom: 8px;
-        width: 100%;
-    }
-
-    .footer-bottom {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        gap: 20px;
+        background: var(--border-focus);
+        margin-left: -20px !important;
+        margin-right: -20px !important;
+        width: calc(100% + 40px) !important;
+        margin-bottom: 20px;
     }
 
     .contact-buttons {
         display: flex;
-        gap: 8px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
     }
 
     .copy-btn {
         display: flex;
         align-items: center;
         gap: 8px;
-        padding: 0.5rem 0.75rem;
+        padding: 6px 12px;
         background: transparent;
-        border: 1px solid var(--border-subtle);
+        border: 1px solid transparent; /* No bento in normal state */
         border-radius: var(--radius-md);
         color: var(--text-secondary);
         font-size: 14px;
@@ -169,11 +227,63 @@
         transition: all 0.15s ease;
         position: relative;
         user-select: none;
+        margin-left: -12px; /* Align text perfectly with left edge of top text */
+        margin-top: -6px; /* Keep vertical spacing tight in unhovered state */
+        margin-bottom: -6px;
     }
 
-    .copy-btn:hover {
-        border-color: var(--accent-secondary);
-        color: var(--text-primary);
+    .copy-btn:hover:not(.copied) {
+        color: var(--accent-secondary);
+    }
+
+    .social-footer-link {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 12px;
+        background: transparent;
+        border: 1px solid transparent;
+        border-radius: var(--radius-md);
+        color: var(--text-secondary);
+        font-size: 14px;
+        font-family: inherit;
+        cursor: pointer;
+        transition: all 0.15s ease;
+        position: relative;
+        user-select: none;
+        margin-left: -12px;
+        margin-top: -6px;
+        margin-bottom: -6px;
+        text-decoration: none;
+    }
+
+    .social-footer-link:hover {
+        color: var(--accent-secondary);
+    }
+
+    .btn-text {
+        position: relative;
+        display: inline-block;
+    }
+
+    .btn-text::after {
+        content: "";
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 100%;
+        height: 1px;
+        background-color: var(--accent-secondary);
+        transform: scaleX(0);
+        transform-origin: right;
+        transition: transform 0.2s ease;
+    }
+
+    .copy-btn:hover:not(.copied) .btn-text::after,
+    .social-footer-link:hover .btn-text::after,
+    .copy-btn.copied .btn-text::after {
+        transform: scaleX(1);
+        transform-origin: left;
     }
 
     .copy-btn * {
@@ -182,20 +292,34 @@
 
     .copy-icon {
         display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 20px;
+        height: 20px;
+        border: 1px solid transparent;
+        border-radius: var(--radius-sm);
+        color: var(--text-secondary);
+        background: transparent;
+        transition: all 0.15s ease;
+        box-sizing: border-box;
         opacity: 0.5;
     }
 
-    .copy-btn:hover .copy-icon {
+    .copy-btn:hover:not(.copied) .copy-icon {
+        border-color: var(--accent-secondary);
+        color: var(--accent-secondary);
         opacity: 1;
     }
 
     .copy-btn.copied {
+        color: var(--accent-secondary);
+    }
+
+    .copy-btn.copied .copy-icon {
         background: var(--accent-secondary);
         border-color: var(--accent-secondary);
-        color: white; /* Or a dark color if accent is very bright, but green usually works with white */
-        box-shadow:
-            0 0 12px rgba(66, 189, 73, 0.4),
-            0 0 4px rgba(66, 189, 73, 0.2);
+        color: #ffffff;
+        opacity: 1;
     }
 
     .footer-text {
@@ -203,7 +327,7 @@
     }
 
     .tagline {
-        font-size: 14px;
+        font-size: 12px;
         color: var(--text-secondary);
         margin: 0;
         font-style: italic;
@@ -217,6 +341,42 @@
         line-height: 1.3;
     }
 
+    @media (max-width: 1024px) {
+        :global(.home-content) .site-footer {
+            width: calc(100% + 96px) !important;
+            margin-left: -48px !important;
+            margin-right: -48px !important;
+            padding-left: 48px !important;
+            padding-right: 48px !important;
+        }
+        .footer-divider {
+            margin-left: -48px !important;
+            margin-right: -48px !important;
+            width: calc(100% + 96px) !important;
+        }
+    }
+
+    @media (max-width: 768px) {
+        :global(.home-content) .site-footer {
+            width: calc(100% + 48px) !important;
+            margin-left: -24px !important;
+            margin-right: -24px !important;
+            padding-left: 24px !important;
+            padding-right: 24px !important;
+        }
+        .footer-divider {
+            margin-left: -24px !important;
+            margin-right: -24px !important;
+            width: calc(100% + 48px) !important;
+        }
+        .built-message,
+        .copyright,
+        .copy-btn,
+        .social-footer-link {
+            font-size: 10px !important;
+        }
+    }
+
     @media (max-width: 600px) {
         .site-footer {
             display: flex;
@@ -224,9 +384,9 @@
             gap: 12px;
         }
 
-        .footer-top,
-        .footer-bottom,
-        .footer-text {
+        .footer-content,
+        .footer-left,
+        .footer-right {
             display: contents;
         }
 
@@ -235,6 +395,8 @@
             max-width: 100%;
             margin-bottom: 0;
             text-align: left;
+            font-size: 28px;
+            line-height: 1.25;
         }
 
         .contact-buttons {
@@ -243,8 +405,12 @@
         }
 
         .footer-divider {
-            order: 3;
-            margin: 4px 0;
+            order: 0;
+            margin-top: 0px !important;
+            margin-bottom: 20px !important;
+            margin-left: -24px !important;
+            margin-right: -24px !important;
+            width: calc(100% + 48px) !important;
         }
 
         .built-message {

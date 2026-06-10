@@ -9,6 +9,7 @@ interface Props {
     fetchPriority?: "auto" | "high" | "low";
     fit?: "contain" | "cover";
     scale?: number;
+    categories?: string[];
 }
 
 import { Image } from "astro:assets";
@@ -24,6 +25,7 @@ const {
     fetchPriority = "auto",
     fit = "contain",
     scale = 1,
+    categories = [],
 } = Astro.props;
 
 // Map sizes to grid column/row spans
@@ -38,7 +40,7 @@ const spanClasses = {
 const spanClass = spanClasses[size] || spanClasses["small"];
 ---
 
-<a href={href} class={`bento-item ${spanClass}`}>
+<a href={href} class={`bento-item ${spanClass}`} data-categories={categories.join(" ")}>
     <div class="bento-card-visual" style={`--base-scale: ${scale};`}>
         {
             image ? (
