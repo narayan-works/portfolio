@@ -120,17 +120,34 @@ const aspectString = `${imageWidth} / ${imageHeight}`;
 
 <style>
     .home-project-card {
+        --card-padding: 16px;
+        --media-radius: var(--radius-md);
         display: grid;
         grid-template-columns: 2fr 1fr;
-        gap: 12px;
+        gap: var(--card-padding);
         text-decoration: none;
         color: inherit;
         position: relative;
         height: auto;
-        overflow: visible;
-        border: none;
+        overflow: hidden;
+        padding: var(--card-padding);
+        border: 1px solid transparent;
+        border-radius: calc(var(--media-radius) + var(--card-padding));
         background: transparent;
         box-shadow: none;
+        transition:
+            background-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+            border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+            box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+            transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .home-project-card:hover {
+        transform: translateY(-6px);
+        box-shadow:
+            0 30px 60px -15px rgba(0, 0, 0, 0.35),
+            0 15px 30px -10px rgba(0, 0, 0, 0.2),
+            inset 0 1px 0 rgba(255, 255, 255, 0.25);
     }
 
     /* ── Image Bento Panel ── */
@@ -141,18 +158,20 @@ const aspectString = `${imageWidth} / ${imageHeight}`;
         aspect-ratio: var(--image-aspect-ratio, 1200 / 700);
         background: var(--bg-surface);
         border: 1px solid var(--bg-primary);
-        border-radius: var(--radius-md);
+        border-radius: var(--media-radius);
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
         transition:
-            transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-            box-shadow 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-            border-color 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+            box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+            transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    /* Lift only the image panel on hover of the row */
+    /* On card hover, elevate the image panel inside the card for 3D depth */
     .home-project-card:hover .card-image-panel {
-        transform: translateY(-2px);
-        box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.25);
+        box-shadow:
+            0 12px 24px -8px rgba(0, 0, 0, 0.3),
+            0 4px 10px -4px rgba(0, 0, 0, 0.2);
+        border-color: rgba(255, 255, 255, 0.15);
     }
 
     .card-image {
@@ -237,7 +256,7 @@ const aspectString = `${imageWidth} / ${imageHeight}`;
         border-color: var(--accent-secondary);
     }
 
-    /* ── Metadata Panel (Transparent by default, bento block with category color on hover) ── */
+    /* ── Metadata Panel (Transparent always, nested inside the main bento container) ── */
     .card-meta-panel {
         background: transparent;
         border: 1px solid transparent;
@@ -256,12 +275,12 @@ const aspectString = `${imageWidth} / ${imageHeight}`;
     }
 
     .home-project-card:hover .card-meta-panel {
-        transform: translateY(-2px);
-        box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.25);
+        transform: none;
+        box-shadow: none;
     }
 
     .meta-inner {
-        padding: 0 24px 24px 24px;
+        padding: 0;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -269,6 +288,11 @@ const aspectString = `${imageWidth} / ${imageHeight}`;
         height: 100%;
         box-sizing: border-box;
         flex: 1;
+        transition: padding-top 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .home-project-card:hover .meta-inner {
+        padding-top: calc(0.2 * var(--card-padding));
     }
 
     .meta-top-group {
@@ -278,36 +302,26 @@ const aspectString = `${imageWidth} / ${imageHeight}`;
         transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    .home-project-card:hover .meta-top-group {
-        transform: translateY(24px);
-    }
 
-    /* Hide description, divider and metadata list smoothly on hover without height/layout shifts */
-    .meta-description,
-    .meta-divider,
-    .meta-list {
-        opacity: 0;
-        visibility: hidden;
-        transition:
-            opacity 0.3s ease,
-            visibility 0.3s ease;
-    }
-
-    .home-project-card:hover .meta-description,
-    .home-project-card:hover .meta-divider,
-    .home-project-card:hover .meta-list {
-        opacity: 1;
-        visibility: visible;
-    }
 
     .meta-divider {
-        border-top: 1px solid var(--border-subtle);
-        margin: 10px 0;
-        transition: border-color 0.3s ease;
+        border-top: 1px solid transparent;
+        border-bottom: 1px solid transparent;
+        margin: 0;
+        max-height: 0;
+        overflow: hidden;
+        transition:
+            border-top-color 0.3s ease,
+            border-bottom-color 0.3s ease,
+            margin 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+            max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .home-project-card:hover .meta-divider {
         border-top-color: rgba(0, 0, 0, 0.15);
+        border-bottom-color: rgba(255, 255, 255, 0.25);
+        margin: 10px 0;
+        max-height: 10px;
     }
 
     .meta-tags {
@@ -349,14 +363,25 @@ const aspectString = `${imageWidth} / ${imageHeight}`;
         font-size: 12px;
         line-height: 1.4;
         color: var(--text-primary);
-        opacity: 0.85;
+        opacity: 0;
+        visibility: hidden;
         margin: 0;
-        transition: color 0.3s ease;
+        max-height: 0;
+        overflow: hidden;
+        transition:
+            color 0.3s ease,
+            opacity 0.3s ease,
+            visibility 0.3s ease,
+            max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+            margin 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .home-project-card:hover .meta-description {
         color: #000000;
         opacity: 0.9;
+        visibility: visible;
+        max-height: 120px;
+        margin-top: 8px;
     }
 
     .meta-list {
@@ -364,7 +389,35 @@ const aspectString = `${imageWidth} / ${imageHeight}`;
         grid-template-columns: auto 1fr;
         row-gap: 6px;
         column-gap: 16px;
-        margin: 12px 0 0 0;
+        margin: 0;
+        padding: 0;
+        border: 1px solid transparent;
+        border-radius: 8px;
+        background: transparent;
+        max-height: 0;
+        opacity: 0;
+        visibility: hidden;
+        overflow: hidden;
+        transition:
+            background-color 0.3s ease,
+            border-color 0.3s ease,
+            box-shadow 0.3s ease,
+            opacity 0.3s ease,
+            visibility 0.3s ease,
+            max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+            margin 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+            padding 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .home-project-card:hover .meta-list {
+        background: rgba(0, 0, 0, 0.04);
+        border-color: rgba(0, 0, 0, 0.05);
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.06);
+        opacity: 1;
+        visibility: visible;
+        max-height: 300px;
+        margin-top: 12px;
+        padding: 12px;
     }
 
     .meta-row {
@@ -428,86 +481,58 @@ const aspectString = `${imageWidth} / ${imageHeight}`;
         .home-project-card {
             grid-template-columns: 1fr;
             height: auto;
-            gap: 10px;
-        }
-
-        .card-image-panel {
-            height: auto;
+            gap: var(--card-padding);
         }
 
         .card-meta-panel {
-            background: transparent !important;
-            border: none !important;
-            box-shadow: none !important;
-            transform: none !important;
+            order: 2;
         }
 
-        .meta-inner {
-            padding: 8px 0 0 0 !important;
-        }
-
-        .meta-description,
-        .meta-divider,
-        .meta-list {
-            display: none !important;
-        }
-
-        .meta-tag {
-            font-size: 10px !important;
-        }
-
-        .meta-project-title {
-            font-size: 18px !important;
-        }
-
-        .project-cta-pill {
-            opacity: 1 !important;
-            transform: none !important;
-            background: var(--accent-secondary) !important;
-            color: #ffffff !important;
-            border-color: var(--accent-secondary) !important;
+        .card-image-panel {
+            order: 1;
+            height: auto;
         }
     }
 
     /* Category-specific hover colors for project bentos & CTA pills */
-    .home-project-card[data-categories~="physical-ixd"]:hover .card-meta-panel {
-        border-color: #68b5ed;
-        background-color: #68b5ed;
+    .home-project-card[data-categories~="physical-ixd"]:hover {
+        border-color: #559ed5;
+        background: linear-gradient(135deg, #82c6f6 0%, #4696d3 100%);
     }
     .home-project-card[data-categories~="physical-ixd"]:hover
         .project-cta-pill {
-        background: #68b5ed !important;
+        background: #82c6f6 !important;
         color: #000000 !important;
-        border-color: #68b5ed !important;
+        border-color: #82c6f6 !important;
     }
 
-    .home-project-card[data-categories~="web-ux"]:hover .card-meta-panel {
-        border-color: #f6631a;
-        background-color: #f6631a;
+    .home-project-card[data-categories~="web-ux"]:hover {
+        border-color: #e05105;
+        background: linear-gradient(135deg, #ff7e36 0%, #cc4700 100%);
     }
     .home-project-card[data-categories~="web-ux"]:hover .project-cta-pill {
-        background: #f6631a !important;
+        background: #ff7e36 !important;
         color: #000000 !important;
-        border-color: #f6631a !important;
+        border-color: #ff7e36 !important;
     }
 
-    .home-project-card[data-categories~="mobile-ux"]:hover .card-meta-panel {
-        border-color: #facc09;
-        background-color: #facc09;
+    .home-project-card[data-categories~="mobile-ux"]:hover {
+        border-color: #dfbc05;
+        background: linear-gradient(135deg, #ffdf4c 0%, #ccab00 100%);
     }
     .home-project-card[data-categories~="mobile-ux"]:hover .project-cta-pill {
-        background: #facc09 !important;
+        background: #ffdf4c !important;
         color: #000000 !important;
-        border-color: #facc09 !important;
+        border-color: #ffdf4c !important;
     }
 
-    .home-project-card[data-categories~="spatial-xd"]:hover .card-meta-panel {
-        border-color: #2b923d;
-        background-color: #2b923d;
+    .home-project-card[data-categories~="spatial-xd"]:hover {
+        border-color: #258835;
+        background: linear-gradient(135deg, #3db853 0%, #186e25 100%);
     }
     .home-project-card[data-categories~="spatial-xd"]:hover .project-cta-pill {
-        background: #2b923d !important;
+        background: #3db853 !important;
         color: #000000 !important;
-        border-color: #2b923d !important;
+        border-color: #3db853 !important;
     }
 </style>
