@@ -5,7 +5,7 @@
 <div class="works-filter-container">
     <div class="segmented-control" id="works-segmented-control">
         <button class="filter-btn active" data-filter="all">All</button>
-        <button class="filter-btn" data-filter="physical-ixd">Physical IxD</button>
+        <button class="filter-btn" data-filter="physical-ux">Physical UX</button>
         <button class="filter-btn" data-filter="web-ux">Web UX</button>
         <button class="filter-btn" data-filter="mobile-ux">Mobile UX</button>
         <button class="filter-btn" data-filter="spatial-xd">Spatial XD</button>
@@ -121,7 +121,7 @@
         --c1: #000000; --c2: #000000; --c3: #000000; --c4: #000000;
         color: #ffffff !important;
     }
-    .filter-btn[data-filter="physical-ixd"]:hover {
+    .filter-btn[data-filter="physical-ux"]:hover {
         --c1: #0D8CE9; --c2: #0D8CE9; --c3: #0D8CE9; --c4: #0D8CE9;
         color: #000000 !important;
     }
@@ -159,7 +159,7 @@
         --c1: #000000; --c2: #000000; --c3: #000000; --c4: #000000;
         color: #ffffff !important;
     }
-    .filter-btn.active[data-filter="physical-ixd"]:hover {
+    .filter-btn.active[data-filter="physical-ux"]:hover {
         --c1: #0D8CE9; --c2: #0D8CE9; --c3: #0D8CE9; --c4: #0D8CE9;
         color: #000000 !important;
     }
@@ -220,7 +220,7 @@
      */
     const SELECTED_COLORS: Record<string, { c: string; text: string }> = {
         "all":          { c: "#000000", text: "#ffffff" },
-        "physical-ixd": { c: "#0D8CE9", text: "#000000" },
+        "physical-ux": { c: "#0D8CE9", text: "#000000" },
         "web-ux":       { c: "#F6631A", text: "#000000" },
         "mobile-ux":    { c: "#FACC09", text: "#000000" },
         "spatial-xd":   { c: "#2B923D", text: "#000000" },
@@ -263,7 +263,7 @@
 
         // Determine active filter from URL hash
         const hash = window.location.hash.slice(1);
-        const validFilters = ["physical-ixd", "web-ux", "mobile-ux", "spatial-xd"];
+        const validFilters = ["physical-ux", "web-ux", "mobile-ux", "spatial-xd"];
         const activeFilter = validFilters.includes(hash) ? hash : "all";
 
         // Initialize: set selected color on the correct button based on the hash

@@ -171,7 +171,8 @@ const aspectString = `${imageWidth} / ${imageHeight}`;
         box-shadow:
             0 12px 24px -8px rgba(0, 0, 0, 0.3),
             0 4px 10px -4px rgba(0, 0, 0, 0.2);
-        border-color: rgba(255, 255, 255, 0.15);
+        border-color: transparent;
+        background: transparent;
     }
 
     .card-image {
@@ -495,11 +496,11 @@ const aspectString = `${imageWidth} / ${imageHeight}`;
     }
 
     /* Category-specific hover colors for project bentos & CTA pills */
-    .home-project-card[data-categories~="physical-ixd"]:hover {
+    .home-project-card[data-categories~="physical-ux"]:hover {
         border-color: #559ed5;
         background: linear-gradient(135deg, #82c6f6 0%, #4696d3 100%);
     }
-    .home-project-card[data-categories~="physical-ixd"]:hover
+    .home-project-card[data-categories~="physical-ux"]:hover
         .project-cta-pill {
         background: #82c6f6 !important;
         color: #000000 !important;

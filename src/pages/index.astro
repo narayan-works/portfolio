@@ -236,7 +236,7 @@ const musibuddyProject = allProjects.find(
 						pointoProject && (
 							<div
 								class="project-card-wrapper"
-								data-categories="physical-ixd"
+								data-categories="physical-ux"
 							>
 								<HomeProjectCard
 									title={pointoProject.data.title}
@@ -250,7 +250,7 @@ const musibuddyProject = allProjects.find(
 									tags={pointoProject.data.tags}
 									meta={pointoProject.data.meta}
 									description={pointoProject.data.description}
-									categories={["physical-ixd"]}
+									categories={["physical-ux"]}
 								/>
 							</div>
 						)
@@ -259,7 +259,7 @@ const musibuddyProject = allProjects.find(
 						pikoProject && (
 							<div
 								class="project-card-wrapper"
-								data-categories="physical-ixd"
+								data-categories="physical-ux"
 							>
 								<HomeProjectCard
 									title={pikoProject.data.title}
@@ -273,7 +273,7 @@ const musibuddyProject = allProjects.find(
 									tags={pikoProject.data.tags}
 									meta={pikoProject.data.meta}
 									description={pikoProject.data.description}
-									categories={["physical-ixd"]}
+									categories={["physical-ux"]}
 								/>
 							</div>
 						)
@@ -400,7 +400,7 @@ const musibuddyProject = allProjects.find(
 						musibuddyProject && (
 							<div
 								class="project-card-wrapper"
-								data-categories="physical-ixd"
+								data-categories="physical-ux"
 							>
 								<HomeProjectCard
 									title={musibuddyProject.data.title}
@@ -417,7 +417,7 @@ const musibuddyProject = allProjects.find(
 									}
 									fit="cover"
 									scale={1.5}
-									categories={["physical-ixd"]}
+									categories={["physical-ux"]}
 								/>
 							</div>
 						)
@@ -1795,7 +1795,7 @@ const musibuddyProject = allProjects.find(
 			// Dynamic Bio Text Color based on filter selection
 			const FILTER_COLORS: Record<string, string> = {
 				all: "#42BE4A", // Default state color (#42BE4A)
-				"physical-ixd": "#0D8CE9", // Hover state blue color
+				"physical-ux": "#0D8CE9", // Hover state blue color
 				"web-ux": "#F6631A",
 				"mobile-ux": "#FACC09",
 				"spatial-xd": "#2B923D",
@@ -1976,7 +1976,7 @@ const musibuddyProject = allProjects.find(
 		// Determine active filter from URL hash on load
 		const hash = window.location.hash.slice(1);
 		const validFilters = [
-			"physical-ixd",
+			"physical-ux",
 			"web-ux",
 			"mobile-ux",
 			"spatial-xd",
