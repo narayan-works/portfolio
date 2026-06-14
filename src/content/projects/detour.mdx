@@ -14,17 +14,16 @@ meta:
   Advisor: "Paul Pangaro"
   Year: "2024"
 sections:
-
-  - id: "outcome"
-    label: "What's the outcome?"
-  - id: "problem-opportunity"
+  - id: "problem"
     label: "Why build it?"
-  - id: "approach"
-    label: "What's the approach?"
-  - id: "implementation"
-    label: "How does it work?"
-  - id: "interaction-model"
-    label: "How is it built?"
+  - id: "outcome"
+    label: "What came out of it?"
+  - id: "research"
+    label: "Finding the dots"
+  - id: "process"
+    label: "Connecting the dots"
+  - id: "learnings"
+    label: "Learnings"
 ---
 
 import ProjectSection from '../../components/ProjectSection.astro';
@@ -42,6 +41,17 @@ import PdfEmbed from '../../components/PdfEmbed.astro';
         [Project Intro Placeholder] This project explores the intersection of design and technology. Replace this text with a specific summary of the work.
     </p>
 </div>
+
+<ProjectSection title="Premise" id="problem">
+    <p>Commutes follow the same routes, optimized for speed. People pass potential detours—parks, cafes, trails—but rarely deviate. Not because options don't exist, but because choosing where to go and what to do adds cognitive load to an already routine decision.</p>
+    <p class="centered-tagline">What if small nudges during movement you're already doing could shift behavior from pure efficiency to occasional unwinding experiences?</p>
+    <p>Detour explores whether lightweight interventions can make urban exploration feel less like a separate activity requiring planning and more like an option embedded in existing routines.</p>
+</ProjectSection>
+
+{/* PDF Viewer for premise */}
+<PdfEmbed src="/assets/projects/detur/premise.pdf" fullWidth={false} />
+
+<FullWidthImage height="400px" />
 
 <ProjectSection title="Outcome" id="outcome">
     <p>The accompanying bodystorming and persona study validate the core hypothesis: that efficiency and exploration can coexist. By contrasting a standard commute with a Detour-enabled journey, the narrative highlights how "Artifact" collection shifts attention from the destination to the immediate environment. This habit is further reinforced through collaborative trails, where shared wayfinding creates enhanced scores—transforming a solitary walk into a collective ritual.</p>
@@ -70,20 +80,7 @@ import PdfEmbed from '../../components/PdfEmbed.astro';
     />
 </ProjectSection>
 
-
-
-<ProjectSection title="Premise" id="problem-opportunity">
-    <p>Commutes follow the same routes, optimized for speed. People pass potential detours—parks, cafes, trails—but rarely deviate. Not because options don't exist, but because choosing where to go and what to do adds cognitive load to an already routine decision.</p>
-    <p class="centered-tagline">What if small nudges during movement you're already doing could shift behavior from pure efficiency to occasional unwinding experiences?</p>
-    <p>Detour explores whether lightweight interventions can make urban exploration feel less like a separate activity requiring planning and more like an option embedded in existing routines.</p>
-</ProjectSection>
-
-{/* PDF Viewer for premise */}
-<PdfEmbed src="/assets/projects/detur/premise.pdf" fullWidth={false} />
-
-<FullWidthImage height="400px" />
-
-<ProjectSection title="Approach" id="approach">
+<ProjectSection title="Approach" id="research">
     <p>Looking at prior art which were successful to integrate themselves into users' daily routines — to understand what makes behavior change stick.</p>
     <p class="attribute-label">Three patterns emerged:</p>
     <div class="attribute-pills">
@@ -98,7 +95,7 @@ import PdfEmbed from '../../components/PdfEmbed.astro';
 {/* PDF Viewer for approach */}
 <PdfEmbed src="/assets/projects/detur/approach.pdf" fullWidth={false} />
 
-<ProjectSection title="Implementation" id="implementation">
+<ProjectSection title="Implementation" id="process">
     <p style="margin-bottom: 2rem;">Translating the prior art principles into a product system meant limiting variables at every decision point.</p>
     <ul style="list-style: none; padding: 0; margin-bottom: 2rem; padding-inline: max(0rem, calc(50% - 450px)); box-sizing: border-box;">
         <li style="margin-bottom: 1rem; display: flex; align-items: center; gap: 1rem;">
@@ -125,7 +122,7 @@ import PdfEmbed from '../../components/PdfEmbed.astro';
 {/* PDF Viewer for rules */}
 <PdfEmbed src="/assets/projects/detur/Rules.pdf" fullWidth={false} />
 
-<ProjectSection title="Interaction Framework" id="interaction-model">
+<ProjectSection title="Interaction Framework" id="learnings">
     <p>The interaction model tries to prioritize presence over precision.</p>
 
     <h3>👀  Intent-Based Scoping</h3>

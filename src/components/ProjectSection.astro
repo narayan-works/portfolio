@@ -6,8 +6,8 @@ interface Props {
     id?: string;
     placeholder?: boolean; /* If true, adds a placeholder image at bottom */
     hideTitle?: boolean; /* If true, hides title and divider for continuation sections */
-    group?: string; /* ID of the parent section for sidebar highlighting */
     wide?: boolean; /* If true, section title aligns with full-width images */
+    hideDivider?: boolean; /* If true, hides the top section divider line */
 }
 
 const {
@@ -15,17 +15,16 @@ const {
     id,
     placeholder = false,
     hideTitle = false,
-    group,
     wide = false,
+    hideDivider = false,
 } = Astro.props;
 ---
 
 <section
     class:list={["project-section", { continuation: hideTitle }]}
     id={id}
-    data-toc-group={group}
 >
-    {!hideTitle && <div class="section-divider" />}
+    {!hideTitle && !hideDivider && <div class="section-divider" />}
 
     <div class="hero-text-container">
         <div class:list={["header-group", { continuation: hideTitle }]}>
@@ -72,7 +71,9 @@ const {
 
     /* Full Width Divider */
     .section-divider {
-        width: 100%;
+        width: calc(100% + 40px);
+        margin-left: -20px;
+        margin-right: -20px;
         border-top: 1px solid var(--border-subtle, rgba(0, 0, 0, 0.1));
         margin-bottom: 2rem; /* Spacing between line and content */
     }
@@ -372,8 +373,10 @@ const {
         font-size: 0.9em;
         font-weight: 500;
         transition: all 0.2s ease;
-        margin: 8px 0 0 0; /* Top margin for spacing from text */
+        margin: 0 4px; /* Reset margin for inline text flow */
         vertical-align: middle;
+        position: relative;
+        top: -1px; /* Subtle baseline alignment shift */
     }
 
     .section-content :global(.bento-button:hover) {

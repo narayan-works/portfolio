@@ -31,16 +31,7 @@ const metaEntries = Object.entries(meta).filter(
     ([_, value]) => value && value.trim() !== "",
 );
 
-// Standard Sections for Navigation (Fallback)
-const defaultSections = [
-    { id: "outcome", label: "What's the outcome?" },
-    { id: "problem-opportunity", label: "Why build it?" },
-    { id: "approach", label: "What's the approach?" },
-    { id: "interaction-model", label: "How does it work?" },
-    { id: "implementation", label: "How is it built?" },
-];
-
-const sections = propSections || defaultSections;
+const sections = propSections || [];
 
 // Map project slugs to their category-specific active colors (matching homepage WorksFilter colors)
 const slug = Astro.url.pathname.split("/").filter(Boolean).pop() || "";
@@ -54,7 +45,18 @@ const categoryColors: Record<string, string> = {
     "tirupati-campus": "#2B923D", // spatial-xd
     "skywalk-sanctuary": "#2B923D", // spatial-xd
 };
+const categoryHoverColors: Record<string, string> = {
+    pointo: "#57a4dc", // physical-ux hover
+    piko: "#57a4dc",
+    musibuddy: "#57a4dc",
+    "dot-threads": "#e05105", // web-ux hover (subtle darker orange)
+    detour: "#e5ba05", // mobile-ux hover
+    serendipidity: "#e5ba05",
+    "tirupati-campus": "#227b32", // spatial-xd hover
+    "skywalk-sanctuary": "#227b32",
+};
 const activeColor = categoryColors[slug] || "var(--accent-secondary)";
+const hoverColor = categoryHoverColors[slug] || "var(--accent-secondary)";
 ---
 
 <Layout title={`${title} | Narayan Ashanahalli`} preloadImageHref={heroImage}>
@@ -102,6 +104,7 @@ const activeColor = categoryColors[slug] || "var(--accent-secondary)";
                             target="_blank"
                             rel="noopener noreferrer"
                             class="sidebar-cta-button"
+                            style={`--cta-active-color: ${activeColor}; --cta-hover-color: ${hoverColor};`}
                         >
                             {ctaText || "Try it out"}
                         </a>
@@ -273,21 +276,16 @@ const activeColor = categoryColors[slug] || "var(--accent-secondary)";
 
         function updateThemeTogglePosition() {
             if (!footer || !themeToggleWrapper) return;
-            const isMobile = window.innerWidth <= 1024;
-            if (!isMobile) {
-                themeToggleWrapper.style.bottom = "";
-                return;
-            }
 
             const footerRect = footer.getBoundingClientRect();
             const windowHeight = window.innerHeight;
-            const margin = 10;
+            const margin = 20;
 
             if (footerRect.top < windowHeight) {
                 const offset = windowHeight - footerRect.top + margin;
-                themeToggleWrapper.style.bottom = offset + "px";
+                themeToggleWrapper.style.setProperty("bottom", `${offset}px`, "important");
             } else {
-                themeToggleWrapper.style.bottom = "var(--space-md)";
+                themeToggleWrapper.style.setProperty("bottom", "20px", "important");
             }
         }
 
@@ -381,32 +379,46 @@ const activeColor = categoryColors[slug] || "var(--accent-secondary)";
 
     .sidebar-cta-button {
         display: inline-block;
-        background-color: var(--surface-secondary);
-        color: var(--text-primary);
-        border: 2px solid var(--accent-secondary);
-        padding: 6px 8px; /* Matched to Navbar */
-        border-radius: var(--radius-md); /* Matched to Navbar (8px) */
+        position: relative;
+        background: var(--cta-active-color, var(--accent-secondary));
+        color: #ffffff !important;
+        border: 1px solid rgba(0, 0, 0, 0.12);
+        padding: 9px 16px;
+        border-radius: var(--radius-md); /* Matched to Bento Card/Nav-trigger (8px) */
         text-decoration: none;
-        font-weight: 500;
+        font-weight: 600;
         font-size: 0.875rem;
+        letter-spacing: 0.02em;
         margin-top: 1.5rem;
         margin-bottom: 1rem;
-        transition:
-            box-shadow 0.2s ease,
-            opacity 0.2s;
         text-align: center;
         width: 100%;
         box-sizing: border-box;
+        transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        box-shadow: 
+            inset 0 1px 0 rgba(255, 255, 255, 0.2),
+            0 2px 4px rgba(0, 0, 0, 0.08),
+            0 4px 12px rgba(0, 0, 0, 0.04);
+        cursor: pointer;
     }
     .sidebar-cta-button:hover {
-        box-shadow: 0 0 16px rgba(100, 200, 150, 0.5);
-        background-color: var(--surface-primary); /* Brighter overlap */
-        filter: brightness(1.05);
+        transform: translateY(-1px);
+        background: var(--cta-hover-color, var(--accent-secondary));
+        border-color: rgba(0, 0, 0, 0.2);
+        box-shadow: 
+            inset 0 1px 0 rgba(255, 255, 255, 0.25),
+            0 4px 8px rgba(0, 0, 0, 0.12),
+            0 8px 16px rgba(0, 0, 0, 0.06);
     }
-    :global(.dark) .sidebar-cta-button:hover {
-        background-color: var(--surface-tertiary); /* Darker overlap */
-        filter: brightness(0.92);
+    .sidebar-cta-button:active {
+        transform: translateY(0);
+        background: var(--cta-active-color, var(--accent-secondary));
+        filter: brightness(0.95);
+        box-shadow: 
+            inset 0 1px 0 rgba(0, 0, 0, 0.05),
+            0 1px 2px rgba(0, 0, 0, 0.08);
     }
+
 
     /* TABLET/MOBILE STYLES */
     @media (max-width: 1024px) {
@@ -530,8 +542,12 @@ const activeColor = categoryColors[slug] || "var(--accent-secondary)";
     }
 
     .theme-toggle-wrapper {
-        margin-top: auto;
-        padding-top: 10px;
+        position: fixed !important;
+        bottom: 20px !important;
+        right: 20px !important;
+        z-index: 100;
+        margin: 0 !important;
+        padding: 0 !important;
     }
 
     /* RIGHT CONTENT STYLES (Hero Section) */
@@ -566,9 +582,9 @@ const activeColor = categoryColors[slug] || "var(--accent-secondary)";
 
         /* Fixed Theme Toggle on Mobile */
         .theme-toggle-wrapper {
-            position: fixed;
-            bottom: var(--space-md);
-            left: var(--space-md); /* Moved to Bottom Left */
+            position: fixed !important;
+            right: 48px !important;
+            left: auto !important;
             z-index: 90;
             margin-top: 0;
         }
@@ -577,6 +593,12 @@ const activeColor = categoryColors[slug] || "var(--accent-secondary)";
         .project-sidebar-content {
             height: auto;
             display: block;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .theme-toggle-wrapper {
+            right: 24px !important;
         }
     }
 

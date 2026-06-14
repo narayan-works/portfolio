@@ -13,6 +13,17 @@ meta:
   Tools: "Rhino, Adobe Suite, Figma"
   Output: "Design Framework"
   Year: "2023"
+sections:
+  - id: "problem"
+    label: "Why build it?"
+  - id: "outcome"
+    label: "What came out of it?"
+  - id: "research"
+    label: "Finding the dots"
+  - id: "process"
+    label: "Connecting the dots"
+  - id: "learnings"
+    label: "Learnings"
 ---
 
 import ProjectSection from '../../components/ProjectSection.astro';
@@ -22,6 +33,26 @@ import PlaceholderImage from '../../components/PlaceholderImage.astro';
 <FullWidthImage src="/assets/projects/santuary/hero.png" caption="What makes a third place?" loading="eager" constrain={false} />
 
 {/* ==================== WHY BUILD IT ==================== */}
+
+<ProjectSection title="Premise" id="problem">
+    <p>IT park workers in Hyderabad lack accessible spaces to relax between work and home. While informal gathering spots like tea stalls and pan dabba corners exist, they're ad-hoc solutions rather than intentionally designed experiences.</p>
+    <p>Long commutes and intense work schedules in rapidly growing tech hubs leave little room for unstructured downtime.</p>
+    <p class="centered-tagline">Workers need "third places"—environments between work and home where people can decompress without the pressure of consumption or productivity.</p>
+    <p>This project identified what makes these in-between spaces work and proposed design interventions addressing greenery, accessibility, affordability, and social dynamics for an underutilized site adjacent to a major IT corridor.</p>
+</ProjectSection>
+
+<FullWidthImage src="/assets/projects/santuary/premise.png" />
+
+<ProjectSection title="Premise" id="problem-study" hideTitle={true}>
+    <h3>User Study</h3>
+    <p>Distributed QR-coded posters across IT park corridors, collecting responses from 200+ workers about their leisure needs. The data revealed a proximity problem: workers value cafes and parks, but won't travel for them after long commutes.</p>
+    <p>Responses showed demand for variety within walking distance—not a single type of space, but multiple options close to work.</p>
+    <p class="centered-tagline">Workers want flexibility in how they spend breaks:</p>
+    <p>Sometimes social gatherings, sometimes solo decompression, but always without adding travel time to already exhausting days.</p>
+    <p>The design challenge became: how to bring that variety and choice directly to where workers already are.</p>
+</ProjectSection>
+
+<FullWidthImage src="/assets/projects/santuary/user study.png" />
 
 <ProjectSection title="Outcome" id="outcome">
     <p>The work shows a process: identify what people actually do, map what supports those behaviors, test combinations within the developed framework that create flexibility without forcing travel.</p>
@@ -33,30 +64,9 @@ import PlaceholderImage from '../../components/PlaceholderImage.astro';
 <FullWidthImage src="/assets/projects/santuary/plan.png" />
 <FullWidthImage src="/assets/projects/santuary/section.png" />
 
-
-<ProjectSection title="Premise" id="problem-opportunity">
-    <p>IT park workers in Hyderabad lack accessible spaces to relax between work and home. While informal gathering spots like tea stalls and pan dabba corners exist, they're ad-hoc solutions rather than intentionally designed experiences.</p>
-    <p>Long commutes and intense work schedules in rapidly growing tech hubs leave little room for unstructured downtime.</p>
-    <p class="centered-tagline">Workers need "third places"—environments between work and home where people can decompress without the pressure of consumption or productivity.</p>
-    <p>This project identified what makes these in-between spaces work and proposed design interventions addressing greenery, accessibility, affordability, and social dynamics for an underutilized site adjacent to a major IT corridor.</p>
-</ProjectSection>
-
-<FullWidthImage src="/assets/projects/santuary/premise.png" />
-
-<ProjectSection title="Premise" id="problem-opportunity-study" hideTitle={true} group="problem-opportunity">
-    <h3>User Study</h3>
-    <p>Distributed QR-coded posters across IT park corridors, collecting responses from 200+ workers about their leisure needs. The data revealed a proximity problem: workers value cafes and parks, but won't travel for them after long commutes.</p>
-    <p>Responses showed demand for variety within walking distance—not a single type of space, but multiple options close to work.</p>
-    <p class="centered-tagline">Workers want flexibility in how they spend breaks:</p>
-    <p>Sometimes social gatherings, sometimes solo decompression, but always without adding travel time to already exhausting days.</p>
-    <p>The design challenge became: how to bring that variety and choice directly to where workers already are.</p>
-</ProjectSection>
-
-<FullWidthImage src="/assets/projects/santuary/user study.png" />
-
 {/* ==================== APPROACH ==================== */}
 
-<ProjectSection title="Pattern Recognition" id="approach">
+<ProjectSection title="Pattern Recognition" id="research">
     <h3>The Evolution of Indian Public Spaces</h3>
     <p>Indian public spaces have transformed over time, adapting to societal shifts. Ancient step wells served as vital water sources and social hubs. Temple complexes intertwined worship, markets, and community. Colonial maidan witnessed political gatherings while urbanization introduced parks and commercial centers like malls, reshaping how people gather.</p>
     <p>Today, public spaces increasingly adopt digital principles—prioritizing accessibility, safety, and flexibility. Modern gathering places function like digital platforms: allowing people to choose their own engagement, supporting multiple simultaneous activities, connecting physical presence with digital experiences.</p>
@@ -64,7 +74,7 @@ import PlaceholderImage from '../../components/PlaceholderImage.astro';
 
 <FullWidthImage src="/assets/projects/santuary/evolution.png" />
 
-<ProjectSection title="Pattern Recognition" id="approach-precedents" hideTitle={true} group="approach">
+<ProjectSection title="Pattern Recognition" id="research-precedents" hideTitle={true}>
     <h3>Precedents</h3>
     <p>Developed an evaluation framework to systematically analyze what makes third places successful. The framework examines spaces through two dimensions:</p>
     <p class="attribute-label">Physical Attributes</p>
@@ -92,7 +102,7 @@ import PlaceholderImage from '../../components/PlaceholderImage.astro';
 
 {/* ==================== HOW DOES IT WORK ==================== */}
 
-<ProjectSection title="Design Framework" id="interaction-model">
+<ProjectSection title="Design Framework" id="process">
     <h3>Program Synthesis</h3>
     <p>Synthesized case study analysis and user research into a framework showing which programs connect with which spatial configurations. The outer ring shows spatial attributes from the precedent studies (roof, opening, corner, bay, dis-order, plinths). Inner nodes show programs responding to user survey priorities (cafes, libraries, sports, theaters, groceries, etc.).</p>
     <p>Connections between nodes map compatibility—not just what workers want, but which combinations of programs and spatial types can coexist. Dense clusters reveal where multiple user needs overlap. Size and color reflect survey demand.</p>
@@ -102,7 +112,7 @@ import PlaceholderImage from '../../components/PlaceholderImage.astro';
 
 <FullWidthImage src="/assets/projects/santuary/program synthesis.png" />
 
-<ProjectSection title="Design Framework" id="interaction-hypothesis" hideTitle={true} group="interaction-model">
+<ProjectSection title="Design Framework" id="process-hypothesis" hideTitle={true}>
     <h3>Design Hypothesis</h3>
     <p>Digital platforms work because users switch fluidly between modes—browsing, connecting, creating, accessing anywhere, staying secure. The experience adapts to what users need moment-to-moment, not what the platform prescribes.</p>
     <p class="centered-tagline">What if physical spaces worked like digital interfaces—adapting to users instead of forcing them into fixed behaviors?</p>
@@ -111,7 +121,7 @@ import PlaceholderImage from '../../components/PlaceholderImage.astro';
 
 <FullWidthImage src="/assets/projects/santuary/hypothesis.png" />
 
-<ProjectSection title="Design Framework" id="interaction-site" hideTitle={true} group="interaction-model">
+<ProjectSection title="Design Framework" id="process-site" hideTitle={true}>
     <h3>Site Selection</h3>
     <p>Selected an underutilized site adjacent to Madhapur's IT corridor, targeting workers aged 18-30. The location sits between major tech campuses (Mindspace, Image Towers) and existing transit nodes, making it accessible within a short walk from multiple office buildings.</p>
     <p class="centered-tagline">Site Criteria</p>
@@ -129,7 +139,7 @@ import PlaceholderImage from '../../components/PlaceholderImage.astro';
 
 {/* ==================== IMPLEMENTATION ==================== */}
 
-<ProjectSection title="Design Interventions" id="implementation">
+<ProjectSection title="Design Interventions" id="learnings">
     <p>The program synthesis revealed three site opportunities where digital flexibility could translate to physical space. Each tests a different mechanism for supporting multiple modes of use.</p>
     <hr class="feature-divider" />
     <p><span class="list-tagline">Parking</span> Time-based transformation using digital booking. The same space shifts between parking (weekdays), flea markets, and workshops (weekends) based on scheduled programming—like calendar slots controlling physical function.</p>

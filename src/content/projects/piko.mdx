@@ -14,17 +14,16 @@ meta:
   Advisor: "Mayank Goel, Yuvraj Agarwal"
   Year: "2025"
 sections:
-
-  - id: "outcome"
-    label: "What's the outcome?"
-  - id: "problem-opportunity"
+  - id: "problem"
     label: "Why build it?"
-  - id: "approach"
-    label: "What's the approach?"
-  - id: "implementation"
-    label: "How does it work?"
-  - id: "interaction-model"
-    label: "How is it built?"
+  - id: "outcome"
+    label: "What came out of it?"
+  - id: "research"
+    label: "Finding the dots"
+  - id: "process"
+    label: "Connecting the dots"
+  - id: "learnings"
+    label: "Learnings"
 ---
 
 import ProjectSection from '../../components/ProjectSection.astro';
@@ -42,14 +41,7 @@ import PlaceholderImage from '../../components/PlaceholderImage.astro';
     </div>
 </ProjectSection>
 
-<ProjectSection title="Project Demo" id="outcome">
-    <p>A walkthrough of the fully functional prototype, demonstrating the computer vision detection triggers and the robot's emotive feedback loops in real-time.</p>
-    
-    <VideoEmbed type="vimeo" id="1163205367" title="Piko Interaction Flow" />
-</ProjectSection>
-
-
-<ProjectSection title="The Infinite Scroll Trap" id="problem-opportunity">
+<ProjectSection title="The Infinite Scroll Trap" id="problem">
     <p>
         Modern digital interfaces are engineered for addiction. Infinite scroll algorithms leverage variable reward schedules to keep users in a state of passive consumption, often leading to "Doom Scrolling"—a compulsive behavior that negatively impacts mental well-being and time management.
     </p>
@@ -58,7 +50,13 @@ import PlaceholderImage from '../../components/PlaceholderImage.astro';
     <FullWidthImage src="/assets/projects/piko/doom scrooling.png" height="400px" caption="Addressing the stress of digital depletion" constrain={true} />
 </ProjectSection>
 
-<ProjectSection title="Social Robotics as a Nudge" id="approach">
+<ProjectSection title="Project Demo" id="outcome">
+    <p>A walkthrough of the fully functional prototype, demonstrating the computer vision detection triggers and the robot's emotive feedback loops in real-time.</p>
+    
+    <VideoEmbed type="vimeo" id="1163205367" title="Piko Interaction Flow" />
+</ProjectSection>
+
+<ProjectSection title="Social Robotics as a Nudge" id="research">
     <p>Drawing from "Social Tech" frameworks and soft-robotic research, the approach focused on non-verbal communication. By studying how humans comfort each other through physical presence, I developed a system that uses breathing as a primary feedback loop.</p>
     
     <FullWidthImage src="/assets/projects/piko/social-tech.png" height="300px" caption="Social Technology Framework" constrain={true} />
@@ -71,7 +69,7 @@ import PlaceholderImage from '../../components/PlaceholderImage.astro';
     <FullWidthImage src="/assets/projects/piko/cv.png" height="300px" caption="Training a custom computer vision model" constrain={true} />
 </ProjectSection>
 
-<ProjectSection title="Piko's Anatomy" id="implementation">
+<ProjectSection title="Piko's Anatomy" id="process">
     <p>To bring Piko to life, we needed a hardware architecture that could support real-time vision, complex motion, and audio processing within a compact, huggable form factor. The internal chassis is a custom-designed 3D printed skeleton that houses the distributed computing system.</p>
     
     <FullWidthImage src="/assets/projects/piko/Piko inside-out.webp" height="500px" caption="Internal mechanics vs External form" constrain={true} />
@@ -132,7 +130,7 @@ import PlaceholderImage from '../../components/PlaceholderImage.astro';
     <FullWidthImage src="/assets/projects/piko/interactions.gif" height="300px" caption="Interaction library" constrain={true} />
 </ProjectSection>
 
-<ProjectSection title="Technical Architecture" id="interaction-model">
+<ProjectSection title="Technical Architecture" id="learnings">
     <p>The architecture bridges hardware sensing with behavioral responses. The robot doesn't just "breathe"; it reacts to how the user holds it, adjusting its pace to match or soothe the user's own rhythm.</p>
     
     <p>To achieve low-latency interactions, we distributed the workload across a three-node ecosystem. This split architecture balances heavy processing with real-time responsiveness.</p>

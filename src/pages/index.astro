@@ -505,8 +505,9 @@ const musibuddyProject = allProjects.find(
 
 	.toggle-floater {
 		position: fixed !important;
-		top: 20px !important;
+		bottom: 20px !important;
 		right: 20px !important;
+		top: auto !important;
 		margin: 0 !important;
 		padding: 0 !important;
 		z-index: 100;
@@ -771,7 +772,8 @@ const musibuddyProject = allProjects.find(
 
 		.toggle-floater {
 			right: 48px !important;
-			top: 20px !important;
+			bottom: 20px !important;
+			top: auto !important;
 		}
 
 		.nav-wrapper-mobile {
@@ -830,7 +832,8 @@ const musibuddyProject = allProjects.find(
 		}
 		.toggle-floater {
 			right: 24px !important;
-			top: 16px !important;
+			bottom: 20px !important;
+			top: auto !important;
 		}
 	}
 
@@ -1833,6 +1836,28 @@ const musibuddyProject = allProjects.find(
 				"works-filter-change",
 				onWorksFilterChangeColor,
 			);
+
+			// Floating Theme Toggle Footer Collision Logic
+			const toggleFloater = document.querySelector(".toggle-floater") as HTMLElement;
+			const footer = document.querySelector(".site-footer") as HTMLElement;
+			if (toggleFloater && footer) {
+				const updateTogglePosition = () => {
+					const footerRect = footer.getBoundingClientRect();
+					const windowHeight = window.innerHeight;
+					const margin = 20;
+
+					if (footerRect.top < windowHeight) {
+						const offset = windowHeight - footerRect.top + margin;
+						toggleFloater.style.setProperty("bottom", `${offset}px`, "important");
+					} else {
+						toggleFloater.style.setProperty("bottom", "20px", "important");
+					}
+				};
+
+				window.addEventListener("scroll", updateTogglePosition, { passive: true });
+				window.addEventListener("resize", updateTogglePosition);
+				updateTogglePosition();
+			}
 		}
 	});
 </script>
@@ -2092,15 +2117,22 @@ const musibuddyProject = allProjects.find(
 			const progress = Math.max(0, Math.min(1, S / scrollThreshold));
 			let Y = Y_bottom + (Y_center - Y_bottom) * progress;
 
-			// Keep 20px padding between the bottom of the track and the footer divider (top edge of footer)
+			// Keep 20px padding between the bottom of the track and the top of the theme toggle
+			const toggleFloater = document.querySelector(".toggle-floater") as HTMLElement | null;
+			const toggleHeight = toggleFloater ? toggleFloater.offsetHeight : 44;
+			let toggleBottom = 20;
+
 			const footer = document.querySelector(".site-footer");
 			if (footer) {
 				const footerRect = footer.getBoundingClientRect();
-				// footerRect.top is the top boundary of the footer relative to the viewport
-				const maxAllowedY = footerRect.top - Th - 20;
-				if (Y > maxAllowedY) {
-					Y = maxAllowedY;
+				if (footerRect.top < H) {
+					toggleBottom = H - footerRect.top + 20;
 				}
+			}
+
+			const maxAllowedY = H - Th - toggleBottom - toggleHeight - 20;
+			if (Y > maxAllowedY) {
+				Y = maxAllowedY;
 			}
 
 			(track as HTMLElement).style.transform = `translateY(${Y}px)`;
