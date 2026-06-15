@@ -168,11 +168,11 @@ const {
         width: 100%;
     }
 
-    /* Style strong/bold text: Underlined and normal weight */
+    /* Style strong/bold text: Bold weight and no underline */
     .section-content :global(strong),
     .section-content :global(b) {
-        font-weight: inherit;
-        text-decoration: underline;
+        font-weight: 600;
+        text-decoration: none;
         color: inherit;
     }
 
@@ -200,7 +200,8 @@ const {
     .section-content > :global(.image-slider),
     .section-content > :global(.image-toggle-component),
     .section-content > :global(.video-switcher),
-    .section-content > :global(.video-embed) {
+    .section-content > :global(.video-embed),
+    .section-content > :global(.pdf-viewer-wrapper) {
         padding-inline: 0 !important;
         max-width: 100%;
     }
@@ -209,7 +210,8 @@ const {
 
     /* Exception: constrained media gets body-width padding */
     .section-content > :global(.full-width-image.constrained),
-    .section-content > :global(.video-embed.constrained) {
+    .section-content > :global(.video-embed.constrained),
+    .section-content > :global(.pdf-viewer-wrapper:not(.pdf-full-width)) {
         padding-inline: max(0rem, calc(50% - 450px)) !important;
     }
 
@@ -373,10 +375,15 @@ const {
         font-size: 0.9em;
         font-weight: 500;
         transition: all 0.2s ease;
-        margin: 0 4px; /* Reset margin for inline text flow */
+        margin: 0;
         vertical-align: middle;
         position: relative;
         top: -1px; /* Subtle baseline alignment shift */
+    }
+    
+    .section-content :global(.bento-button.standalone) {
+        margin-left: -12px;
+        margin-top: 0.75rem;
     }
 
     .section-content :global(.bento-button:hover) {

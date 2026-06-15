@@ -18,6 +18,7 @@ interface Props {
     padding?: string;
     overflow?: "hidden" | "visible";
     lockHeight?: boolean;
+    borderRadius?: string;
 }
 const {
     src,
@@ -35,6 +36,7 @@ const {
     padding,
     overflow = "hidden",
     lockHeight = false,
+    borderRadius,
 } = Astro.props;
 
 const resolvedFetchPriority =
@@ -55,6 +57,7 @@ const resolvedFetchPriority =
                     ...(lockHeight ? { height } : {}),
                     ...(background ? { background } : {}),
                     ...(padding ? { padding } : {}),
+                    ...(borderRadius !== undefined ? { borderRadius } : {}),
                     overflow,
                 }}
             >
@@ -73,6 +76,7 @@ const resolvedFetchPriority =
                         objectFit: objectFit,
                         height:
                             lockHeight && height !== "auto" ? "100%" : "auto",
+                        ...(borderRadius !== undefined ? { borderRadius } : {}),
                     }}
                 />
             </div>

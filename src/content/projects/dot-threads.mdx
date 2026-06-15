@@ -53,25 +53,36 @@ import VideoEmbed from '../../components/VideoEmbed.astro';
     The fourth, a professor, relocated to Northumbria University and started a lab and worked on "Spooky Technology"—a project I recognized because I’d worked with one of its collaborators, Daragh Byrne, at CMU’s School of Architecture.
 </p>
 <p>
-    This web of connections—people, projects, companies, labs—told a story. If I ever encountered someone else who worked at Experiments with Google, I’d want to connect them to this thread.
+    This web of connections—people, projects, companies, labs—told a story. If I ever encountered someone else who worked at Experiments with Google, I’d want to connect them to this thread. 
+</p>
+<hr class="feature-divider" />
+<p>
+    <strong>But for me that's 12 open tabs, 4 folders deep, and 15 bookmarks to sort through before you even get back to what you were thinking about.</strong>
 </p>
 
-<div class="centered-tagline">
+<FullWidthImage src="/assets/projects/dot-threads/old bookmarking.png" height="400px" caption="Traditional folder-based bookmarking lists" constrain={false} />
+
+
+<div class="centered-tagline orange-bar">
     But here’s the problem: bookmarks don’t preserve these connections.
 </div>
 
 <p>
     With traditional bookmarking, I’d save all these profiles in folders: "People," "Companies," "Labs," "Projects." The folders grow. Three months later, I’d have no idea how these things connected. The story would be lost.
 </p>
-
-<FullWidthImage src="/assets/projects/dot-threads/old bookmarking.png" height="400px" caption="Traditional folder-based bookmarking lists" constrain={true} />
-
 <h3>Validating the Problem</h3>
 <p>
     To see if there is a broader pattern with this problem, I surveyed 25 people across 3 CMU departments (Architecture, HCI, Design) to collect qualitative insights on how people organize their digital bookmarks.
 </p>
 
-<FullWidthImage src="/assets/projects/dot-threads/user-study.png" height="500px" caption="User study insights visualization showing the breakdown of bookmarking behaviors and pain points" />
+<div class="theme-image-wrapper">
+    <div class="light-image">
+        <FullWidthImage src="/assets/projects/dot-threads/user-study-light.png" height="500px" caption="User study insights visualization showing the breakdown of bookmarking behaviors and pain points" constrain={true} />
+    </div>
+    <div class="dark-image">
+        <FullWidthImage src="/assets/projects/dot-threads/user-study-dark.png" height="500px" caption="User study insights visualization showing the breakdown of bookmarking behaviors and pain points" constrain={true} />
+    </div>
+</div>
 
 <p>
     <strong>The insight:</strong> Bookmarking systems break at scale. As the list keeps growing, people either abandon the system or can't remember where they filed things—which defeats the whole point of saving things for future use. Sharing bookmarks adds another layer of complexity, forcing people to use other tools like Are.na, OneTab, or Notion. This fragments their workflow across multiple tools, breaking the flow they were already in.
@@ -85,16 +96,18 @@ import VideoEmbed from '../../components/VideoEmbed.astro';
 <ProjectSection title="Outcome" id="outcome">
     <h3>Shipped Product</h3>
     <p>Dot Threads launched on Chrome Web Store in September 2024 and has been actively maintained through January 2026. Currently at version 1.3.3 with 10 active users.</p>
-    <FullWidthImage src="/assets/projects/dot-threads/chrome-store.png" height="400px" caption="Chrome Web Store listing" constrain={true} />
-    <FullWidthImage src="/assets/projects/dot-threads/opportunity.gif" height="400px" caption="Spatial connections opportunity" />
+    <FullWidthImage src="/assets/projects/dot-threads/chrome-store.png" height="400px" caption="Chrome Web Store listing" constrain={true}  />
+    <FullWidthImage src="/assets/projects/dot-threads/opportunity.gif" height="400px" caption="Spatial connections opportunity" constrain={false} />
 </ProjectSection>
 
 <ProjectSection title="Outcome" id="outcome-shipped" hideTitle={true}>
-    <h3>User Feedback</h3>
-    <ReviewContainer>
-        <ReviewBubble quote="The design is very effective and intuitive once the user gets used to it." />
-        <ReviewBubble quote="It's visually clear and thoughtfully crafted, with a strong focus on making bookmarking more engaging and intuitive. The idea of using thumbnails and interactive elements adds personalization to the experience." />
-    </ReviewContainer>
+    <div class="orange-feedback-bar">
+        <h3 class="feedback-title">User Feedback</h3>
+        <ReviewContainer>
+            <ReviewBubble quote="The design is very effective and intuitive once the user gets used to it." />
+            <ReviewBubble quote="It's visually clear and thoughtfully crafted, with a strong focus on making bookmarking more engaging and intuitive. The idea of using thumbnails and interactive elements adds personalization to the experience." />
+        </ReviewContainer>
+    </div>
 </ProjectSection>
 
 <ProjectSection title="Outcome" id="outcome-iterations" hideTitle={true}>
@@ -115,7 +128,7 @@ import VideoEmbed from '../../components/VideoEmbed.astro';
     <p>
         To see if there is a broader pattern with this problem, I got to survey 25 people across 3 CMU departments (Architecture, HCI, Design) using an <a href="https://narayan-s-research-assistant-851405604897.us-west1.run.app" target="_blank" class="bento-button">AI conversational research assistant <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 6px; flex-shrink: 0;"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></a> for these sessions—letting people describe their actual bookmarking behavior instead of forcing multiple-choice answers.
     </p>
-    <FullWidthImage src="/assets/projects/dot-threads/AI research bot.png" height="450px" caption="Conversational AI research assistant chat interface" constrain={true} />
+    <FullWidthImage src="/assets/projects/dot-threads/AI research bot.png" height="450px" caption="Conversational AI research assistant chat interface" constrain={false} />
 
     <h3>MEMEX as Framework</h3>
     <p>
@@ -125,7 +138,7 @@ import VideoEmbed from '../../components/VideoEmbed.astro';
         Bush outlined five fundamentals: recording, storing, displaying, selecting, and sharing trails of thought.
     </p>
 </ProjectSection>
-<FullWidthImage src="/assets/projects/dot-threads/approach.gif" height="300px" caption="Organizing the Thinking" />
+<FullWidthImage src="/assets/projects/dot-threads/approach.gif" height="300px" caption="Organizing the Thinking" constrain={false} />
 
 <ProjectSection title="Finding the dots" id="research-principles" hideTitle={true}>
     <p>
@@ -145,7 +158,7 @@ import VideoEmbed from '../../components/VideoEmbed.astro';
     </p>
 </ProjectSection>
 
-<FullWidthImage src="/assets/projects/dot-threads/figma-prototype.png" height="400px" caption="Figma prototype explorations" />
+<FullWidthImage src="/assets/projects/dot-threads/figma-prototype.png" height="400px" caption="Figma prototype explorations" constrain={false} />
 
 <ProjectSection title="Prototyping the Parallels" id="process">
     <p><span class="list-tagline">Entering</span> How to capture links without breaking browsing flow? Right-click context menu integration—save any link instantly from the browser's native menu.</p>
@@ -164,6 +177,74 @@ import VideoEmbed from '../../components/VideoEmbed.astro';
 </figure>
 
 <style>{`
+    .orange-feedback-bar {
+        background: #F6631A !important;
+        margin-left: -20px !important;
+        margin-right: -20px !important;
+        width: calc(100% + 40px) !important;
+        padding-block: 2.5rem !important;
+        padding-inline: max(20px, calc(50% - 450px)) !important;
+        box-sizing: border-box;
+        margin-top: 4rem !important;
+        margin-bottom: 4rem !important;
+        border-radius: 0;
+    }
+    .orange-feedback-bar .feedback-title {
+        color: #ffffff !important;
+        margin-top: 0 !important;
+        margin-bottom: 1.5rem !important;
+        text-align: left !important;
+        font-size: 1.85rem !important;
+        font-weight: 700 !important;
+        letter-spacing: -0.02em;
+        font-family: "Geist", sans-serif;
+    }
+    .orange-feedback-bar .review-container {
+        flex-direction: row !important;
+        gap: 24px !important;
+    }
+    .orange-feedback-bar .review-bubble {
+        border-color: rgba(255, 255, 255, 0.12) !important;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15) !important;
+    }
+    .orange-feedback-bar .quote-mark {
+        color: #F6631A !important;
+        opacity: 0.25 !important;
+    }
+    .orange-feedback-bar .review-text {
+        text-align: left !important;
+    }
+    @media (max-width: 768px) {
+        .orange-feedback-bar .review-container {
+            flex-direction: column !important;
+        }
+        .orange-feedback-bar {
+            padding-block: 2rem !important;
+        }
+        .orange-feedback-bar .feedback-title {
+            font-size: 1.5rem !important;
+            margin-bottom: 1rem !important;
+        }
+    }
+    .centered-tagline.orange-bar {
+        background: #F6631A !important;
+        color: #ffffff !important;
+        padding-block: 3rem !important;
+        padding-inline: 20px !important;
+        margin-left: -20px !important;
+        margin-right: -20px !important;
+        width: calc(100% + 40px) !important;
+        max-width: none !important;
+        box-sizing: border-box;
+        text-align: center;
+        font-weight: 700 !important;
+        font-size: 2rem !important;
+        line-height: 1.3 !important;
+        letter-spacing: -0.01em;
+        margin-top: 4rem !important;
+        margin-bottom: 4rem !important;
+        border: none;
+    }
     .interaction-media-container {
         width: calc(100% + 40px);
         margin-left: -20px;
@@ -174,7 +255,7 @@ import VideoEmbed from '../../components/VideoEmbed.astro';
     }
     .interaction-media-block {
         background: #FFA760;
-        padding: 16px 24px;
+        padding: 24px;
         border-radius: 0;
         display: flex;
         align-items: stretch;
@@ -236,6 +317,31 @@ import VideoEmbed from '../../components/VideoEmbed.astro';
             width: 100%;
             height: auto;
         }
+    }
+    .theme-image-wrapper {
+        margin-left: -20px !important;
+        margin-right: -20px !important;
+        width: calc(100% + 40px) !important;
+        max-width: none !important;
+        padding-inline: 0 !important;
+        margin-top: 4rem !important;
+        margin-bottom: 4rem !important;
+    }
+    .theme-image-wrapper .full-width-image {
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+    }
+    .theme-image-wrapper .light-image {
+        display: none !important;
+    }
+    .theme-image-wrapper .dark-image {
+        display: block !important;
+    }
+    [data-theme="light"] .theme-image-wrapper .light-image {
+        display: block !important;
+    }
+    [data-theme="light"] .theme-image-wrapper .dark-image {
+        display: none !important;
     }
 `}</style>
 
@@ -315,10 +421,9 @@ import VideoEmbed from '../../components/VideoEmbed.astro';
 */}
 </ProjectSection>
 
-<ImageToggle 
-    image1="/assets/projects/dot-threads/artifacts-0.png"
-    image2="/assets/projects/dot-threads/artifacts.png"
-    alt="Core components of the Dot Threads interface"
+<FullWidthImage 
+    src="/assets/projects/dot-threads/artifacts.png"
+    caption="Core components of the Dot Threads interface"
     constrain={false}
 />
 
@@ -338,11 +443,11 @@ import VideoEmbed from '../../components/VideoEmbed.astro';
 
 
 <ProjectSection title="Technical Architecture" id="learnings">
-    <FullWidthImage src="/assets/projects/dot-threads/architecture.png" height="400px" caption="Technical architecture diagram" marginTop="0.5rem" constrain={true} />
+    <FullWidthImage src="/assets/projects/dot-threads/architecture.png" height="400px" caption="Technical architecture diagram" marginTop="0.5rem" constrain={false} />
 </ProjectSection>
 
 <ProjectSection title="Technical Architecture" id="learnings-architecture-desc" hideTitle={true}>
     <p>Chrome extension stores data locally using browser storage API. Web application reads this data through message bridge and visualizes using D3.js force-directed graph. Development mode includes local filesystem persistence. When extension not installed, app loads static demo data. Microlink API handles screenshot generation.</p>
-    <p><a href="https://github.com/narayan-works/dot.threads" target="_blank" rel="noopener noreferrer" class="bento-button">View source on GitHub <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 6px; flex-shrink: 0;"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></a></p>
+    <p><a href="https://github.com/narayan-works/dot.threads" target="_blank" rel="noopener noreferrer" class="bento-button standalone">View source on GitHub <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 6px; flex-shrink: 0;"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></a></p>
 </ProjectSection>
 

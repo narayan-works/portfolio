@@ -33,7 +33,7 @@ import ProjectSection from '../../components/ProjectSection.astro';
 import FullWidthImage from '../../components/FullWidthImage.astro';
 import PdfEmbed from '../../components/PdfEmbed.astro';
 
-<FullWidthImage src="/assets/projects/pointo/cover.gif" height="520px" loading="eager" constrain={false}/>
+<FullWidthImage src="/assets/projects/pointo/cover.gif" height="520px" loading="eager" constrain={false} borderRadius="0"/>
 
 <div slot="intro">
     <p>
@@ -49,14 +49,14 @@ We are at a moment where AI has genuinely moved beyond the screen. Spatial compu
     <p>
         Pointing has always been central to how we interact with computers. From the very beginning, it's been the human doing the pointing. AI made it abstract. Endless capability, endless possibility —All of it locked inside a text box. The interface got smaller as the intelligence got larger.
     </p>
-    <FullWidthImage src="/assets/projects/pointo/premise.gif" height="400px" caption="Premise exploration" constrain={true}/>
+    <PdfEmbed src="/assets/projects/pointo/premise.pdf"/>
 </ProjectSection>
 
 <ProjectSection title="What's the outcome?" id="outcome">
     <p>
         The final output is a working proof of concept for an embodied AI presence that can direct attention into a shared room. Pointo combines a kiosk interface, a pointing behavior, and a small interaction library that makes the system readable without needing a long explanation.
     </p>
-    <FullWidthImage src="/assets/projects/pointo/demos.gif" height="420px" caption="Final demo moments from the prototype" constrain={true}/>
+    <FullWidthImage src="/assets/projects/pointo/demos.gif" height="420px" caption="Final demo moments from the prototype" constrain={false}/>
     <PdfEmbed src="/assets/projects/pointo/findings.pdf"/>
     <PdfEmbed src="/assets/projects/pointo/thankyou.pdf"/>
 </ProjectSection>
@@ -68,9 +68,9 @@ We are at a moment where AI has genuinely moved beyond the screen. Spatial compu
     <p>
         The SXL framing helped narrow the work around a single interaction loop: establish presence, indicate direction, and let the pointing gesture do the communicative work. From there, the testing loop was used to tighten the gesture vocabulary and remove anything that competed with the core spatial signal.
     </p>
-    <FullWidthImage src="/assets/projects/pointo/testing-pivot.gif" height="400px" caption="Testing pivot iterations" constrain={true}/>
+    <PdfEmbed src="/assets/projects/pointo/testing-pivot.pdf"/>
     <PdfEmbed src="/assets/projects/pointo/why%20sxl.pdf"/>
-    <FullWidthImage src="/assets/projects/pointo/testing.gif" height="420px" caption="Iteration and correction during testing" constrain={true}/>
+    <FullWidthImage src="/assets/projects/pointo/testing.gif" height="420px" caption="Iteration and correction during testing" constrain={false}/>
 </ProjectSection>
 
 <ProjectSection title="How does it work?" id="process">
@@ -95,10 +95,10 @@ We are at a moment where AI has genuinely moved beyond the screen. Spatial compu
         alt="Pointo kiosk interface"
         caption="Kiosk interface preview"
         loading="eager"
-        constrain={true}
+        constrain={false}
    />
-    <FullWidthImage src="/assets/projects/pointo/gesture_1.gif" height="400px" caption="Gesture library 1" constrain={true}/>
-    <FullWidthImage src="/assets/projects/pointo/gesture_2.gif" height="400px" caption="Gesture library 2" constrain={true}/>
+    <PdfEmbed src="/assets/projects/pointo/gesture_1.pdf"/>
+    <PdfEmbed src="/assets/projects/pointo/gesture_2.pdf"/>
 </ProjectSection>
 
 <ProjectSection title="How is it built?" id="learnings">
