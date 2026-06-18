@@ -63,8 +63,19 @@ import VideoEmbed from '../../components/VideoEmbed.astro';
 <FullWidthImage src="/assets/projects/dot-threads/old bookmarking.png" height="400px" caption="Traditional folder-based bookmarking lists" constrain={false} />
 
 
-<div class="centered-tagline orange-bar">
-    But here’s the problem: bookmarks don’t preserve these connections.
+<div class="centered-tagline orange-bar gaps-container">
+    <div class="gaps-title">So, here are two gaps:</div>
+    <hr class="gaps-divider" />
+    <div class="gaps-list">
+        <div class="gap-item">
+            <h4 class="gap-heading">☝️ High cognitive load</h4>
+            <p class="gap-description">Overwhelming organizational choices at the point of saving.</p>
+        </div>
+        <div class="gap-item">
+            <h4 class="gap-heading">✌️ Fragmented context</h4>
+            <p class="gap-description">No preservation of relationships between related bookmarks.</p>
+        </div>
+    </div>
 </div>
 
 <p>
@@ -101,12 +112,18 @@ import VideoEmbed from '../../components/VideoEmbed.astro';
 </ProjectSection>
 
 <ProjectSection title="Outcome" id="outcome-shipped" hideTitle={true}>
-    <div class="orange-feedback-bar">
-        <h3 class="feedback-title">User Feedback</h3>
-        <ReviewContainer>
-            <ReviewBubble quote="The design is very effective and intuitive once the user gets used to it." />
-            <ReviewBubble quote="It's visually clear and thoughtfully crafted, with a strong focus on making bookmarking more engaging and intuitive. The idea of using thumbnails and interactive elements adds personalization to the experience." />
-        </ReviewContainer>
+    <div class="testimonial-section">
+        <div class="testimonial-label">What users said</div>
+        <div class="testimonial-grid">
+            <blockquote class="testimonial-card">
+                <span class="testimonial-quote-mark">"</span>
+                <p class="testimonial-text">The design is very effective and intuitive once the user gets used to it.</p>
+            </blockquote>
+            <blockquote class="testimonial-card">
+                <span class="testimonial-quote-mark">"</span>
+                <p class="testimonial-text">It's visually clear and thoughtfully crafted, with a strong focus on making bookmarking more engaging and intuitive. The idea of using thumbnails and interactive elements adds personalization to the experience.</p>
+            </blockquote>
+        </div>
     </div>
 </ProjectSection>
 
@@ -177,68 +194,79 @@ import VideoEmbed from '../../components/VideoEmbed.astro';
 </figure>
 
 <style>{`
-    .orange-feedback-bar {
-        background: #F6631A !important;
-        margin-left: -20px !important;
-        margin-right: -20px !important;
-        width: calc(100% + 40px) !important;
-        padding-block: 2.5rem !important;
-        padding-inline: max(20px, calc(50% - 450px)) !important;
-        box-sizing: border-box;
-        margin-top: 4rem !important;
-        margin-bottom: 4rem !important;
-        border-radius: 0;
-    }
-    .orange-feedback-bar .feedback-title {
-        color: #ffffff !important;
+    .testimonial-section {
         margin-top: 0 !important;
-        margin-bottom: 1.5rem !important;
-        text-align: left !important;
-        font-size: 1.85rem !important;
-        font-weight: 700 !important;
-        letter-spacing: -0.02em;
+    }
+    .testimonial-label {
+        font-size: 0.75rem !important;
+        font-weight: 600 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.08em !important;
+        color: #F6631A !important;
+        margin-bottom: 1.25rem !important;
         font-family: "Geist", sans-serif;
     }
-    .orange-feedback-bar .review-container {
-        flex-direction: row !important;
-        gap: 24px !important;
+    .testimonial-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
     }
-    .orange-feedback-bar .review-bubble {
-        border-color: rgba(255, 255, 255, 0.12) !important;
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15) !important;
+    .testimonial-card {
+        position: relative;
+        padding: 1.75rem 0 1.75rem 1.5rem;
+        border-left: 2px solid #F6631A;
+        margin: 0;
     }
-    .orange-feedback-bar .quote-mark {
-        color: #F6631A !important;
-        opacity: 0.25 !important;
+    .testimonial-card + .testimonial-card {
+        border-top: 1px solid var(--border-subtle);
     }
-    .orange-feedback-bar .review-text {
-        text-align: left !important;
+    .testimonial-quote-mark {
+        position: absolute;
+        top: 1rem;
+        left: 1.5rem;
+        font-size: 3.5rem;
+        font-weight: 800;
+        color: #F6631A;
+        opacity: 0.15;
+        line-height: 1;
+        font-family: Georgia, "Times New Roman", serif;
+        pointer-events: none;
+    }
+    .testimonial-text {
+        margin: 0 !important;
+        font-size: 1rem !important;
+        line-height: 1.6 !important;
+        color: var(--text-primary) !important;
+        font-style: italic !important;
+        font-weight: 300 !important;
+        font-family: "Geist", sans-serif;
+        position: relative;
+        z-index: 1;
     }
     @media (max-width: 768px) {
-        .orange-feedback-bar .review-container {
-            flex-direction: column !important;
+        .testimonial-card {
+            padding: 1.25rem 0 1.25rem 1.25rem;
         }
-        .orange-feedback-bar {
-            padding-block: 2rem !important;
+        .testimonial-text {
+            font-size: 0.9rem !important;
         }
-        .orange-feedback-bar .feedback-title {
-            font-size: 1.5rem !important;
-            margin-bottom: 1rem !important;
+        .testimonial-quote-mark {
+            font-size: 2.5rem;
+            left: 1.25rem;
         }
     }
     .centered-tagline.orange-bar {
         background: #F6631A !important;
-        color: #ffffff !important;
+        color: #111111 !important;
         padding-block: 3rem !important;
-        padding-inline: 20px !important;
+        padding-inline: max(20px, calc(50% - 450px + 20px)) !important;
         margin-left: -20px !important;
         margin-right: -20px !important;
         width: calc(100% + 40px) !important;
         max-width: none !important;
         box-sizing: border-box;
-        text-align: center;
-        font-weight: 700 !important;
-        font-size: 2rem !important;
+        text-align: left !important;
+        font-size: 1.5rem !important;
         line-height: 1.3 !important;
         letter-spacing: -0.01em;
         margin-top: 4rem !important;
@@ -342,6 +370,86 @@ import VideoEmbed from '../../components/VideoEmbed.astro';
     }
     [data-theme="light"] .theme-image-wrapper .dark-image {
         display: none !important;
+    }
+    .centered-tagline.orange-bar.gaps-container {
+        text-align: left !important;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0px !important;
+        padding-top: 40px !important;
+        padding-bottom: 40px !important;
+    }
+    .gaps-title {
+        font-size: 36px !important;
+        font-weight: 600 !important;
+        color: #111111 !important;
+        opacity: 0.75 !important;
+        margin: 0 !important;
+        margin-bottom: 10px !important;
+        text-align: left !important;
+        font-family: "Geist", sans-serif;
+        line-height: 1.1 !important;
+        letter-spacing: -0.04em;
+    }
+    .gaps-divider {
+        width: 100% !important;
+        border: none !important;
+        border-top: 1px solid #111111 !important;
+        opacity: 0.5 !important;
+        margin: 0 !important;
+        margin-bottom: 20px !important;
+    }
+    .gaps-list {
+        display: flex;
+        flex-direction: column;
+        gap: 28px !important;
+        width: 100%;
+        text-align: left;
+    }
+    .gap-item {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+    .gap-heading {
+        font-size: 36px !important;
+        font-weight: 600 !important;
+        color: #000000 !important;
+        opacity: 0.8 !important;
+        margin: 0 !important;
+        line-height: 1.1 !important;
+        font-family: "Geist", sans-serif;
+    }
+    .gap-description {
+        font-size: 16px !important;
+        font-weight: 400 !important;
+        color: #111111 !important;
+        margin: 0 !important;
+        margin-top: 4px !important;
+    }
+    @media (max-width: 768px) {
+        .centered-tagline.orange-bar.gaps-container {
+            padding-top: 30px !important;
+            padding-bottom: 30px !important;
+        }
+        .gap-heading {
+            font-size: 28px !important;
+        }
+        .gaps-title {
+            font-size: 28px !important;
+            margin-bottom: 8px !important;
+        }
+        .gaps-divider {
+            margin-bottom: 16px !important;
+        }
+        .gaps-list {
+            gap: 20px !important;
+        }
+        .gap-description {
+            font-size: 14px !important;
+            margin-top: 2px !important;
+        }
     }
 `}</style>
 
