@@ -98,16 +98,15 @@ const musibuddyProject = allProjects.find(
 					<div class="hero-headline bio-short">
 						<div class="bio-line-1">
 							<span class="dynamic-color-text"
-								>👋 I'm Narayan, an interaction designer</span
+								>👋 I'm Narayan,<br class="mobile-break" /> an interaction designer</span
 							>
 						</div>
 						<div class="bio-line-2">
-							who builds my way through design <span
-								class="bracket-hover-wrapper"
+							who builds <span class="bracket-hover-wrapper"
 								><span class="bracket">[</span><span
 									class="bracket-content"
 									><span class="bracket-inner"
-										>from idea to artifact</span
+										>from 0 to 1</span
 									></span
 								><span class="bracket">]</span></span
 							> across interfaces, tools, and hardware.
@@ -262,29 +261,6 @@ const musibuddyProject = allProjects.find(
 						)
 					}
 					{
-						pikoProject && (
-							<div
-								class="project-card-wrapper"
-								data-categories="physical-ux"
-							>
-								<HomeProjectCard
-									title={pikoProject.data.title}
-									image={
-										heroImages[pikoProject.slug] ||
-										pikoProject.data.heroImage
-									}
-									loading="eager"
-									fetchPriority="high"
-									href={`/works/${pikoProject.slug}`}
-									tags={pikoProject.data.tags}
-									meta={pikoProject.data.meta}
-									description={pikoProject.data.description}
-									categories={["physical-ux"]}
-								/>
-							</div>
-						)
-					}
-					{
 						dotThreadsProject && (
 							<div
 								class="project-card-wrapper"
@@ -296,7 +272,8 @@ const musibuddyProject = allProjects.find(
 										heroImages[dotThreadsProject.slug] ||
 										dotThreadsProject.data.heroImage
 									}
-									loading="lazy"
+									loading="eager"
+									fetchPriority="high"
 									href={`/works/${dotThreadsProject.slug}`}
 									tags={dotThreadsProject.data.tags}
 									meta={dotThreadsProject.data.meta}
@@ -326,6 +303,78 @@ const musibuddyProject = allProjects.find(
 									meta={detourProject.data.meta}
 									description={detourProject.data.description}
 									categories={["mobile-ux"]}
+								/>
+							</div>
+						)
+					}
+					{
+						serendipityProject && (
+							<div
+								class="project-card-wrapper"
+								data-categories="mobile-ux"
+							>
+								<HomeProjectCard
+									title={serendipityProject.data.title}
+									image={
+										heroImages[serendipityProject.slug] ||
+										serendipityProject.data.heroImage
+									}
+									loading="lazy"
+									href={`/works/${serendipityProject.slug}`}
+									tags={serendipityProject.data.tags}
+									meta={serendipityProject.data.meta}
+									description={
+										serendipityProject.data.description
+									}
+									categories={["mobile-ux"]}
+								/>
+							</div>
+						)
+					}
+					{
+						pikoProject && (
+							<div
+								class="project-card-wrapper"
+								data-categories="physical-ux"
+							>
+								<HomeProjectCard
+									title={pikoProject.data.title}
+									image={
+										heroImages[pikoProject.slug] ||
+										pikoProject.data.heroImage
+									}
+									loading="lazy"
+									href={`/works/${pikoProject.slug}`}
+									tags={pikoProject.data.tags}
+									meta={pikoProject.data.meta}
+									description={pikoProject.data.description}
+									categories={["physical-ux"]}
+								/>
+							</div>
+						)
+					}
+					{
+						musibuddyProject && (
+							<div
+								class="project-card-wrapper"
+								data-categories="physical-ux"
+							>
+								<HomeProjectCard
+									title={musibuddyProject.data.title}
+									image={
+										heroImages[musibuddyProject.slug] ||
+										musibuddyProject.data.heroImage
+									}
+									loading="lazy"
+									href={`/works/${musibuddyProject.slug}`}
+									tags={musibuddyProject.data.tags}
+									meta={musibuddyProject.data.meta}
+									description={
+										musibuddyProject.data.description
+									}
+									fit="cover"
+									scale={1.5}
+									categories={["physical-ux"]}
 								/>
 							</div>
 						)
@@ -374,56 +423,6 @@ const musibuddyProject = allProjects.find(
 										sanctuaryProject.data.description
 									}
 									categories={["spatial-xd"]}
-								/>
-							</div>
-						)
-					}
-					{
-						serendipityProject && (
-							<div
-								class="project-card-wrapper"
-								data-categories="mobile-ux"
-							>
-								<HomeProjectCard
-									title={serendipityProject.data.title}
-									image={
-										heroImages[serendipityProject.slug] ||
-										serendipityProject.data.heroImage
-									}
-									loading="lazy"
-									href={`/works/${serendipityProject.slug}`}
-									tags={serendipityProject.data.tags}
-									meta={serendipityProject.data.meta}
-									description={
-										serendipityProject.data.description
-									}
-									categories={["mobile-ux"]}
-								/>
-							</div>
-						)
-					}
-					{
-						musibuddyProject && (
-							<div
-								class="project-card-wrapper"
-								data-categories="physical-ux"
-							>
-								<HomeProjectCard
-									title={musibuddyProject.data.title}
-									image={
-										heroImages[musibuddyProject.slug] ||
-										musibuddyProject.data.heroImage
-									}
-									loading="lazy"
-									href={`/works/${musibuddyProject.slug}`}
-									tags={musibuddyProject.data.tags}
-									meta={musibuddyProject.data.meta}
-									description={
-										musibuddyProject.data.description
-									}
-									fit="cover"
-									scale={1.5}
-									categories={["physical-ux"]}
 								/>
 							</div>
 						)
@@ -693,35 +692,13 @@ const musibuddyProject = allProjects.find(
 
 	.bracket-content {
 		display: inline-block;
-		max-width: 0;
-		overflow: hidden;
 		white-space: nowrap;
-		opacity: 0;
-		transition:
-			max-width 0.4s cubic-bezier(0.25, 1, 0.5, 1) 0.15s,
-			opacity 0.25s ease-out 0.15s;
-		will-change: max-width, opacity;
+		opacity: 1;
 	}
 
 	.bracket-inner {
 		display: inline-block;
 		white-space: nowrap;
-		transform: translateX(-8px);
-		transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1) 0.15s;
-		will-change: transform;
-	}
-
-	.bracket-hover-wrapper.is-hovered .bracket-content {
-		max-width: var(--expanded-width, 13.5em);
-		opacity: 1;
-		transition:
-			max-width 0.4s cubic-bezier(0.25, 1, 0.5, 1) 0s,
-			opacity 0.25s ease-out 0s;
-	}
-
-	.bracket-hover-wrapper.is-hovered .bracket-inner {
-		transform: translateX(0);
-		transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1) 0s;
 	}
 
 	/* Custom Tooltip Styling */
@@ -1269,9 +1246,6 @@ const musibuddyProject = allProjects.find(
 	}
 
 	@media (max-width: 768px) {
-		.hero-bio {
-			font-size: 32px;
-		}
 		.home-content {
 			padding: 136px 24px 0 24px;
 		}
@@ -1297,7 +1271,7 @@ const musibuddyProject = allProjects.find(
 			margin-top: 16px !important;
 		}
 		.works-container {
-			padding: 40px 24px 24px 24px;
+			padding: 24px;
 		}
 		.see-more-wrap {
 			padding: 0 24px;
@@ -1344,6 +1318,10 @@ const musibuddyProject = allProjects.find(
 		transition: color 0.4s ease;
 	}
 
+	.mobile-break {
+		display: none;
+	}
+
 	.bio-line-2 {
 		font-size: 64px;
 		line-height: 0.9;
@@ -1351,14 +1329,20 @@ const musibuddyProject = allProjects.find(
 	}
 
 	@media (max-width: 768px) {
+		.mobile-break {
+			display: block;
+		}
 		.bio-line-1 {
 			font-size: 24px;
+			letter-spacing: 0em;
 		}
 		.bio-line-2 {
 			font-size: 24px;
+			letter-spacing: 0em;
 		}
 		.bio-text {
-			font-size: 12px;
+			font-size: 14px; /* More readable body font size on mobile */
+			letter-spacing: 0em;
 		}
 		.action-link {
 			font-size: 12px !important;
@@ -1844,8 +1828,12 @@ const musibuddyProject = allProjects.find(
 			);
 
 			// Floating Theme Toggle Footer Collision Logic
-			const toggleFloater = document.querySelector(".toggle-floater") as HTMLElement;
-			const footer = document.querySelector(".site-footer") as HTMLElement;
+			const toggleFloater = document.querySelector(
+				".toggle-floater",
+			) as HTMLElement;
+			const footer = document.querySelector(
+				".site-footer",
+			) as HTMLElement;
 			if (toggleFloater && footer) {
 				const updateTogglePosition = () => {
 					const footerRect = footer.getBoundingClientRect();
@@ -1854,13 +1842,23 @@ const musibuddyProject = allProjects.find(
 
 					if (footerRect.top < windowHeight) {
 						const offset = windowHeight - footerRect.top + margin;
-						toggleFloater.style.setProperty("bottom", `${offset}px`, "important");
+						toggleFloater.style.setProperty(
+							"bottom",
+							`${offset}px`,
+							"important",
+						);
 					} else {
-						toggleFloater.style.setProperty("bottom", "20px", "important");
+						toggleFloater.style.setProperty(
+							"bottom",
+							"20px",
+							"important",
+						);
 					}
 				};
 
-				window.addEventListener("scroll", updateTogglePosition, { passive: true });
+				window.addEventListener("scroll", updateTogglePosition, {
+					passive: true,
+				});
 				window.addEventListener("resize", updateTogglePosition);
 				updateTogglePosition();
 			}
@@ -2124,8 +2122,12 @@ const musibuddyProject = allProjects.find(
 			let Y = Y_bottom + (Y_center - Y_bottom) * progress;
 
 			// Keep 20px padding between the bottom of the track and the top of the theme toggle
-			const toggleFloater = document.querySelector(".toggle-floater") as HTMLElement | null;
-			const toggleHeight = toggleFloater ? toggleFloater.offsetHeight : 44;
+			const toggleFloater = document.querySelector(
+				".toggle-floater",
+			) as HTMLElement | null;
+			const toggleHeight = toggleFloater
+				? toggleFloater.offsetHeight
+				: 44;
 			let toggleBottom = 20;
 
 			const footer = document.querySelector(".site-footer");

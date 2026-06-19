@@ -497,6 +497,19 @@ const isGif = typeof image === "string" ? image.endsWith(".gif") : (image && (im
             grid-template-columns: 1fr;
             height: auto;
             gap: var(--card-padding);
+            padding: 0;
+            border-radius: var(--media-radius);
+            transition:
+                padding 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                background-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .home-project-card:hover,
+        .home-project-card:active {
+            padding: 10px;
         }
 
         .card-meta-panel {
@@ -507,7 +520,12 @@ const isGif = typeof image === "string" ? image.endsWith(".gif") : (image && (im
             order: 1;
             height: auto;
         }
+
+        .meta-tag {
+            font-size: 10px;
+        }
     }
+
 
     /* Category-specific hover colors for project bentos & CTA pills */
     .home-project-card[data-categories~="physical-ux"]:hover {
