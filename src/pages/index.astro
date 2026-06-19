@@ -18,6 +18,9 @@ import deturHero from "../assets/projects/detur/hero-detur.png";
 import pikoHero from "../assets/projects/piko/hero-piko.gif";
 import sanctuaryHero from "../assets/projects/santuary/hero-santuary.png";
 import tirupatiHero from "../assets/projects/tirupati/hero-tirupati.gif";
+import pointoHero from "../assets/projects/pointo/cover.gif";
+import serendipityHero from "../assets/projects/serendipity/hero-serendipidity.png";
+import musibuddyHero from "../assets/projects/musibuddy/hero-musibuddy.gif";
 
 // Fetch all projects
 const allProjects = (await getCollection("projects"))
@@ -41,6 +44,9 @@ const heroImages: Record<string, ImageMetadata> = {
 	piko: pikoHero,
 	"skywalk-sanctuary": sanctuaryHero,
 	"tirupati-campus": tirupatiHero,
+	pointo: pointoHero,
+	serendipidity: serendipityHero,
+	musibuddy: musibuddyHero,
 };
 
 // Convenience references by slug for manual column layout

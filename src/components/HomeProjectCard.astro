@@ -33,10 +33,12 @@ const {
 const metaEntries = Object.entries(meta).slice(0, 6);
 
 const isMetadata = image && typeof image === "object" && "width" in image && "height" in image;
-const imageWidth = isMetadata ? (image as ImageMetadata).width : 1200;
-const imageHeight = isMetadata ? (image as ImageMetadata).height : 700;
+const imageWidth = isMetadata ? (image as ImageMetadata).width : 900;
+const imageHeight = isMetadata ? (image as ImageMetadata).height : 525;
 const aspect = imageWidth / imageHeight;
 const aspectString = `${imageWidth} / ${imageHeight}`;
+
+const isGif = typeof image === "string" ? image.endsWith(".gif") : (image && (image as ImageMetadata).format === "gif");
 ---
 
 <a href={href} class="home-project-card" data-categories={categories.join(" ")}>
@@ -44,17 +46,29 @@ const aspectString = `${imageWidth} / ${imageHeight}`;
     <div class="card-image-panel" style={`--image-aspect-ratio: ${aspectString};`}>
         {
             image ? (
-                <Image
-                    src={image}
-                    alt={title}
-                    width={1200}
-                    height={Math.round(1200 / aspect)}
-                    loading={loading}
-                    decoding="async"
-                    fetchpriority={fetchPriority}
-                    class="card-image"
-                    style={`object-fit: ${fit}; --base-scale: ${scale};`}
-                />
+                isGif ? (
+                    <img
+                        src={typeof image === "string" ? image : (image as ImageMetadata).src}
+                        alt={title}
+                        loading={loading}
+                        decoding="async"
+                        fetchpriority={fetchPriority}
+                        class="card-image"
+                        style={`object-fit: ${fit}; --base-scale: ${scale};`}
+                    />
+                ) : (
+                    <Image
+                        src={image}
+                        alt={title}
+                        width={900}
+                        height={Math.round(900 / aspect)}
+                        loading={loading}
+                        decoding="async"
+                        fetchpriority={fetchPriority}
+                        class="card-image"
+                        style={`object-fit: ${fit}; --base-scale: ${scale};`}
+                    />
+                )
             ) : (
                 <div class="placeholder-image" />
             )
