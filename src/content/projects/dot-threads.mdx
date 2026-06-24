@@ -57,9 +57,6 @@ import VideoEmbed from '../../components/VideoEmbed.astro';
 
 <FullWidthImage src="/assets/projects/dot-threads/old bookmarking.png" height="400px" caption="Traditional folder-based bookmarking lists" constrain={false} />
 
-<p>
-    With traditional bookmarking, I’d save all these profiles in folders: "People," "Companies," "Labs," "Projects." The folders grow. Three months later, I’d have no idea how these things connected. The story would be lost.
-</p>
 <h2>Validating the Problem</h2>
 <p>
     To see if there is a broader pattern with this problem, I surveyed 25 people across 3 CMU departments (Architecture, HCI, Design) to collect qualitative insights on how people organize their digital bookmarks.
@@ -74,8 +71,9 @@ import VideoEmbed from '../../components/VideoEmbed.astro';
     </div>
 </div>
 
+<h2 class="left-align">The insight</h2>
 <p>
-    <strong>The insight:</strong> Bookmarking systems break at scale. As the list keeps growing, people either abandon the system or can't remember where they filed things—which defeats the whole point of saving things for future use. Sharing bookmarks adds another layer of complexity, forcing people to use other tools like Are.na, OneTab, or Notion. This fragments their workflow across multiple tools, breaking the flow they were already in.
+    Bookmarking systems break when the list gets too long. People either stop using them or forget where things were saved. Sharing adds more friction, pushing people into tools like Are.na, OneTab, or Notion and splitting the workflow across too many places.
 </p>
 
 <div class="centered-tagline orange-bar gaps-container">
@@ -93,9 +91,7 @@ import VideoEmbed from '../../components/VideoEmbed.astro';
     </div>
 </div>
 
-<p>
-    <strong>I needed a way to see the story behind my rabbit holes later, not just store them.</strong>
-</p>
+
 </ProjectSection>
 
 <ProjectSection title="Outcome" id="outcome">
@@ -122,10 +118,12 @@ import VideoEmbed from '../../components/VideoEmbed.astro';
 </ProjectSection>
 
 <ProjectSection title="Outcome" id="outcome-iterations" hideTitle={true}>
-    <h3>Iterations Based on Feedback</h3>
+    <p><strong>Iterations Based on Feedback</strong></p>
     <p>The reviews surfaced two key areas for improvement:</p>
-    <p><strong>Connection clarity:</strong> Users found the lines between colored nodes unclear. Added visual hierarchy (bold/medium/faint opacity) to distinguish connection depths and updated the trails sidebar to explicitly label primary/secondary/tertiary relationships.</p>
-    <p><strong>Multi-bookmark workflows:</strong> Request for connected bookmarks to open together. This validated the export/import feature—users can now share entire research threads as portable JSON files rather than individual links.</p>
+    <h4>Connection clarity</h4>
+    <p>Users found the lines between colored nodes unclear. Added visual hierarchy (bold/medium/faint opacity) to distinguish connection depths and updated the trails sidebar to explicitly label primary/secondary/tertiary relationships.</p>
+    <h4>Multi-bookmark workflows</h4>
+    <p>Request for connected bookmarks to open together. This validated the export/import feature—users can now share entire research threads as portable JSON files rather than individual links.</p>
     <hr class="feature-divider" />
     <h2>Project Demo</h2>
     <p>A walkthrough of the live product experience, highlighting core flows and the spatial browsing interactions.</p>
@@ -332,7 +330,8 @@ import VideoEmbed from '../../components/VideoEmbed.astro';
         margin-right: -20px !important;
         width: calc(100% + 40px) !important;
         max-width: none !important;
-        padding-inline: 0 !important;
+        padding: 20px !important;
+        box-sizing: border-box;
         margin-top: 4rem !important;
         margin-bottom: 4rem !important;
     }

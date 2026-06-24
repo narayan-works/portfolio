@@ -61,24 +61,41 @@ const resolvedFetchPriority =
                     overflow,
                 }}
             >
-                <Image
-                    src={src}
-                    alt={alt}
-                    width={1920}
-                    height={1080}
-                    class="optimized-image"
-                    loading={loading}
-                    decoding="async"
-                    fetchpriority={resolvedFetchPriority}
-                    sizes={sizes}
-                    style={{
-                        transform: `scale(${scale})`,
-                        objectFit: objectFit,
-                        height:
-                            lockHeight && height !== "auto" ? "100%" : "auto",
-                        ...(borderRadius !== undefined ? { borderRadius } : {}),
-                    }}
-                />
+                {typeof src === "string" && src.endsWith(".gif") ? (
+                    <img
+                        src={src}
+                        alt={alt}
+                        class="optimized-image"
+                        loading={loading}
+                        decoding="async"
+                        style={{
+                            transform: `scale(${scale})`,
+                            objectFit: objectFit,
+                            height:
+                                lockHeight && height !== "auto" ? "100%" : "auto",
+                            ...(borderRadius !== undefined ? { borderRadius } : {}),
+                        }}
+                    />
+                ) : (
+                    <Image
+                        src={src}
+                        alt={alt}
+                        width={1920}
+                        height={1080}
+                        class="optimized-image"
+                        loading={loading}
+                        decoding="async"
+                        fetchpriority={resolvedFetchPriority}
+                        sizes={sizes}
+                        style={{
+                            transform: `scale(${scale})`,
+                            objectFit: objectFit,
+                            height:
+                                lockHeight && height !== "auto" ? "100%" : "auto",
+                            ...(borderRadius !== undefined ? { borderRadius } : {}),
+                        }}
+                    />
+                )}
             </div>
         ) : (
             <div class="placeholder-wrapper">

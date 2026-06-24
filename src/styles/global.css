@@ -317,6 +317,28 @@ button:hover .arrow-down-left {
   }
 }
 
+.right-content h4 {
+  font-family: 'Bricolage Grotesque', sans-serif !important;
+  font-size: 36px !important;
+  font-weight: 400 !important;
+  color: var(--text-primary) !important;
+  line-height: 1.1 !important;
+  margin: 24px auto 12px auto !important;
+  max-width: 750px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  letter-spacing: -0.02em !important;
+  padding-inline: 0 !important;
+}
+
+@media (max-width: 768px) {
+  .right-content h4 {
+    font-size: var(--text-xl) !important;
+    margin-top: 16px !important;
+    margin-bottom: 8px !important;
+  }
+}
+
 .accent-text {
   color: var(--project-category-color, var(--accent-secondary)) !important;
 }

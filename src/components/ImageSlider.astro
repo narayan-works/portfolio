@@ -21,15 +21,25 @@ const sliderId = `slider-${Math.random().toString(36).substr(2, 9)}`;
             {
                 slides.map((slide, index) => (
                     <div class="slide" data-index={index}>
-                        <Image
-                            src={slide.src}
-                            alt={slide.alt}
-                            width={1920}
-                            height={1080}
-                            loading="lazy"
-                            decoding="async"
-                            class="optimized-slide-image"
-                        />
+                        {typeof slide.src === "string" && slide.src.endsWith(".gif") ? (
+                            <img
+                                src={slide.src}
+                                alt={slide.alt}
+                                loading="lazy"
+                                decoding="async"
+                                class="optimized-slide-image"
+                            />
+                        ) : (
+                            <Image
+                                src={slide.src}
+                                alt={slide.alt}
+                                width={1920}
+                                height={1080}
+                                loading="lazy"
+                                decoding="async"
+                                class="optimized-slide-image"
+                            />
+                        )}
                     </div>
                 ))
             }
