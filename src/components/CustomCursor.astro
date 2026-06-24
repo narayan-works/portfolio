@@ -49,7 +49,7 @@
         position: fixed;
         top: 0;
         left: 0;
-        z-index: 9999;
+        z-index: 99999;
         pointer-events: none;
         will-change: transform;
         opacity: 0;
@@ -153,6 +153,22 @@
 
         const updateCursorState = (e: MouseEvent) => {
             const target = e.target as HTMLElement;
+
+            // Priority -1: Inside Typography Inspector Widget
+            const inspector = target.closest(".typo-inspector-widget");
+            if (inspector) {
+                const interactive = target.closest(interactiveSelectors);
+                if (interactive) {
+                    cursorWrapper.classList.add("interactive");
+                } else {
+                    cursorWrapper.classList.remove("interactive");
+                }
+                isTextHover = false;
+                isGameHover = false;
+                if (isVisible) cursor.style.opacity = "1";
+                return;
+            }
+
             const interactive = target.closest(interactiveSelectors);
             const text = target.closest(textSelectors);
             const game = target.closest(gameSelector);

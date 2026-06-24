@@ -1,18 +1,17 @@
 ---
 title: "Detour"
-description: "A mobile app exploring whether lightweight nudges during daily commutes can make urban exploration feel natural instead of effortful. Uses gamification and constrained choices to encourage intentional detours."
+description: "A gamified mobile app that nudges people into taking detours by simplifying decisions and turning exploration into small, playful choices."
 category: "spatial"
 order: 3
 heroImage: "/assets/projects/detur/hero-detur.png"
-tags: ["App Design", "Behavior Change", "Urban Exploration"]
+tags: ["Spatial Interaction", "Social Interaction", "Visual Design"]
 bentoSize: "tall"
 meta:
   Role: "Product Designer"
-  Methods: "Rapid Prototyping, Bodystorming"
-  Tools: "Figma, Google Maps API, Android Studio"
   Duration: "4 Weeks"
-  Advisor: "Paul Pangaro"
   Year: "2024"
+  Advisor: "Paul Pangaro"
+  Focus: "Habit Building, Gamification"
 sections:
   - id: "problem"
     label: "Why build it?"
@@ -22,8 +21,6 @@ sections:
     label: "Finding the dots"
   - id: "process"
     label: "Connecting the dots"
-  - id: "learnings"
-    label: "Learnings"
 ---
 
 import ProjectSection from '../../components/ProjectSection.astro';
@@ -97,7 +94,7 @@ import PdfEmbed from '../../components/PdfEmbed.astro';
 
 <ProjectSection title="Implementation" id="process">
     <p style="margin-bottom: 2rem;">Translating the prior art principles into a product system meant limiting variables at every decision point.</p>
-    <ul style="list-style: none; padding: 0; margin-bottom: 2rem; padding-inline: max(0rem, calc(50% - 450px)); box-sizing: border-box;">
+    <ul style="list-style: none; padding: 0; margin-bottom: 2rem; padding-inline: max(0rem, calc(50% - 375px)); box-sizing: border-box;">
         <li style="margin-bottom: 1rem; display: flex; align-items: center; gap: 1rem;">
             <span style="display: inline-flex; width: 28px; height: 28px; background: #000; color: #ffffffff; border-radius: 50%; justify-content: center; align-items: center; font-weight: 700; flex-shrink: 0; text-decoration: none; padding-top: 2px; padding-right: 1px;">4</span>
             <span>intent categories to choose a detour from.</span>
@@ -122,7 +119,7 @@ import PdfEmbed from '../../components/PdfEmbed.astro';
 {/* PDF Viewer for rules */}
 <PdfEmbed src="/assets/projects/detur/Rules.pdf" fullWidth={false} />
 
-<ProjectSection title="Interaction Framework" id="learnings">
+<ProjectSection title="Interaction Framework" id="process">
     <p>The interaction model tries to prioritize presence over precision.</p>
 
     <h3>👀  Intent-Based Scoping</h3>

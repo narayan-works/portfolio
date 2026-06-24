@@ -24,6 +24,7 @@ const { Content } = await entry.render();
   ctaText={entry.data.ctaText}
   sections={entry.data.sections}
   heroImage={entry.data.heroImage}
+  category={entry.data.category}
 >
   <!-- We need a named slot 'intro' for the description if we want to pass rich content into it.
          However, the MDX file structure we defined puts the intro IN the MDX body or maybe separate?

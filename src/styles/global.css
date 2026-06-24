@@ -1,7 +1,37 @@
+@import "./typography-inspector-overrides.css";
+
 :root {
-  /* Font Family */
-  --font-sans: 'Geist', 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
+  font-size: 18px;
+
+  /* Font Family Defaults */
+  --font-title: 'Geist', sans-serif;
+  --font-sans: 'Google Sans', sans-serif;
+  --font-mono: 'Geist Mono', monospace;
+
+  /* Typography Spec scale overrides */
+  --text-2xs: 0.611rem;
+  --text-xs: 0.66rem;
+  --text-sm: 0.778rem;
+  --text-base: 0.9rem;
+  --text-md: 1.111rem;
+  --text-lg: 1.222rem;
+  --text-xl: 1.333rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 3.1rem;
+  --text-4xl: 3rem;
+  --text-display: 3.5rem;
+
+  /* Weights & Spacings */
+  --title-weight: 400;
+  --title-spacing: -0.045em;
+
+  --body-weight: 400;
+  --body-line-height: 1.15;
+  --body-spacing: 0em;
+
+  --tag-weight: 400;
+  --tag-line-height: 1;
+  --tag-spacing: 0em;
 
   /* Spacing System (Compact & Strong) */
   --space-2xs: 0.25rem;
@@ -27,7 +57,7 @@
   --bento-trigger-horizontal: 6px;
 
   /* Theme: Dark (Default) */
-  --bg-primary: #090909;
+  --bg-primary: #0a0a0a;
   --bg-surface: #333333;
   --bg-surface-hover: #3d3d3d;
 
@@ -48,6 +78,16 @@
   /* Blue */
   --accent-secondary: #42BD49;
   /* Green */
+
+  /* Category Colors */
+  --category-physical-ux: #68B5ED;
+  --category-physical-ux-hover: #57A4DC;
+  --category-web-ux: #F6631A;
+  --category-web-ux-hover: #E05105;
+  --category-mobile-ux: #FACC09;
+  --category-mobile-ux-hover: #E5BA05;
+  --category-spatial-xd: #2B923D;
+  --category-spatial-xd-hover: #227B32;
 
   /* Layout Padding (Dynamic for desktop web view to keep middle width constant at 1200px) */
   --total-side-padding: max(48px, calc((100vw - 1200px) / 2));
@@ -85,10 +125,33 @@ html {
   font-family: var(--font-sans);
   background-color: var(--bg-primary);
   color: var(--text-primary);
-  scroll-behavior: smooth;
-  font-size: 16px;
+  scroll-behavior: auto;
+  /* Prevent conflict with Lenis smooth scroll */
+  font-size: 18px;
   line-height: 1.5;
   transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Lenis smooth scrolling compatibility */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  scroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
 }
 
 body {
@@ -124,23 +187,41 @@ h1,
 h2,
 h3,
 h4,
-strong {
-  font-weight: 700;
-  /* Stronger weight */
-  letter-spacing: -0.025em;
+strong,
+b {
+  font-family: var(--font-title);
+  font-weight: var(--title-weight);
+  letter-spacing: var(--title-spacing);
 }
 
 h1 {
-  font-size: 3rem;
+  font-size: var(--text-4xl);
   line-height: 1.1;
 }
 
 h2 {
-  font-size: 2rem;
+  font-size: var(--text-3xl);
 }
 
 h3 {
-  font-size: 1.25rem;
+  font-size: var(--text-xl);
+}
+
+p,
+li {
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: var(--body-line-height);
+  font-weight: var(--body-weight);
+  letter-spacing: var(--body-spacing);
+}
+
+/* Overrides for big middle text (bio description block and MDX case study intros) */
+[slot="intro"],
+.big-middle-text {
+  --text-base: 1.5rem;
+  --text-3xl: 3.2rem;
+  --body-line-height: 1.1;
 }
 
 
@@ -174,4 +255,68 @@ dt,
 dd,
 figcaption {
   cursor: text;
+}
+
+/* Arrow Utility Styles */
+.arrow-svg {
+  display: inline-block;
+  vertical-align: middle;
+  width: 1em;
+  height: 1em;
+  stroke: currentColor;
+  stroke-width: 1.1;
+  /* Thinner and sharper, matching Inter typography */
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  margin-left: 0.3em;
+  position: relative;
+  top: -0.05em;
+  /* Precision vertical alignment with text baseline */
+  transition: transform 0.2s ease;
+}
+
+.arrow-up-right,
+.arrow-down-left {
+  display: inline-block;
+}
+
+/* Hover effects when parent is hovered */
+a:hover .arrow-up-right,
+button:hover .arrow-up-right,
+.social-footer-link:hover .arrow-up-right {
+  transform: translate(2px, -2px);
+}
+
+a:hover .arrow-down-left,
+button:hover .arrow-down-left {
+  transform: translate(-2px, 2px);
+}
+
+/* ==========================================================================
+   Project Page Case Study H2 Styling (Unified for all projects)
+   ========================================================================== */
+.right-content h2 {
+  font-family: 'Bricolage Grotesque', sans-serif !important;
+  font-size: 56px !important;
+  font-weight: 400 !important;
+  color: var(--text-primary) !important;
+  line-height: 0.9 !important;
+  margin: 64px auto 24px auto !important;
+  max-width: 750px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  letter-spacing: -0.02em !important;
+  padding-inline: 0 !important;
+}
+
+@media (max-width: 768px) {
+  .right-content h2 {
+    font-size: var(--text-2xl) !important;
+    margin-top: 40px !important;
+    margin-bottom: 16px !important;
+  }
+}
+
+.accent-text {
+  color: var(--project-category-color, var(--accent-secondary)) !important;
 }

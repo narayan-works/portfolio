@@ -1,18 +1,19 @@
 ---
 title: "Piko"
-description: "A soft robotic prototype exploring whether peripheral physical feedback can change phone usage behavior. Detects doom-scrolling posture with 91% accuracy using a custom-trained computer vision model, responding with tactile feedback and emotion-based gestures."
+description: "A soft robotic companion that detects doom-scrolling through computer vision and lets users talk to it, responding with peripheral feedback and emotion-based gestures."
 category: "embodied"
 order: 5
 heroImage: "/assets/projects/piko/cover.png"
 bentoSize: "large"
-tags: ["Physical AI", "Computer Vision", "Embodied Interaction"]
+tags: ["Embodied AI", "Computer Vision", "Working Prototype"]
 meta:
-  Course: "Building User-Centered Sensing Systems"
+  Role: "Interaction Design, Computer Vision"
   Duration: "4 Weeks"
-  Team: "Ashveen Banga, Chris Wu, Leo Liu, Narayan"
+  Year: "2025"
+  People: "Ashveen Banga, Chris Wu, Leo Liu, Narayan"
   Contribution: "Interaction Design, Computer Vision"
   Advisor: "Mayank Goel, Yuvraj Agarwal"
-  Year: "2025"
+  Focus: "Embodied AI, Sensing"
 sections:
   - id: "problem"
     label: "Why build it?"
@@ -22,8 +23,6 @@ sections:
     label: "Finding the dots"
   - id: "process"
     label: "Connecting the dots"
-  - id: "learnings"
-    label: "Learnings"
 ---
 
 import ProjectSection from '../../components/ProjectSection.astro';
@@ -130,7 +129,7 @@ import PlaceholderImage from '../../components/PlaceholderImage.astro';
     <FullWidthImage src="/assets/projects/piko/interactions.gif" height="300px" caption="Interaction library" constrain={true} />
 </ProjectSection>
 
-<ProjectSection title="Technical Architecture" id="learnings">
+<ProjectSection title="Technical Architecture" id="process">
     <p>The architecture bridges hardware sensing with behavioral responses. The robot doesn't just "breathe"; it reacts to how the user holds it, adjusting its pace to match or soothe the user's own rhythm.</p>
     
     <p>To achieve low-latency interactions, we distributed the workload across a three-node ecosystem. This split architecture balances heavy processing with real-time responsiveness.</p>

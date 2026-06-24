@@ -1,18 +1,17 @@
 ---
 title: "Dot Threads"
-description: "A Chrome extension for spatial knowledge management. Organizes web links by context and relationships instead of folders, helping externalize associative thinking. "
+description: "A shipped Chrome extension inspired by MEMEX’s associative thinking, turning saved web links into a spatial graph organized by context and relationships."
 category: "thinking"
 order: 1
 heroImage: "/assets/projects/dot-threads/hero.png"
-tags: ["Browser Extension", "Knowledge Management", "Canvas"]
+tags: ["Knowledge Tools", "Spatial Interaction", "Shipped"]
 bentoSize: "medium"
 meta:
   Role: "Product Designer"
-  Duration: "6 weeks"
-  Tools: "Figma, Browser APIs"
-  Advisor: "Nik Martelaro"
-  Status: "Live on Chrome Web Store"
+  Duration: "6 Weeks"
   Year: "2025"
+  Advisor: "Nik Martelaro"
+  Focus: "Knowledge Tools, Spatial Graphs"
 sections:
   - id: "problem"
     label: "Why build it?"
@@ -22,8 +21,6 @@ sections:
     label: "Finding the dots"
   - id: "process"
     label: "Connecting the dots"
-  - id: "learnings"
-    label: "Learnings"
 ctaUrl: "https://chromewebstore.google.com/detail/dotthreads/lecgoimdckmlkkfniojcjpfabfgoaijb?hl=en-US"
 ctaText: "Try the extension out"
 ---
@@ -56,16 +53,14 @@ import VideoEmbed from '../../components/VideoEmbed.astro';
     This web of connections—people, projects, companies, labs—told a story. If I ever encountered someone else who worked at Experiments with Google, I’d want to connect them to this thread. 
 </p>
 <hr class="feature-divider" />
-<p>
-    <strong>But for me that's 12 open tabs, 4 folders deep, and 15 bookmarks to sort through before you even get back to what you were thinking about.</strong>
-</p>
+<h2 class="left-align">But for me that's <span class="accent-text">12 open tabs</span>, <span class="accent-text">4 folders deep</span>, and <span class="accent-text">15 bookmarks</span> to sort through before you even get back to what you were thinking about.</h2>
 
 <FullWidthImage src="/assets/projects/dot-threads/old bookmarking.png" height="400px" caption="Traditional folder-based bookmarking lists" constrain={false} />
 
 <p>
     With traditional bookmarking, I’d save all these profiles in folders: "People," "Companies," "Labs," "Projects." The folders grow. Three months later, I’d have no idea how these things connected. The story would be lost.
 </p>
-<h3>Validating the Problem</h3>
+<h2>Validating the Problem</h2>
 <p>
     To see if there is a broader pattern with this problem, I surveyed 25 people across 3 CMU departments (Architecture, HCI, Design) to collect qualitative insights on how people organize their digital bookmarks.
 </p>
@@ -104,7 +99,7 @@ import VideoEmbed from '../../components/VideoEmbed.astro';
 </ProjectSection>
 
 <ProjectSection title="Outcome" id="outcome">
-    <h3>Shipped Product</h3>
+    <h2>Shipped Product</h2>
     <p>Dot Threads launched on Chrome Web Store in September 2024 and has been actively maintained through January 2026. Currently at version 1.3.3 with 10 active users.</p>
     <FullWidthImage src="/assets/projects/dot-threads/chrome-store.png" height="400px" caption="Chrome Web Store listing" constrain={true}  />
     <FullWidthImage src="/assets/projects/dot-threads/opportunity.gif" height="400px" caption="Spatial connections opportunity" constrain={false} />
@@ -132,7 +127,7 @@ import VideoEmbed from '../../components/VideoEmbed.astro';
     <p><strong>Connection clarity:</strong> Users found the lines between colored nodes unclear. Added visual hierarchy (bold/medium/faint opacity) to distinguish connection depths and updated the trails sidebar to explicitly label primary/secondary/tertiary relationships.</p>
     <p><strong>Multi-bookmark workflows:</strong> Request for connected bookmarks to open together. This validated the export/import feature—users can now share entire research threads as portable JSON files rather than individual links.</p>
     <hr class="feature-divider" />
-    <h3>Project Demo</h3>
+    <h2>Project Demo</h2>
     <p>A walkthrough of the live product experience, highlighting core flows and the spatial browsing interactions.</p>
     <VideoEmbed type="vimeo" id="1164888480" title="Dot Threads Demo" constrain={true} />
 </ProjectSection>
@@ -140,13 +135,14 @@ import VideoEmbed from '../../components/VideoEmbed.astro';
 
 
 <ProjectSection title="Finding the dots" id="research">
-    <h3>Conversational AI Research Assistant</h3>
+    <h2 class="left-align">Conversational AI Research Assistant</h2>
+
     <p>
         To see if there is a broader pattern with this problem, I got to survey 25 people across 3 CMU departments (Architecture, HCI, Design) using an <a href="https://narayan-s-research-assistant-851405604897.us-west1.run.app" target="_blank" class="bento-button">AI conversational research assistant <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 6px; flex-shrink: 0;"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></a> for these sessions—letting people describe their actual bookmarking behavior instead of forcing multiple-choice answers.
     </p>
     <FullWidthImage src="/assets/projects/dot-threads/AI research bot.png" height="450px" caption="Conversational AI research assistant chat interface" constrain={false} />
 
-    <h3>MEMEX as Framework</h3>
+    <h2>MEMEX as Framework</h2>
     <p>
         In 1945, Vannevar Bush proposed MEMEX—a desk-sized machine for saving information through associative trails instead of categories. The idea: record links between ideas the way thinking actually happens, not the way filing systems force organization. This concept later inspired the creation of hyperlinks.
     </p>
@@ -157,27 +153,13 @@ import VideoEmbed from '../../components/VideoEmbed.astro';
 <FullWidthImage src="/assets/projects/dot-threads/approach.gif" height="300px" caption="Organizing the Thinking" constrain={false} />
 
 <ProjectSection title="Finding the dots" id="research-principles" hideTitle={true}>
-    <p>
-        MEMEX provided a structure for breaking down the bookmarking problem into actionable components. Two of Bush's fundamentals particularly shaped the direction:
-    </p>
-    <hr class="feature-divider" />
-    <p>
-        <span class="list-tagline">Displaying</span> Bush wrote about making connections visible through spatial positioning—"trails" that show how things are associated and how one idea leads to another. This resonated with what users described: folders hide how things relate. The challenge became: how to make relationships visible without overwhelming the interface.
-    </p>
-    <hr class="feature-divider" />
-    <p>
-        <span class="list-tagline">Sharing trails</span> Bush emphasized sharing entire paths of thought, not isolated items. This aligned with the user study finding—people struggled to share specific bookmarks scattered across lists. But sharing raised an immediate question: where should the data live? Cloud storage enables sharing but creates dependency. This tension pushed toward local-first architecture as a core constraint.
-    </p>
-    <hr class="feature-divider" />
-    <p>
-        These two aspects—visible relationships and data ownership—became the organizing principles for the design process.
-    </p>
 </ProjectSection>
 
 <FullWidthImage src="/assets/projects/dot-threads/figma-prototype.png" height="400px" caption="Figma prototype explorations" constrain={false} />
 
 <ProjectSection title="Prototyping the Parallels" id="process">
-    <p><span class="list-tagline">Entering</span> How to capture links without breaking browsing flow? Right-click context menu integration—save any link instantly from the browser's native menu.</p>
+    <h2 class="left-align">Entering</h2>
+    <p class="left-align half-width">How to capture links without breaking browsing flow? Right-click context menu integration—save any link instantly from the browser's native menu.</p>
 </ProjectSection>
 
 <figure class="interaction-media-container">
@@ -197,13 +179,13 @@ import VideoEmbed from '../../components/VideoEmbed.astro';
         margin-top: 0 !important;
     }
     .testimonial-label {
-        font-size: 0.75rem !important;
+        font-size: var(--text-xs) !important;
         font-weight: 600 !important;
         text-transform: uppercase !important;
         letter-spacing: 0.08em !important;
         color: #F6631A !important;
         margin-bottom: 1.25rem !important;
-        font-family: "Geist", sans-serif;
+        font-family: var(--font-sans);
     }
     .testimonial-grid {
         display: flex;
@@ -223,22 +205,22 @@ import VideoEmbed from '../../components/VideoEmbed.astro';
         position: absolute;
         top: 1rem;
         left: 1.5rem;
-        font-size: 3.5rem;
+        font-size: var(--text-display);
         font-weight: 800;
         color: #F6631A;
         opacity: 0.15;
         line-height: 1;
-        font-family: Georgia, "Times New Roman", serif;
+        font-family: var(--font-sans);
         pointer-events: none;
     }
     .testimonial-text {
         margin: 0 !important;
-        font-size: 1rem !important;
+        font-size: var(--text-base) !important;
         line-height: 1.6 !important;
         color: var(--text-primary) !important;
         font-style: italic !important;
         font-weight: 300 !important;
-        font-family: "Geist", sans-serif;
+        font-family: var(--font-sans);
         position: relative;
         z-index: 1;
     }
@@ -247,10 +229,10 @@ import VideoEmbed from '../../components/VideoEmbed.astro';
             padding: 1.25rem 0 1.25rem 1.25rem;
         }
         .testimonial-text {
-            font-size: 0.9rem !important;
+            font-size: var(--text-sm) !important;
         }
         .testimonial-quote-mark {
-            font-size: 2.5rem;
+            font-size: var(--text-xl);
             left: 1.25rem;
         }
     }
@@ -258,14 +240,14 @@ import VideoEmbed from '../../components/VideoEmbed.astro';
         background: #F6631A !important;
         color: #111111 !important;
         padding-block: 3rem !important;
-        padding-inline: max(20px, calc(50% - 450px + 20px)) !important;
+        padding-inline: max(20px, calc(50% - 375px + 20px)) !important;
         margin-left: -20px !important;
         margin-right: -20px !important;
         width: calc(100% + 40px) !important;
         max-width: none !important;
         box-sizing: border-box;
         text-align: left !important;
-        font-size: 1.5rem !important;
+        font-size: var(--text-2xl) !important;
         line-height: 1.3 !important;
         letter-spacing: -0.01em;
         margin-top: 4rem !important;
@@ -276,7 +258,7 @@ import VideoEmbed from '../../components/VideoEmbed.astro';
         width: calc(100% + 40px);
         margin-left: -20px;
         margin-right: -20px;
-        margin-top: 4rem;
+        margin-top: 1.5rem;
         margin-bottom: 4rem;
         box-sizing: border-box;
     }
@@ -318,7 +300,7 @@ import VideoEmbed from '../../components/VideoEmbed.astro';
     }
     .interaction-media-container figcaption {
         text-align: center;
-        font-size: 0.875rem;
+        font-size: var(--text-sm);
         color: var(--text-tertiary);
         margin-top: 0.5rem;
     }
@@ -380,16 +362,16 @@ import VideoEmbed from '../../components/VideoEmbed.astro';
         padding-bottom: 40px !important;
     }
     .gaps-title {
-        font-size: 36px !important;
+        font-size: 56px !important;
         font-weight: 600 !important;
         color: #111111 !important;
         opacity: 0.75 !important;
         margin: 0 !important;
         margin-bottom: 10px !important;
         text-align: left !important;
-        font-family: "Geist", sans-serif;
+        font-family: 'Bricolage Grotesque', sans-serif !important;
         line-height: 1.1 !important;
-        letter-spacing: -0.04em;
+        letter-spacing: -0.04em !important;
     }
     .gaps-divider {
         width: 100% !important;
@@ -412,16 +394,17 @@ import VideoEmbed from '../../components/VideoEmbed.astro';
         width: 100%;
     }
     .gap-heading {
-        font-size: 36px !important;
+        font-size: 56px !important;
         font-weight: 600 !important;
         color: #000000 !important;
         opacity: 0.8 !important;
         margin: 0 !important;
         line-height: 1.1 !important;
-        font-family: "Geist", sans-serif;
+        font-family: 'Bricolage Grotesque', sans-serif !important;
+        letter-spacing: -0.045em !important;
     }
     .gap-description {
-        font-size: 16px !important;
+        font-size: var(--text-base) !important;
         font-weight: 400 !important;
         color: #111111 !important;
         margin: 0 !important;
@@ -433,10 +416,10 @@ import VideoEmbed from '../../components/VideoEmbed.astro';
             padding-bottom: 30px !important;
         }
         .gap-heading {
-            font-size: 28px !important;
+            font-size: var(--text-2xl) !important;
         }
         .gaps-title {
-            font-size: 28px !important;
+            font-size: var(--text-2xl) !important;
             margin-bottom: 8px !important;
         }
         .gaps-divider {
@@ -446,14 +429,23 @@ import VideoEmbed from '../../components/VideoEmbed.astro';
             gap: 20px !important;
         }
         .gap-description {
-            font-size: 14px !important;
+            font-size: var(--text-sm) !important;
             margin-top: 2px !important;
         }
+    }
+
+    p.left-align {
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+        font-size: 16px !important;
+        line-height: 1.5 !important;
+        color: var(--text-secondary) !important;
     }
 `}</style>
 
 <ProjectSection title="Prototyping the Parallels" id="interaction-web-info" hideTitle={true}>
-    <p><span class="list-tagline">Web of info</span> How to show relationships spatially? Canvas layout where proximity indicates relatedness. Clicking any node reorganizes the view around it—making that node the "hero" of its own neighborhood.</p>
+    <h2 class="left-align">Web of info</h2>
+    <p class="left-align half-width">How to show relationships spatially? Canvas layout where proximity indicates relatedness. Clicking any node reorganizes the view around it—making that node the "hero" of its own neighborhood.</p>
 </ProjectSection>
 
 <figure class="interaction-media-container">
@@ -469,7 +461,8 @@ import VideoEmbed from '../../components/VideoEmbed.astro';
 </figure>
 
 <ProjectSection title="Prototyping the Parallels" id="interaction-cataloging" hideTitle={true}>
-    <p><span class="list-tagline">Cataloguing</span> How to preserve context when saving? Tag input and connection suggestions appear immediately during save, capturing why something mattered before the moment passes.</p>
+    <h2 class="left-align">Cataloguing</h2>
+    <p class="left-align half-width">How to preserve context when saving? Tag input and connection suggestions appear immediately during save, capturing why something mattered before the moment passes.</p>
 </ProjectSection>
 
 <figure class="interaction-media-container">
@@ -485,7 +478,8 @@ import VideoEmbed from '../../components/VideoEmbed.astro';
 </figure>
 
 <ProjectSection title="Prototyping the Parallels" id="interaction-browsing" hideTitle={true}>
-    <p><span class="list-tagline">Browsing</span> How to navigate without hierarchies? Direct exploration—click a node to see its connections, hover to preview, zoom to adjust detail level.</p>
+    <h2 class="left-align">Browsing</h2>
+    <p class="left-align half-width">How to navigate without hierarchies? Direct exploration—click a node to see its connections, hover to preview, zoom to adjust detail level.</p>
 </ProjectSection>
 
 <figure class="interaction-media-container">
@@ -501,7 +495,8 @@ import VideoEmbed from '../../components/VideoEmbed.astro';
 </figure>
 
 <ProjectSection title="Prototyping the Parallels" id="interaction-sharing" hideTitle={true}>
-    <p><span class="list-tagline">Sharing</span> How to export threads without cloud dependency? Local export as portable files—threads package as self-contained data that can be shared directly.</p>
+    <h2 class="left-align">Sharing</h2>
+    <p class="left-align half-width">How to export threads without cloud dependency? Local export as portable files—threads package as self-contained data that can be shared directly.</p>
 </ProjectSection>
 
 <figure class="interaction-media-container">
@@ -549,11 +544,11 @@ import VideoEmbed from '../../components/VideoEmbed.astro';
 </ProjectSection>
 
 
-<ProjectSection title="Technical Architecture" id="learnings">
+<ProjectSection title="Technical Architecture" id="process">
     <FullWidthImage src="/assets/projects/dot-threads/architecture.png" height="400px" caption="Technical architecture diagram" marginTop="0.5rem" constrain={false} />
 </ProjectSection>
 
-<ProjectSection title="Technical Architecture" id="learnings-architecture-desc" hideTitle={true}>
+<ProjectSection title="Technical Architecture" id="process-architecture-desc" hideTitle={true}>
     <p>Chrome extension stores data locally using browser storage API. Web application reads this data through message bridge and visualizes using D3.js force-directed graph. Development mode includes local filesystem persistence. When extension not installed, app loads static demo data. Microlink API handles screenshot generation.</p>
     <p><a href="https://github.com/narayan-works/dot.threads" target="_blank" rel="noopener noreferrer" class="bento-button standalone">View source on GitHub <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 6px; flex-shrink: 0;"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></a></p>
 </ProjectSection>

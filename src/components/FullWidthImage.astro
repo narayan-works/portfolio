@@ -27,7 +27,7 @@ const {
     height = "auto",
     loading = "lazy",
     fetchPriority = "auto",
-    sizes = "(min-width: 1200px) 900px, (min-width: 768px) 85vw, 100vw",
+    sizes = "(min-width: 1200px) 750px, (min-width: 768px) 85vw, 100vw",
     constrain = true,
     marginTop,
     scale = 1,
@@ -98,10 +98,10 @@ const resolvedFetchPriority =
     }
 
     .full-width-image.constrained {
-        /* Constrain to 900px body width */
-        padding-inline: max(0rem, calc(50% - 450px));
+        /* Constrain to 750px body width */
+        padding-inline: 0;
         box-sizing: border-box;
-    }
+     }
 
     .image-wrapper {
         width: 100%;

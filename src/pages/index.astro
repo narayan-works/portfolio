@@ -98,7 +98,8 @@ const musibuddyProject = allProjects.find(
 					<div class="hero-headline bio-short">
 						<div class="bio-line-1">
 							<span class="dynamic-color-text"
-								>👋 I'm Narayan,<br class="mobile-break" /> an interaction designer</span
+								>👋 I'm Narayan,<br class="mobile-break" /> an interaction
+								designer</span
 							>
 						</div>
 						<div class="bio-line-2">
@@ -200,20 +201,42 @@ const musibuddyProject = allProjects.find(
 						</button>
 
 						<div class="hero-actions">
-							<a href="#footer" class="action-link">Contact ↙</a>
+							<a href="#footer" class="action-link"
+								>Contact <svg
+									viewBox="0 0 10 10"
+									fill="none"
+									xmlns="http://www.w3.org/2000/svg"
+									class="arrow-svg arrow-down-left"
+									><path d="M8 2L2 8M2 8H6M2 8V4"></path></svg
+								></a
+							>
 
 							<a
 								href="https://substack.com/@narayanthinks"
 								target="_blank"
 								rel="noopener noreferrer"
-								class="action-link">Blog ↗</a
+								class="action-link"
+								>Blog <svg
+									viewBox="0 0 10 10"
+									fill="none"
+									xmlns="http://www.w3.org/2000/svg"
+									class="arrow-svg arrow-up-right"
+									><path d="M2 8L8 2M8 2H4M8 2V6"></path></svg
+								></a
 							>
 
 							<a
 								href="https://drive.google.com/file/d/1PcdJ52A1hec-0XFzHHCelg89N1d4cDHw/view?usp=sharing"
 								target="_blank"
 								rel="noopener noreferrer"
-								class="action-link">CV ↗</a
+								class="action-link"
+								>CV <svg
+									viewBox="0 0 10 10"
+									fill="none"
+									xmlns="http://www.w3.org/2000/svg"
+									class="arrow-svg arrow-up-right"
+									><path d="M2 8L8 2M8 2H4M8 2V6"></path></svg
+								></a
 							>
 						</div>
 					</div>
@@ -232,7 +255,6 @@ const musibuddyProject = allProjects.find(
 		<!-- LAYER 2: WORKS -->
 		<section id="works" class="layer-works">
 			<div class="works-container">
-				<h2 class="works-title">WORK</h2>
 				<div class="works-header-sticky">
 					<WorksFilter />
 				</div>
@@ -611,7 +633,7 @@ const musibuddyProject = allProjects.find(
 	}
 
 	.cmu-pill-text {
-		font-family: "Geist", sans-serif;
+		font-family: var(--font-sans);
 		font-size: 12px;
 		color: var(--text-secondary);
 		letter-spacing: 0.01em;
@@ -703,13 +725,13 @@ const musibuddyProject = allProjects.find(
 
 	/* Custom Tooltip Styling */
 	.custom-tooltip {
-		font-family: "Source Serif 4", "Georgia", serif;
+		font-family: var(--font-sans);
 		color: #c2152f;
 		font-weight: 600;
 	}
 
 	.cmu-name {
-		font-family: "Source Serif 4", "Georgia", serif;
+		font-family: var(--font-sans);
 		color: #c2152f;
 		font-weight: 600;
 	}
@@ -858,14 +880,15 @@ const musibuddyProject = allProjects.find(
 	}
 
 	.works-title {
-		font-family: var(--font-sans);
-		font-size: 36px;
-		font-weight: 700;
+		font-family: "Google Sans", sans-serif;
+		font-size: 48px;
+		font-weight: 500 !important;
 		color: var(--pure-bg-inverse);
 		text-align: center;
-		text-transform: uppercase;
+		text-transform: none;
 		margin: 0 0 40px 0;
-		letter-spacing: 0.05em;
+		letter-spacing: -0.005em;
+		line-height: 1.5;
 	}
 
 	@media (max-width: 1024px) {
@@ -984,7 +1007,7 @@ const musibuddyProject = allProjects.find(
 	}
 
 	.see-more-label {
-		font-family: "Geist", sans-serif;
+		font-family: var(--font-sans);
 		text-transform: uppercase;
 		letter-spacing: 0.06em;
 		font-size: 12px;
@@ -1215,10 +1238,14 @@ const musibuddyProject = allProjects.find(
 			margin-top: 1.5rem !important;
 		}
 		.hero-actions-left {
-			flex-wrap: wrap;
+			flex-wrap: nowrap !important;
 			justify-content: center !important;
-			align-items: baseline !important;
-			gap: 1.25rem !important;
+			align-items: center !important;
+			gap: 1rem !important;
+		}
+		.hero-actions {
+			gap: 1rem !important;
+			margin-top: 0 !important;
 		}
 		.hero-divider {
 			margin-inline: 48px;
@@ -1261,10 +1288,14 @@ const musibuddyProject = allProjects.find(
 			margin-top: 1.5rem !important;
 		}
 		.hero-actions-left {
-			flex-wrap: wrap;
+			flex-wrap: nowrap !important;
 			justify-content: center !important;
-			align-items: baseline !important;
-			gap: 1.25rem !important;
+			align-items: center !important;
+			gap: 0.6rem !important;
+		}
+		.hero-actions {
+			gap: 0.6rem !important;
+			margin-top: 0 !important;
 		}
 		.hero-divider {
 			margin-inline: 24px;
@@ -1302,13 +1333,16 @@ const musibuddyProject = allProjects.find(
 	.bio-short {
 		width: 100%;
 		display: block; /* Default visible */
-		font-family: "Geist", sans-serif;
+		font-family: var(--font-sans);
 		font-weight: 550; /* Bold */
 		letter-spacing: -0.05em;
 	}
 
 	.bio-line-1 {
-		font-size: 64px;
+		font-family: "Geist", sans-serif;
+		font-size: 72px;
+		font-weight: 600;
+		letter-spacing: -0.05em;
 		line-height: 0.9;
 		margin-bottom: 0.15em;
 	}
@@ -1323,7 +1357,10 @@ const musibuddyProject = allProjects.find(
 	}
 
 	.bio-line-2 {
-		font-size: 64px;
+		font-family: "Geist", sans-serif;
+		font-size: 72px;
+		font-weight: 500;
+		letter-spacing: -0.05em;
 		line-height: 0.9;
 		color: var(--pure-bg-inverse);
 	}
@@ -1410,9 +1447,9 @@ const musibuddyProject = allProjects.find(
 	   If we use block, width works fine. */
 
 	.bio-text {
-		/* grid-column: 1 / 3; */ /* No longer needed if container is constrained */
-		font-size: 16px; /* Mobile default */
-		line-height: 1.3;
+		font-family: var(--font-sans);
+		font-size: var(--text-base);
+		line-height: var(--body-line-height);
 		color: var(--text-secondary);
 	}
 
@@ -1429,8 +1466,8 @@ const musibuddyProject = allProjects.find(
 	/* Desktop: larger font size */
 	@media (min-width: 769px) {
 		.bio-text {
-			font-size: 36px;
-			line-height: 1.1;
+			--text-base: 1.5rem;
+			--body-line-height: 1.1;
 		}
 	}
 
@@ -1462,12 +1499,22 @@ const musibuddyProject = allProjects.find(
 		border: none;
 		padding: 0;
 		cursor: pointer;
-		font-family: inherit;
+		font-family: "Bricolage Grotesque", sans-serif;
+		font-weight: 400;
+		letter-spacing: 0em;
 		display: inline-flex;
 		align-items: center;
 		line-height: 1;
-		gap: 0.5rem;
+		gap: 0.25rem;
 		transition: color 0.2s ease;
+	}
+
+	#read-more-btn {
+		font-family: "Geist", sans-serif;
+		font-size: 16px;
+		font-weight: 400;
+		letter-spacing: 0em;
+		line-height: 1;
 	}
 
 	.action-link:hover {
@@ -1618,7 +1665,11 @@ const musibuddyProject = allProjects.find(
 					}
 
 					// 2. Scroll to top to show the bio
-					window.scrollTo({ top: 0, behavior: "smooth" });
+					if ((window as any).lenis) {
+						(window as any).lenis.scrollTo(0);
+					} else {
+						window.scrollTo({ top: 0, behavior: "smooth" });
+					}
 
 					// 3. Clear flag after a delay
 					setTimeout(() => {
@@ -1639,7 +1690,11 @@ const musibuddyProject = allProjects.find(
 						window.scrollTo(0, scrollY);
 					}
 					// Scroll to top
-					window.scrollTo({ top: 0, behavior: "smooth" });
+					if ((window as any).lenis) {
+						(window as any).lenis.scrollTo(0);
+					} else {
+						window.scrollTo({ top: 0, behavior: "smooth" });
+					}
 				});
 			}
 			// Auto-Collapse Logic (Silent with Scroll Compensation)
@@ -2018,7 +2073,11 @@ const musibuddyProject = allProjects.find(
 			const worksSection = document.getElementById("works");
 			if (worksSection) {
 				setTimeout(() => {
-					worksSection.scrollIntoView({ behavior: "smooth" });
+					if ((window as any).lenis) {
+						(window as any).lenis.scrollTo(worksSection);
+					} else {
+						worksSection.scrollIntoView({ behavior: "smooth" });
+					}
 				}, 100);
 			}
 		}
@@ -2093,7 +2152,18 @@ const musibuddyProject = allProjects.find(
 
 			dotWrap.addEventListener("click", (e) => {
 				e.preventDefault();
-				wrapper.scrollIntoView({ behavior: "smooth", block: "center" });
+				if ((window as any).lenis) {
+					(window as any).lenis.scrollTo(wrapper, {
+						offset:
+							-window.innerHeight / 2 + wrapper.offsetHeight / 2,
+						duration: 1.2,
+					});
+				} else {
+					wrapper.scrollIntoView({
+						behavior: "smooth",
+						block: "center",
+					});
+				}
 			});
 
 			track.appendChild(dotWrap);

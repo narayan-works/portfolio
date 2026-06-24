@@ -136,7 +136,7 @@ const uniqueId = "pdf-" + Math.random().toString(36).substr(2, 9);
             const ctx = canvas.getContext("2d");
             const backgroundColor = getComputedStyle(wrapper).getPropertyValue(
                 "--pdf-viewer-background",
-            ).trim() || getComputedStyle(wrapper).backgroundColor || "#090909";
+            ).trim() || getComputedStyle(wrapper).backgroundColor || "#0a0a0a";
             ctx.save();
             ctx.fillStyle = backgroundColor;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -288,13 +288,12 @@ const uniqueId = "pdf-" + Math.random().toString(36).substr(2, 9);
         width: 100%;
         margin-top: 4rem;
         margin-bottom: 2rem;
-        --pdf-viewer-background: #090909;
+        --pdf-viewer-background: #0a0a0a;
         box-sizing: border-box;
     }
 
     .pdf-viewer-wrapper:not(.pdf-full-width) {
-        /* Constrain to 900px body width */
-        padding-inline: max(0rem, calc(50% - 450px));
+        padding-inline: 0;
     }
 
     .pdf-viewer-wrapper.pdf-full-width {
@@ -418,7 +417,7 @@ const uniqueId = "pdf-" + Math.random().toString(36).substr(2, 9);
     .page-indicator {
         color: rgba(255, 255, 255, 0.9);
         font-size: 0.75rem;
-        font-family: "Space Mono", monospace;
+        font-family: var(--font-mono);
         min-width: 30px;
         text-align: center;
         pointer-events: none;
@@ -462,7 +461,7 @@ const uniqueId = "pdf-" + Math.random().toString(36).substr(2, 9);
     }
 
     :global([data-theme="dark"]) .pdf-container {
-        background: var(--pdf-viewer-background, #090909);
+        background: var(--pdf-viewer-background, #0a0a0a);
     }
 
     :global([data-theme="dark"] .pdf-page) {

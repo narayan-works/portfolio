@@ -32,23 +32,34 @@ const {
 
 const metaEntries = Object.entries(meta).slice(0, 6);
 
-const isMetadata = image && typeof image === "object" && "width" in image && "height" in image;
+const isMetadata =
+    image && typeof image === "object" && "width" in image && "height" in image;
 const imageWidth = isMetadata ? (image as ImageMetadata).width : 900;
 const imageHeight = isMetadata ? (image as ImageMetadata).height : 525;
 const aspect = imageWidth / imageHeight;
 const aspectString = `${imageWidth} / ${imageHeight}`;
 
-const isGif = typeof image === "string" ? image.endsWith(".gif") : (image && (image as ImageMetadata).format === "gif");
+const isGif =
+    typeof image === "string"
+        ? image.endsWith(".gif")
+        : image && (image as ImageMetadata).format === "gif";
 ---
 
 <a href={href} class="home-project-card" data-categories={categories.join(" ")}>
     <!-- Left: Image (takes ~60% width) -->
-    <div class="card-image-panel" style={`--image-aspect-ratio: ${aspectString};`}>
+    <div
+        class="card-image-panel"
+        style={`--image-aspect-ratio: ${aspectString};`}
+    >
         {
             image ? (
                 isGif ? (
                     <img
-                        src={typeof image === "string" ? image : (image as ImageMetadata).src}
+                        src={
+                            typeof image === "string"
+                                ? image
+                                : (image as ImageMetadata).src
+                        }
                         alt={title}
                         loading={loading}
                         decoding="async"
@@ -227,7 +238,7 @@ const isGif = typeof image === "string" ? image.endsWith(".gif") : (image && (im
     }
 
     .project-cta-pill {
-        font-family: "Geist", sans-serif;
+        font-family: var(--font-sans);
         font-size: 12px; /* Exactly 12px */
         font-weight: 600;
         line-height: 1.2;
@@ -317,8 +328,6 @@ const isGif = typeof image === "string" ? image.endsWith(".gif") : (image && (im
         transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-
-
     .meta-divider {
         border-top: 1px solid transparent;
         border-bottom: 1px solid transparent;
@@ -342,21 +351,23 @@ const isGif = typeof image === "string" ? image.endsWith(".gif") : (image && (im
     .meta-tags {
         display: flex;
         flex-wrap: wrap;
-        gap: 0.5rem;
+        column-gap: 0.5rem;
+        row-gap: 0.15rem;
         margin-top: 8px;
         margin-bottom: 8px;
+        margin-left: 5px;
     }
 
     .meta-tag {
-        font-family: "Geist", sans-serif;
-        font-size: 12px;
+        font-family: var(--font-mono);
+        font-size: var(--text-xs);
         color: var(--text-secondary);
         text-transform: uppercase;
         letter-spacing: 0.06em;
-        font-weight: 600;
+        font-weight: 500;
         display: flex;
         align-items: center;
-        line-height: 1.4;
+        line-height: 1.1;
         transition: color 0.3s ease;
     }
 
@@ -374,9 +385,11 @@ const isGif = typeof image === "string" ? image.endsWith(".gif") : (image && (im
     }
 
     .meta-description {
-        font-family: "Geist", sans-serif;
-        font-size: 12px;
-        line-height: 1.4;
+        font-family: "Google Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 300;
+        letter-spacing: -0.01em;
+        line-height: 1.35;
         color: var(--text-primary);
         opacity: 0;
         visibility: hidden;
@@ -402,7 +415,7 @@ const isGif = typeof image === "string" ? image.endsWith(".gif") : (image && (im
     .meta-list {
         display: grid;
         grid-template-columns: auto 1fr;
-        row-gap: 6px;
+        row-gap: 2px;
         column-gap: 16px;
         margin: 0;
         padding: 0;
@@ -432,7 +445,7 @@ const isGif = typeof image === "string" ? image.endsWith(".gif") : (image && (im
         visibility: visible;
         max-height: 300px;
         margin-top: 12px;
-        padding: 12px;
+        padding: 10px;
     }
 
     .meta-row {
@@ -440,12 +453,13 @@ const isGif = typeof image === "string" ? image.endsWith(".gif") : (image && (im
     }
 
     .meta-key {
-        font-family: "Geist", sans-serif;
-        font-size: 12px;
-        font-weight: 600;
+        font-family: "Google Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 400;
         color: var(--text-secondary);
-        text-transform: uppercase;
+        text-transform: capitalize;
         letter-spacing: 0.05em;
+        line-height: 1.5;
         opacity: 0.8;
         transition:
             color 0.3s ease,
@@ -459,10 +473,11 @@ const isGif = typeof image === "string" ? image.endsWith(".gif") : (image && (im
     }
 
     .meta-value {
-        font-family: "Geist", sans-serif;
-        font-size: 12px;
+        font-family: "Google Sans", sans-serif;
+        font-size: 14px;
         font-weight: 400;
         color: var(--text-primary);
+        letter-spacing: 0em;
         line-height: 1.3;
         margin: 0;
         transition: color 0.3s ease;
@@ -475,15 +490,22 @@ const isGif = typeof image === "string" ? image.endsWith(".gif") : (image && (im
     }
 
     .meta-project-title {
-        font-family: "Geist", sans-serif;
-        font-size: 24px;
-        font-weight: 600;
+        font-family: "Bricolage Grotesque", sans-serif;
+        font-size: 64px;
+        font-weight: 400;
         line-height: 1.2;
         color: var(--text-primary);
         margin: 0;
+        letter-spacing: -0.045em;
         transition:
             color 0.3s ease,
             font-weight 0.3s ease;
+    }
+
+    :global(.project-card-wrapper.is-centered) .meta-project-title {
+        font-size: 73px;
+        line-height: 0.9;
+        letter-spacing: -0.055em;
     }
 
     .home-project-card:hover .meta-project-title {
@@ -522,18 +544,16 @@ const isGif = typeof image === "string" ? image.endsWith(".gif") : (image && (im
         }
 
         .meta-tag {
-            font-size: 10px;
+            font-size: var(--text-2xs);
         }
     }
-
 
     /* Category-specific hover colors for project bentos & CTA pills */
     .home-project-card[data-categories~="physical-ux"]:hover {
         border-color: #559ed5;
         background: linear-gradient(135deg, #82c6f6 0%, #4696d3 100%);
     }
-    .home-project-card[data-categories~="physical-ux"]:hover
-        .project-cta-pill {
+    .home-project-card[data-categories~="physical-ux"]:hover .project-cta-pill {
         background: #82c6f6 !important;
         color: #000000 !important;
         border-color: #82c6f6 !important;
@@ -567,5 +587,12 @@ const isGif = typeof image === "string" ? image.endsWith(".gif") : (image && (im
         background: #3db853 !important;
         color: #000000 !important;
         border-color: #3db853 !important;
+    }
+
+    @media (max-width: 768px) {
+        .meta-project-title,
+        :global(.project-card-wrapper.is-centered) .meta-project-title {
+            font-size: 56px !important;
+        }
     }
 </style>

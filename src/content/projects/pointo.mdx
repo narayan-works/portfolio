@@ -1,17 +1,16 @@
 ---
 title: "Pointobot"
-description: "An embodied AI prototype that explores pointing, gesture, and shared physical presence as a way to make spatial references legible."
+description: "A voice-driven robot in CMU’s Spatial Experience Lab exploring what happens when AI can point to \"this\" and \"that\" through gesture and shared spatial attention."
 category: "embodied[work in progess]"
 order: 6
 heroImage: "/assets/projects/pointo/cover.gif"
 bentoSize: "large"
-tags: ["Embodied AI", "Spatial Interaction", "Prototyping"]
+tags: ["Embodied AI", "Spatial Interaction", "Research Prototype", "User Testing"]
 meta:
-  Role: "Interaction Design + Prototyping"
+  Focus: "Interaction Design + Prototyping"
   Duration: "6 Months"
-  Year: "2025"
-  Status: "Working Prototype"
-  Work: "Graduate Thesis"
+  Year: "2026"
+  Advisor: "Daniel Rosenberg"
 sections:
   - id: "problem"
     label: "Why build it?"
@@ -23,10 +22,8 @@ sections:
     label: "Connecting the dots"
   - id: "capabilities"
     label: "What can it do?"
-  - id: "learnings"
-    label: "Learnings"
 ctaUrl: "https://www.youtube.com/watch?v=VGBu_orMgT4"
-ctaText: "View full demo"
+ctaText: "Watch full demo"
 ---
 
 import ProjectSection from '../../components/ProjectSection.astro';
@@ -41,73 +38,491 @@ import PdfEmbed from '../../components/PdfEmbed.astro';
     </p>
 </div>
 
-<ProjectSection title="Why build it?" id="problem">
-    <p>
-We are at a moment where AI has genuinely moved beyond the screen. Spatial computing, ambient intelligence, AI in physical workflows — these aren't speculative anymore. But the way we actually interact with these systems hasn't shifted. It's still chat boxes, voice assistants, screens. The interface layer hasn't caught up with what the technology can now do. And that gap is most visible when the work you're doing is physical — when you're standing in a space, trying to navigate it, build something, find where something is. Language consistently falls short. You can describe where something is, but the person always has to do the translation from words into physical reality themselves. The AI knows, but it cannot show. This thesis asks what it affords when it can.
-    </p>
-    <PdfEmbed src="/assets/projects/pointo/Research%20Q.pdf"/>
-    <p>
-        Pointing has always been central to how we interact with computers. From the very beginning, it's been the human doing the pointing. AI made it abstract. Endless capability, endless possibility —All of it locked inside a text box. The interface got smaller as the intelligence got larger.
-    </p>
-    <PdfEmbed src="/assets/projects/pointo/premise.pdf"/>
+<ProjectSection title="The Translation Gap" id="problem">
+<h2 class="comparison-question">How can AI be brought into <u>shared physical space</u> as an embodied presence, and <u>what interaction mediums does that open up?</u></h2>
+
+<div class="pointo-comparison-grid">
+    <div class="comparison-col">
+        <div class="gif-container" id="gap-gif-container">
+            <img class="gif-frame theme-dark active" data-frame="0" src="/assets/projects/pointo/gap-1-dark.png" alt="Gap frame 1" />
+            <img class="gif-frame theme-light active" data-frame="0" src="/assets/projects/pointo/gap-1-lit.png" alt="Gap frame 1" />
+            
+            <img class="gif-frame theme-dark" data-frame="1" src="/assets/projects/pointo/gap-2-dark.png" alt="Gap frame 2" />
+            <img class="gif-frame theme-light" data-frame="1" src="/assets/projects/pointo/gap-2-lit.png" alt="Gap frame 2" />
+            
+            <img class="gif-frame theme-dark" data-frame="2" src="/assets/projects/pointo/gap-3-dark.png" alt="Gap frame 3" />
+            <img class="gif-frame theme-light" data-frame="2" src="/assets/projects/pointo/gap-3-lit.png" alt="Gap frame 3" />
+            
+            <img class="gif-frame theme-dark" data-frame="3" src="/assets/projects/pointo/gap-4-dark.png" alt="Gap frame 4" />
+            <img class="gif-frame theme-light" data-frame="3" src="/assets/projects/pointo/gap-4-lit.png" alt="Gap frame 4" />
+        </div>
+        <h4 class="comparison-heading">Present / Gap</h4>
+        <p class="comparison-description">
+            For a task like building an IKEA table, current AI can give the right instruction, but we still have to map it onto the real world. The gap is between knowing what to do and communicating it effectively.
+        </p>
+    </div>
+
+    <div class="comparison-col">
+        <div class="gif-container" id="opp-gif-container">
+            <img class="gif-frame theme-dark active" data-frame="0" src="/assets/projects/pointo/opp-1-dark.png" alt="Opportunity frame 1" />
+            <img class="gif-frame theme-light active" data-frame="0" src="/assets/projects/pointo/opp-1-lit.png" alt="Opportunity frame 1" />
+            
+            <img class="gif-frame theme-dark" data-frame="1" src="/assets/projects/pointo/opp-2-dark.png" alt="Opportunity frame 2" />
+            <img class="gif-frame theme-light" data-frame="1" src="/assets/projects/pointo/opp-2-lit.png" alt="Opportunity frame 2" />
+            
+            <img class="gif-frame theme-dark" data-frame="2" src="/assets/projects/pointo/opp-3-dark.png" alt="Opportunity frame 3" />
+            <img class="gif-frame theme-light" data-frame="2" src="/assets/projects/pointo/opp-3-lit.png" alt="Opportunity frame 3" />
+            
+            <img class="gif-frame theme-dark" data-frame="3" src="/assets/projects/pointo/opp-4-dark.png" alt="Opportunity frame 4" />
+            <img class="gif-frame theme-light" data-frame="3" src="/assets/projects/pointo/opp-4-lit.png" alt="Opportunity frame 4" />
+        </div>
+        <h4 class="comparison-heading">Opportunity</h4>
+        <p class="comparison-description">
+            A physically situated AI can close the translation gap by pointing directly at the relevant object or location. The instruction becomes spatial, immediate, and shared.
+        </p>
+    </div>
+</div>
+
+<div class="pointo-comparison-grid rq-grid">
+    <div class="comparison-col">
+        <div class="gif-container rq-image-container">
+            <img class="gif-frame theme-dark active" src="/assets/projects/pointo/RQ-1-dark.png" alt="RQ 1.1 drawing" />
+            <img class="gif-frame theme-light active" src="/assets/projects/pointo/RQ-1-lit.png" alt="RQ 1.1 drawing" />
+        </div>
+        <h4 class="comparison-heading">Research Question 1.1</h4>
+        <p class="comparison-description">
+            What does pointing afford as an interaction medium for a physically situated AI?
+        </p>
+    </div>
+
+    <div class="comparison-col">
+        <div class="gif-container rq-image-container">
+            <img class="gif-frame theme-dark active" src="/assets/projects/pointo/RQ-2-dark.png" alt="RQ 1.2 drawing" />
+            <img class="gif-frame theme-light active" src="/assets/projects/pointo/RQ-2-lit.png" alt="RQ 1.2 drawing" />
+        </div>
+        <h4 class="comparison-heading">Research Question 1.2</h4>
+        <p class="comparison-description">
+            How does physical co-presence change the nature of human-AI communication?
+        </p>
+    </div>
+</div>
+
+<style>{`
+    .comparison-question,
+    .comparison-question p {
+        font-family: 'Bricolage Grotesque', sans-serif !important;
+        font-size: 48px !important;
+        font-weight: 400;
+        color: var(--text-primary);
+        line-height: 1;
+        margin: 64px auto 24px auto;
+        max-width: 750px;
+        width: 100%;
+        box-sizing: border-box;
+        letter-spacing: -0.02em;
+        padding-inline: 0 !important;
+    }
+
+    .comparison-question u {
+        text-decoration: underline;
+        text-underline-offset: 6px;
+        text-decoration-thickness: 1.5px;
+    }
+
+    .pointo-comparison-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+        margin: 0 auto 48px auto;
+        max-width: 750px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .pointo-comparison-grid:not(.rq-grid) {
+        padding-inline: 0 !important;
+    }
+
+    .pointo-comparison-grid.rq-grid {
+        margin: 24px 0 48px 0;
+        max-width: 100%;
+    }
+
+    .pointo-comparison-grid.rq-grid .comparison-heading {
+        font-family: 'Bricolage Grotesque', sans-serif;
+        font-size: 36px;
+        font-weight: 400;
+        letter-spacing: -0.045em;
+        line-height: 1.2;
+    }
+
+    .comparison-col {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .gif-container {
+        width: 100%;
+        pointer-events: none;
+    }
+
+    .gif-frame {
+        width: 100%;
+        height: auto;
+        display: none;
+    }
+
+    :root:not([data-theme="light"]) .gif-frame.theme-dark.active {
+        display: block;
+    }
+    :root:not([data-theme="light"]) .gif-frame.theme-light {
+        display: none !important;
+    }
+
+    :root[data-theme="light"] .gif-frame.theme-light.active {
+        display: block;
+    }
+    :root[data-theme="light"] .gif-frame.theme-dark {
+        display: none !important;
+    }
+
+    .comparison-heading {
+        font-family: 'Bricolage Grotesque', sans-serif;
+        font-size: 36px;
+        font-weight: 450;
+        color: var(--text-primary);
+        margin: 16px 0 8px 0;
+        line-height: 1.2;
+        letter-spacing: -0.035em;
+    }
+
+    .comparison-description {
+        font-family: var(--font-sans);
+        font-size: var(--text-sm);
+        line-height: 1.5;
+        color: var(--text-secondary);
+        margin: 0;
+    }
+
+    @media (max-width: 768px) {
+        .comparison-question {
+            font-size: var(--text-2xl);
+            margin-top: 40px;
+            margin-bottom: 16px;
+        }
+
+        .pointo-comparison-grid {
+            grid-template-columns: 1fr;
+            gap: 32px;
+            margin: 32px auto;
+        }
+    }
+
+    .gif-frame.active:not(.theme-dark):not(.theme-light) {
+        display: block;
+    }
+
+    .findings-section {
+        margin: 6rem 0 4rem 0;
+        width: 100%;
+        box-sizing: border-box;
+        padding-inline: 0 !important;
+    }
+
+    .findings-section-title,
+    .findings-section-title p {
+        font-family: 'Bricolage Grotesque', sans-serif !important;
+        font-size: 48px !important; 
+        font-weight: 600;
+        color: var(--text-primary);
+        line-height: 1.3;
+        margin-bottom: 48px;
+        letter-spacing: -0.025em;
+        text-align: center;
+    }
+
+    .findings-section-title .accent-text {
+        color: #68B5ED;
+    }
+
+    .findings-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 32px;
+        width: 100%;
+    }
+
+    .finding-card {
+        display: flex;
+        flex-direction: column;
+        border-top: 1px solid var(--border-subtle);
+        padding-top: 24px;
+        position: relative;
+    }
+
+    .finding-num-label {
+        font-family: var(--font-mono);
+        font-size: var(--text-xs);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: #ff4a5a;
+        margin-bottom: 24px;
+        font-weight: 600;
+    }
+
+    .finding-images-container {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        margin-bottom: 24px;
+        background: transparent;
+        aspect-ratio: 590/443;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+    }
+
+    .finding-image-wrapper {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: transparent;
+    }
+
+    .finding-title {
+        font-family: 'Bricolage Grotesque', sans-serif;
+        font-size: 32px;
+        font-weight: 400;
+        color: var(--text-primary);
+        line-height: 1.25;
+        margin-bottom: 16px;
+        letter-spacing: -0.06em;
+    }
+
+    .finding-desc {
+        font-family: var(--font-sans);
+        font-size: var(--text-sm);
+        line-height: 1.6;
+        color: var(--text-secondary);
+        margin: 0 0 24px 0;
+        flex-grow: 1;
+    }
+
+    .finding-desc strong {
+        color: var(--text-primary);
+        font-weight: 600;
+    }
+
+    .finding-tags {
+        font-family: var(--font-mono);
+        font-size: var(--text-xs);
+        letter-spacing: 0.05em;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        align-items: center;
+        border-top: 1px dotted var(--border-subtle);
+        padding-top: 12px;
+    }
+
+    .tag-arrow {
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    margin-right: 2px;
+}
+
+    @media (max-width: 1024px) {
+        .findings-grid {
+            grid-template-columns: 1fr;
+            gap: 48px;
+        }
+        
+        .finding-card {
+            border-top: 1px solid var(--border-subtle);
+            padding-top: 32px;
+        }
+    }
+`}</style>
+
+<script is:inline>{`
+    (function() {
+        const sequence = [
+            { gap: 0, opp: 3 },
+            { gap: 1, opp: 3 },
+            { gap: 2, opp: 3 },
+            { gap: 3, opp: 3 },
+            { gap: 0, opp: 3 },
+            { gap: 1, opp: 3 },
+            { gap: 2, opp: 3 },
+            { gap: 2, opp: 0 },
+            { gap: 2, opp: 1 },
+            { gap: 2, opp: 2 },
+            { gap: 2, opp: 3 },
+            { gap: 2, opp: 0 },
+            { gap: 2, opp: 1 },
+            { gap: 2, opp: 2 },
+            { gap: 2, opp: 3 },
+            { gap: 3, opp: 3 }
+        ];
+        
+        let step = 0;
+        
+        function cycleFrames() {
+            const current = sequence[step];
+            
+            const gapContainer = document.getElementById('gap-gif-container');
+            if (gapContainer) {
+                const gapFrames = gapContainer.querySelectorAll('.gif-frame');
+                gapFrames.forEach(frame => {
+                    const frameIdx = parseInt(frame.getAttribute('data-frame') || '0', 10);
+                    if (frameIdx === current.gap) {
+                        frame.classList.add('active');
+                    } else {
+                        frame.classList.remove('active');
+                    }
+                });
+            }
+            
+            const oppContainer = document.getElementById('opp-gif-container');
+            if (oppContainer) {
+                const oppFrames = oppContainer.querySelectorAll('.gif-frame');
+                oppFrames.forEach(frame => {
+                    const frameIdx = parseInt(frame.getAttribute('data-frame') || '0', 10);
+                    if (frameIdx === current.opp) {
+                        frame.classList.add('active');
+                    } else {
+                        frame.classList.remove('active');
+                    }
+                });
+            }
+
+            const finding1Container = document.getElementById('finding1-gif-container');
+            if (finding1Container) {
+                const finding1FrameIdx = step % 2;
+                const finding1Frames = finding1Container.querySelectorAll('.gif-frame');
+                finding1Frames.forEach(frame => {
+                    const frameIdx = parseInt(frame.getAttribute('data-frame') || '0', 10);
+                    if (frameIdx === finding1FrameIdx) {
+                        frame.classList.add('active');
+                    } else {
+                        frame.classList.remove('active');
+                    }
+                });
+            }
+            
+            step = (step + 1) % sequence.length;
+        }
+        
+        setInterval(cycleFrames, 2000);
+    })();
+`}</script>
 </ProjectSection>
 
-<ProjectSection title="What's the outcome?" id="outcome">
-    <p>
-        The final output is a working proof of concept for an embodied AI presence that can direct attention into a shared room. Pointo combines a kiosk interface, a pointing behavior, and a small interaction library that makes the system readable without needing a long explanation.
-    </p>
-    <FullWidthImage src="/assets/projects/pointo/demos.gif" height="420px" caption="Final demo moments from the prototype" constrain={false}/>
-    <PdfEmbed src="/assets/projects/pointo/findings.pdf"/>
-    <PdfEmbed src="/assets/projects/pointo/thankyou.pdf"/>
+<ProjectSection title="PointoBot in Action" id="outcome">
+    <FullWidthImage src="/assets/projects/pointo/demos.gif" height="420px" caption="PointoBot final demo" constrain={false} />
+    
+    <div class="findings-section">
+        <h3 class="findings-section-title">What pointing taught us about <span class="accent-text">embodied AI</span>.</h3>
+        
+        <div class="findings-grid">
+            <div class="finding-card">
+                <div class="finding-num-label">Finding 01</div>
+                <div class="finding-images-container">
+                    <div class="gif-container" id="finding1-gif-container">
+                        <img class="gif-frame theme-dark active" data-frame="0" src="/assets/projects/pointo/findings-1a-dark.png" alt="Finding 1a drawing" />
+                        <img class="gif-frame theme-light active" data-frame="0" src="/assets/projects/pointo/findings-1a-lit.png" alt="Finding 1a drawing" />
+                        <img class="gif-frame" data-frame="1" src="/assets/projects/pointo/finding-1b.png" alt="Finding 1b drawing" />
+                    </div>
+                </div>
+                <h4 class="finding-title">The cost of embodiment.</h4>
+                <p class="finding-desc">
+                    Making physical pointing accurate at room scale is non-trivial: it requires <strong>custom inverse kinematics, coordinate mapping, laser offset calculation, and servo calibration</strong>. Embodied AI communication carries a real technical cost that screen and voice-based systems simply do not have to pay.
+                </p>
+                <div class="finding-tags">
+                    <span><span class="tag-arrow">↳</span> HARDWARE</span>
+                    <span>·</span>
+                    <span>IK</span>
+                    <span>·</span>
+                    <span>CALIBRATION</span>
+                </div>
+            </div>
+
+            <div class="finding-card">
+                <div class="finding-num-label">Finding 02</div>
+                <div class="finding-images-container">
+                    <div class="gif-container">
+                        <img class="gif-frame theme-dark active" src="/assets/projects/pointo/finding-2-dark.png" alt="Finding 2 drawing" />
+                        <img class="gif-frame theme-light active" src="/assets/projects/pointo/finding-2-lit.png" alt="Finding 2 drawing" />
+                    </div>
+                </div>
+                <h4 class="finding-title">Form follows interaction.</h4>
+                <p class="finding-desc">
+                    The shift from a robotic arm to a pan-tilt laser was not only an aesthetic decision — it changed the <strong>quality of the interaction itself</strong>: what it felt like to be pointed at, and what the robot communicated through its physical presence in the room.
+                </p>
+                <div class="finding-tags">
+                    <span><span class="tag-arrow">↳</span> FORM</span>
+                    <span>·</span>
+                    <span>PRESENCE</span>
+                    <span>·</span>
+                    <span>AFFECT</span>
+                </div>
+            </div>
+
+            <div class="finding-card">
+                <div class="finding-num-label">Finding 03</div>
+                <div class="finding-images-container">
+                    <div class="gif-container">
+                        <img class="gif-frame active" src="/assets/projects/pointo/finding-3.png" alt="Finding 3 drawing" />
+                    </div>
+                </div>
+                <h4 class="finding-title">A language already known.</h4>
+                <p class="finding-desc">
+                    When people encountered PointoBot for the first time, the <strong>onboarding cost dropped to zero</strong>. Rather than forcing users to learn a new interface, the AI adopted a gesture humans have known since birth — the same one a child uses before they have words.
+                </p>
+                <div class="finding-tags">
+                    <span><span class="tag-arrow">↳</span> LEGIBILITY</span>
+                    <span>·</span>
+                    <span>ONBOARDING</span>
+                    <span>·</span>
+                    <span>GESTURE</span>
+                </div>
+            </div>
+        </div>
+    </div>
 </ProjectSection>
 
-<ProjectSection title="What's the approach?" id="research">
-    <p>
-        The project moved through a few testing pivots before settling into a pointing-centered concept. Early exploration clarified what needed to be legible, what could stay abstract, and which parts of the behavior had to remain stable so the interaction felt intentional instead of random.
-    </p>
-    <p>
-        The SXL framing helped narrow the work around a single interaction loop: establish presence, indicate direction, and let the pointing gesture do the communicative work. From there, the testing loop was used to tighten the gesture vocabulary and remove anything that competed with the core spatial signal.
-    </p>
+<ProjectSection title="Finding Pointing" id="research">
+    <PdfEmbed src="/assets/projects/pointo/sketches.pdf"/>
+
+    <h2>VLM Experiments</h2>
+    <FullWidthImage src="/assets/projects/pointo/testing.gif" height="420px" caption="Iteration and testing in context" constrain={false}/>
+
+    <h2>Scale Pivot: Tabletop → Room-scale</h2>
     <PdfEmbed src="/assets/projects/pointo/testing-pivot.pdf"/>
-    <PdfEmbed src="/assets/projects/pointo/why%20sxl.pdf"/>
-    <FullWidthImage src="/assets/projects/pointo/testing.gif" height="420px" caption="Iteration and correction during testing" constrain={false}/>
 </ProjectSection>
 
-<ProjectSection title="How does it work?" id="process">
-    <p>
-        Three architecture diagrams map the system from concept to implementation. The repeated pattern across those sketches is separation: sensing and control are kept distinct from the visible kiosk so the interface stays understandable even as the behavior underneath becomes more capable.
-    </p>
-    <p>
-        That split matters because the system is trying to do something subtle. It has to communicate where attention should go while still feeling like a single coherent presence in the room. The architecture therefore prioritizes a simple visible front end, a reliable interaction loop, and a compact set of behaviors that can be tested in sequence.
-    </p>
+<ProjectSection title="Building for the Lab" id="process">
+    <PdfEmbed src="/assets/projects/pointo/why sxl.pdf"/>
+    <PdfEmbed src="/assets/projects/pointo/pointo-how.pdf"/>
     <PdfEmbed src="/assets/projects/pointo/architecture-1.pdf"/>
     <PdfEmbed src="/assets/projects/pointo/architecture-2.pdf"/>
     <PdfEmbed src="/assets/projects/pointo/architecture-3.pdf"/>
 </ProjectSection>
 
-<ProjectSection title="What can it do?" id="capabilities">
+<ProjectSection title="Gestures, Maps, and Moments" id="capabilities">
+    <h2>Gesture Vocabulary</h2>
     <p>
-        The prototype can situate itself in context, load a kiosk-style interface, and express a small set of gestures that make its intent legible. The kiosk became the place where the interaction gets grounded: it gives the pointing behavior a visible center of gravity and turns the AI from a floating idea into something people can read in space.
+        PointoBot communicates intention through expressive gestures like nods, shakes, and focus behaviors, making its mechanical movements legible to human observers.
     </p>
-    <PdfEmbed src="/assets/projects/pointo/context.pdf"/>
-    <FullWidthImage
-        src="/assets/projects/pointo/koisk.html.png"
-        alt="Pointo kiosk interface"
-        caption="Kiosk interface preview"
-        loading="eager"
-        constrain={false}
-   />
     <PdfEmbed src="/assets/projects/pointo/gesture_1.pdf"/>
     <PdfEmbed src="/assets/projects/pointo/gesture_2.pdf"/>
-</ProjectSection>
 
-<ProjectSection title="How is it built?" id="learnings">
-    <p>
-        The build materials show the physical and interaction sketching that shaped the final behavior. Pointo was developed through low-fidelity diagrams, browser-based prototype work, and repeated refinement of the pointing behavior until the system felt stable enough to test in a shared setting.
-    </p>
-    <p>
-        PointoBot is built on the <a href="https://medium.com/@lucasochoa_63776/assembling-emoto-hardware-15c136276a11" target="_blank" rel="noopener noreferrer"><strong>open-source Emoto v2 hardware</strong></a> foundation by Lucas, Gautam and Marisa. I adapted that platform for this thesis by replacing the phone mount with a laser pointer and shaping a custom gesture library for spatial communication in a shared room.
-    </p>
-    <PdfEmbed src="/assets/projects/pointo/pointo-how.pdf" />
-    <PdfEmbed src="/assets/projects/pointo/sketches.pdf" />
+    <PdfEmbed src="/assets/projects/pointo/context.pdf"/>
+    <FullWidthImage src="/assets/projects/pointo/koisk.html.png" alt="Pointo kiosk interface" caption="Kiosk control interface" constrain={false}/>
+
+    <FullWidthImage src="/assets/projects/pointo/demos.gif" height="420px" caption="PointoBot room calibration and laser targeting demo" constrain={false}/>
 </ProjectSection>

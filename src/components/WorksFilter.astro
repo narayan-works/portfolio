@@ -5,11 +5,9 @@
 <div class="works-filter-container">
     <div class="segmented-control" id="works-segmented-control">
         <button class="filter-btn active" data-filter="all">All</button>
-        <button class="filter-btn" data-filter="physical-ux">Physical UX</button
-        >
+        <button class="filter-btn" data-filter="physical-ux">Physical UX</button>
         <button class="filter-btn" data-filter="web-ux">Web UX</button>
         <button class="filter-btn" data-filter="mobile-ux">Mobile UX</button>
-        <button class="filter-btn" data-filter="spatial-xd">Spatial XD</button>
     </div>
 </div>
 
@@ -228,35 +226,30 @@
             display: flex;
             max-width: 100%;
             width: auto;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: none;
-            padding-left: 4px;
-            padding-right: 4px;
+            gap: 4px;
+            padding: 4px;
+            overflow: visible;
         }
 
         .segmented-control::-webkit-scrollbar {
             display: none;
         }
 
-        /* Pseudo-element spacer to fix WebKit/Safari horizontal scroll padding-right clipping */
+        /* Hide spacer since scroll is no longer needed */
         .segmented-control::after {
-            content: "";
-            flex: 0 0 4px;
-            width: 4px;
-            height: 1px;
-            pointer-events: none;
+            display: none;
         }
 
         .filter-btn {
-            flex: 0 0 auto;
+            flex: 1 1 auto;
             height: 25px;
             padding: 0 10px;
-            font-size: 12px;
+            font-size: 11px;
             line-height: 1;
             display: inline-flex;
             align-items: center;
             justify-content: center;
+            white-space: nowrap;
         }
     }
 </style>
@@ -319,7 +312,6 @@
             "physical-ux",
             "web-ux",
             "mobile-ux",
-            "spatial-xd",
         ];
         const activeFilter = validFilters.includes(hash) ? hash : "all";
 

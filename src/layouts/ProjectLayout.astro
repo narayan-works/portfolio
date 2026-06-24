@@ -13,6 +13,7 @@ interface Props {
     ctaText?: string;
     sections?: { id: string; label: string }[];
     heroImage?: string;
+    category?: string;
 }
 
 const {
@@ -24,6 +25,7 @@ const {
     ctaText,
     sections: propSections,
     heroImage,
+    category,
 } = Astro.props;
 
 // Convert meta object to array for iteration
@@ -36,27 +38,58 @@ const sections = propSections || [];
 // Map project slugs to their category-specific active colors (matching homepage WorksFilter colors)
 const slug = Astro.url.pathname.split("/").filter(Boolean).pop() || "";
 const categoryColors: Record<string, string> = {
-    pointo: "#68B5ED", // physical-ux
-    piko: "#68B5ED", // physical-ux
-    musibuddy: "#68B5ED", // physical-ux
-    "dot-threads": "#F6631A", // web-ux
-    detour: "#FACC09", // mobile-ux
-    serendipidity: "#FACC09", // mobile-ux
-    "tirupati-campus": "#2B923D", // spatial-xd
-    "skywalk-sanctuary": "#2B923D", // spatial-xd
+    pointo: "var(--category-physical-ux)",
+    piko: "var(--category-physical-ux)",
+    musibuddy: "var(--category-physical-ux)",
+    "dot-threads": "var(--category-web-ux)",
+    detour: "var(--category-mobile-ux)",
+    serendipidity: "var(--category-mobile-ux)",
+    "tirupati-campus": "var(--category-spatial-xd)",
+    "skywalk-sanctuary": "var(--category-spatial-xd)",
 };
+
 const categoryHoverColors: Record<string, string> = {
-    pointo: "#57a4dc", // physical-ux hover
-    piko: "#57a4dc",
-    musibuddy: "#57a4dc",
-    "dot-threads": "#e05105", // web-ux hover (subtle darker orange)
-    detour: "#e5ba05", // mobile-ux hover
-    serendipidity: "#e5ba05",
-    "tirupati-campus": "#227b32", // spatial-xd hover
-    "skywalk-sanctuary": "#227b32",
+    pointo: "var(--category-physical-ux-hover)",
+    piko: "var(--category-physical-ux-hover)",
+    musibuddy: "var(--category-physical-ux-hover)",
+    "dot-threads": "var(--category-web-ux-hover)",
+    detour: "var(--category-mobile-ux-hover)",
+    serendipidity: "var(--category-mobile-ux-hover)",
+    "tirupati-campus": "var(--category-spatial-xd-hover)",
+    "skywalk-sanctuary": "var(--category-spatial-xd-hover)",
 };
-const activeColor = categoryColors[slug] || "var(--accent-secondary)";
-const hoverColor = categoryHoverColors[slug] || "var(--accent-secondary)";
+
+// Fallback category-to-color mapping (for archives / other project files)
+const fallbackColors: Record<string, string> = {
+    embodied: "var(--category-physical-ux)",
+    thinking: "var(--category-web-ux)",
+    spatial: "var(--category-spatial-xd)",
+    strategy: "var(--category-spatial-xd)",
+    archive: "var(--category-physical-ux)",
+};
+
+const fallbackHoverColors: Record<string, string> = {
+    embodied: "var(--category-physical-ux-hover)",
+    thinking: "var(--category-web-ux-hover)",
+    spatial: "var(--category-spatial-xd-hover)",
+    strategy: "var(--category-spatial-xd-hover)",
+    archive: "var(--category-physical-ux-hover)",
+};
+
+// Clean category string (handles e.g. "embodied[work in progess]")
+const cleanCategory = (category || "")
+    .toLowerCase()
+    .replace(/\[.*\]/, "")
+    .trim();
+
+const activeColor =
+    categoryColors[slug] ||
+    fallbackColors[cleanCategory] ||
+    "var(--accent-secondary)";
+const hoverColor =
+    categoryHoverColors[slug] ||
+    fallbackHoverColors[cleanCategory] ||
+    "var(--accent-secondary)";
 ---
 
 <Layout title={`${title} | Narayan Ashanahalli`} preloadImageHref={heroImage}>
@@ -142,7 +175,10 @@ const hoverColor = categoryHoverColors[slug] || "var(--accent-secondary)";
     </div>
 
     <!-- RIGHT CONTENT SLOT -->
-    <article class="right-content">
+    <article
+        class="right-content"
+        style={`--project-category-color: ${activeColor}; --project-category-hover-color: ${hoverColor};`}
+    >
         <slot />
         <Footer />
     </article>
@@ -283,9 +319,17 @@ const hoverColor = categoryHoverColors[slug] || "var(--accent-secondary)";
 
             if (footerRect.top < windowHeight) {
                 const offset = windowHeight - footerRect.top + margin;
-                themeToggleWrapper.style.setProperty("bottom", `${offset}px`, "important");
+                themeToggleWrapper.style.setProperty(
+                    "bottom",
+                    `${offset}px`,
+                    "important",
+                );
             } else {
-                themeToggleWrapper.style.setProperty("bottom", "20px", "important");
+                themeToggleWrapper.style.setProperty(
+                    "bottom",
+                    "20px",
+                    "important",
+                );
             }
         }
 
@@ -324,7 +368,7 @@ const hoverColor = categoryHoverColors[slug] || "var(--accent-secondary)";
         flex-direction: column;
         justify-content: space-between;
         height: 100%;
-        font-family: "Inter", sans-serif;
+        font-family: var(--font-sans);
     }
 
     /* Allow scrolling if content is too tall */
@@ -341,12 +385,13 @@ const hoverColor = categoryHoverColors[slug] || "var(--accent-secondary)";
     }
 
     .sidebar-project-title {
-        font-size: 1.125rem; /* ~18px */
-        line-height: 1.3;
-        font-weight: 600;
-        margin-top: var(--space-lg);
-        margin-bottom: 0.5rem;
-        letter-spacing: -0.01em;
+        font-family: "Bricolage Grotesque", sans-serif;
+        font-size: 54px;
+        line-height: 0.9;
+        font-weight: 400;
+        margin-top: 9px;
+        margin-bottom: 9px;
+        letter-spacing: -0.05em;
     }
 
     .sidebar-tags {
@@ -357,11 +402,15 @@ const hoverColor = categoryHoverColors[slug] || "var(--accent-secondary)";
     }
 
     .sidebar-tags span {
-        font-size: 0.75rem; /* 12px */
+        font-family: "Geist", sans-serif;
+        font-size: 12px;
         color: var(--text-muted);
         text-transform: uppercase;
-        letter-spacing: 0.05em;
-        font-weight: 500;
+        letter-spacing: 0.035em;
+        font-weight: 400;
+        line-height: 1.2;
+        display: inline-flex;
+        align-items: center;
     }
 
     .sidebar-tags span:not(:last-child)::after {
@@ -371,9 +420,12 @@ const hoverColor = categoryHoverColors[slug] || "var(--accent-secondary)";
     }
 
     .sidebar-project-desc {
+        font-family: "Google Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 300;
         color: var(--text-secondary);
-        line-height: 1.6;
-        font-size: 0.75rem; /* 14px */
+        line-height: 1.2;
+        letter-spacing: -0.01em;
         margin-bottom: 2rem;
     }
 
@@ -384,18 +436,19 @@ const hoverColor = categoryHoverColors[slug] || "var(--accent-secondary)";
         color: #000000 !important;
         border: 1px solid rgba(0, 0, 0, 0.12);
         padding: 9px 16px;
-        border-radius: var(--radius-md); /* Matched to Bento Card/Nav-trigger (8px) */
+        border-radius: var(--radius-md);
         text-decoration: none;
+        font-family: "Google Sans", sans-serif;
         font-weight: 600;
-        font-size: 0.875rem;
-        letter-spacing: 0.02em;
+        font-size: 14px;
+        letter-spacing: 0.05em;
         margin-top: 1.5rem;
         margin-bottom: 1rem;
         text-align: center;
         width: 100%;
         box-sizing: border-box;
         transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-        box-shadow: 
+        box-shadow:
             inset 0 1px 0 rgba(255, 255, 255, 0.2),
             0 2px 4px rgba(0, 0, 0, 0.08),
             0 4px 12px rgba(0, 0, 0, 0.04);
@@ -405,7 +458,7 @@ const hoverColor = categoryHoverColors[slug] || "var(--accent-secondary)";
         transform: translateY(-1px);
         background: var(--cta-hover-color, var(--accent-secondary));
         border-color: rgba(0, 0, 0, 0.2);
-        box-shadow: 
+        box-shadow:
             inset 0 1px 0 rgba(255, 255, 255, 0.25),
             0 4px 8px rgba(0, 0, 0, 0.12),
             0 8px 16px rgba(0, 0, 0, 0.06);
@@ -414,11 +467,10 @@ const hoverColor = categoryHoverColors[slug] || "var(--accent-secondary)";
         transform: translateY(0);
         background: var(--cta-active-color, var(--accent-secondary));
         filter: brightness(0.95);
-        box-shadow: 
+        box-shadow:
             inset 0 1px 0 rgba(0, 0, 0, 0.05),
             0 1px 2px rgba(0, 0, 0, 0.08);
     }
-
 
     /* TABLET/MOBILE STYLES */
     @media (max-width: 1024px) {
@@ -440,7 +492,7 @@ const hoverColor = categoryHoverColors[slug] || "var(--accent-secondary)";
         padding: 0;
         display: flex;
         flex-direction: column;
-        gap: 6px; /* Highly compressed gap */
+        gap: 1px; /* Reduced gap to compress spacing between lines */
         margin: 0;
         position: relative;
     }
@@ -482,7 +534,7 @@ const hoverColor = categoryHoverColors[slug] || "var(--accent-secondary)";
     .toc-link {
         color: var(--text-primary);
         text-decoration: none;
-        font-size: 24px; /* Compressed font size */
+        font-size: 24px;
         line-height: 1.2;
         transition:
             opacity 0.25s ease,
@@ -490,6 +542,7 @@ const hoverColor = categoryHoverColors[slug] || "var(--accent-secondary)";
         display: inline-block;
         font-weight: 500;
         opacity: 0.4; /* Default muted opacity */
+        font-family: "Bricolage Grotesque", sans-serif;
     }
 
     .toc-item:hover .toc-pill {
@@ -526,19 +579,25 @@ const hoverColor = categoryHoverColors[slug] || "var(--accent-secondary)";
         gap: 1rem;
         padding: 0.3rem 0;
         border-bottom: 1px solid var(--border-subtle);
-        font-size: 0.75rem; /* 12px */
+        font-size: var(--text-sm);
     }
 
     .meta-label {
-        font-weight: 600;
+        font-family: "Google Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 400;
         color: var(--text-primary);
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
+        letter-spacing: 0.015em;
+        line-height: 1.5;
     }
 
     .meta-value {
+        font-family: "Google Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 300;
         color: var(--text-secondary);
-        line-height: 1.4;
+        letter-spacing: 0em;
+        line-height: 1.15;
     }
 
     .theme-toggle-wrapper {
@@ -556,8 +615,8 @@ const hoverColor = categoryHoverColors[slug] || "var(--accent-secondary)";
         padding: 20px 20px 0px 20px; /* 20px top/left/right, bottom 0px */
         max-width: none; /* Use full available width */
         margin: 0;
-        font-family: "Geist", sans-serif;
-        scroll-behavior: smooth;
+        font-family: var(--font-sans);
+        scroll-behavior: auto;
     }
 
     /* Remove redundant top margin from first element (Hero Image usually) */
