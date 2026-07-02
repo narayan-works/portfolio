@@ -45,7 +45,13 @@ const isGif =
         : image && (image as ImageMetadata).format === "gif";
 ---
 
-<a href={href} class="home-project-card" data-categories={categories.join(" ")}>
+<a
+    href={href}
+    class="home-project-card"
+    data-categories={categories.join(" ")}
+    target={href.startsWith("http") ? "_blank" : undefined}
+    rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
+>
     <!-- Left: Image (takes ~60% width) -->
     <div
         class="card-image-panel"
@@ -499,7 +505,8 @@ const isGif =
         letter-spacing: -0.045em;
         transition:
             color 0.3s ease,
-            font-weight 0.3s ease;
+            font-weight 0.3s ease,
+            letter-spacing 0.3s ease;
     }
 
     :global(.project-card-wrapper.is-centered) .meta-project-title {
@@ -510,7 +517,8 @@ const isGif =
 
     .home-project-card:hover .meta-project-title {
         color: #000000;
-        font-weight: 600;
+        font-weight: 500;
+        letter-spacing: -0.06em;
     }
 
     /* ── Responsive: Stack on smaller screens ── */

@@ -21,6 +21,7 @@ import tirupatiHero from "../assets/projects/tirupati/hero-tirupati.gif";
 import pointoHero from "../assets/projects/pointo/cover.gif";
 import serendipityHero from "../assets/projects/serendipity/hero-serendipidity.png";
 import musibuddyHero from "../assets/projects/musibuddy/hero-musibuddy.gif";
+import lab4cHero from "../assets/projects/lab4c/hero.jpeg";
 
 // Fetch all projects
 const allProjects = (await getCollection("projects"))
@@ -34,6 +35,7 @@ const allProjects = (await getCollection("projects"))
 			"serendipidity",
 			"piko",
 			"musibuddy",
+			"lab4c",
 		].includes(project.slug),
 	)
 	.sort((a, b) => (a.data.order || 0) - (b.data.order || 0));
@@ -47,6 +49,7 @@ const heroImages: Record<string, ImageMetadata> = {
 	pointo: pointoHero,
 	serendipidity: serendipityHero,
 	musibuddy: musibuddyHero,
+	"lab4c": lab4cHero,
 };
 
 // Convenience references by slug for manual column layout
@@ -67,6 +70,9 @@ const serendipityProject = allProjects.find(
 );
 const musibuddyProject = allProjects.find(
 	(project) => project.slug === "musibuddy",
+);
+const lab4cProject = allProjects.find(
+	(project) => project.slug === "lab4c",
 );
 ---
 
@@ -302,6 +308,28 @@ const musibuddyProject = allProjects.find(
 									description={
 										dotThreadsProject.data.description
 									}
+									categories={["web-ux"]}
+								/>
+							</div>
+						)
+					}
+					{
+						lab4cProject && (
+							<div
+								class="project-card-wrapper"
+								data-categories="web-ux"
+							>
+								<HomeProjectCard
+									title={lab4cProject.data.title}
+									image={
+										heroImages[lab4cProject.slug] ||
+										lab4cProject.data.heroImage
+									}
+									loading="lazy"
+									href={lab4cProject.data.ctaUrl || `/works/${lab4cProject.slug}`}
+									tags={lab4cProject.data.tags}
+									meta={lab4cProject.data.meta}
+									description={lab4cProject.data.description}
 									categories={["web-ux"]}
 								/>
 							</div>

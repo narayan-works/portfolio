@@ -1,0 +1,55 @@
+---
+title: "Lab for Cybernetics"
+description: "A live digital platform for CMU’s Lab for Cybernetics, connecting its people, projects, concepts, and practitioner-scholar network through a website, CMS, knowledge system, and matching tool."
+category: "thinking"
+order: 9
+heroImage: "/assets/projects/lab4c/hero.jpeg"
+tags: ["Knowledge Tools", "Shipped", "Visual Design", "Front-End Development"]
+bentoSize: "medium"
+ctaUrl: "https://cybernetics.cmu.edu"
+ctaText: "Visit Lab4C Website"
+meta:
+  Role: "Fullstack Product Designer"
+  Duration: "Dec 2024 – Present"
+  Year: "2025–2026"
+  Work: "Website, Notion CMS, knowledge graph, matching platform, developer documentation"
+sections:
+  - id: "concept"
+    label: "Overview"
+  - id: "architecture"
+    label: "CMS Architecture"
+  - id: "matching"
+    label: "Collaboration Platform"
+---
+
+import ProjectSection from '../../components/ProjectSection.astro';
+import FullWidthImage from '../../components/FullWidthImage.astro';
+
+<FullWidthImage src="/assets/projects/lab4c/hero.jpeg" height="500px" caption="Laboratory for Cybernetics (Lab4C) at CMU Architecture" constrain={false} />
+
+<ProjectSection title="Lab4C Overview" id="concept">
+    <div slot="intro">
+        <p>
+            The Laboratory for Cybernetics (Lab4C) at Carnegie Mellon University, directed by Paul Pangaro, explores cybernetics at the intersection of design, conversation, and systems theory. 
+            To support the lab's mission, we designed and built a flexible digital infrastructure comprising a high-performance web platform, a practitioner-scholar collaboration matching platform, and a concept knowledge graph.
+        </p>
+    </div>
+</ProjectSection>
+
+<ProjectSection title="Headless Notion CMS Architecture" id="architecture">
+    <p>
+        Rather than building a heavy traditional CMS or requiring non-technical editors to modify React code, the website operates as a "headless" front-end querying Notion as the single source of truth.
+    </p>
+    <p>
+        The Next.js application securely pulls down page blocks and database properties using the Notion Client SDK. A recursive block-to-component translator (<code>BlockRenderer</code>) parses raw Notion layout blocks—such as lists, columns, callouts, and images—and maps them to fully stylized, responsive Tailwind CSS React components in real time.
+    </p>
+</ProjectSection>
+
+<ProjectSection title="The Collaboration & Matching System" id="matching">
+    <p>
+        To foster academic and practice collaboration, the platform implements a dynamic matchmaking system. Scholars and students submit applications identifying their organizations, keywords, and interests.
+    </p>
+    <p>
+        Submissions are handled strictly on the server using Next.js <strong>Server Actions</strong>, which securely format the data and push new entries directly into the Matching Notion database. The system handles secure session management and authentication using a custom email OTP (One-Time Passcode) verification flow powered by Nodemailer.
+    </p>
+</ProjectSection>
