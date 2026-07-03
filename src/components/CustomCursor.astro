@@ -132,12 +132,18 @@
 </style>
 
 <script>
-    const cursor = document.getElementById("custom-cursor");
-    const cursorWrapper = document.querySelector(".cursor-wrapper");
+    let cursor = document.getElementById("custom-cursor");
+    let cursorWrapper = document.querySelector(".cursor-wrapper");
     const isCoarsePointer =
         window.matchMedia("(hover: none), (pointer: coarse)").matches;
 
-    if (cursor && cursorWrapper && !isCoarsePointer) {
+    if (!isCoarsePointer) {
+        // Re-query the dynamic body elements on Astro page load/transition
+        document.addEventListener("astro:page-load", () => {
+            cursor = document.getElementById("custom-cursor");
+            cursorWrapper = document.querySelector(".cursor-wrapper");
+        });
+
         let isVisible = false;
         let isTextHover = false;
         let isGameHover = false; // New flag for game area
@@ -152,6 +158,7 @@
         const gameSelector = ".ghost-game-container";
 
         const updateCursorState = (e: MouseEvent) => {
+            if (!cursor || !cursorWrapper) return;
             const target = e.target as HTMLElement;
 
             // Priority -1: Inside Typography Inspector Widget
@@ -203,6 +210,8 @@
         };
 
         document.addEventListener("mousemove", (e: MouseEvent) => {
+            if (!cursor) return;
+
             // If we haven't set visibility yet
             if (!isVisible && !isTextHover && !isGameHover) {
                 cursor.style.opacity = "1";
@@ -215,13 +224,10 @@
             }
 
             cursor.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
-
-            // Check state on move to be responsive (optional, mouseover usually catches it,
-            // but sometimes moving between elements doesn't trigger if nested weirdly?
-            // Actually mouseover is better for performance. Let's trust mouseover/out.)
         });
 
         document.addEventListener("mouseout", () => {
+            if (!cursor || !cursorWrapper) return;
             cursor.style.opacity = "0";
             isVisible = false;
             isTextHover = false; // Reset text hover state on mouseout of document
@@ -230,6 +236,7 @@
         });
 
         document.addEventListener("mouseover", (e: MouseEvent) => {
+            if (!cursor) return;
             if (!isVisible && !isTextHover && !isGameHover) {
                 cursor.style.opacity = "1";
                 isVisible = true;
@@ -239,10 +246,12 @@
 
         // Click animation via Class
         document.addEventListener("mousedown", () => {
+            if (!cursorWrapper) return;
             cursorWrapper.classList.add("clicking");
         });
 
         document.addEventListener("mouseup", () => {
+            if (!cursorWrapper) return;
             cursorWrapper.classList.remove("clicking");
         });
     }

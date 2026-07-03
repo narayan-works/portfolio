@@ -4,7 +4,7 @@ import GhostRunner from "../components/GhostRunner.astro";
 import BentoGrid from "../components/BentoGrid.astro";
 import BentoCard from "../components/BentoCard.astro";
 import HomeProjectCard from "../components/HomeProjectCard.astro";
-import SidebarNavigation from "../components/SidebarNavigation.astro";
+import HomeNavigation from "../components/HomeNavigation.astro";
 import ThemeToggle from "../components/ThemeToggle.astro";
 import Footer from "../components/Footer.astro";
 import WorksFilter from "../components/WorksFilter.astro";
@@ -49,7 +49,7 @@ const heroImages: Record<string, ImageMetadata> = {
 	pointo: pointoHero,
 	serendipidity: serendipityHero,
 	musibuddy: musibuddyHero,
-	"lab4c": lab4cHero,
+	lab4c: lab4cHero,
 };
 
 // Convenience references by slug for manual column layout
@@ -71,22 +71,15 @@ const serendipityProject = allProjects.find(
 const musibuddyProject = allProjects.find(
 	(project) => project.slug === "musibuddy",
 );
-const lab4cProject = allProjects.find(
-	(project) => project.slug === "lab4c",
-);
+const lab4cProject = allProjects.find((project) => project.slug === "lab4c");
 ---
 
 <Layout
 	title="Narayan Ashanahalli"
-	description="Hi! I’m a graduate student at CMU HCI & SoA. I work at the intersection of sensing, computing, and IxD to create playful, intentional experiences between human -human and human - AI interactions"
+	description="👋 I'm Narayan, an interaction designer from CMU HCI & SoA who builds across interfaces, tools, and hardware, applying systems thinking to create digital products that feel responsive and playful."
 	fullWidth={true}
 >
-	<!-- Fixed Nav: Top Left -->
-	<div class="fixed-nav-top-left">
-		<div class="nav-wrapper-mobile">
-			<SidebarNavigation isHome={true} />
-		</div>
-	</div>
+	<HomeNavigation transition:persist />
 
 	<div class="toggle-floater">
 		<div class="sidebar-controls">
@@ -269,7 +262,7 @@ const lab4cProject = allProjects.find(
 						pointoProject && (
 							<div
 								class="project-card-wrapper"
-								data-categories="physical-ux"
+								data-categories="hardware-ux"
 							>
 								<HomeProjectCard
 									title={pointoProject.data.title}
@@ -283,7 +276,7 @@ const lab4cProject = allProjects.find(
 									tags={pointoProject.data.tags}
 									meta={pointoProject.data.meta}
 									description={pointoProject.data.description}
-									categories={["physical-ux"]}
+									categories={["hardware-ux"]}
 								/>
 							</div>
 						)
@@ -326,7 +319,10 @@ const lab4cProject = allProjects.find(
 										lab4cProject.data.heroImage
 									}
 									loading="lazy"
-									href={lab4cProject.data.ctaUrl || `/works/${lab4cProject.slug}`}
+									href={
+										lab4cProject.data.ctaUrl ||
+										`/works/${lab4cProject.slug}`
+									}
 									tags={lab4cProject.data.tags}
 									meta={lab4cProject.data.meta}
 									description={lab4cProject.data.description}
@@ -385,7 +381,7 @@ const lab4cProject = allProjects.find(
 						pikoProject && (
 							<div
 								class="project-card-wrapper"
-								data-categories="physical-ux"
+								data-categories="hardware-ux"
 							>
 								<HomeProjectCard
 									title={pikoProject.data.title}
@@ -398,7 +394,7 @@ const lab4cProject = allProjects.find(
 									tags={pikoProject.data.tags}
 									meta={pikoProject.data.meta}
 									description={pikoProject.data.description}
-									categories={["physical-ux"]}
+									categories={["hardware-ux"]}
 								/>
 							</div>
 						)
@@ -407,7 +403,7 @@ const lab4cProject = allProjects.find(
 						musibuddyProject && (
 							<div
 								class="project-card-wrapper"
-								data-categories="physical-ux"
+								data-categories="hardware-ux"
 							>
 								<HomeProjectCard
 									title={musibuddyProject.data.title}
@@ -424,7 +420,7 @@ const lab4cProject = allProjects.find(
 									}
 									fit="cover"
 									scale={1.5}
-									categories={["physical-ux"]}
+									categories={["hardware-ux"]}
 								/>
 							</div>
 						)
@@ -530,23 +526,6 @@ const lab4cProject = allProjects.find(
 </Layout>
 
 <style>
-	/* Fixed Nav Positions */
-	.fixed-nav-top-left {
-		position: fixed;
-		top: 20px;
-		left: 50%;
-		transform: translateX(-50%);
-		z-index: 200;
-		width: auto;
-	}
-
-	/* Desktop (3-col): fixed sidebar width */
-	@media (min-width: 1200px) {
-		.fixed-nav-top-left {
-			width: auto;
-		}
-	}
-
 	.fixed-nav-bottom-right {
 		position: fixed;
 		bottom: 128px;
@@ -791,54 +770,10 @@ const lab4cProject = allProjects.find(
 
 	/* Responsive */
 	@media (max-width: 1024px) {
-		.fixed-nav-top-left {
-			position: fixed;
-			top: 20px;
-			left: 50% !important;
-			transform: translateX(-50%) !important;
-			width: auto;
-			margin-bottom: 0;
-			display: block;
-			padding: 0;
-			box-sizing: border-box;
-		}
-
 		.toggle-floater {
 			right: 48px !important;
 			bottom: 20px !important;
 			top: auto !important;
-		}
-
-		.nav-wrapper-mobile {
-			flex: 1 1 auto; /* Allow Sidebar to fill available space, but shrink if needed */
-			min-width: 0; /* Critical for text truncation/shrinking in flex */
-			position: relative; /* Context */
-			z-index: 2; /* Ensure above spacer if any */
-		}
-
-		/* Override Sidebar Fixed Position on Mobile Home */
-		.fixed-nav-top-left :global(.nav-bento-wrapper) {
-			position: static !important; /* Force into flow */
-			width: 100% !important;
-			margin: 0 !important;
-			transform: none !important;
-			padding: 0 !important; /* Reset component padding if any */
-			top: auto !important;
-			left: auto !important;
-			right: auto !important;
-			border: none !important; /* Border handled by component or container? */
-			/* Component has border: 1px solid var(--border-subtle); keep it? */
-			/* If component border is on wrapper, keep it. Just position reset. */
-		}
-
-		/* Hide the spacer which pushes content down */
-		.fixed-nav-top-left :global(.nav-spacer) {
-			display: none !important;
-		}
-
-		/* Override width: 100% on nav trigger for mobile horizontal layout */
-		.fixed-nav-top-left :global(.nav-trigger) {
-			width: 100%; /* Fill the wrapper */
 		}
 
 		.fixed-nav-bottom-right {
@@ -858,11 +793,6 @@ const lab4cProject = allProjects.find(
 	}
 
 	@media (max-width: 768px) {
-		.fixed-nav-top-left {
-			left: 50% !important;
-			transform: translateX(-50%) !important;
-			top: 16px !important;
-		}
 		.toggle-floater {
 			right: 24px !important;
 			bottom: 20px !important;
@@ -1579,7 +1509,7 @@ const lab4cProject = allProjects.find(
 </style>
 
 <script>
-	document.addEventListener("DOMContentLoaded", () => {
+	document.addEventListener("astro:page-load", () => {
 		const readMoreBtn = document.getElementById("read-more-btn");
 		const navAbout = document.getElementById("nav-about");
 		const bioContent = document.querySelector(
@@ -1871,7 +1801,7 @@ const lab4cProject = allProjects.find(
 			// Dynamic Bio Text Color based on filter selection
 			const FILTER_COLORS: Record<string, string> = {
 				all: "#42BE4A", // Default state color (#42BE4A)
-				"physical-ux": "#0D8CE9", // Hover state blue color
+				"hardware-ux": "#0D8CE9", // Hover state blue color
 				"web-ux": "#F6631A",
 				"mobile-ux": "#FACC09",
 				"spatial-xd": "#2B923D",
@@ -2088,7 +2018,7 @@ const lab4cProject = allProjects.find(
 		// Determine active filter from URL hash on load
 		const hash = window.location.hash.slice(1);
 		const validFilters = [
-			"physical-ux",
+			"hardware-ux",
 			"web-ux",
 			"mobile-ux",
 			"spatial-xd",

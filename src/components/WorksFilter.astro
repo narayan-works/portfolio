@@ -5,7 +5,7 @@
 <div class="works-filter-container">
     <div class="segmented-control" id="works-segmented-control">
         <button class="filter-btn active" data-filter="all">All</button>
-        <button class="filter-btn" data-filter="physical-ux">Physical UX</button>
+        <button class="filter-btn" data-filter="hardware-ux">Hardware UX</button>
         <button class="filter-btn" data-filter="web-ux">Web UX</button>
         <button class="filter-btn" data-filter="mobile-ux">Mobile UX</button>
     </div>
@@ -129,7 +129,7 @@
         --c4: #000000;
         color: #ffffff !important;
     }
-    .filter-btn[data-filter="physical-ux"]:hover {
+    .filter-btn[data-filter="hardware-ux"]:hover {
         --c1: #0d8ce9;
         --c2: #0d8ce9;
         --c3: #0d8ce9;
@@ -182,7 +182,7 @@
         --c4: #000000;
         color: #ffffff !important;
     }
-    .filter-btn.active[data-filter="physical-ux"]:hover {
+    .filter-btn.active[data-filter="hardware-ux"]:hover {
         --c1: #0d8ce9;
         --c2: #0d8ce9;
         --c3: #0d8ce9;
@@ -262,7 +262,7 @@
      */
     const SELECTED_COLORS: Record<string, { c: string; text: string }> = {
         all: { c: "#000000", text: "#ffffff" },
-        "physical-ux": { c: "#0D8CE9", text: "#000000" },
+        "hardware-ux": { c: "#0D8CE9", text: "#000000" },
         "web-ux": { c: "#F6631A", text: "#000000" },
         "mobile-ux": { c: "#FACC09", text: "#000000" },
         "spatial-xd": { c: "#2B923D", text: "#000000" },
@@ -309,7 +309,7 @@
         // Determine active filter from URL hash
         const hash = window.location.hash.slice(1);
         const validFilters = [
-            "physical-ux",
+            "hardware-ux",
             "web-ux",
             "mobile-ux",
         ];

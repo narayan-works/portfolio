@@ -38,9 +38,9 @@ const sections = propSections || [];
 // Map project slugs to their category-specific active colors (matching homepage WorksFilter colors)
 const slug = Astro.url.pathname.split("/").filter(Boolean).pop() || "";
 const categoryColors: Record<string, string> = {
-    pointo: "var(--category-physical-ux)",
-    piko: "var(--category-physical-ux)",
-    musibuddy: "var(--category-physical-ux)",
+    pointo: "var(--category-hardware-ux)",
+    piko: "var(--category-hardware-ux)",
+    musibuddy: "var(--category-hardware-ux)",
     "dot-threads": "var(--category-web-ux)",
     lab4c: "var(--category-web-ux)",
     detour: "var(--category-mobile-ux)",
@@ -50,9 +50,9 @@ const categoryColors: Record<string, string> = {
 };
 
 const categoryHoverColors: Record<string, string> = {
-    pointo: "var(--category-physical-ux-hover)",
-    piko: "var(--category-physical-ux-hover)",
-    musibuddy: "var(--category-physical-ux-hover)",
+    pointo: "var(--category-hardware-ux-hover)",
+    piko: "var(--category-hardware-ux-hover)",
+    musibuddy: "var(--category-hardware-ux-hover)",
     "dot-threads": "var(--category-web-ux-hover)",
     lab4c: "var(--category-web-ux-hover)",
     detour: "var(--category-mobile-ux-hover)",
@@ -63,19 +63,19 @@ const categoryHoverColors: Record<string, string> = {
 
 // Fallback category-to-color mapping (for archives / other project files)
 const fallbackColors: Record<string, string> = {
-    embodied: "var(--category-physical-ux)",
+    embodied: "var(--category-hardware-ux)",
     thinking: "var(--category-web-ux)",
     spatial: "var(--category-spatial-xd)",
     strategy: "var(--category-spatial-xd)",
-    archive: "var(--category-physical-ux)",
+    archive: "var(--category-hardware-ux)",
 };
 
 const fallbackHoverColors: Record<string, string> = {
-    embodied: "var(--category-physical-ux-hover)",
+    embodied: "var(--category-hardware-ux-hover)",
     thinking: "var(--category-web-ux-hover)",
     spatial: "var(--category-spatial-xd-hover)",
     strategy: "var(--category-spatial-xd-hover)",
-    archive: "var(--category-physical-ux-hover)",
+    archive: "var(--category-hardware-ux-hover)",
 };
 
 // Clean category string (handles e.g. "embodied[work in progess]")

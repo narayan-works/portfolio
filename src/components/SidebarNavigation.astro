@@ -249,122 +249,128 @@ const sortedProjects = allProjects
 </div>
 
 <script>
-    const wrapper = document.querySelector(".nav-bento-wrapper");
-    const isHomePage = wrapper?.getAttribute("data-is-home") === "true";
-    const trigger = document.getElementById("nav-trigger");
-    const dropdown = document.getElementById("nav-dropdown");
+    function setupSidebarNavigation() {
+        const wrapper = document.querySelector(".nav-bento-wrapper");
+        const isHomePage = wrapper?.getAttribute("data-is-home") === "true";
+        const trigger = document.getElementById("nav-trigger");
+        const dropdown = document.getElementById("nav-dropdown");
 
-    if (!isHomePage) {
-        // ===== PROJECT PAGE: Dropdown toggle logic =====
-        trigger?.addEventListener("click", (e) => {
-            if (window.innerWidth <= 1024) return;
-            if ((e.target as HTMLElement).closest("a")) return;
+        if (!isHomePage) {
+            // ===== PROJECT PAGE: Dropdown toggle logic =====
+            trigger?.addEventListener("click", (e) => {
+                if (window.innerWidth <= 1024) return;
+                if ((e.target as HTMLElement).closest("a")) return;
 
-            e.stopPropagation();
-            const isExpanded =
-                trigger?.getAttribute("aria-expanded") === "true";
-
-            trigger?.setAttribute("aria-expanded", (!isExpanded).toString());
-            dropdown?.classList.toggle("hidden");
-            trigger?.classList.toggle("active");
-        });
-
-        // Close on click outside
-        document.addEventListener("click", (e) => {
-            if (
-                !trigger?.contains(e.target as Node) &&
-                !dropdown?.contains(e.target as Node)
-            ) {
-                trigger?.setAttribute("aria-expanded", "false");
-                dropdown?.classList.add("hidden");
-                trigger?.classList.remove("active");
-            }
-        });
-
-        // Toggle Folders (Accordion Behavior)
-        const folderTriggers = document.querySelectorAll(".folder-trigger");
-        folderTriggers.forEach((ft) => {
-            ft.addEventListener("click", (e) => {
                 e.stopPropagation();
-                e.preventDefault();
-                const currentFolder = ft.closest(".folder");
-                if (!currentFolder) return;
+                const isExpanded =
+                    trigger?.getAttribute("aria-expanded") === "true";
 
-                if (currentFolder.classList.contains("subfolder")) {
-                    const parentList = currentFolder.closest(".tree-children");
-                    const siblings = parentList?.querySelectorAll(
-                        ":scope > .subfolder.expanded",
-                    );
-                    siblings?.forEach((sibling) => {
-                        if (sibling !== currentFolder) {
-                            sibling.classList.remove("expanded");
-                            const btn =
-                                sibling.querySelector(".folder-trigger");
-                            btn?.classList.remove("active");
-                        }
-                    });
+                trigger?.setAttribute("aria-expanded", (!isExpanded).toString());
+                dropdown?.classList.toggle("hidden");
+                trigger?.classList.toggle("active");
+            });
+
+            // Close on click outside
+            document.addEventListener("click", (e) => {
+                if (
+                    !trigger?.contains(e.target as Node) &&
+                    !dropdown?.contains(e.target as Node)
+                ) {
+                    trigger?.setAttribute("aria-expanded", "false");
+                    dropdown?.classList.add("hidden");
+                    trigger?.classList.remove("active");
+                }
+            });
+
+            // Toggle Folders (Accordion Behavior)
+            const folderTriggers = document.querySelectorAll(".folder-trigger");
+            folderTriggers.forEach((ft) => {
+                ft.addEventListener("click", (e) => {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    const currentFolder = ft.closest(".folder");
+                    if (!currentFolder) return;
+
+                    if (currentFolder.classList.contains("subfolder")) {
+                        const parentList = currentFolder.closest(".tree-children");
+                        const siblings = parentList?.querySelectorAll(
+                            ":scope > .subfolder.expanded",
+                        );
+                        siblings?.forEach((sibling) => {
+                            if (sibling !== currentFolder) {
+                                sibling.classList.remove("expanded");
+                                const btn =
+                                    sibling.querySelector(".folder-trigger");
+                                btn?.classList.remove("active");
+                            }
+                        });
+                    }
+
+                    currentFolder.classList.toggle("expanded");
+                    ft.classList.toggle("active");
+                });
+            });
+        }
+
+        // ===== SCROLL HIGHLIGHT LOGIC (Homepage only) =====
+        if (isHomePage) {
+            const homeLink = document.getElementById("nav-home-link");
+            const aboutLink = document.getElementById("nav-about-link");
+            const worksLink = document.getElementById("nav-works-link");
+            const readMoreBtn = document.getElementById("read-more-btn");
+
+            let isReadMoreExpanded = false;
+
+            if (readMoreBtn) {
+                const mutationObserver = new MutationObserver(() => {
+                    isReadMoreExpanded = readMoreBtn.classList.contains("active");
+                    updateHomeActiveState();
+                });
+                mutationObserver.observe(readMoreBtn, {
+                    attributes: true,
+                    attributeFilter: ["class"],
+                });
+            }
+
+            function updateHomeActiveState() {
+                // Reset all inline link highlights
+                homeLink?.classList.remove("active-scroll");
+                aboutLink?.classList.remove("active-scroll");
+                worksLink?.classList.remove("active-scroll");
+
+                // 1. Read More expanded → ABOUT
+                if (isReadMoreExpanded) {
+                    aboutLink?.classList.add("active-scroll");
+                    return;
                 }
 
-                currentFolder.classList.toggle("expanded");
-                ft.classList.toggle("active");
-            });
-        });
-    }
+                // 2. Home Zone (top of page, before works)
+                const worksSection = document.getElementById("works");
+                const worksTop = worksSection
+                    ? worksSection.offsetTop - 100
+                    : 99999;
 
-    // ===== SCROLL HIGHLIGHT LOGIC (Homepage only) =====
-    if (isHomePage) {
-        const homeLink = document.getElementById("nav-home-link");
-        const aboutLink = document.getElementById("nav-about-link");
-        const worksLink = document.getElementById("nav-works-link");
-        const readMoreBtn = document.getElementById("read-more-btn");
+                if (window.scrollY < worksTop) {
+                    homeLink?.classList.add("active-scroll");
+                    return;
+                }
 
-        let isReadMoreExpanded = false;
-
-        if (readMoreBtn) {
-            const mutationObserver = new MutationObserver(() => {
-                isReadMoreExpanded = readMoreBtn.classList.contains("active");
-                updateHomeActiveState();
-            });
-            mutationObserver.observe(readMoreBtn, {
-                attributes: true,
-                attributeFilter: ["class"],
-            });
-        }
-
-        function updateHomeActiveState() {
-            // Reset all inline link highlights
-            homeLink?.classList.remove("active-scroll");
-            aboutLink?.classList.remove("active-scroll");
-            worksLink?.classList.remove("active-scroll");
-
-            // 1. Read More expanded → ABOUT
-            if (isReadMoreExpanded) {
-                aboutLink?.classList.add("active-scroll");
-                return;
+                // 3. Works Zone
+                worksLink?.classList.add("active-scroll");
             }
 
-            // 2. Home Zone (top of page, before works)
-            const worksSection = document.getElementById("works");
-            const worksTop = worksSection
-                ? worksSection.offsetTop - 100
-                : 99999;
+            window.addEventListener("scroll", () => {
+                window.requestAnimationFrame(updateHomeActiveState);
+            });
 
-            if (window.scrollY < worksTop) {
-                homeLink?.classList.add("active-scroll");
-                return;
-            }
-
-            // 3. Works Zone
-            worksLink?.classList.add("active-scroll");
+            // Initial call
+            updateHomeActiveState();
         }
-
-        window.addEventListener("scroll", () => {
-            window.requestAnimationFrame(updateHomeActiveState);
-        });
-
-        // Initial call
-        updateHomeActiveState();
     }
+
+    // Run setup on load and page transition
+    setupSidebarNavigation();
+    document.addEventListener("astro:page-load", setupSidebarNavigation);
 </script>
 
 <style>

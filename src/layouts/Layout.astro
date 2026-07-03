@@ -3,6 +3,7 @@ import SpeedInsights from "@vercel/speed-insights/astro";
 import "../styles/global.css";
 import CustomCursor from "../components/CustomCursor.astro";
 import TypographyInspector from "../components/TypographyInspector.astro";
+import { ViewTransitions } from "astro:transitions";
 
 interface Props {
 	title: string;
@@ -24,8 +25,11 @@ const {
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="description" content={description} />
+		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
+		<meta property="og:type" content="website" />
 		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
 		<meta name="twitter:description" content={description} />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -104,6 +108,7 @@ const {
 				y.parentNode.insertBefore(t, y);
 			})(window, document, "clarity", "script", "x4yo8ojdri");
 		</script>
+		<ViewTransitions />
 	</head>
 	<body>
 		<CustomCursor />
@@ -188,8 +193,11 @@ const {
 		}
 		/* Ensure links also don't show cursor */
 		a,
+		a *,
 		button,
-		[role="button"] {
+		button *,
+		[role="button"],
+		[role="button"] * {
 			cursor: none !important;
 		}
 	}

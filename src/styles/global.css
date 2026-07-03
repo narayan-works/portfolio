@@ -80,8 +80,8 @@
   /* Green */
 
   /* Category Colors */
-  --category-physical-ux: #68B5ED;
-  --category-physical-ux-hover: #57A4DC;
+  --category-hardware-ux: #68B5ED;
+  --category-hardware-ux-hover: #57A4DC;
   --category-web-ux: #F6631A;
   --category-web-ux-hover: #E05105;
   --category-mobile-ux: #FACC09;
@@ -341,4 +341,38 @@ button:hover .arrow-down-left {
 
 .accent-text {
   color: var(--project-category-color, var(--accent-secondary)) !important;
+}
+
+/* ─── View Transitions ────────────────────────────────────────────────────── */
+
+/* Outgoing page: fade + slide up slightly */
+@keyframes vt-fade-out {
+  to {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+
+/* Incoming page: fade + slide up from below */
+@keyframes vt-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+::view-transition-old(root) {
+  animation: 220ms cubic-bezier(0.4, 0, 1, 1) both vt-fade-out;
+}
+
+::view-transition-new(root) {
+  animation: 320ms cubic-bezier(0, 0, 0.2, 1) 80ms both vt-fade-in;
+}
+
+/* Respect prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none !important;
+  }
 }
