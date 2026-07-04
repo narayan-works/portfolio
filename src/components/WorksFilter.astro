@@ -157,6 +157,13 @@
         --c4: #41b748;
         color: #000000 !important;
     }
+    .filter-btn[data-filter="experiments"]:hover {
+        --c1: #a855f7;
+        --c2: #a855f7;
+        --c3: #a855f7;
+        --c4: #a855f7;
+        color: #ffffff !important;
+    }
 
     /*
      * ── Active (selected) states ──
@@ -209,6 +216,13 @@
         --c3: #41b748;
         --c4: #41b748;
         color: #000000 !important;
+    }
+    .filter-btn.active[data-filter="experiments"]:hover {
+        --c1: #a855f7;
+        --c2: #a855f7;
+        --c3: #a855f7;
+        --c4: #a855f7;
+        color: #ffffff !important;
     }
 
     .filter-btn:focus-visible {
@@ -266,6 +280,7 @@
         "web-ux": { c: "#F6631A", text: "#000000" },
         "mobile-ux": { c: "#FACC09", text: "#000000" },
         "spatial-xd": { c: "#2B923D", text: "#000000" },
+        experiments: { c: "#A855F7", text: "#ffffff" },
     };
 
     function setupWorksFilter() {
@@ -312,6 +327,7 @@
             "hardware-ux",
             "web-ux",
             "mobile-ux",
+            "experiments",
         ];
         const activeFilter = validFilters.includes(hash) ? hash : "all";
 

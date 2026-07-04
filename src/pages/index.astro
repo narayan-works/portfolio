@@ -36,6 +36,7 @@ const allProjects = (await getCollection("projects"))
 			"piko",
 			"musibuddy",
 			"lab4c",
+			"xfigura",
 		].includes(project.slug),
 	)
 	.sort((a, b) => (a.data.order || 0) - (b.data.order || 0));
@@ -72,6 +73,7 @@ const musibuddyProject = allProjects.find(
 	(project) => project.slug === "musibuddy",
 );
 const lab4cProject = allProjects.find((project) => project.slug === "lab4c");
+const xfiguraProject = allProjects.find((project) => project.slug === "xfigura");
 ---
 
 <Layout
@@ -307,6 +309,28 @@ const lab4cProject = allProjects.find((project) => project.slug === "lab4c");
 						)
 					}
 					{
+						xfiguraProject && (
+							<div
+								class="project-card-wrapper"
+								data-categories="web-ux"
+							>
+								<HomeProjectCard
+									title={xfiguraProject.data.title}
+									image={
+										heroImages[xfiguraProject.slug] ||
+										xfiguraProject.data.heroImage
+									}
+									loading="lazy"
+									href={`/works/${xfiguraProject.slug}`}
+									tags={xfiguraProject.data.tags}
+									meta={xfiguraProject.data.meta}
+									description={xfiguraProject.data.description}
+									categories={["web-ux"]}
+								/>
+							</div>
+						)
+					}
+					{
 						lab4cProject && (
 							<div
 								class="project-card-wrapper"
@@ -399,80 +423,7 @@ const lab4cProject = allProjects.find((project) => project.slug === "lab4c");
 							</div>
 						)
 					}
-					{
-						musibuddyProject && (
-							<div
-								class="project-card-wrapper"
-								data-categories="hardware-ux"
-							>
-								<HomeProjectCard
-									title={musibuddyProject.data.title}
-									image={
-										heroImages[musibuddyProject.slug] ||
-										musibuddyProject.data.heroImage
-									}
-									loading="lazy"
-									href={`/works/${musibuddyProject.slug}`}
-									tags={musibuddyProject.data.tags}
-									meta={musibuddyProject.data.meta}
-									description={
-										musibuddyProject.data.description
-									}
-									fit="cover"
-									scale={1.5}
-									categories={["hardware-ux"]}
-								/>
-							</div>
-						)
-					}
-					{
-						tirupatiProject && (
-							<div
-								class="project-card-wrapper"
-								data-categories="spatial-xd"
-							>
-								<HomeProjectCard
-									title={tirupatiProject.data.title}
-									image={
-										heroImages[tirupatiProject.slug] ||
-										tirupatiProject.data.heroImage
-									}
-									loading="lazy"
-									href={`/works/${tirupatiProject.slug}`}
-									tags={tirupatiProject.data.tags}
-									meta={tirupatiProject.data.meta}
-									description={
-										tirupatiProject.data.description
-									}
-									categories={["spatial-xd"]}
-								/>
-							</div>
-						)
-					}
-					{
-						sanctuaryProject && (
-							<div
-								class="project-card-wrapper"
-								data-categories="spatial-xd"
-							>
-								<HomeProjectCard
-									title={sanctuaryProject.data.title}
-									image={
-										heroImages[sanctuaryProject.slug] ||
-										sanctuaryProject.data.heroImage
-									}
-									loading="lazy"
-									href={`/works/${sanctuaryProject.slug}`}
-									tags={sanctuaryProject.data.tags}
-									meta={sanctuaryProject.data.meta}
-									description={
-										sanctuaryProject.data.description
-									}
-									categories={["spatial-xd"]}
-								/>
-							</div>
-						)
-					}
+
 				</div>
 
 				<!-- See More button: visible only when a filter is active and hides some projects -->
@@ -2022,6 +1973,7 @@ const lab4cProject = allProjects.find((project) => project.slug === "lab4c");
 			"web-ux",
 			"mobile-ux",
 			"spatial-xd",
+			"experiments",
 		];
 		const activeFilter = validFilters.includes(hash) ? hash : "all";
 

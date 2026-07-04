@@ -1,0 +1,498 @@
+/* Custom Case Study Layout Styles for xFigura */
+:root {
+    --theme-icon-filter: invert(1); /* Invert to white in dark mode */
+}
+
+[data-theme="light"] {
+    --theme-icon-filter: none; /* No inversion (black outline) in light mode */
+    --bg-secondary: var(--bg-surface);
+    --border-subtle: rgba(40, 40, 40, 0.08);
+}
+
+[data-theme="light"] .active-glow {
+    background: rgba(34, 197, 94, 0.08) !important;
+}
+.section-intro-wrapper {
+    width: 100%;
+    margin-bottom: 2.5rem;
+}
+
+.section-intro {
+    font-family: var(--font-sans), sans-serif;
+    font-size: 1.125rem;
+    font-weight: 300;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+.font-secondary {
+    font-family: var(--font-mono), monospace;
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--text-muted);
+}
+
+.active-readout {
+    color: #F6631A;
+    font-weight: bold;
+}
+
+/* Grid Layouts */
+.xf-grid {
+    display: grid;
+    gap: 16px;
+    width: 100%;
+    margin-bottom: 4rem;
+    box-sizing: border-box;
+}
+
+.grid-4 {
+    grid-template-columns: repeat(1, 1fr);
+}
+
+.grid-3 {
+    grid-template-columns: repeat(1, 1fr);
+}
+
+@media (min-width: 1024px) {
+    .grid-3 {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (min-width: 768px) {
+    .grid-4 {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* Card Styling */
+.xf-card {
+    background: var(--bg-secondary, #0d0d0f);
+    border: 1px solid var(--border-subtle, #1f1f23);
+    border-radius: 12px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 24px;
+}
+
+.card-id {
+    font-family: var(--font-mono), monospace;
+    font-size: 11px;
+    color: var(--text-muted, #71717a);
+    font-weight: bold;
+}
+
+.card-label {
+    font-family: var(--font-mono), monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted, #71717a);
+}
+
+.card-status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-mono), monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: currentColor;
+}
+
+.font-emerald {
+    color: #F6631A !important;
+}
+
+.font-muted {
+    color: var(--text-muted, #71717a) !important;
+}
+
+.card-icon-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 96px;
+    width: 96px;
+    margin-bottom: 24px;
+}
+
+.card-icon {
+    height: 80px;
+    width: 80px;
+    object-fit: contain;
+    filter: var(--theme-icon-filter, none); /* support filters if needed */
+}
+
+.card-title {
+    font-family: var(--font-sans), sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.25;
+    color: var(--text-primary, #ffffff);
+    margin: 0 0 12px 0 !important;
+}
+
+.card-desc {
+    font-family: var(--font-sans), sans-serif;
+    font-size: 13.5px;
+    font-weight: 300;
+    line-height: 1.5;
+    color: var(--text-secondary, #a1a1aa);
+    margin: 0;
+    margin-top: auto;
+}
+
+/* Opportunities Cards */
+.opp-card {
+    border-radius: 24px;
+    border: 1px solid var(--border-subtle, #1f1f23);
+    padding: 32px;
+    min-height: 580px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all 0.25s ease;
+    box-sizing: border-box;
+    background: var(--bg-secondary, #0d0d0f);
+}
+
+.active-glow {
+    border-color: rgba(246, 99, 26, 0.9);
+    background: rgba(30, 12, 4, 0.65);
+    box-shadow: 0 0 30px rgba(246, 99, 26, 0.14);
+    transform: scale(1.01);
+}
+
+.inactive-faded {
+    background: var(--bg-secondary);
+    border-color: var(--border-subtle);
+    opacity: 0.5;
+}
+
+.opp-title {
+    font-family: var(--font-sans), sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin: 0 0 24px 0 !important;
+    color: var(--text-muted, #71717a);
+}
+
+.active-title {
+    color: var(--text-primary, #ffffff);
+}
+
+.opp-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 16px;
+}
+
+.opp-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    width: 100%;
+}
+
+.opp-row-label {
+    font-family: var(--font-sans), sans-serif;
+    font-size: 11px;
+    color: var(--text-muted, #71717a);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    min-width: 60px;
+    padding-top: 6px;
+}
+
+.opp-chips {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    flex-wrap: wrap;
+    flex: 1;
+}
+
+.opp-chip {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+.chip-circle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 88px;
+    width: 88px;
+    border-radius: 50%;
+    background: var(--project-category-color, #2b00ff);
+    box-shadow: 0 2px 8px rgba(246, 99, 26, 0.2);
+}
+
+.chip-img {
+    height: 58px;
+    width: 58px;
+    filter: brightness(0) invert(1);
+}
+
+.chip-name {
+    font-family: var(--font-mono), monospace;
+    font-size: 11px;
+    color: var(--text-muted, #71717a);
+    text-align: center;
+}
+
+.chip-plus {
+    font-size: 14px;
+    color: var(--border-subtle, #3f3f46);
+    font-weight: bold;
+    line-height: 88px;
+}
+
+.opp-footer {
+    margin-top: 24px;
+    border-top: 1px solid var(--border-subtle, #1f1f23);
+    padding-top: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-grow: 1;
+}
+
+.opp-desc {
+    font-family: var(--font-sans), sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text-secondary, #71717a);
+    margin: 0 0 24px 0;
+}
+
+.active-desc {
+    color: var(--text-secondary, #d4d4d8);
+}
+
+.opp-meta-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.opp-badge {
+    font-family: var(--font-mono), monospace;
+    font-size: 10px;
+    padding: 4px 10px;
+    border-radius: 12px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.bg-emerald {
+    background-color: rgba(246, 99, 26, 0.15);
+    color: #F6631A;
+}
+
+.bg-muted {
+    background-color: rgba(113, 113, 122, 0.1);
+    color: var(--text-muted, #a1a1aa);
+}
+
+/* Core UI Elements & Interactions Section */
+.core-section-title {
+    margin-top: 5.5rem !important;
+    margin-bottom: 1rem !important;
+}
+
+.core-section-desc {
+    margin-bottom: 2.5rem !important;
+    color: var(--text-secondary);
+}
+
+.core-card {
+    background: var(--bg-secondary, #0d0d0f);
+    border: 1px solid var(--border-subtle, #1f1f23);
+    border-radius: 12px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    box-sizing: border-box;
+}
+
+.core-card-title {
+    font-family: var(--font-sans), sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary, #ffffff);
+    margin: 0 !important;
+}
+
+.core-card-desc {
+    font-family: var(--font-sans), sans-serif;
+    font-size: 13.5px;
+    font-weight: 300;
+    line-height: 1.5;
+    color: var(--text-secondary, #a1a1aa);
+    margin: 0;
+    margin-top: auto;
+}
+
+.core-card-desc code {
+    font-family: var(--font-mono), monospace;
+    font-size: 11px;
+    background: rgba(139, 92, 246, 0.12);
+    color: #a78bfa;
+    padding: 2px 6px;
+    border-radius: 4px;
+    display: inline-block;
+    vertical-align: -1px;
+}
+
+.ui-image-wrapper {
+    width: 100%;
+    border: 1px solid var(--border-subtle, #1f1f23);
+    border-radius: 16px;
+    background: #000000;
+    padding: 0;
+    overflow: hidden;
+    margin-top: 1rem;
+    margin-bottom: 4rem;
+    box-sizing: border-box;
+}
+
+.ui-image {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.section-tagline {
+    margin-top: 0.5rem !important;
+    margin-bottom: 2.25rem !important;
+    color: var(--text-secondary) !important;
+    font-size: 15px !important;
+    font-weight: 300 !important;
+    line-height: 1.6 !important;
+}
+
+/* Thesis statement full-width orange bar */
+.section-content .centered-tagline.orange-bar {
+    background: #F6631A !important;
+    color: #111111 !important;
+    padding-block: 3rem !important;
+    padding-inline: 3rem !important;
+    margin-left: -20px !important;
+    margin-right: -20px !important;
+    width: calc(100% + 40px) !important;
+    max-width: none !important;
+    box-sizing: border-box !important;
+    margin-top: 2rem !important;
+    margin-bottom: 2rem !important;
+    text-align: left !important;
+}
+
+.centered-tagline.orange-bar h2 {
+    color: #111111 !important;
+    margin: 0 !important;
+}
+
+.centered-tagline.orange-bar .accent-text {
+    color: inherit !important;
+}
+
+/* ── Mobile optimisations for Opportunity cards ── */
+@media (max-width: 768px) {
+    /* Force single column regardless of wide container */
+    .xf-grid.grid-3 {
+        grid-template-columns: 1fr !important;
+        gap: 12px;
+    }
+
+    .opp-card {
+        padding: 20px;
+        min-height: unset;
+        border-radius: 16px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .opp-title {
+        font-size: 22px;
+        margin-bottom: 16px !important;
+    }
+
+    /* Stack chips vertically — one chip per row */
+    .opp-chips {
+        flex-direction: column;
+        gap: 8px;
+        align-items: flex-start;
+    }
+
+    /* Each chip: icon + label side by side */
+    .opp-chip {
+        flex-direction: row;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .chip-circle {
+        height: 44px;
+        width: 44px;
+        flex-shrink: 0;
+    }
+
+    .chip-img {
+        height: 28px;
+        width: 28px;
+        flex-shrink: 0;
+        object-fit: contain;
+    }
+
+    /* Hide the + separator between chips on mobile */
+    .chip-plus {
+        display: none;
+    }
+
+    .chip-name {
+        text-align: left;
+        font-size: 12px;
+    }
+
+    .opp-rows {
+        gap: 14px;
+    }
+
+    .opp-footer {
+        margin-top: 16px;
+        padding-top: 14px;
+    }
+
+    .opp-desc {
+        font-size: 13px;
+    }
+}
+

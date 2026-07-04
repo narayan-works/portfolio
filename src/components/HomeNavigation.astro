@@ -47,6 +47,13 @@ import happyLogo from "../assets/happy.png";
             >
                 Work
             </a>
+            <a
+                href="/elsewhere"
+                target="_blank"
+                class="home-nav-link"
+            >
+                Elsewhere
+            </a>
         </div>
     </div>
 </nav>
@@ -150,7 +157,11 @@ import happyLogo from "../assets/happy.png";
     }
 
     .home-nav-logo:hover {
-        color: var(--text-primary);
+        color: var(--accent-secondary);
+    }
+
+    .home-nav-logo:hover .logo-name {
+        font-weight: 600;
     }
 
     .logo-img-wrapper {
@@ -173,11 +184,12 @@ import happyLogo from "../assets/happy.png";
     .logo-name {
         font-family: var(--font-sans);
         font-size: 12px;
-        font-weight: 600;
+        font-weight: 450;
         text-transform: uppercase;
         letter-spacing: 0.05em;
         line-height: 1;
         cursor: pointer;
+        transition: font-weight 0.2s ease, color 0.2s ease;
     }
 
     .home-nav-links {
@@ -189,17 +201,18 @@ import happyLogo from "../assets/happy.png";
     .home-nav-link {
         font-family: var(--font-sans);
         font-size: 12px;
-        font-weight: 600;
+        font-weight: 450;
         text-transform: uppercase;
         letter-spacing: 0.05em;
         line-height: 1;
         color: var(--text-secondary);
         text-decoration: none;
-        transition: color 0.2s ease;
+        transition: font-weight 0.2s ease, color 0.2s ease;
     }
 
     .home-nav-link:hover {
-        color: var(--text-primary);
+        color: var(--accent-secondary);
+        font-weight: 600;
     }
 
     .home-nav-link.active-scroll {
@@ -209,8 +222,24 @@ import happyLogo from "../assets/happy.png";
 
     /* Responsive overrides */
     @media (max-width: 768px) {
+        .home-nav-container {
+            justify-content: space-between;
+        }
+
         .logo-name {
-            display: none; /* Hide name on small screens to prevent overlap */
+            display: none;
+        }
+
+        .logo-img-wrapper {
+            margin-left: -16px;
+        }
+
+        /* Center links absolutely within the bar */
+        .home-nav-links {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            gap: 20px;
         }
     }
 </style>

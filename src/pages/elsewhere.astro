@@ -1,0 +1,260 @@
+---
+import Layout from "../layouts/Layout.astro";
+import HomeNavigation from "../components/HomeNavigation.astro";
+import { getCollection } from "astro:content";
+import { Image } from "astro:assets";
+
+// Fetch the elsewhere projects
+const elsewhereSlugs = ["musibuddy", "tirupati-campus", "skywalk-sanctuary"];
+const allProjects = await getCollection("projects");
+const elsewhereProjects = allProjects
+	.filter((p) => elsewhereSlugs.includes(p.slug))
+	.sort(
+		(a, b) =>
+			elsewhereSlugs.indexOf(a.slug) - elsewhereSlugs.indexOf(b.slug),
+	);
+
+// Category colors mapping for solid backgrounds
+const categoryColors: Record<string, string> = {
+	musibuddy: "#0d8ce9", // Blue (originally hardware-ux)
+	"tirupati-campus": "#258835", // Green (originally spatial-xd)
+	"skywalk-sanctuary": "#258835", // Green (originally spatial-xd)
+};
+
+// Image scale settings to adjust centering and visual weight (e.g. MusiBuddy needs to be scaled up)
+const imageScales: Record<string, number> = {
+	musibuddy: 1.45,
+};
+---
+
+<Layout
+	title="Elsewhere | Narayan Ashanahalli"
+	description="Side quests, visual studies, and early prototypes that give me space to keep shaping how I think about people, systems, and context."
+	fullWidth={true}
+>
+	<HomeNavigation transition:persist />
+
+	<div class="elsewhere-layout">
+		<header class="elsewhere-header">
+			<h1 class="elsewhere-title">Elsewhere</h1>
+			<p class="elsewhere-intro">
+				Side quests, visual studies, and early prototypes that give me
+				space to keep shaping how I think about people, systems, and
+				context.
+			</p>
+		</header>
+
+		<div class="elsewhere-divider"></div>
+
+		<div class="elsewhere-grid">
+			{
+				elsewhereProjects.map((project) => {
+					const bgColor = categoryColors[project.slug] || "#258835";
+					const scale = imageScales[project.slug] || 1;
+					return (
+						<a
+							href={`/works/${project.slug}`}
+							class="elsewhere-card"
+							style={`--card-bg: ${bgColor}; --base-scale: ${scale};`}
+						>
+							<div class="elsewhere-card-image-box">
+								{project.data.heroImage ? (
+									<Image
+										src={project.data.heroImage}
+										alt={project.data.title}
+										width={600}
+										height={375}
+										loading="lazy"
+										decoding="async"
+										class="elsewhere-image"
+										style="transform: scale(var(--base-scale, 1));"
+									/>
+								) : (
+									<div class="placeholder" />
+								)}
+							</div>
+							<div class="elsewhere-card-content">
+								<h2 class="elsewhere-card-title">
+									{project.data.title}
+								</h2>
+								<div class="elsewhere-card-tags">
+									{project.data.tags
+										? project.data.tags.join(" • ")
+										: ""}
+								</div>
+								<p class="elsewhere-card-description">
+									{project.data.description}
+								</p>
+							</div>
+						</a>
+					);
+				})
+			}
+		</div>
+	</div>
+</Layout>
+
+<style>
+	.elsewhere-layout {
+		width: 100%;
+		max-width: 100%;
+		box-sizing: border-box;
+		padding: 140px 48px 80px;
+		margin: 0;
+		background: var(--bg-primary);
+		min-height: 100vh;
+	}
+
+	.elsewhere-header {
+		max-width: 860px;
+		margin-bottom: 48px;
+		text-align: left;
+	}
+
+	.elsewhere-title {
+		font-family: "Google Sans", sans-serif;
+		font-size: 96px;
+		font-weight: 500;
+		line-height: 1.05;
+		color: var(--text-primary);
+		margin: 0 0 24px 0;
+	}
+
+	.elsewhere-intro {
+		font-family: "Google Sans", var(--font-sans), sans-serif;
+		font-size: 18px;
+		font-weight: 300;
+		line-height: 1.45;
+		color: var(--text-secondary);
+		letter-spacing: -0.02em;
+		margin: 0;
+	}
+
+	.elsewhere-divider {
+		width: 100%;
+		height: 1px;
+		background: var(--border-subtle);
+		margin-bottom: 48px;
+	}
+
+	.elsewhere-grid {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 15px;
+		align-items: start;
+		width: 100%;
+		box-sizing: border-box;
+	}
+
+	.elsewhere-card {
+		display: flex;
+		flex-direction: column;
+		background: var(--card-bg);
+		padding: 10px;
+		text-decoration: none;
+		box-sizing: border-box;
+		border-radius: 0; /* Bento cards without round corners */
+		height: auto;
+		transition:
+			transform 0.3s cubic-bezier(0.25, 1, 0.5, 1),
+			box-shadow 0.3s cubic-bezier(0.25, 1, 0.5, 1),
+			border-radius 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+	}
+
+	.elsewhere-card:hover {
+		transform: translateY(-4px);
+		box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+		border-radius: 12px; /* Smooth transition to rounded corners on hover */
+	}
+
+	.elsewhere-card-image-box {
+		width: 100%;
+		background: #ffffff;
+		border-radius: 0; /* Sharp corners */
+		display: block;
+		padding: 0;
+		box-sizing: border-box;
+		overflow: hidden;
+		transition: border-radius 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+	}
+
+	.elsewhere-card:hover .elsewhere-card-image-box {
+		border-radius: 6px; /* Smooth concentric corner rounding inside the padded card */
+	}
+
+	.elsewhere-image {
+		width: 100%;
+		height: auto;
+		display: block;
+		transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+	}
+
+	.elsewhere-card:hover .elsewhere-image {
+		transform: scale(calc(var(--base-scale, 1) * 1.03));
+	}
+
+	.elsewhere-card-content {
+		display: flex;
+		flex-direction: column;
+		margin-top: 24px;
+		text-align: left;
+	}
+
+	.elsewhere-card-title {
+		font-family: "Bricolage Grotesque", sans-serif;
+		font-size: 24px;
+		font-weight: 500;
+		line-height: 1.2;
+		color: #ffffff;
+		margin: 0 0 8px 0;
+	}
+
+	.elsewhere-card-tags {
+		font-family: var(--font-mono), monospace;
+		font-size: 11px;
+		font-weight: 700;
+		color: rgba(255, 255, 255, 0.8);
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		margin-bottom: 16px;
+		line-height: 1.3;
+	}
+
+	.elsewhere-card-description {
+		font-family: "Google Sans", var(--font-sans), sans-serif;
+		font-size: 13.5px;
+		line-height: 1.5;
+		color: rgba(255, 255, 255, 0.85);
+		margin: 0;
+	}
+
+	/* Responsive grid settings */
+	@media (max-width: 1024px) {
+		.elsewhere-grid {
+			grid-template-columns: repeat(2, 1fr);
+			gap: 24px;
+		}
+		.elsewhere-title {
+			font-size: 64px;
+		}
+	}
+
+	@media (max-width: 640px) {
+		.elsewhere-layout {
+			padding: 100px 16px 40px;
+		}
+		.elsewhere-title {
+			font-size: 40px;
+		}
+		.elsewhere-grid {
+			grid-template-columns: 1fr;
+			gap: 20px;
+		}
+		.elsewhere-card {
+			padding: 16px;
+		}
+		.elsewhere-card-image-box {
+			padding: 16px;
+		}
+	}
+</style>

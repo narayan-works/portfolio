@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>xFigura — System Map</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800;900&family=Trispace:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: { accent: '#5b78ff', accentdim: '#3b54d6', flame: '#ff5c33' },
+      fontFamily: {
+        sans: ['Geist', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        mono: ['Trispace', 'ui-monospace', 'monospace'],
+      },
+    },
+  },
+};
+</script>
+<style>
+  html { -webkit-font-smoothing: antialiased; }
+  body { background:#09090b; }
+  .ico { filter: invert(1) brightness(0.97); object-fit: contain; }
+  /* faint engineering grid backdrop */
+  .gridbg {
+    background-image:
+      linear-gradient(to right, rgba(255,255,255,.025) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255,255,255,.025) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+  /* indigo icon badges in opportunity mapping + cross highlight */
+  .chip { transition: transform .18s ease; }
+  .chip .badgeC { transition: box-shadow .18s ease, transform .18s ease; }
+  .chip.hl { transform: translateY(-3px); }
+  .chip.hl .badgeC { box-shadow: 0 0 0 3px rgba(58,43,240,.22), 0 14px 26px -10px rgba(58,43,240,.75); }
+  .chip.hl em { color:#3a2bf0; }
+  /* layer/primitive cards */
+  .scard { transition: background-color .2s ease, border-color .2s ease; }
+  .scard:hover { background: rgba(91,120,255,.05); }
+  .scard:hover .lab { color:#a5b4ff; }
+  /* opportunity cards (light slides on the dark map) */
+  .opp { transition: box-shadow .25s ease, transform .25s ease; cursor:pointer; }
+  .opp .badge { display:none; }
+  .opp.active .badge { display:inline-flex; }
+  .opp.active { box-shadow: 0 0 0 2px #3a2bf0, 0 36px 70px -40px rgba(58,43,240,.55); }
+  .opp:not(.active):hover { transform: translateY(-2px); box-shadow: 0 24px 50px -32px rgba(0,0,0,.7); }
+  ::selection { background:#5b78ff; color:#fff; }
+</style>
+</head>
+<body class="font-sans text-zinc-100 antialiased">
+<div class="gridbg">
+<div class="mx-auto max-w-[1240px] border-x border-zinc-800/70 bg-zinc-950/40 backdrop-blur-[1px]">
+
+  <!-- ============ TOP BAR ============ -->
+  <header class="flex items-center justify-between border-b border-zinc-800/70 px-6 py-4 sm:px-8">
+    <img src="icons/logo.png" alt="xFigura" class="h-7 w-auto rounded-[4px]" />
+    <div class="hidden items-center gap-6 font-mono text-[11px] uppercase tracking-[0.18em] text-zinc-500 sm:flex">
+      <span>System Architecture</span>
+      <span class="text-zinc-700">/</span>
+      <span class="text-zinc-300">Prototype_01</span>
+    </div>
+  </header>
+
+  <!-- ============ HERO ============ -->
+  <section class="relative border-b border-zinc-800/70 px-6 py-16 sm:px-8 sm:py-20">
+    <p class="mb-6 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.22em] text-zinc-500">
+      <span class="inline-block h-px w-8 bg-flame"></span>
+      Infrastructure · Primitives · Opportunities
+    </p>
+    <h1 class="max-w-[20ch] text-4xl font-extrabold leading-[0.96] tracking-tight text-zinc-50 sm:text-6xl">
+      The architecture<br />behind <span class="text-zinc-500">text&#8209;to&#8209;node</span> design.
+    </h1>
+    <div class="mt-7 h-1 w-14 bg-flame"></div>
+    <p class="mt-7 max-w-[58ch] font-mono text-[13px] leading-relaxed text-zinc-400">
+      A system map of the xFigura product — four product layers, four design-development
+      primitives, and the three opportunities that connect them.
+    </p>
+  </section>
+
+  <!-- ============ SECTION 1 : PRODUCT LAYERS ============ -->
+  <section class="border-b border-zinc-800/70">
+    <div class="flex items-baseline justify-between px-6 pt-12 pb-6 sm:px-8">
+      <h2 class="font-mono text-[12px] uppercase tracking-[0.2em] text-zinc-400">
+        <span class="text-flame">01</span> &nbsp;Product Understanding
+      </h2>
+      <span class="hidden font-mono text-[11px] uppercase tracking-[0.18em] text-zinc-600 sm:block">Four product layers</span>
+    </div>
+
+    <div class="grid grid-cols-2 gap-px border-y border-zinc-800/70 bg-zinc-800/70 md:grid-cols-4">
+      <!-- card -->
+      <article class="scard group bg-zinc-950 p-6" data-ico="canvas">
+        <div class="mb-8 flex items-center justify-between">
+          <span class="font-mono text-[11px] tracking-[0.15em] text-zinc-600">L1</span>
+          <span class="lab font-mono text-[10px] uppercase tracking-[0.18em] text-zinc-600 transition-colors">Layer</span>
+        </div>
+        <img src="icons/canvas.png" alt="" class="ico mb-7 h-11 w-11" />
+        <h3 class="text-[17px] font-bold leading-tight tracking-tight">Canvas-Based Interaction</h3>
+        <p class="mt-3 font-mono text-[11px] text-zinc-500">// spatial 3D canvas</p>
+      </article>
+
+      <article class="scard group bg-zinc-950 p-6" data-ico="infrastructure">
+        <div class="mb-8 flex items-center justify-between">
+          <span class="font-mono text-[11px] tracking-[0.15em] text-zinc-600">L2</span>
+          <span class="lab font-mono text-[10px] uppercase tracking-[0.18em] text-zinc-600 transition-colors">Layer</span>
+        </div>
+        <img src="icons/infrastructure.png" alt="" class="ico mb-7 h-11 w-11" />
+        <h3 class="text-[17px] font-bold leading-tight tracking-tight">Infrastructure Layer</h3>
+        <p class="mt-3 font-mono text-[11px] text-zinc-500">// cloud &#8644; desktop sync</p>
+      </article>
+
+      <article class="scard group bg-zinc-950 p-6" data-ico="model">
+        <div class="mb-8 flex items-center justify-between">
+          <span class="font-mono text-[11px] tracking-[0.15em] text-zinc-600">L3</span>
+          <span class="lab font-mono text-[10px] uppercase tracking-[0.18em] text-zinc-600 transition-colors">Layer</span>
+        </div>
+        <img src="icons/model.png" alt="" class="ico mb-7 h-11 w-11" />
+        <h3 class="text-[17px] font-bold leading-tight tracking-tight">Model Marketplace</h3>
+        <p class="mt-3 font-mono text-[11px] text-zinc-500">// distributed models</p>
+      </article>
+
+      <article class="scard group bg-zinc-950 p-6" data-ico="human">
+        <div class="mb-8 flex items-center justify-between">
+          <span class="font-mono text-[11px] tracking-[0.15em] text-zinc-600">L4</span>
+          <span class="lab font-mono text-[10px] uppercase tracking-[0.18em] text-zinc-600 transition-colors">Layer</span>
+        </div>
+        <img src="icons/human.png" alt="" class="ico mb-7 h-11 w-11" />
+        <h3 class="text-[17px] font-bold leading-tight tracking-tight">Human Connection Layer</h3>
+        <p class="mt-3 font-mono text-[11px] text-zinc-500">// intent + collaboration</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============ SECTION 2 : PRIMITIVES ============ -->
+  <section class="border-b border-zinc-800/70">
+    <div class="flex items-baseline justify-between px-6 pt-12 pb-6 sm:px-8">
+      <h2 class="font-mono text-[12px] uppercase tracking-[0.2em] text-zinc-400">
+        <span class="text-flame">02</span> &nbsp;Early Design Development
+      </h2>
+      <span class="hidden font-mono text-[11px] uppercase tracking-[0.18em] text-zinc-600 sm:block">Baseline workflow primitives</span>
+    </div>
+
+    <div class="grid grid-cols-2 gap-px border-y border-zinc-800/70 bg-zinc-800/70 md:grid-cols-4">
+      <article class="scard bg-zinc-950 p-6" data-ico="massing">
+        <div class="mb-8 flex items-center justify-between">
+          <span class="font-mono text-[11px] tracking-[0.15em] text-zinc-600">P-01</span>
+          <span class="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.12em] text-emerald-400/80">
+            <span class="h-1.5 w-1.5 rounded-full bg-emerald-400/80"></span>Tracked
+          </span>
+        </div>
+        <img src="icons/massing.png" alt="" class="ico mb-7 h-11 w-11" />
+        <h3 class="text-[17px] font-bold leading-tight tracking-tight">Massing &amp; Adjacencies</h3>
+        <p class="mt-3 font-mono text-[11px] text-zinc-500">// volumes · proximity</p>
+      </article>
+
+      <article class="scard bg-zinc-950 p-6" data-ico="materiality">
+        <div class="mb-8 flex items-center justify-between">
+          <span class="font-mono text-[11px] tracking-[0.15em] text-zinc-600">P-02</span>
+          <span class="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.12em] text-emerald-400/80">
+            <span class="h-1.5 w-1.5 rounded-full bg-emerald-400/80"></span>Tracked
+          </span>
+        </div>
+        <img src="icons/materiality.png" alt="" class="ico mb-7 h-11 w-11" />
+        <h3 class="text-[17px] font-bold leading-tight tracking-tight">Surface &amp; Materiality</h3>
+        <p class="mt-3 font-mono text-[11px] text-zinc-500">// texture · finish</p>
+      </article>
+
+      <article class="scard bg-zinc-950 p-6" data-ico="environmental">
+        <div class="mb-8 flex items-center justify-between">
+          <span class="font-mono text-[11px] tracking-[0.15em] text-zinc-600">P-03</span>
+          <span class="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.12em] text-emerald-400/80">
+            <span class="h-1.5 w-1.5 rounded-full bg-emerald-400/80"></span>Tracked
+          </span>
+        </div>
+        <img src="icons/environmental.png" alt="" class="ico mb-7 h-11 w-11" />
+        <h3 class="text-[17px] font-bold leading-tight tracking-tight">Environmental Values</h3>
+        <p class="mt-3 font-mono text-[11px] text-zinc-500">// light · climate</p>
+      </article>
+
+      <article class="scard bg-zinc-950 p-6" data-ico="discourse">
+        <div class="mb-8 flex items-center justify-between">
+          <span class="font-mono text-[11px] tracking-[0.15em] text-zinc-600">P-04</span>
+          <span class="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.12em] text-emerald-400/80">
+            <span class="h-1.5 w-1.5 rounded-full bg-emerald-400/80"></span>Tracked
+          </span>
+        </div>
+        <img src="icons/discourse.png" alt="" class="ico mb-7 h-11 w-11" />
+        <h3 class="text-[17px] font-bold leading-tight tracking-tight">Markup &amp; Discourse</h3>
+        <p class="mt-3 font-mono text-[11px] text-zinc-500">// notes · critique</p>
+      </article>
+    </div>
+    <p class="px-6 py-4 font-mono text-[11px] text-zinc-600 sm:px-8">
+      Hover a layer or primitive to trace where it appears across the opportunity map below.
+    </p>
+  </section>
+
+  <!-- ============ SECTION 3 : OPPORTUNITIES ============ -->
+  <section class="px-6 pb-16 sm:px-8">
+    <div class="flex items-baseline justify-between pt-12 pb-7">
+      <h2 class="font-mono text-[12px] uppercase tracking-[0.2em] text-zinc-400">
+        <span class="text-flame">03</span> &nbsp;The Three Opportunities
+      </h2>
+      <span class="font-mono text-[11px] uppercase tracking-[0.18em] text-zinc-600">
+        Active_focus: <span id="activeReadout" class="text-accent">OP-1</span>
+      </span>
+    </div>
+
+    <div class="flex flex-col gap-5" id="oppList">
+
+      <!-- OPP 01 -->
+      <article class="opp active rounded-2xl border border-zinc-300 bg-white p-7 text-zinc-900 sm:p-9" data-id="OP-1">
+        <div class="flex flex-col gap-5 border-b border-zinc-200 pb-7 sm:flex-row sm:items-start sm:justify-between sm:gap-8">
+          <h3 class="text-3xl font-black leading-[0.95] tracking-tight text-zinc-900 sm:text-[42px] sm:leading-[0.92]">Parametricizing<br />Text Inputs</h3>
+          <div class="flex shrink-0 flex-wrap items-center gap-2.5">
+            <span class="font-mono text-sm font-medium text-zinc-400">OP-1</span>
+            <span class="rounded-full bg-zinc-900 px-3.5 py-2 font-mono text-[11px] font-semibold uppercase tracking-[0.06em] text-white">Text-to-Node</span>
+            <span class="badge items-center rounded-full bg-[#35d06b] px-3.5 py-2 font-mono text-[11px] font-bold uppercase tracking-[0.06em] text-zinc-900">Focus</span>
+          </div>
+        </div>
+
+        <div class="grid gap-9 pt-7 lg:grid-cols-[1fr_auto] lg:items-center lg:gap-14">
+          <p class="max-w-[46ch] text-[15px] leading-relaxed text-zinc-600 sm:text-base">
+            Translating qualitative text strings into structured UI components — converting descriptive
+            language directly into parametric input blocks within the canvas framework.
+          </p>
+          <div class="flex flex-col gap-5 lg:justify-self-end">
+            <div class="flex items-center gap-3">
+              <span class="w-[64px] shrink-0 font-mono text-[9px] uppercase tracking-[0.16em] text-zinc-400">Blueprint</span>
+              <span class="chip flex flex-col items-center gap-1.5" data-ico="massing"><span class="badgeC flex h-12 w-12 items-center justify-center rounded-full bg-[#3a2bf0]"><img src="icons/massing.png" class="ico h-6 w-6" alt="" /></span><em class="font-mono text-[9px] not-italic lowercase tracking-wide text-zinc-500">massing</em></span>
+              <span class="px-0.5 text-xl font-bold text-zinc-300">+</span>
+              <span class="chip flex flex-col items-center gap-1.5" data-ico="canvas"><span class="badgeC flex h-12 w-12 items-center justify-center rounded-full bg-[#3a2bf0]"><img src="icons/canvas.png" class="ico h-6 w-6" alt="" /></span><em class="font-mono text-[9px] not-italic lowercase tracking-wide text-zinc-500">canvas</em></span>
+              <span class="px-0.5 text-xl font-bold text-zinc-300">+</span>
+              <span class="chip flex flex-col items-center gap-1.5" data-ico="infrastructure"><span class="badgeC flex h-12 w-12 items-center justify-center rounded-full bg-[#3a2bf0]"><img src="icons/infrastructure.png" class="ico h-6 w-6" alt="" /></span><em class="font-mono text-[9px] not-italic lowercase tracking-wide text-zinc-500">infra</em></span>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="w-[64px] shrink-0 font-mono text-[9px] uppercase tracking-[0.16em] text-flame">Target</span>
+              <span class="chip flex flex-col items-center gap-1.5" data-ico="materiality"><span class="badgeC flex h-12 w-12 items-center justify-center rounded-full bg-[#3a2bf0]"><img src="icons/materiality.png" class="ico h-6 w-6" alt="" /></span><em class="font-mono text-[9px] not-italic lowercase tracking-wide text-zinc-500">material</em></span>
+              <span class="px-0.5 text-xl font-bold text-zinc-300">+</span>
+              <span class="chip flex flex-col items-center gap-1.5" data-ico="environmental"><span class="badgeC flex h-12 w-12 items-center justify-center rounded-full bg-[#3a2bf0]"><img src="icons/environmental.png" class="ico h-6 w-6" alt="" /></span><em class="font-mono text-[9px] not-italic lowercase tracking-wide text-zinc-500">environ</em></span>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- OPP 02 -->
+      <article class="opp rounded-2xl border border-zinc-300 bg-white p-7 text-zinc-900 sm:p-9" data-id="OP-2">
+        <div class="flex flex-col gap-5 border-b border-zinc-200 pb-7 sm:flex-row sm:items-start sm:justify-between sm:gap-8">
+          <h3 class="text-3xl font-black leading-[0.95] tracking-tight text-zinc-900 sm:text-[42px] sm:leading-[0.92]">Async Context<br />Capture</h3>
+          <div class="flex shrink-0 flex-wrap items-center gap-2.5">
+            <span class="font-mono text-sm font-medium text-zinc-400">OP-2</span>
+            <span class="rounded-full bg-zinc-900 px-3.5 py-2 font-mono text-[11px] font-semibold uppercase tracking-[0.06em] text-white">Intent-Trace</span>
+            <span class="badge items-center rounded-full bg-[#35d06b] px-3.5 py-2 font-mono text-[11px] font-bold uppercase tracking-[0.06em] text-zinc-900">Focus</span>
+          </div>
+        </div>
+
+        <div class="grid gap-9 pt-7 lg:grid-cols-[1fr_auto] lg:items-center lg:gap-14">
+          <p class="max-w-[46ch] text-[15px] leading-relaxed text-zinc-600 sm:text-base">
+            Automatically tracking, summarizing, and archiving the human intent, verbal notes, and
+            sketches behind canvas iterations — so team members can catch up asynchronously without
+            manual documentation.
+          </p>
+          <div class="flex flex-col gap-5 lg:justify-self-end">
+            <div class="flex items-center gap-3">
+              <span class="w-[64px] shrink-0 font-mono text-[9px] uppercase tracking-[0.16em] text-zinc-400">Blueprint</span>
+              <span class="chip flex flex-col items-center gap-1.5" data-ico="human"><span class="badgeC flex h-12 w-12 items-center justify-center rounded-full bg-[#3a2bf0]"><img src="icons/human.png" class="ico h-6 w-6" alt="" /></span><em class="font-mono text-[9px] not-italic lowercase tracking-wide text-zinc-500">human</em></span>
+              <span class="px-0.5 text-xl font-bold text-zinc-300">+</span>
+              <span class="chip flex flex-col items-center gap-1.5" data-ico="infrastructure"><span class="badgeC flex h-12 w-12 items-center justify-center rounded-full bg-[#3a2bf0]"><img src="icons/infrastructure.png" class="ico h-6 w-6" alt="" /></span><em class="font-mono text-[9px] not-italic lowercase tracking-wide text-zinc-500">infra</em></span>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="w-[64px] shrink-0 font-mono text-[9px] uppercase tracking-[0.16em] text-flame">Target</span>
+              <span class="chip flex flex-col items-center gap-1.5" data-ico="discourse"><span class="badgeC flex h-12 w-12 items-center justify-center rounded-full bg-[#3a2bf0]"><img src="icons/discourse.png" class="ico h-6 w-6" alt="" /></span><em class="font-mono text-[9px] not-italic lowercase tracking-wide text-zinc-500">discourse</em></span>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- OPP 03 -->
+      <article class="opp rounded-2xl border border-zinc-300 bg-white p-7 text-zinc-900 sm:p-9" data-id="OP-3">
+        <div class="flex flex-col gap-5 border-b border-zinc-200 pb-7 sm:flex-row sm:items-start sm:justify-between sm:gap-8">
+          <h3 class="text-3xl font-black leading-[0.95] tracking-tight text-zinc-900 sm:text-[42px] sm:leading-[0.92]">Parametric<br />Visualization</h3>
+          <div class="flex shrink-0 flex-wrap items-center gap-2.5">
+            <span class="font-mono text-sm font-medium text-zinc-400">OP-3</span>
+            <span class="rounded-full bg-zinc-900 px-3.5 py-2 font-mono text-[11px] font-semibold uppercase tracking-[0.06em] text-white">Canvas-Native</span>
+            <span class="badge items-center rounded-full bg-[#35d06b] px-3.5 py-2 font-mono text-[11px] font-bold uppercase tracking-[0.06em] text-zinc-900">Focus</span>
+          </div>
+        </div>
+
+        <div class="grid gap-9 pt-7 lg:grid-cols-[1fr_auto] lg:items-center lg:gap-14">
+          <p class="max-w-[46ch] text-[15px] leading-relaxed text-zinc-600 sm:text-base">
+            Generating, adjusting, and viewing complex architectural components — like facade systems
+            and structural tectonics — directly inside the spatial 3D canvas to evaluate scale, depth,
+            and proportions instantly.
+          </p>
+          <div class="flex flex-col gap-5 lg:justify-self-end">
+            <div class="flex items-center gap-3">
+              <span class="w-[64px] shrink-0 font-mono text-[9px] uppercase tracking-[0.16em] text-zinc-400">Blueprint</span>
+              <span class="chip flex flex-col items-center gap-1.5" data-ico="canvas"><span class="badgeC flex h-12 w-12 items-center justify-center rounded-full bg-[#3a2bf0]"><img src="icons/canvas.png" class="ico h-6 w-6" alt="" /></span><em class="font-mono text-[9px] not-italic lowercase tracking-wide text-zinc-500">canvas</em></span>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="w-[64px] shrink-0 font-mono text-[9px] uppercase tracking-[0.16em] text-flame">Target</span>
+              <span class="chip flex flex-col items-center gap-1.5" data-ico="massing"><span class="badgeC flex h-12 w-12 items-center justify-center rounded-full bg-[#3a2bf0]"><img src="icons/massing.png" class="ico h-6 w-6" alt="" /></span><em class="font-mono text-[9px] not-italic lowercase tracking-wide text-zinc-500">massing</em></span>
+              <span class="px-0.5 text-xl font-bold text-zinc-300">+</span>
+              <span class="chip flex flex-col items-center gap-1.5" data-ico="materiality"><span class="badgeC flex h-12 w-12 items-center justify-center rounded-full bg-[#3a2bf0]"><img src="icons/materiality.png" class="ico h-6 w-6" alt="" /></span><em class="font-mono text-[9px] not-italic lowercase tracking-wide text-zinc-500">material</em></span>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="flex items-center justify-between border-t border-zinc-800/70 px-6 py-5 font-mono text-[11px] uppercase tracking-[0.16em] text-zinc-600 sm:px-8">
+    <span>xFigura &copy; 2026</span>
+    <span class="flex items-center gap-3">
+      <span class="text-zinc-700">|</span> System Architecture <span class="text-zinc-700">|</span>
+    </span>
+  </footer>
+
+</div>
+</div>
+
+<script>
+  // --- Active focus selection on opportunity cards ---
+  const opps = document.querySelectorAll('.opp');
+  const readout = document.getElementById('activeReadout');
+  opps.forEach((card) => {
+    card.addEventListener('click', () => {
+      opps.forEach((o) => o.classList.remove('active'));
+      card.classList.add('active');
+      readout.textContent = card.dataset.id;
+    });
+  });
+
+  // --- Cross-highlight: hover a layer/primitive -> light its chips in the map ---
+  const sources = document.querySelectorAll('.scard[data-ico]');
+  sources.forEach((el) => {
+    const ico = el.dataset.ico;
+    const chips = document.querySelectorAll('.chip[data-ico="' + ico + '"]');
+    el.addEventListener('mouseenter', () => chips.forEach((c) => c.classList.add('hl')));
+    el.addEventListener('mouseleave', () => chips.forEach((c) => c.classList.remove('hl')));
+  });
+</script>
+</body>
+</html>

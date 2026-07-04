@@ -205,6 +205,7 @@ h2 {
 
 h3 {
   font-size: var(--text-xl);
+  letter-spacing: 0.02em;
 }
 
 p,
@@ -309,6 +310,12 @@ button:hover .arrow-down-left {
   padding-inline: 0 !important;
 }
 
+.right-content h2.left-align {
+  margin-left: 0 !important;
+  margin-right: auto !important;
+  max-width: 100% !important;
+}
+
 @media (max-width: 768px) {
   .right-content h2 {
     font-size: var(--text-2xl) !important;
@@ -371,6 +378,7 @@ button:hover .arrow-down-left {
 
 /* Respect prefers-reduced-motion */
 @media (prefers-reduced-motion: reduce) {
+
   ::view-transition-old(root),
   ::view-transition-new(root) {
     animation: none !important;

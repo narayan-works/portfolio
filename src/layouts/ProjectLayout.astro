@@ -3,6 +3,8 @@ import Layout from "./Layout.astro";
 import ThemeToggle from "../components/ThemeToggle.astro";
 import SidebarNavigation from "../components/SidebarNavigation.astro";
 import Footer from "../components/Footer.astro";
+import { Image } from "astro:assets";
+import happyLogo from "../assets/happy.png";
 
 interface Props {
     title: string;
@@ -43,6 +45,7 @@ const categoryColors: Record<string, string> = {
     musibuddy: "var(--category-hardware-ux)",
     "dot-threads": "var(--category-web-ux)",
     lab4c: "var(--category-web-ux)",
+    xfigura: "var(--category-web-ux)",
     detour: "var(--category-mobile-ux)",
     serendipidity: "var(--category-mobile-ux)",
     "tirupati-campus": "var(--category-spatial-xd)",
@@ -55,6 +58,7 @@ const categoryHoverColors: Record<string, string> = {
     musibuddy: "var(--category-hardware-ux-hover)",
     "dot-threads": "var(--category-web-ux-hover)",
     lab4c: "var(--category-web-ux-hover)",
+    xfigura: "var(--category-web-ux-hover)",
     detour: "var(--category-mobile-ux-hover)",
     serendipidity: "var(--category-mobile-ux-hover)",
     "tirupati-campus": "var(--category-spatial-xd-hover)",
@@ -483,6 +487,10 @@ const hoverColor =
         .toc-nav {
             display: none;
         }
+
+        .project-meta-table {
+            display: none !important;
+        }
     }
 
     .toc-nav {
@@ -660,6 +668,10 @@ const hoverColor =
     @media (max-width: 768px) {
         .theme-toggle-wrapper {
             right: 24px !important;
+        }
+
+        .project-meta-table {
+            display: none !important;
         }
     }
 

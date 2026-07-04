@@ -6,6 +6,8 @@ import sitemap from '@astrojs/sitemap';
 import fs from 'fs';
 import path from 'path';
 
+import react from '@astrojs/react';
+
 // Custom dev-only save typography middleware plugin
 const devSaveTypographyPlugin = () => ({
   name: 'dev-save-typography-plugin',
@@ -59,7 +61,7 @@ const devSaveTypographyPlugin = () => ({
 // https://astro.build/config
 export default defineConfig({
   site: 'https://www.narayan.works',
-  integrations: [mdx(), sitemap()],
+  integrations: [mdx(), sitemap(), react()],
   vite: {
     plugins: [devSaveTypographyPlugin()]
   }
