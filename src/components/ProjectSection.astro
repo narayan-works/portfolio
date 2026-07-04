@@ -127,14 +127,22 @@ const {
     /* --- CONTENT STYLING (Body Text) --- */
     .section-content {
         font-size: 1rem; /* 20px */
-        line-height: 1.4; /* Reduced line spacing */
-        font-weight: 300; /* Light */
+        line-height: 1; /* Reduced line spacing */
+        font-weight: 200; /* Light */
         color: var(--text-secondary);
         font-family: var(--font-sans);
         /* Padding moved to children to allow full-width images */
         padding-inline: 0;
         box-sizing: border-box;
         overflow: visible;
+    }
+
+    .section-content :global(p) {
+        font-size: 1rem;
+        line-height: 1.2;
+        font-weight: 200;
+        color: var(--text-secondary);
+        font-family: var(--font-sans);
     }
 
     /* Default: All content children get the centered constraints */

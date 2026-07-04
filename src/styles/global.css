@@ -310,7 +310,9 @@ button:hover .arrow-down-left {
   padding-inline: 0 !important;
 }
 
-.right-content h2.left-align {
+.right-content h2.left-align,
+.right-content h3.left-align,
+.right-content h4.left-align {
   margin-left: 0 !important;
   margin-right: auto !important;
   max-width: 100% !important;

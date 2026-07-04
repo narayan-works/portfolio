@@ -3,6 +3,7 @@ import Layout from "./Layout.astro";
 import ThemeToggle from "../components/ThemeToggle.astro";
 import SidebarNavigation from "../components/SidebarNavigation.astro";
 import Footer from "../components/Footer.astro";
+import NextProjectBanner from "../components/NextProjectBanner.astro";
 import { Image } from "astro:assets";
 import happyLogo from "../assets/happy.png";
 
@@ -16,6 +17,16 @@ interface Props {
     sections?: { id: string; label: string }[];
     heroImage?: string;
     category?: string;
+    nextProject?: {
+        slug: string;
+        title: string;
+        description?: string;
+        tags?: string[];
+        heroImage?: string;
+        category?: string;
+        meta?: Record<string, string>;
+        ctaUrl?: string;
+    };
 }
 
 const {
@@ -28,6 +39,7 @@ const {
     sections: propSections,
     heroImage,
     category,
+    nextProject,
 } = Astro.props;
 
 // Convert meta object to array for iteration
@@ -180,12 +192,23 @@ const hoverColor =
         </div>
     </div>
 
-    <!-- RIGHT CONTENT SLOT -->
     <article
-        class="right-content"
+        class={`right-content ${nextProject ? "has-next-project" : ""}`}
         style={`--project-category-color: ${activeColor}; --project-category-hover-color: ${hoverColor};`}
     >
         <slot />
+        {nextProject && (
+            <NextProjectBanner
+                slug={nextProject.slug}
+                title={nextProject.title}
+                description={nextProject.description}
+                tags={nextProject.tags}
+                heroImage={nextProject.heroImage}
+                category={nextProject.category}
+                meta={nextProject.meta}
+                ctaUrl={nextProject.ctaUrl}
+            />
+        )}
         <Footer />
     </article>
 </Layout>
@@ -680,6 +703,10 @@ const hoverColor =
         margin-top: 240px !important;
     }
 
+    .right-content.has-next-project :global(.site-footer) {
+        margin-top: 0 !important;
+    }
+
     /* Smart Spacing: If section follows a visual, keep tight margin (new topic separation handled by image's bottom margin) */
     .right-content :global(.full-width-image + .project-section),
     .right-content :global(iframe + .project-section),
@@ -693,5 +720,19 @@ const hoverColor =
     .right-content :global(.project-section + .figma-container),
     .right-content :global(.project-section + .pdf-viewer-wrapper) {
         margin-top: 1rem !important; /* Tight - text above describes this image */
+    }
+
+    /* Style inline section headings to match ProjectSection title styling */
+    .right-content :global(.inline-section-title) {
+        font-family: "Google Sans", sans-serif !important;
+        font-size: 12px !important;
+        font-weight: 800 !important;
+        color: var(--project-category-hover-color, var(--accent-secondary, #42bd49)) !important;
+        line-height: 1.2 !important;
+        letter-spacing: 0.05em !important;
+        text-transform: uppercase !important;
+        margin-top: 3.5rem !important;
+        margin-bottom: 1.5rem !important;
+        display: block !important;
     }
 </style>

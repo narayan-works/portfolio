@@ -27,7 +27,7 @@ ctaText: "Try the extension out"
 
 import ProjectSection from '../../components/ProjectSection.astro';
 import FullWidthImage from '../../components/FullWidthImage.astro';
-import ImageSlider from '/src/components/ImageSlider.astro';
+import ImageSlider from '../../components/ImageSlider.astro';
 import ImageToggle from '../../components/ImageToggle.astro';
 import ReviewBubble from '../../components/ReviewBubble.astro';
 import ReviewContainer from '../../components/ReviewContainer.astro';
@@ -42,39 +42,36 @@ import VideoEmbed from '../../components/VideoEmbed.astro';
 
 <ProjectSection title="The Problem" id="problem">
 
+<div class="story-time">
 <p>
-    <strong>Short story time!</strong> I was researching embodied interfaces for my thesis when I found a paper called <em>Emoto — AI Sidekick</em>. The work was compelling, so I did what any researcher does: I looked up the authors. Three were from CMU, and out of which two from the School of Design! That was interesting. I kept digging.
+    <strong>Short story time!</strong> I was researching embodied interfaces for my thesis when I found a paper called <em>Emoto: AI Sidekick</em>. The project caught my attention, so I started looking into the people behind it.
 </p>
 <p>
-    I discovered that two of those authors continued working together and joined Experiments with Google. Four years later, they started their own company. A third author moved to Apple as a prototyper. 
-    The fourth, a professor, relocated to Northumbria University and started a lab and worked on "Spooky Technology"—a project I recognized because I’d worked with one of its collaborators, Daragh Byrne, at CMU’s School of Architecture.
+    Three of the authors were from CMU, and two of them were from the School of Design. That already felt close to my world, so I kept following the trail. I found that two of them later joined Experiments with Google, then eventually started their own company. Another author moved to Apple as a prototyper. The professor on the paper later moved to Northumbria University, started a lab, and worked on Spooky Technology, a project I recognized because one of its collaborators, Daragh Byrne, was someone I had worked with at CMU.
 </p>
 <p>
-    This web of connections—people, projects, companies, labs—told a story. If I ever encountered someone else who worked at Experiments with Google, I’d want to connect them to this thread. 
+    At that point, I was not just saving a paper anymore. I was finding a small web of people, projects, labs, companies, and overlaps with my own work. If I came across someone from Experiments with Google later, I would want to remember this whole trail, not just the original link.
 </p>
+</div>
 <hr class="feature-divider" />
-<h2 class="left-align">But for me that's <span class="accent-text">12 open tabs</span>, <span class="accent-text">4 folders deep</span>, and <span class="accent-text">15 bookmarks</span> to sort through before you even get back to what you were thinking about.</h2>
+<h3>But for me that's <span class="accent-text">12 open tabs</span>, <span class="accent-text">4 folders deep</span>, and <span class="accent-text">15 bookmarks</span> to sort through before you even get back to what you were thinking about.</h3>
 
 <FullWidthImage src="/assets/projects/dot-threads/old bookmarking.png" height="400px" caption="Traditional folder-based bookmarking lists" constrain={false} />
 
-<h2>Validating the Problem</h2>
-<p>
-    To see if there is a broader pattern with this problem, I surveyed 25 people across 3 CMU departments (Architecture, HCI, Design) to collect qualitative insights on how people organize their digital bookmarks.
-</p>
+    <h2 class="left-align">Validating the Problem</h2>
+    <p class="left-align half-width">To see if there is a broader pattern with this problem, I surveyed 25 people across 3 CMU departments (Architecture, HCI, Design) to collect qualitative insights on how people organize their digital bookmarks.</p>
 
 <div class="theme-image-wrapper">
     <div class="light-image">
-        <FullWidthImage src="/assets/projects/dot-threads/user-study-light.png" height="500px" caption="User study insights visualization showing the breakdown of bookmarking behaviors and pain points" constrain={true} />
+        <FullWidthImage src="/assets/projects/dot-threads/user-study-light.png" height="500px" caption="User study insights visualization showing the breakdown of bookmarking behaviors and pain points" constrain={false} />
     </div>
     <div class="dark-image">
-        <FullWidthImage src="/assets/projects/dot-threads/user-study-dark.png" height="500px" caption="User study insights visualization showing the breakdown of bookmarking behaviors and pain points" constrain={true} />
+        <FullWidthImage src="/assets/projects/dot-threads/user-study-dark.png" height="500px" caption="User study insights visualization showing the breakdown of bookmarking behaviors and pain points" constrain={false} />
     </div>
 </div>
 
 <h2 class="left-align">The insight</h2>
-<p>
-    Bookmarking systems break when the list gets too long. People either stop using them or forget where things were saved. Sharing adds more friction, pushing people into tools like Are.na, OneTab, or Notion and splitting the workflow across too many places.
-</p>
+<p class="left-align half-width">Bookmarking systems break when the list gets too long. People either stop using them or forget where things were saved. Sharing adds more friction, pushing people into tools like Are.na, OneTab, or Notion and splitting the workflow across too many places.</p>
 
 <div class="centered-tagline orange-bar gaps-container">
     <div class="gaps-title">So, here are two gaps:</div>
@@ -95,10 +92,9 @@ import VideoEmbed from '../../components/VideoEmbed.astro';
 </ProjectSection>
 
 <ProjectSection title="Outcome" id="outcome">
-    <h2>Shipped Product</h2>
-    <p>Dot Threads launched on Chrome Web Store in September 2024 and has been actively maintained through January 2026. Currently at version 1.3.3 with 10 active users.</p>
-    <FullWidthImage src="/assets/projects/dot-threads/chrome-store.png" height="400px" caption="Chrome Web Store listing" constrain={true}  />
-    <FullWidthImage src="/assets/projects/dot-threads/opportunity.gif" height="400px" caption="Spatial connections opportunity" constrain={false} />
+    <h2 class="left-align">Shipped Product</h2>
+    <p class="left-align half-width">Dot Threads launched on Chrome Web Store in September 2024 and has been actively maintained through January 2026. Currently at version 1.3.3 with 10 active users.</p>
+    <FullWidthImage src="/assets/projects/dot-threads/chrome-store.png" height="400px" caption="Chrome Web Store listing" constrain={false}  />
 </ProjectSection>
 
 <ProjectSection title="Outcome" id="outcome-shipped" hideTitle={true}>
@@ -118,42 +114,92 @@ import VideoEmbed from '../../components/VideoEmbed.astro';
 </ProjectSection>
 
 <ProjectSection title="Outcome" id="outcome-iterations" hideTitle={true}>
-    <p><strong>Iterations Based on Feedback</strong></p>
-    <p>The reviews surfaced two key areas for improvement:</p>
-    <h4>Connection clarity</h4>
-    <p>Users found the lines between colored nodes unclear. Added visual hierarchy (bold/medium/faint opacity) to distinguish connection depths and updated the trails sidebar to explicitly label primary/secondary/tertiary relationships.</p>
-    <h4>Multi-bookmark workflows</h4>
-    <p>Request for connected bookmarks to open together. This validated the export/import feature—users can now share entire research threads as portable JSON files rather than individual links.</p>
+    <h2 class="left-align"><u>Before User Feedback</u></h2>
+    <p class="left-align half-width">The first interface proved the core idea of Dot Threads: saved links could live as connected dots instead of a flat bookmark list.</p>
+    <FullWidthImage src="/assets/projects/dot-threads/Old interface.png" height="450px" caption="First interface design proving the core concept" constrain={false} />
+
+    <h2 class="left-align"><u>Refining the Product</u></h2>
+    <p class="left-align half-width">User feedback helped define the supporting structure around the map, splitting the interface into Dots for the active save and Trails for navigating relationships.</p>
+    
+    <FullWidthImage src="/assets/projects/dot-threads/after-feedback.gif" caption="Refined interface showing Notes, Trails, and World View" constrain={false} />
+
+    <h3 class="inline-section-title left-align">User Feedback</h3>
+
+    <div class="feedback-item">
+        <div class="feedback-emoji">📝</div>
+        <div class="feedback-content">
+            <h4>Notes for the Why</h4>
+            <p>Users needed a way to remember why a link mattered after saving it. Notes give each dot a place for context, reflections, and follow-up thoughts.</p>
+        </div>
+    </div>
+
+    <div class="feedback-item">
+        <div class="feedback-emoji">👀</div>
+        <div class="feedback-content">
+            <h4>Trails for Familiar Navigation</h4>
+            <p>The graph keeps relationships visible, while Trails adds a familiar mental model to navigate them. It turns connected dots into simple paths so users can move through the map in a way that feels natural.</p>
+        </div>
+    </div>
+
+    <div class="feedback-item">
+        <div class="feedback-emoji">🧭</div>
+        <div class="feedback-content">
+            <h4>Map Orientation</h4>
+            <p>As the map grows, users need a way to stay oriented. World View shows where the current dot sits within the larger network, making it easier to move between nearby trails and the bigger picture.</p>
+        </div>
+    </div>
+    <FullWidthImage src="/assets/projects/dot-threads/opportunity.gif" height="400px" caption="Spatial connections opportunity" constrain={false} />
+
     <hr class="feature-divider" />
-    <h2>Project Demo</h2>
-    <p>A walkthrough of the live product experience, highlighting core flows and the spatial browsing interactions.</p>
+    <h2 class="left-align">Project Demo</h2>
+    <p class="left-align half-width">A walkthrough of the live product experience, highlighting core flows and the spatial browsing interactions.</p>
     <VideoEmbed type="vimeo" id="1164888480" title="Dot Threads Demo" constrain={true} />
 </ProjectSection>
 
 
 
 <ProjectSection title="Finding the dots" id="research">
-    <h2 class="left-align">Conversational AI Research Assistant</h2>
+    <h2>Conversational AI Research Assistant</h2>
 
-    <p>
-        To see if there is a broader pattern with this problem, I got to survey 25 people across 3 CMU departments (Architecture, HCI, Design) using an <a href="https://narayan-s-research-assistant-851405604897.us-west1.run.app" target="_blank" class="bento-button">AI conversational research assistant <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 6px; flex-shrink: 0;"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></a> for these sessions—letting people describe their actual bookmarking behavior instead of forcing multiple-choice answers.
-    </p>
-    <FullWidthImage src="/assets/projects/dot-threads/AI research bot.png" height="450px" caption="Conversational AI research assistant chat interface" constrain={false} />
+    <p>To see if there is a broader pattern with this problem, I got to survey 25 people across 3 CMU departments (Architecture, HCI, Design) using an <a href="https://narayan-s-research-assistant-851405604897.us-west1.run.app" target="_blank" class="bento-button">AI conversational research assistant <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 6px; flex-shrink: 0;"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></a> for these sessions—letting people describe their actual bookmarking behavior instead of forcing multiple-choice answers.</p>
+</ProjectSection>
 
+<FullWidthImage src="/assets/projects/dot-threads/AI research bot.png" height="450px" caption="Conversational AI research assistant chat interface" constrain={true} />
+
+<ProjectSection title="Finding the dots" id="memex-framework" hideTitle={true}>
     <h2>MEMEX as Framework</h2>
-    <p>
-        In 1945, Vannevar Bush proposed MEMEX—a desk-sized machine for saving information through associative trails instead of categories. The idea: record links between ideas the way thinking actually happens, not the way filing systems force organization. This concept later inspired the creation of hyperlinks.
-    </p>
-    <p>
-        Bush outlined five fundamentals: recording, storing, displaying, selecting, and sharing trails of thought.
-    </p>
+    <p>Drawing from Vannevar Bush’s 1945 essay <a href="https://worrydream.com/refs/Bush%20-%20As%20We%20May%20Think%20(Life%20Magazine%209-10-1945).pdf" target="_blank" class="bento-button">As We May Think <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 6px; flex-shrink: 0;"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></a>, I used MEMEX as a framework because of its overlap with bookmarking, hyperlinks, and associative trails, then extended it into a spatial system for saving and revisiting links.</p>
+    
+    <ImageSlider
+        slides={[
+            {
+                src: "/assets/projects/dot-threads/approach - 1.png",
+                alt: "Approach Part 1",
+                label: "Approach 1"
+            },
+            {
+                src: "/assets/projects/dot-threads/approach-2.png",
+                alt: "Approach Part 2",
+                label: "Approach 2"
+            },
+            {
+                src: "/assets/projects/dot-threads/sketches.png",
+                alt: "Initial sketches and concept mapping",
+                label: "Sketches"
+            },
+            {
+                src: "/assets/projects/dot-threads/figma-prototype.png",
+                alt: "Figma prototype explorations",
+                label: "Prototype"
+            }
+        ]}
+        constrain={false}
+        indicatorType="dots"
+        showControls={true}
+        variant="carousel"
+        initialIndex={1}
+    />
 </ProjectSection>
-<FullWidthImage src="/assets/projects/dot-threads/approach.gif" height="300px" caption="Organizing the Thinking" constrain={false} />
-
-<ProjectSection title="Finding the dots" id="research-principles" hideTitle={true}>
-</ProjectSection>
-
-<FullWidthImage src="/assets/projects/dot-threads/figma-prototype.png" height="400px" caption="Figma prototype explorations" constrain={false} />
 
 <ProjectSection title="Prototyping the Parallels" id="process">
     <h2 class="left-align">Entering</h2>
@@ -173,6 +219,18 @@ import VideoEmbed from '../../components/VideoEmbed.astro';
 </figure>
 
 <style>{`
+    .section-content :global(h4) {
+        font-family: "Google Sans", sans-serif !important;
+        font-size: 36px !important;
+        font-weight: 500 !important;
+        letter-spacing: -0.02em !important;
+        line-height: 1.2 !important;
+    }
+    @media (max-width: 768px) {
+        .section-content :global(h4) {
+            font-size: 22px !important;
+        }
+    }
     .testimonial-section {
         margin-top: 0 !important;
     }
@@ -359,6 +417,7 @@ import VideoEmbed from '../../components/VideoEmbed.astro';
         gap: 0px !important;
         padding-top: 40px !important;
         padding-bottom: 40px !important;
+        padding-inline: 40px !important;
     }
     .gaps-title {
         font-size: 56px !important;
@@ -385,22 +444,25 @@ import VideoEmbed from '../../components/VideoEmbed.astro';
         flex-direction: column;
         gap: 28px !important;
         width: 100%;
-        text-align: left;
+        text-align: left !important;
     }
     .gap-item {
         display: flex;
         flex-direction: column;
         width: 100%;
+        text-align: left !important;
+        align-items: flex-start !important;
     }
-    .gap-heading {
+    .right-content h4.gap-heading {
         font-size: 56px !important;
         font-weight: 600 !important;
-        color: #000000 !important;
+        color: #2d2d2dff !important; /* Rich legible black */
         opacity: 0.8 !important;
         margin: 0 !important;
         line-height: 1.1 !important;
         font-family: 'Bricolage Grotesque', sans-serif !important;
         letter-spacing: -0.045em !important;
+        text-align: left !important;
     }
     .gap-description {
         font-size: var(--text-base) !important;
@@ -408,13 +470,14 @@ import VideoEmbed from '../../components/VideoEmbed.astro';
         color: #111111 !important;
         margin: 0 !important;
         margin-top: 4px !important;
+        text-align: left !important;
     }
     @media (max-width: 768px) {
         .centered-tagline.orange-bar.gaps-container {
             padding-top: 30px !important;
             padding-bottom: 30px !important;
         }
-        .gap-heading {
+        .right-content h4.gap-heading {
             font-size: var(--text-2xl) !important;
         }
         .gaps-title {
@@ -437,8 +500,89 @@ import VideoEmbed from '../../components/VideoEmbed.astro';
         margin-top: 0 !important;
         margin-bottom: 0 !important;
         font-size: 16px !important;
-        line-height: 1.5 !important;
+        line-height: 1.2 !important;
         color: var(--text-secondary) !important;
+    }
+
+    .story-time p {
+        font-weight: 400 !important; /* Edit this value (e.g. 200, 300, 400) to change the story block weight */
+        font-size: 16px !important;
+        line-height: 1.2 !important;
+        color: var(--text-secondary) !important;
+        margin-bottom: 1rem !important;
+    }
+
+    .section-content :global(.left-align) {
+        padding-left: 0 !important;
+        margin-left: 0 !important;
+        text-align: left !important;
+    }
+
+    @media (min-width: 1025px) {
+        .section-content :global(.half-width) {
+            padding-right: 50% !important;
+            max-width: 100% !important;
+        }
+    }
+
+    .feedback-item {
+        display: flex;
+        align-items: center;
+        gap: 36px;
+        margin-top: 3.5rem;
+        margin-bottom: 3.5rem;
+        width: 100%;
+        box-sizing: border-box;
+        padding-left: 20px !important;
+        margin-left: 0 !important;
+    }
+    @media (min-width: 1025px) {
+        .feedback-item {
+            padding-right: 50% !important;
+            max-width: 100% !important;
+        }
+    }
+    .feedback-emoji {
+        font-size: 3.5rem; /* Large emoji size */
+        line-height: 1;
+        flex-shrink: 0;
+        user-select: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 64px;
+        height: 64px;
+    }
+    @media (max-width: 768px) {
+        .feedback-item {
+            gap: 20px;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+            padding-left: 10px !important;
+        }
+        .feedback-emoji {
+            font-size: 2.2rem;
+            width: 44px;
+            height: 44px;
+        }
+    }
+    .feedback-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+    .feedback-content h4 {
+        margin: 0 !important;
+        padding: 0 !important;
+        text-align: left !important;
+    }
+    .feedback-content p {
+        margin: 0 !important;
+        padding: 0 !important;
+        text-align: left !important;
+        max-width: 100% !important;
+        width: 100% !important;
     }
 `}</style>
 

@@ -42,7 +42,19 @@ const {
 			rel="stylesheet"
 		/>
 		<link
-			href="https://cdn.jsdelivr.net/npm/@fontsource/google-sans@5.0.1/index.min.css"
+			href="https://cdn.jsdelivr.net/npm/@fontsource/google-sans@5.0.1/300.css"
+			rel="stylesheet"
+		/>
+		<link
+			href="https://cdn.jsdelivr.net/npm/@fontsource/google-sans@5.0.1/400.css"
+			rel="stylesheet"
+		/>
+		<link
+			href="https://cdn.jsdelivr.net/npm/@fontsource/google-sans@5.0.1/500.css"
+			rel="stylesheet"
+		/>
+		<link
+			href="https://cdn.jsdelivr.net/npm/@fontsource/google-sans@5.0.1/700.css"
 			rel="stylesheet"
 		/>
 		{
@@ -227,6 +239,7 @@ const {
 		box-sizing: border-box;
 		grid-column: 1 / 2;
 		grid-row: 1;
+		z-index: 10000; /* High z-index to elevate child stacking contexts (theme toggle) above right content */
 	}
 
 	[data-theme="light"] .layout-sidebar {

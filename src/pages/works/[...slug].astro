@@ -1,17 +1,52 @@
 ---
 import { getCollection } from "astro:content";
 import ProjectLayout from "../../layouts/ProjectLayout.astro";
-import Layout from "../../layouts/Layout.astro";
+
+// Exact slugs shown on the homepage, in homepage scroll order
+const HOME_ORDER = [
+  "pointo",
+  "dot-threads",
+  "xfigura",
+  "lab4c",
+  "detour",
+  "piko",
+  "serendipidity",
+];
 
 export async function getStaticPaths() {
-  const projects = await getCollection("projects");
-  return projects.map((entry) => ({
-    params: { slug: entry.slug },
-    props: { entry },
-  }));
+  const HOME_ORDER = [
+    "pointo",
+    "dot-threads",
+    "xfigura",
+    "lab4c",
+    "detour",
+    "piko",
+    "serendipidity",
+  ];
+
+  const allProjects = await getCollection("projects");
+
+  // Build the ordered list of homepage projects
+  const homeProjects = HOME_ORDER
+    .map((slug) => allProjects.find((p) => p.slug === slug))
+    .filter((p): p is NonNullable<typeof p> => Boolean(p));
+
+  return allProjects.map((entry) => {
+    const homeIndex = homeProjects.findIndex((p) => p.slug === entry.slug);
+    // Only homepage projects get a next-project banner
+    const nextEntry =
+      homeIndex !== -1
+        ? homeProjects[(homeIndex + 1) % homeProjects.length]
+        : undefined;
+
+    return {
+      params: { slug: entry.slug },
+      props: { entry, nextEntry: nextEntry ?? null },
+    };
+  });
 }
 
-const { entry } = Astro.props;
+const { entry, nextEntry } = Astro.props;
 const { Content } = await entry.render();
 ---
 
@@ -25,14 +60,16 @@ const { Content } = await entry.render();
   sections={entry.data.sections}
   heroImage={entry.data.heroImage}
   category={entry.data.category}
+  nextProject={nextEntry ? {
+    slug: nextEntry.slug,
+    title: nextEntry.data.title,
+    description: nextEntry.data.description,
+    tags: nextEntry.data.tags,
+    heroImage: nextEntry.data.heroImage,
+    category: nextEntry.data.category,
+    meta: nextEntry.data.meta,
+    ctaUrl: nextEntry.data.ctaUrl,
+  } : undefined}
 >
-  <!-- We need a named slot 'intro' for the description if we want to pass rich content into it.
-         However, the MDX file structure we defined puts the intro IN the MDX body or maybe separate?
-         In our migration, we put <div slot="intro"> inside the MDX.
-         This means <Content /> will render that slot content.
-         
-         ProjectLayout expects slots.
-         If MDX exports content that slots into ProjectLayout, we just need to render <Content /> inside ProjectLayout.
-    -->
   <Content />
 </ProjectLayout>

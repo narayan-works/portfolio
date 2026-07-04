@@ -116,9 +116,11 @@ const resolvedFetchPriority =
 
     .full-width-image.constrained {
         /* Constrain to 750px body width */
-        padding-inline: 0;
+        max-width: min(750px, 100%);
+        margin-left: auto;
+        margin-right: auto;
         box-sizing: border-box;
-     }
+    }
 
     .image-wrapper {
         width: 100%;

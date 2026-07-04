@@ -1,0 +1,389 @@
+---
+interface Props {
+    slug: string;
+    title: string;
+    description?: string;
+    tags?: string[];
+    heroImage?: string;
+    category?: string;
+    meta?: Record<string, string>;
+    ctaUrl?: string;
+}
+
+const {
+    slug,
+    title,
+    description,
+    tags = [],
+    heroImage,
+    category = "",
+    ctaUrl,
+} = Astro.props;
+const href = `/works/${slug}`;
+const isExternal = false;
+
+// Normalize category for data attribute (matches HomeProjectCard categories)
+const categoryMap: Record<string, string> = {
+    "web-ux": "web-ux",
+    thinking: "web-ux",
+    "hardware-ux": "hardware-ux",
+    embodied: "hardware-ux",
+    "mobile-ux": "mobile-ux",
+    spatial: "spatial-xd",
+    "spatial-xd": "spatial-xd",
+    archive: "experiments",
+};
+const cleanCat = category
+    .toLowerCase()
+    .replace(/\[.*\]/, "")
+    .trim();
+const dataCategory = categoryMap[cleanCat] || "web-ux";
+---
+
+<div class="next-project-section" data-categories={dataCategory}>
+    <a
+        href={href}
+        target={isExternal ? "_blank" : undefined}
+        rel={isExternal ? "noopener noreferrer" : undefined}
+        class="next-project-container"
+    >
+        <!-- Left: Metadata Panel -->
+        <div class="next-project-meta">
+            <!-- Top Group: Next Project Eyebrow Bento Heading -->
+            <span class="next-eyebrow-bento">
+                Next Project
+                <svg
+                    class="eyebrow-arrow"
+                    viewBox="0 0 10 10"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <path
+                        d="M1 5H9M9 5L5.5 1.5M9 5L5.5 8.5"
+                        stroke="currentColor"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"></path>
+                </svg>
+            </span>
+
+            <!-- Bottom Group: Title, Tags, Description -->
+            <div class="meta-bottom-group">
+                <h3 class="next-title">{title}</h3>
+                {
+                    tags.length > 0 && (
+                        <div class="next-tags">
+                            {tags.map((tag) => (
+                                <span class="next-tag">{tag}</span>
+                            ))}
+                        </div>
+                    )
+                }
+                {description && <p class="next-description">{description}</p>}
+            </div>
+        </div>
+
+        <!-- Right: Image Panel -->
+        <div class="next-project-image-panel">
+            {
+                heroImage ? (
+                    <img
+                        src={heroImage}
+                        alt={title}
+                        loading="lazy"
+                        decoding="async"
+                        class="next-project-image"
+                    />
+                ) : (
+                    <div class="placeholder-image" />
+                )
+            }
+        </div>
+    </a>
+</div>
+
+<style>
+    .next-project-section {
+        margin-top: 4.5rem;
+        border-top: 1px solid var(--border-subtle);
+        width: calc(100% + 40px);
+        margin-left: -20px;
+        margin-right: -20px;
+        padding: 0 20px; /* Spacing is handled on the inner container */
+        box-sizing: border-box;
+        transition:
+            background-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+            border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        position: relative;
+    }
+
+    /* Next Project hover background color matches HomeProjectCard */
+    .next-project-section[data-categories~="hardware-ux"]:hover {
+        background: linear-gradient(
+            135deg,
+            rgba(130, 198, 246, 0.95) 0%,
+            rgba(70, 150, 211, 0.95) 100%
+        );
+    }
+    .next-project-section[data-categories~="web-ux"]:hover {
+        background: linear-gradient(
+            135deg,
+            rgba(255, 126, 54, 0.95) 0%,
+            rgba(204, 71, 0, 0.95) 100%
+        );
+    }
+    .next-project-section[data-categories~="mobile-ux"]:hover {
+        background: linear-gradient(
+            135deg,
+            rgba(255, 223, 76, 0.95) 0%,
+            rgba(204, 171, 0, 0.95) 100%
+        );
+    }
+    .next-project-section[data-categories~="spatial-xd"]:hover {
+        background: linear-gradient(
+            135deg,
+            rgba(61, 184, 83, 0.95) 0%,
+            rgba(24, 110, 37, 0.95) 100%
+        );
+    }
+    .next-project-section[data-categories~="experiments"]:hover {
+        background: linear-gradient(
+            135deg,
+            rgba(168, 85, 247, 0.95) 0%,
+            rgba(147, 51, 234, 0.95) 100%
+        );
+    }
+
+    /* Force the footer immediately following right-content to have no margin-top to remove black gap */
+    :global(.right-content .site-footer) {
+        margin-top: 0 !important;
+    }
+
+    .next-project-container {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+        gap: 24px;
+        align-items: stretch; /* Stretch columns so the left panel height matches the image panel height */
+        text-decoration: none;
+        color: inherit;
+        width: 100%;
+        box-sizing: border-box;
+        padding-top: 20px; /* Top padding equal to sides */
+        padding-bottom: 20px; /* Bottom padding equal to sides */
+    }
+
+    /* Left Metadata Panel */
+    .next-project-meta {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between; /* Align eyebrow at the top, title/tags/description at the bottom */
+        min-width: 0;
+    }
+
+    .meta-bottom-group {
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Bento-style eyebrow tag with SVG arrow - resized to 56px */
+    .next-eyebrow-bento {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 0.25em;
+        font-family: "Google Sans", sans-serif !important;
+        font-size: 52px !important;
+        font-weight: 500;
+        line-height: 1.1;
+        letter-spacing: -0.03em;
+        color: var(--accent-secondary, #42bd49); /* Font color brand green */
+        background: var(--bg-surface);
+        border: 1px solid var(--border-subtle);
+        padding: 0.15em 0.4em;
+        border-radius: 12px;
+        margin: 0 0 1.5rem 0 !important;
+        transition:
+            background-color 0.3s ease,
+            border-color 0.3s ease,
+            color 0.3s ease;
+    }
+
+    .eyebrow-arrow {
+        display: inline-block;
+        width: 0.6em;
+        height: 0.6em;
+        transition: transform 0.3s ease;
+    }
+
+    .next-project-section:hover .next-eyebrow-bento {
+        background: var(
+            --accent-secondary,
+            #42bd49
+        ); /* Pill becomes brand green */
+        border-color: var(--accent-secondary, #42bd49);
+        color: var(--bg-primary, #000000); /* Font becomes background color */
+    }
+
+    .next-project-section:hover .eyebrow-arrow {
+        transform: rotate(-45deg);
+    }
+
+    /* Reduced size of the title */
+    .next-title {
+        font-family: "Bricolage Grotesque", sans-serif;
+        font-size: 44px;
+        font-weight: 400;
+        line-height: 1.2;
+        color: var(--text-primary);
+        margin: 0 0 0.5rem 0 !important;
+        letter-spacing: -0.04em;
+        transition:
+            color 0.3s ease,
+            font-weight 0.3s ease,
+            letter-spacing 0.3s ease;
+    }
+
+    .next-project-section:hover .next-title {
+        color: #000000;
+        font-weight: 500;
+        letter-spacing: -0.05em;
+    }
+
+    .next-tags {
+        display: flex;
+        flex-wrap: wrap;
+        column-gap: 0.5rem;
+        row-gap: 0.15rem;
+        margin: 0 0 1rem 0 !important;
+    }
+
+    .next-tag {
+        font-family: var(--font-mono);
+        font-size: var(--text-xs);
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        line-height: 1.1;
+        transition: color 0.3s ease;
+    }
+
+    .next-project-section:hover .next-tag {
+        color: #000000;
+    }
+
+    .next-tag:not(:last-child)::after {
+        content: "•";
+        margin-left: 0.5rem;
+        opacity: 0.3;
+        font-size: 1.2em;
+        display: inline-flex;
+        transform: translateY(-1px);
+    }
+
+    .next-description {
+        font-family: "Google Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 300;
+        letter-spacing: -0.01em;
+        line-height: 1.35;
+        color: var(--text-secondary);
+        opacity: 0.8;
+        margin: 0 !important;
+        transition: color 0.3s ease;
+    }
+
+    .next-project-section:hover .next-description {
+        color: #000000;
+        opacity: 0.95;
+    }
+
+    /* Right Image Panel: Height determined by image */
+    .next-project-image-panel {
+        position: relative;
+        overflow: hidden;
+        width: 100%;
+        height: auto;
+        border-radius: var(--radius-md);
+        border: 1px solid var(--border-subtle);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        transition:
+            transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+            box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+            border-color 0.4s ease;
+        min-width: 0;
+    }
+
+    .next-project-section:hover .next-project-image-panel {
+        border-color: rgba(0, 0, 0, 0.15);
+        box-shadow:
+            0 12px 24px -8px rgba(0, 0, 0, 0.3),
+            0 4px 10px -4px rgba(0, 0, 0, 0.2);
+    }
+
+    .next-project-image {
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+        display: block;
+        transition: transform 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .next-project-section:hover .next-project-image {
+        transform: scale(1.04);
+    }
+
+    .placeholder-image {
+        width: 100%;
+        aspect-ratio: 16/9;
+        background: var(--bg-surface);
+    }
+
+    @media (max-width: 1250px) {
+        /* No meta-list to hide anymore, but keeping layout responsive */
+    }
+
+    @media (max-width: 1024px) {
+        .next-project-section {
+            width: 100%;
+            margin-left: 0;
+            margin-right: 0;
+            padding: 2rem 0;
+        }
+
+        .next-project-container {
+            grid-template-columns: 1fr;
+            gap: 20px; /* Spacing between elements is exactly 20px */
+        }
+
+        .next-project-meta {
+            display: contents; /* Elevate children directly into the grid container */
+        }
+
+        .next-eyebrow-bento {
+            order: 1; /* Pill on top */
+            margin: 0 !important; /* Reset bottom margin */
+            width: 100%;
+        }
+
+        .next-project-image-panel {
+            order: 2; /* Hero image in the middle */
+            min-width: 0;
+        }
+
+        .meta-bottom-group {
+            order: 3; /* Title, tags, description at the bottom */
+        }
+    }
+
+    @media (max-width: 768px) {
+        .next-eyebrow-bento {
+            font-size: 32px !important;
+        }
+        .next-title {
+            font-size: 36px !important;
+        }
+    }
+</style>
