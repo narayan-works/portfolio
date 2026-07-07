@@ -6,8 +6,6 @@ interface Props {
     tags?: string[];
     heroImage?: string;
     category?: string;
-    meta?: Record<string, string>;
-    ctaUrl?: string;
 }
 
 const {
@@ -17,10 +15,8 @@ const {
     tags = [],
     heroImage,
     category = "",
-    ctaUrl,
 } = Astro.props;
 const href = `/works/${slug}`;
-const isExternal = false;
 
 // Normalize category for data attribute (matches HomeProjectCard categories)
 const categoryMap: Record<string, string> = {
@@ -43,8 +39,6 @@ const dataCategory = categoryMap[cleanCat] || "web-ux";
 <div class="next-project-section" data-categories={dataCategory}>
     <a
         href={href}
-        target={isExternal ? "_blank" : undefined}
-        rel={isExternal ? "noopener noreferrer" : undefined}
         class="next-project-container"
     >
         <!-- Left: Metadata Panel -->

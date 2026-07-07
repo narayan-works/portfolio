@@ -2,26 +2,15 @@
 import { getCollection } from "astro:content";
 import ProjectLayout from "../../layouts/ProjectLayout.astro";
 
-// Exact slugs shown on the homepage, in homepage scroll order
-const HOME_ORDER = [
-  "pointo",
-  "dot-threads",
-  "xfigura",
-  "lab4c",
-  "detour",
-  "piko",
-  "serendipidity",
-];
-
 export async function getStaticPaths() {
   const HOME_ORDER = [
-    "pointo",
     "dot-threads",
+    "pointo",
     "xfigura",
     "lab4c",
     "detour",
-    "piko",
     "serendipidity",
+    "piko",
   ];
 
   const allProjects = await getCollection("projects");
@@ -67,8 +56,6 @@ const { Content } = await entry.render();
     tags: nextEntry.data.tags,
     heroImage: nextEntry.data.heroImage,
     category: nextEntry.data.category,
-    meta: nextEntry.data.meta,
-    ctaUrl: nextEntry.data.ctaUrl,
   } : undefined}
 >
   <Content />

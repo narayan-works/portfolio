@@ -4,22 +4,22 @@
   font-size: 18px;
 
   /* Font Family Defaults */
-  --font-title: 'Geist', sans-serif;
+  --font-title: 'Google Sans', sans-serif;
   --font-sans: 'Google Sans', sans-serif;
   --font-mono: 'Geist Mono', monospace;
 
-  /* Typography Spec scale overrides */
-  --text-2xs: 0.611rem;
-  --text-xs: 0.66rem;
-  --text-sm: 0.778rem;
-  --text-base: 0.9rem;
-  --text-md: 1.111rem;
-  --text-lg: 1.222rem;
-  --text-xl: 1.333rem;
-  --text-2xl: 1.5rem;
-  --text-3xl: 3.1rem;
-  --text-4xl: 3rem;
-  --text-display: 3.5rem;
+  /* Typography Spec scale overrides — constrained to a fixed px palette
+     (10/12/14/16/20/24/36/56px at the 18px root); --text-xl/2xl and
+     --text-3xl/4xl now share a value since 8 named steps no longer map
+     to 8 distinct sizes. --text-md and --text-lg were removed (unused). */
+  --text-2xs: 0.556rem; /* 10px */
+  --text-xs: 0.667rem; /* 12px */
+  --text-sm: 0.778rem; /* 14px */
+  --text-base: 0.889rem; /* 16px */
+  --text-xl: 1.333rem; /* 24px */
+  --text-2xl: 1.333rem; /* 24px */
+  --text-3xl: 3.111rem; /* 56px */
+  --text-4xl: 3.111rem; /* 56px */
 
   /* Weights & Spacings */
   --title-weight: 400;

@@ -122,37 +122,13 @@ const isGif =
                 <div class="placeholder-image" />
             )
         }
-
-        <!-- CTA overlay on the image (visible on hover) -->
-        <div class="image-overlay">
-            <div class="overlay-top">
-                <span class="project-cta-pill">
-                    View project
-                    <svg
-                        class="cta-arrow"
-                        width="10"
-                        height="10"
-                        viewBox="0 0 10 10"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                    >
-                        <path
-                            d="M1 5H9M9 5L5.5 1.5M9 5L5.5 8.5"
-                            stroke="currentColor"
-                            stroke-width="1.5"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"></path>
-                    </svg>
-                </span>
-            </div>
-        </div>
     </div>
 </a>
 
 <style>
     .home-project-card {
         --card-padding: 16px;
-        --media-radius: var(--radius-md);
+        --media-radius: 0px;
         display: grid;
         grid-template-columns: 1fr 2fr;
         gap: var(--card-padding);
@@ -163,7 +139,7 @@ const isGif =
         overflow: hidden;
         padding: var(--card-padding);
         border: 1px solid transparent;
-        border-radius: calc(var(--media-radius) + var(--card-padding));
+        border-radius: 0;
         background: transparent;
         box-shadow: none;
         backdrop-filter: blur(0px);
@@ -230,68 +206,6 @@ const isGif =
         height: auto;
         aspect-ratio: 16/9;
         background: var(--bg-surface);
-    }
-
-    /* Image overlay */
-    .image-overlay {
-        position: absolute;
-        inset: 0;
-        pointer-events: none;
-        padding: 8px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-    }
-
-    .overlay-top {
-        display: flex;
-        justify-content: flex-end;
-        width: 100%;
-    }
-
-    .project-cta-pill {
-        font-family: var(--font-sans);
-        font-size: 12px; /* Exactly 12px */
-        font-weight: 600;
-        line-height: 1.2;
-        color: var(--text-primary);
-        background: var(--bg-surface);
-        border: 1px solid var(--border-subtle);
-        padding: 6px 12px;
-        border-radius: calc(
-            var(--radius-md) - 8px
-        ); /* Nested bento radius: name card bento radius - padding */
-        max-width: 70%;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-        opacity: 0;
-        transform: translateY(-8px);
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        transition:
-            opacity 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-            transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-            background-color 0.3s ease,
-            color 0.3s ease,
-            border-color 0.3s ease;
-        margin: 0;
-    }
-
-    .cta-arrow {
-        display: inline-block;
-        transition: transform 0.2s ease;
-    }
-
-    .home-project-card:hover .cta-arrow {
-        transform: translateX(2px);
-    }
-
-    .home-project-card:hover .project-cta-pill {
-        opacity: 1;
-        transform: translateY(0);
-        background: var(--accent-secondary);
-        color: #ffffff;
-        border-color: var(--accent-secondary);
     }
 
     /* ── Metadata Panel (Transparent always, nested inside the main bento container) ── */
@@ -530,55 +444,30 @@ const isGif =
         }
     }
 
-    /* Category-specific hover colors for project bentos & CTA pills */
+    /* Category-specific hover colors for project bentos */
     .home-project-card[data-categories~="hardware-ux"]:hover {
         border-color: #559ed5;
         background: linear-gradient(135deg, rgba(130, 198, 246, 0.85) 0%, rgba(70, 150, 211, 0.85) 100%);
-    }
-    .home-project-card[data-categories~="hardware-ux"]:hover .project-cta-pill {
-        background: #82c6f6 !important;
-        color: #000000 !important;
-        border-color: #82c6f6 !important;
     }
 
     .home-project-card[data-categories~="web-ux"]:hover {
         border-color: #e05105;
         background: linear-gradient(135deg, rgba(255, 126, 54, 0.85) 0%, rgba(204, 71, 0, 0.85) 100%);
     }
-    .home-project-card[data-categories~="web-ux"]:hover .project-cta-pill {
-        background: #ff7e36 !important;
-        color: #000000 !important;
-        border-color: #ff7e36 !important;
-    }
 
     .home-project-card[data-categories~="mobile-ux"]:hover {
         border-color: #dfbc05;
         background: linear-gradient(135deg, rgba(255, 223, 76, 0.85) 0%, rgba(204, 171, 0, 0.85) 100%);
-    }
-    .home-project-card[data-categories~="mobile-ux"]:hover .project-cta-pill {
-        background: #ffdf4c !important;
-        color: #000000 !important;
-        border-color: #ffdf4c !important;
     }
 
     .home-project-card[data-categories~="spatial-xd"]:hover {
         border-color: #258835;
         background: linear-gradient(135deg, rgba(61, 184, 83, 0.85) 0%, rgba(24, 110, 37, 0.85) 100%);
     }
-    .home-project-card[data-categories~="spatial-xd"]:hover .project-cta-pill {
-        background: #3db853 !important;
-        color: #000000 !important;
-        border-color: #3db853 !important;
-    }
 
     .home-project-card[data-categories~="experiments"]:hover {
         border-color: #5541b7;
         background: linear-gradient(135deg, rgba(168, 85, 247, 0.85) 0%, rgba(147, 51, 234, 0.85) 100%);
-    }
-    .home-project-card[data-categories~="experiments"]:hover .project-cta-pill {
-        background: #c084fc !important;
-        color: #000000 !important;
-        border-color: #c084fc !important;
     }
 
     @media (max-width: 768px) {

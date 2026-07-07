@@ -120,6 +120,29 @@ const {
 				y.parentNode.insertBefore(t, y);
 			})(window, document, "clarity", "script", "x4yo8ojdri");
 		</script>
+		<script is:inline>
+			(() => {
+				const theme = (() => {
+					if (
+						typeof localStorage !== "undefined" &&
+						localStorage.getItem("theme")
+					) {
+						return localStorage.getItem("theme");
+					}
+					if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+						return "dark";
+					}
+					return "light";
+				})();
+
+				if (theme === "light") {
+					document.documentElement.setAttribute("data-theme", "light");
+				} else {
+					document.documentElement.removeAttribute("data-theme");
+				}
+				window.localStorage.setItem("theme", theme);
+			})();
+		</script>
 		<ViewTransitions />
 	</head>
 	<body>

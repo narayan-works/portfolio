@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import HomeNavigation from "../components/HomeNavigation.astro";
+import ThemeToggle from "../components/ThemeToggle.astro";
 import { getCollection } from "astro:content";
 import { Image } from "astro:assets";
 
@@ -92,6 +93,12 @@ const imageScales: Record<string, number> = {
 			}
 		</div>
 	</div>
+
+	<div class="toggle-floater">
+		<div class="sidebar-controls">
+			<ThemeToggle />
+		</div>
+	</div>
 </Layout>
 
 <style>
@@ -103,6 +110,25 @@ const imageScales: Record<string, number> = {
 		margin: 0;
 		background: var(--bg-primary);
 		min-height: 100vh;
+	}
+
+	.toggle-floater {
+		position: fixed !important;
+		bottom: 20px !important;
+		right: 20px !important;
+		top: auto !important;
+		margin: 0 !important;
+		padding: 0 !important;
+		z-index: 9999 !important;
+		width: auto;
+		display: flex;
+		justify-content: flex-end;
+	}
+
+	.sidebar-controls {
+		display: flex;
+		gap: 1rem;
+		align-items: center;
 	}
 
 	.elsewhere-header {

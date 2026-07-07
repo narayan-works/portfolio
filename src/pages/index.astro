@@ -1,8 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import GhostRunner from "../components/GhostRunner.astro";
-import BentoGrid from "../components/BentoGrid.astro";
-import BentoCard from "../components/BentoCard.astro";
 import HomeProjectCard from "../components/HomeProjectCard.astro";
 import HomeNavigation from "../components/HomeNavigation.astro";
 import ThemeToggle from "../components/ThemeToggle.astro";
@@ -57,20 +55,11 @@ const heroImages: Record<string, ImageMetadata> = {
 const dotThreadsProject = allProjects.find(
 	(project) => project.slug === "dot-threads",
 );
-const sanctuaryProject = allProjects.find(
-	(project) => project.slug === "skywalk-sanctuary",
-);
 const detourProject = allProjects.find((project) => project.slug === "detour");
-const tirupatiProject = allProjects.find(
-	(project) => project.slug === "tirupati-campus",
-);
 const pikoProject = allProjects.find((project) => project.slug === "piko");
 const pointoProject = allProjects.find((project) => project.slug === "pointo");
 const serendipityProject = allProjects.find(
 	(project) => project.slug === "serendipidity",
-);
-const musibuddyProject = allProjects.find(
-	(project) => project.slug === "musibuddy",
 );
 const lab4cProject = allProjects.find((project) => project.slug === "lab4c");
 const xfiguraProject = allProjects.find((project) => project.slug === "xfigura");
@@ -78,7 +67,7 @@ const xfiguraProject = allProjects.find((project) => project.slug === "xfigura")
 
 <Layout
 	title="Narayan Ashanahalli"
-	description="👋 I'm Narayan, an interaction designer from CMU HCI & SoA who builds across interfaces, tools, and hardware, applying systems thinking to create digital products that feel responsive and playful."
+	description="👋 I'm Narayan, a Product Designer & Prototyper building 0-to-1 experiences across AI, hardware, and digital infrastructure."
 	fullWidth={true}
 >
 	<HomeNavigation transition:persist />
@@ -99,34 +88,40 @@ const xfiguraProject = allProjects.find((project) => project.slug === "xfigura")
 					<div class="hero-headline bio-short">
 						<div class="bio-line-1">
 							<span class="dynamic-color-text"
-								>👋 I'm Narayan,<br class="mobile-break" /> an interaction
-								designer</span
+								>👋 I'm Narayan,</span
+							>
+						</div>
+						<div class="bio-line-1">
+							<span class="dynamic-color-text"
+								>a Product Designer & Prototyper</span
 							>
 						</div>
 						<div class="bio-line-2">
-							who builds <span class="bracket-hover-wrapper"
+							building <span class="bracket-hover-wrapper"
 								><span class="bracket">[</span><span
 									class="bracket-content"
 									><span class="bracket-inner"
-										>from 0 to 1</span
+										>0-to-1</span
 									></span
 								><span class="bracket">]</span></span
-							> across interfaces, tools, and hardware.
+							> experiences across AI, hardware, and digital infrastructure.
 						</div>
 					</div>
 					<div class="hero-headline bio-long">
 						<div class="bio-text">
 							<span class="dynamic-color-text"
-								>👋 I'm Narayan, an interaction designer</span
-							> who builds my way through design <span
+								>👋 I'm Narayan,<br />
+								a Product Designer & Prototyper</span
+							><br />
+							building <span
 								class="bracket-hover-wrapper"
 								><span class="bracket">[</span><span
 									class="bracket-content"
 									><span class="bracket-inner"
-										>from idea to artifact</span
+										>0-to-1</span
 									></span
 								><span class="bracket">]</span></span
-							> across interfaces, tools, and hardware. With a foundation
+							> experiences across AI, hardware, and digital infrastructure. With a foundation
 							in architecture, I apply systems thinking and rapid prototyping
 							to create digital products that feel responsive and grounded
 							in existing ecosystems.
@@ -261,29 +256,6 @@ const xfiguraProject = allProjects.find((project) => project.slug === "xfigura")
 				</div>
 				<div class="home-project-list">
 					{
-						pointoProject && (
-							<div
-								class="project-card-wrapper"
-								data-categories="hardware-ux"
-							>
-								<HomeProjectCard
-									title={pointoProject.data.title}
-									image={
-										heroImages[pointoProject.slug] ||
-										pointoProject.data.heroImage
-									}
-									loading="eager"
-									fetchPriority="high"
-									href={`/works/${pointoProject.slug}`}
-									tags={pointoProject.data.tags}
-									meta={pointoProject.data.meta}
-									description={pointoProject.data.description}
-									categories={["hardware-ux"]}
-								/>
-							</div>
-						)
-					}
-					{
 						dotThreadsProject && (
 							<div
 								class="project-card-wrapper"
@@ -304,6 +276,28 @@ const xfiguraProject = allProjects.find((project) => project.slug === "xfigura")
 										dotThreadsProject.data.description
 									}
 									categories={["web-ux"]}
+								/>
+							</div>
+						)
+					}
+					{
+						pointoProject && (
+							<div
+								class="project-card-wrapper"
+								data-categories="hardware-ux"
+							>
+								<HomeProjectCard
+									title={pointoProject.data.title}
+									image={
+										heroImages[pointoProject.slug] ||
+										pointoProject.data.heroImage
+									}
+									loading="lazy"
+									href={`/works/${pointoProject.slug}`}
+									tags={pointoProject.data.tags}
+									meta={pointoProject.data.meta}
+									description={pointoProject.data.description}
+									categories={["hardware-ux"]}
 								/>
 							</div>
 						)
@@ -909,6 +903,7 @@ const xfiguraProject = allProjects.find((project) => project.slug === "xfigura")
 		border-radius: 50%;
 		border: 1px solid var(--border-subtle);
 		background: var(--accent-secondary);
+		color: #000000;
 		transition:
 			background 0.2s ease,
 			border-color 0.2s ease,
@@ -1419,7 +1414,7 @@ const xfiguraProject = allProjects.find((project) => project.slug === "xfigura")
 	}
 
 	#read-more-btn {
-		font-family: "Geist", sans-serif;
+		font-family: "Google Sans", sans-serif;
 		font-size: 16px;
 		font-weight: 400;
 		letter-spacing: 0em;

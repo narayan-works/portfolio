@@ -96,18 +96,19 @@ import FullWidthImage from '../../components/FullWidthImage.astro';
 
     .wip-cta-button .eyebrow-arrow {
         display: inline-block !important;
-        width: 0.8em !important;
-        height: 0.8em !important;
+        width: 26px !important;
+        height: 26px !important;
+        flex-shrink: 0 !important;
         transition: transform 0.3s ease !important;
     }
 
     .wip-cta-button:hover {
         background: var(--project-category-color, #42bd49) !important;
         border-color: var(--project-category-color, #42bd49) !important;
-        color: var(--bg-primary, #ffffff) !important;
+        color: var(--bg-surface, #ffffff) !important;
     }
 
     .wip-cta-button:hover .eyebrow-arrow {
-        transform: translateX(6px) !important;
+        transform: rotate(-45deg) !important;
     }
 `}</style>

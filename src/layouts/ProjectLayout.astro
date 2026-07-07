@@ -5,7 +5,6 @@ import SidebarNavigation from "../components/SidebarNavigation.astro";
 import Footer from "../components/Footer.astro";
 import NextProjectBanner from "../components/NextProjectBanner.astro";
 import { Image } from "astro:assets";
-import happyLogo from "../assets/happy.png";
 
 interface Props {
     title: string;
@@ -24,8 +23,6 @@ interface Props {
         tags?: string[];
         heroImage?: string;
         category?: string;
-        meta?: Record<string, string>;
-        ctaUrl?: string;
     };
 }
 
@@ -158,6 +155,22 @@ const hoverColor =
                             style={`--cta-active-color: ${activeColor}; --cta-hover-color: ${hoverColor};`}
                         >
                             {ctaText || "Try it out"}
+                            <svg
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                                class="sidebar-cta-arrow"
+                            >
+                                <path
+                                    d="M5 12H19M19 12L12 5M19 12L12 19"
+                                    stroke="currentColor"
+                                    stroke-width="2.5"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                ></path>
+                            </svg>
                         </a>
                     )
                 }
@@ -205,8 +218,6 @@ const hoverColor =
                 tags={nextProject.tags}
                 heroImage={nextProject.heroImage}
                 category={nextProject.category}
-                meta={nextProject.meta}
-                ctaUrl={nextProject.ctaUrl}
             />
         )}
         <Footer />
@@ -459,11 +470,14 @@ const hoverColor =
     }
 
     .sidebar-cta-button {
-        display: inline-block;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 0.5em;
         position: relative;
-        background: var(--cta-active-color, var(--accent-secondary));
-        color: #000000 !important;
-        border: 1px solid rgba(0, 0, 0, 0.12);
+        background: var(--bg-surface, #ffffff);
+        color: var(--cta-active-color, var(--accent-secondary)) !important;
+        border: 1px solid var(--border-subtle, rgba(0, 0, 0, 0.15));
         padding: 9px 16px;
         border-radius: var(--radius-md);
         text-decoration: none;
@@ -473,32 +487,32 @@ const hoverColor =
         letter-spacing: 0.05em;
         margin-top: 1.5rem;
         margin-bottom: 1rem;
-        text-align: center;
         width: 100%;
         box-sizing: border-box;
-        transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-        box-shadow:
-            inset 0 1px 0 rgba(255, 255, 255, 0.2),
-            0 2px 4px rgba(0, 0, 0, 0.08),
-            0 4px 12px rgba(0, 0, 0, 0.04);
+        transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
         cursor: pointer;
     }
+    .sidebar-cta-button .sidebar-cta-arrow {
+        display: inline-block;
+        width: 26px;
+        height: 26px;
+        flex-shrink: 0;
+        transition: transform 0.3s ease;
+    }
     .sidebar-cta-button:hover {
-        transform: translateY(-1px);
         background: var(--cta-hover-color, var(--accent-secondary));
-        border-color: rgba(0, 0, 0, 0.2);
-        box-shadow:
-            inset 0 1px 0 rgba(255, 255, 255, 0.25),
-            0 4px 8px rgba(0, 0, 0, 0.12),
-            0 8px 16px rgba(0, 0, 0, 0.06);
+        border-color: var(--cta-hover-color, var(--accent-secondary));
+        color: var(--bg-surface, #ffffff) !important;
+    }
+    .sidebar-cta-button:hover .sidebar-cta-arrow {
+        transform: rotate(-45deg);
     }
     .sidebar-cta-button:active {
-        transform: translateY(0);
         background: var(--cta-active-color, var(--accent-secondary));
+        border-color: var(--cta-active-color, var(--accent-secondary));
+        color: var(--bg-surface, #ffffff) !important;
         filter: brightness(0.95);
-        box-shadow:
-            inset 0 1px 0 rgba(0, 0, 0, 0.05),
-            0 1px 2px rgba(0, 0, 0, 0.08);
     }
 
     /* TABLET/MOBILE STYLES */
