@@ -2,6 +2,8 @@
 import Layout from "../layouts/Layout.astro";
 import HomeNavigation from "../components/HomeNavigation.astro";
 import ThemeToggle from "../components/ThemeToggle.astro";
+import Footer from "../components/Footer.astro";
+import GhostRunner from "../components/GhostRunner.astro";
 import { getCollection } from "astro:content";
 import { Image } from "astro:assets";
 
@@ -92,6 +94,11 @@ const imageScales: Record<string, number> = {
 				})
 			}
 		</div>
+
+		<Footer />
+		<div class="game-bottom-wrapper">
+			<GhostRunner />
+		</div>
 	</div>
 
 	<div class="toggle-floater">
@@ -106,7 +113,7 @@ const imageScales: Record<string, number> = {
 		width: 100%;
 		max-width: 100%;
 		box-sizing: border-box;
-		padding: 140px 48px 80px;
+		padding: 140px 48px 0;
 		margin: 0;
 		background: var(--bg-primary);
 		min-height: 100vh;
@@ -161,6 +168,28 @@ const imageScales: Record<string, number> = {
 		height: 1px;
 		background: var(--border-subtle);
 		margin-bottom: 48px;
+	}
+
+	:global(.elsewhere-layout) :global(.site-footer) {
+		width: calc(100% + 96px) !important;
+		margin-left: -48px !important;
+		margin-right: -48px !important;
+	}
+
+	.game-bottom-wrapper {
+		position: relative;
+		width: calc(100% + 96px);
+		margin-left: -48px;
+		margin-top: 0px;
+		margin-bottom: 0px;
+		z-index: 0;
+	}
+
+	.game-bottom-wrapper :global(.ghost-game-container) {
+		border-radius: 0;
+		border: none;
+		border-top: 1px solid var(--border-subtle);
+		width: 100%;
 	}
 
 	.elsewhere-grid {
@@ -267,7 +296,16 @@ const imageScales: Record<string, number> = {
 
 	@media (max-width: 640px) {
 		.elsewhere-layout {
-			padding: 100px 16px 40px;
+			padding: 100px 16px 0;
+		}
+		:global(.elsewhere-layout) :global(.site-footer) {
+			width: calc(100% + 32px) !important;
+			margin-left: -16px !important;
+			margin-right: -16px !important;
+		}
+		.game-bottom-wrapper {
+			width: calc(100% + 32px);
+			margin-left: -16px;
 		}
 		.elsewhere-title {
 			font-size: 40px;

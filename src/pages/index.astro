@@ -88,7 +88,7 @@ const xfiguraProject = allProjects.find((project) => project.slug === "xfigura")
 					<div class="hero-headline bio-short">
 						<div class="bio-line-1">
 							<span class="dynamic-color-text"
-								>👋 I'm Narayan,</span
+								>👋 <br />I'm Narayan Ashanahalli,</span
 							>
 						</div>
 						<div class="bio-line-1">
@@ -97,31 +97,16 @@ const xfiguraProject = allProjects.find((project) => project.slug === "xfigura")
 							>
 						</div>
 						<div class="bio-line-2">
-							building <span class="bracket-hover-wrapper"
-								><span class="bracket">[</span><span
-									class="bracket-content"
-									><span class="bracket-inner"
-										>0-to-1</span
-									></span
-								><span class="bracket">]</span></span
-							> experiences across AI, hardware, and digital infrastructure.
+								building [0-to-1]&nbsp;experiences across<br />AI, hardware, and digital infrastructure.
 						</div>
 					</div>
 					<div class="hero-headline bio-long">
 						<div class="bio-text">
 							<span class="dynamic-color-text"
-								>👋 I'm Narayan,<br />
+								>👋 I'm Narayan Ashanahalli,<br />
 								a Product Designer & Prototyper</span
-							><br />
-							building <span
-								class="bracket-hover-wrapper"
-								><span class="bracket">[</span><span
-									class="bracket-content"
-									><span class="bracket-inner"
-										>0-to-1</span
-									></span
-								><span class="bracket">]</span></span
-							> experiences across AI, hardware, and digital infrastructure. With a foundation
+							><br /><br />
+							building [0-to-1]&nbsp;experiences across AI, hardware, and digital infrastructure. With a foundation
 							in architecture, I apply systems thinking and rapid prototyping
 							to create digital products that feel responsive and grounded
 							in existing ecosystems.
@@ -174,53 +159,7 @@ const xfiguraProject = allProjects.find((project) => project.slug === "xfigura")
 
 				<div class="hero-actions-row">
 					<div class="hero-actions-left">
-						<button
-							id="read-more-btn"
-							class="action-link read-more"
-						>
-							Read more
-							<svg
-								width="12"
-								height="12"
-								viewBox="0 0 12 12"
-								fill="none"
-								xmlns="http://www.w3.org/2000/svg"
-								class="chevron"
-							>
-								<path
-									d="M2.5 4.5L6 8L9.5 4.5"
-									stroke="currentColor"
-									stroke-width="1.5"
-									stroke-linecap="round"
-									stroke-linejoin="round"></path>
-							</svg>
-						</button>
-
 						<div class="hero-actions">
-							<a href="#footer" class="action-link"
-								>Contact <svg
-									viewBox="0 0 10 10"
-									fill="none"
-									xmlns="http://www.w3.org/2000/svg"
-									class="arrow-svg arrow-down-left"
-									><path d="M8 2L2 8M2 8H6M2 8V4"></path></svg
-								></a
-							>
-
-							<a
-								href="https://substack.com/@narayanthinks"
-								target="_blank"
-								rel="noopener noreferrer"
-								class="action-link"
-								>Blog <svg
-									viewBox="0 0 10 10"
-									fill="none"
-									xmlns="http://www.w3.org/2000/svg"
-									class="arrow-svg arrow-up-right"
-									><path d="M2 8L8 2M8 2H4M8 2V6"></path></svg
-								></a
-							>
-
 							<a
 								href="https://drive.google.com/file/d/1PcdJ52A1hec-0XFzHHCelg89N1d4cDHw/view?usp=sharing"
 								target="_blank"
@@ -232,6 +171,16 @@ const xfiguraProject = allProjects.find((project) => project.slug === "xfigura")
 									xmlns="http://www.w3.org/2000/svg"
 									class="arrow-svg arrow-up-right"
 									><path d="M2 8L8 2M8 2H4M8 2V6"></path></svg
+								></a
+							>
+
+							<a href="#footer" class="action-link"
+								>Contact <svg
+									viewBox="0 0 10 10"
+									fill="none"
+									xmlns="http://www.w3.org/2000/svg"
+									class="arrow-svg arrow-down-left"
+									><path d="M8 2L2 8M2 8H6M2 8V4"></path></svg
 								></a
 							>
 						</div>
@@ -503,7 +452,7 @@ const xfiguraProject = allProjects.find((project) => project.slug === "xfigura")
 
 	/* Content Area */
 	.home-content {
-		padding: 272px var(--total-side-padding) 0 var(--total-side-padding); /* Dynamic side padding to keep middle width constant */
+		padding: 400px var(--total-side-padding) 0 var(--total-side-padding); /* Dynamic side padding to keep middle width constant */
 		max-width: 100%;
 		margin: 0;
 		width: 100%;
@@ -691,9 +640,9 @@ const xfiguraProject = allProjects.find((project) => project.slug === "xfigura")
 	.hero-actions-row {
 		display: flex;
 		justify-content: space-between;
-		align-items: flex-end;
+		align-items: flex-start;
 		flex-wrap: wrap;
-		gap: 1.5rem;
+		gap: 3rem;
 		margin-top: 2rem;
 		padding-inline: 0;
 		width: 100%;
@@ -702,15 +651,17 @@ const xfiguraProject = allProjects.find((project) => project.slug === "xfigura")
 
 	.hero-actions-left {
 		display: flex;
-		align-items: flex-end;
-		gap: 1.5rem;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 0.25rem;
 	}
 
 	.hero-actions {
 		display: flex;
-		justify-content: flex-start; /* Align links to left */
-		align-items: flex-end;
-		gap: 1.5rem;
+		flex-direction: column;
+		justify-content: flex-start;
+		align-items: flex-start;
+		gap: 0.2rem;
 	}
 
 	/* Responsive */
@@ -764,7 +715,7 @@ const xfiguraProject = allProjects.find((project) => project.slug === "xfigura")
 		font-size: 1.25rem;
 		color: var(--text-secondary);
 		max-width: 100%;
-		line-height: 1.1;
+		line-height: 1.15;
 	}
 
 	/* Works Layer */
@@ -803,8 +754,8 @@ const xfiguraProject = allProjects.find((project) => project.slug === "xfigura")
 
 	.works-header-sticky {
 		position: sticky;
-		top: 65px;
-		z-index: 5;
+		top: 10px;
+		z-index: 210;
 		padding: 0; /* Remove padding to be precise */
 		margin-bottom: 20px; /* 20px gap to content */
 		pointer-events: none; /* Let clicks pass through the empty areas */
@@ -812,13 +763,13 @@ const xfiguraProject = allProjects.find((project) => project.slug === "xfigura")
 
 	@media (max-width: 1024px) {
 		.works-header-sticky {
-			top: 65px !important;
+			top: 10px !important;
 		}
 	}
 
 	@media (max-width: 768px) {
 		.works-header-sticky {
-			top: 61px !important;
+			top: 10px !important;
 		}
 	}
 
@@ -1136,19 +1087,17 @@ const xfiguraProject = allProjects.find((project) => project.slug === "xfigura")
 		.hero-actions-row {
 			padding-inline: 48px;
 			flex-direction: column !important;
-			align-items: center !important;
-			text-align: center !important;
+			align-items: flex-start !important;
+			text-align: left !important;
 			gap: 12px !important;
 			margin-top: 1.5rem !important;
 		}
 		.hero-actions-left {
-			flex-wrap: nowrap !important;
-			justify-content: center !important;
-			align-items: center !important;
-			gap: 1rem !important;
+			align-items: flex-start !important;
+			gap: 0.6rem !important;
 		}
 		.hero-actions {
-			gap: 1rem !important;
+			gap: 0.6rem !important;
 			margin-top: 0 !important;
 		}
 		.hero-divider {
@@ -1186,15 +1135,13 @@ const xfiguraProject = allProjects.find((project) => project.slug === "xfigura")
 		.hero-actions-row {
 			padding-inline: 24px;
 			flex-direction: column !important;
-			align-items: center !important;
-			text-align: center !important;
+			align-items: flex-start !important;
+			text-align: left !important;
 			gap: 12px !important;
 			margin-top: 1.5rem !important;
 		}
 		.hero-actions-left {
-			flex-wrap: nowrap !important;
-			justify-content: center !important;
-			align-items: center !important;
+			align-items: flex-start !important;
 			gap: 0.6rem !important;
 		}
 		.hero-actions {
@@ -1221,7 +1168,7 @@ const xfiguraProject = allProjects.find((project) => project.slug === "xfigura")
 	.hero-headline {
 		text-align: center;
 		max-width: 100%;
-		font-weight: 500;
+		font-weight: 300;
 		letter-spacing: 0em;
 		color: var(
 			--pure-bg-inverse
@@ -1237,18 +1184,19 @@ const xfiguraProject = allProjects.find((project) => project.slug === "xfigura")
 	.bio-short {
 		width: 100%;
 		display: block; /* Default visible */
-		font-family: var(--font-sans);
-		font-weight: 550; /* Bold */
+		font-family: "Google Sans", sans-serif;
+		font-weight: 300;
 		letter-spacing: -0.05em;
+		text-align: left;
 	}
 
 	.bio-line-1 {
-		font-family: "Geist", sans-serif;
-		font-size: 72px;
-		font-weight: 600;
-		letter-spacing: -0.05em;
-		line-height: 0.9;
-		margin-bottom: 0.15em;
+		font-family: "Google Sans", sans-serif;
+		font-size: 36px;
+		font-weight: 300;
+		letter-spacing: -0.02em;
+		line-height: 1.15;
+		margin-bottom: 0;
 	}
 
 	.dynamic-color-text {
@@ -1261,11 +1209,11 @@ const xfiguraProject = allProjects.find((project) => project.slug === "xfigura")
 	}
 
 	.bio-line-2 {
-		font-family: "Geist", sans-serif;
-		font-size: 72px;
-		font-weight: 500;
-		letter-spacing: -0.05em;
-		line-height: 0.9;
+		font-family: "Google Sans", sans-serif;
+		font-size: 36px;
+		font-weight: 300;
+		letter-spacing: -0.02em;
+		line-height: 1.15;
 		color: var(--pure-bg-inverse);
 	}
 
@@ -1275,14 +1223,15 @@ const xfiguraProject = allProjects.find((project) => project.slug === "xfigura")
 		}
 		.bio-line-1 {
 			font-size: 24px;
-			letter-spacing: 0em;
+			letter-spacing: -0.01em;
 		}
 		.bio-line-2 {
 			font-size: 24px;
-			letter-spacing: 0em;
+			letter-spacing: -0.01em;
 		}
 		.bio-text {
 			font-size: 14px; /* More readable body font size on mobile */
+			font-weight: 300;
 			letter-spacing: 0em;
 		}
 		.action-link {
@@ -1341,6 +1290,7 @@ const xfiguraProject = allProjects.find((project) => project.slug === "xfigura")
 		display: none; /* Default hidden */
 		opacity: 0;
 		transition: opacity 0.4s ease;
+		text-align: left;
 
 		/* Remove grid-template-columns which forced width */
 		/* grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); */
@@ -1355,6 +1305,8 @@ const xfiguraProject = allProjects.find((project) => project.slug === "xfigura")
 		font-size: var(--text-base);
 		line-height: var(--body-line-height);
 		color: var(--text-secondary);
+		font-weight: 300;
+		text-align: left;
 	}
 
 	.bio-text a {
@@ -1371,7 +1323,8 @@ const xfiguraProject = allProjects.find((project) => project.slug === "xfigura")
 	@media (min-width: 769px) {
 		.bio-text {
 			--text-base: 1.5rem;
-			--body-line-height: 1.1;
+			--body-line-height: 1.15;
+			font-weight: 300;
 		}
 	}
 
@@ -1390,8 +1343,8 @@ const xfiguraProject = allProjects.find((project) => project.slug === "xfigura")
 	.hero-actions {
 		display: flex;
 		justify-content: flex-start;
-		gap: 1.5rem; /* Increased gap for text links */
-		margin-top: 1rem;
+		gap: 0.2rem;
+		margin-top: 0.25rem;
 	}
 
 	.action-link {
@@ -1456,7 +1409,6 @@ const xfiguraProject = allProjects.find((project) => project.slug === "xfigura")
 
 <script>
 	document.addEventListener("astro:page-load", () => {
-		const readMoreBtn = document.getElementById("read-more-btn");
 		const navAbout = document.getElementById("nav-about");
 		const bioContent = document.querySelector(
 			".bio-content",
@@ -1464,9 +1416,10 @@ const xfiguraProject = allProjects.find((project) => project.slug === "xfigura")
 		const bioShort = document.querySelector(".bio-short") as HTMLElement;
 		const bioLong = document.querySelector(".bio-long") as HTMLElement;
 
-		if (readMoreBtn && bioContent && bioShort && bioLong) {
+		if (bioContent && bioShort && bioLong) {
+			let isBioExpanded = false;
 			const toggleBio = () => {
-				readMoreBtn.classList.toggle("active");
+				isBioExpanded = !isBioExpanded;
 
 				const isShortVisible =
 					getComputedStyle(bioShort).display !== "none";
@@ -1526,18 +1479,9 @@ const xfiguraProject = allProjects.find((project) => project.slug === "xfigura")
 				}, 400);
 			};
 
-			// Read More Button Click
-			readMoreBtn.addEventListener("click", (e) => {
-				e.preventDefault();
-				const scrollY = window.scrollY;
-				toggleBio();
-				// Restore scroll position immediately
-				window.scrollTo(0, scrollY);
-			});
-
 			// Auto-Expand if URL has #about hash (on page load)
 			if (window.location.hash === "#about") {
-				if (!readMoreBtn.classList.contains("active")) {
+				if (!isBioExpanded) {
 					// Delay slightly to ensure DOM is ready
 					setTimeout(() => {
 						toggleBio();
@@ -1561,10 +1505,7 @@ const xfiguraProject = allProjects.find((project) => project.slug === "xfigura")
 					isNavigatingToAbout = true;
 
 					// 1. Expand Bio FIRST (before navigation)
-					if (
-						readMoreBtn &&
-						!readMoreBtn.classList.contains("active")
-					) {
+					if (!isBioExpanded) {
 						toggleBio();
 					}
 
@@ -1588,7 +1529,7 @@ const xfiguraProject = allProjects.find((project) => project.slug === "xfigura")
 				homeLink.addEventListener("click", (e) => {
 					e.preventDefault();
 					// If long bio is showing, collapse it
-					if (readMoreBtn.classList.contains("active")) {
+					if (isBioExpanded) {
 						const scrollY = window.scrollY;
 						toggleBio();
 						window.scrollTo(0, scrollY);
@@ -1612,7 +1553,7 @@ const xfiguraProject = allProjects.find((project) => project.slug === "xfigura")
 
 					// Only run if Expanded AND Works section exists AND not navigating to About
 					if (
-						readMoreBtn.classList.contains("active") &&
+						isBioExpanded &&
 						worksSection &&
 						!isNavigatingToAbout
 					) {
@@ -1637,7 +1578,7 @@ const xfiguraProject = allProjects.find((project) => project.slug === "xfigura")
 							bioContent.style.visibility = "hidden";
 
 							// 4. Swap Content
-							readMoreBtn.classList.remove("active");
+							isBioExpanded = false;
 							bioLong.style.display = "none";
 							bioLong.style.opacity = "0";
 							bioShort.style.display = "block";
@@ -1666,6 +1607,7 @@ const xfiguraProject = allProjects.find((project) => project.slug === "xfigura")
 				},
 				{ passive: true },
 			);
+			}
 
 			// Emoji Hover Display
 			const emojiDisplay = document.querySelector(
@@ -1821,7 +1763,6 @@ const xfiguraProject = allProjects.find((project) => project.slug === "xfigura")
 				window.addEventListener("resize", updateTogglePosition);
 				updateTogglePosition();
 			}
-		}
 	});
 </script>
 

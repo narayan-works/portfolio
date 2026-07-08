@@ -60,7 +60,7 @@ const sortedProjects = allProjects
                             class="nav-inline-link"
                             data-section="home"
                         >
-                            HOME
+                            Home
                         </a>
                         <a
                             href="#about"
@@ -68,7 +68,7 @@ const sortedProjects = allProjects
                             class="nav-inline-link"
                             data-section="about"
                         >
-                            ABOUT
+                            About
                         </a>
                         <a
                             href="#works"
@@ -76,25 +76,20 @@ const sortedProjects = allProjects
                             class="nav-inline-link"
                             data-section="works"
                         >
-                            WORKS
+                            Works
                         </a>
                         <a
                             href="/elsewhere"
                             target="_blank"
                             class="nav-inline-link"
                         >
-                            ELSEWHERE
+                            Elsewhere
                         </a>
                     </div>
                 ) : (
-                    <>
-                        <a href="/#works" class="crumb-link link-item">
-                            Works
-                        </a>
-                        <span class="crumb-current nav-header-label">
-                            {title}
-                        </span>
-                    </>
+                    <a href="/#works" class="crumb-link link-item">
+                        Works
+                    </a>
                 )
             }
         </div>
@@ -298,7 +293,10 @@ const sortedProjects = allProjects
                 const isExpanded =
                     trigger?.getAttribute("aria-expanded") === "true";
 
-                trigger?.setAttribute("aria-expanded", (!isExpanded).toString());
+                trigger?.setAttribute(
+                    "aria-expanded",
+                    (!isExpanded).toString(),
+                );
                 dropdown?.classList.toggle("hidden");
                 trigger?.classList.toggle("active");
             });
@@ -325,7 +323,8 @@ const sortedProjects = allProjects
                     if (!currentFolder) return;
 
                     if (currentFolder.classList.contains("subfolder")) {
-                        const parentList = currentFolder.closest(".tree-children");
+                        const parentList =
+                            currentFolder.closest(".tree-children");
                         const siblings = parentList?.querySelectorAll(
                             ":scope > .subfolder.expanded",
                         );
@@ -356,7 +355,8 @@ const sortedProjects = allProjects
 
             if (readMoreBtn) {
                 const mutationObserver = new MutationObserver(() => {
-                    isReadMoreExpanded = readMoreBtn.classList.contains("active");
+                    isReadMoreExpanded =
+                        readMoreBtn.classList.contains("active");
                     updateHomeActiveState();
                 });
                 mutationObserver.observe(readMoreBtn, {
@@ -428,8 +428,8 @@ const sortedProjects = allProjects
         color: var(--text-secondary);
         text-decoration: none;
         font-size: 12px;
-        font-weight: 600;
-        letter-spacing: 0.05em;
+        font-weight: 500;
+        letter-spacing: -0.14em;
         text-transform: uppercase;
         padding: 4px 8px;
         border-radius: var(--radius-sm);
@@ -568,18 +568,8 @@ const sortedProjects = allProjects
         color: var(--text-muted);
         text-transform: uppercase;
         font-size: 12px;
-        font-weight: 600;
-        letter-spacing: 0.05em;
-    }
-
-    .crumb-current {
-        color: var(--text-secondary);
-        font-weight: 600;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        text-transform: uppercase;
-        font-size: 12px;
-        letter-spacing: 0.05em;
+        font-weight: 500;
+        letter-spacing: -0.02em;
     }
 
     /* --- Tree View Dropdown Styles --- */
@@ -660,7 +650,7 @@ const sortedProjects = allProjects
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        text-transform: uppercase;
+        text-transform: none;
         font-weight: 500;
         letter-spacing: 0.05em;
         flex: 1;
@@ -884,8 +874,7 @@ const sortedProjects = allProjects
     }
 
     /* 3. Text Alignment */
-    .nav-item-text,
-    .nav-header-label {
+    .nav-item-text {
         padding-left: 0px; /* Remove extra padding, rely on the container width */
         text-align: left;
     }

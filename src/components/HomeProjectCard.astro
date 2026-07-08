@@ -269,8 +269,8 @@ const isGif =
     }
 
     .meta-tag {
-        font-family: var(--font-mono);
-        font-size: var(--text-xs);
+        font-family: "Google Sans", sans-serif;
+        font-size: 10px;
         color: var(--text-secondary);
         text-transform: uppercase;
         letter-spacing: 0.06em;
@@ -380,13 +380,13 @@ const isGif =
     }
 
     .meta-project-title {
-        font-family: "Bricolage Grotesque", sans-serif;
-        font-size: 64px;
+        font-family: "Google Sans", sans-serif;
+        font-size: 36px;
         font-weight: 400;
         line-height: 1.2;
         color: var(--text-primary);
         margin: 0;
-        letter-spacing: -0.045em;
+        letter-spacing: -0.02em;
         transition:
             color 0.3s ease,
             font-weight 0.3s ease,
@@ -394,9 +394,9 @@ const isGif =
     }
 
     :global(.project-card-wrapper.is-centered) .meta-project-title {
-        font-size: 73px;
+        font-size: 36px;
         line-height: 0.9;
-        letter-spacing: -0.055em;
+        letter-spacing: -0.02em;
     }
 
     .home-project-card:hover .meta-project-title {
@@ -447,33 +447,53 @@ const isGif =
     /* Category-specific hover colors for project bentos */
     .home-project-card[data-categories~="hardware-ux"]:hover {
         border-color: #559ed5;
-        background: linear-gradient(135deg, rgba(130, 198, 246, 0.85) 0%, rgba(70, 150, 211, 0.85) 100%);
+        background: linear-gradient(
+            135deg,
+            rgba(130, 198, 246, 0.85) 0%,
+            rgba(70, 150, 211, 0.85) 100%
+        );
     }
 
     .home-project-card[data-categories~="web-ux"]:hover {
         border-color: #e05105;
-        background: linear-gradient(135deg, rgba(255, 126, 54, 0.85) 0%, rgba(204, 71, 0, 0.85) 100%);
+        background: linear-gradient(
+            135deg,
+            rgba(255, 126, 54, 0.85) 0%,
+            rgba(204, 71, 0, 0.85) 100%
+        );
     }
 
     .home-project-card[data-categories~="mobile-ux"]:hover {
         border-color: #dfbc05;
-        background: linear-gradient(135deg, rgba(255, 223, 76, 0.85) 0%, rgba(204, 171, 0, 0.85) 100%);
+        background: linear-gradient(
+            135deg,
+            rgba(255, 223, 76, 0.85) 0%,
+            rgba(204, 171, 0, 0.85) 100%
+        );
     }
 
     .home-project-card[data-categories~="spatial-xd"]:hover {
         border-color: #258835;
-        background: linear-gradient(135deg, rgba(61, 184, 83, 0.85) 0%, rgba(24, 110, 37, 0.85) 100%);
+        background: linear-gradient(
+            135deg,
+            rgba(61, 184, 83, 0.85) 0%,
+            rgba(24, 110, 37, 0.85) 100%
+        );
     }
 
     .home-project-card[data-categories~="experiments"]:hover {
         border-color: #5541b7;
-        background: linear-gradient(135deg, rgba(168, 85, 247, 0.85) 0%, rgba(147, 51, 234, 0.85) 100%);
+        background: linear-gradient(
+            135deg,
+            rgba(168, 85, 247, 0.85) 0%,
+            rgba(147, 51, 234, 0.85) 100%
+        );
     }
 
     @media (max-width: 768px) {
         .meta-project-title,
         :global(.project-card-wrapper.is-centered) .meta-project-title {
-            font-size: 56px !important;
+            font-size: 36px !important;
         }
     }
 </style>

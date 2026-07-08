@@ -18,7 +18,7 @@ import happyLogo from "../assets/happy.png";
                     height={96}
                 />
             </div>
-            <span class="logo-name">Narayan Ashanahalli</span>
+            <span class="logo-name"></span>
         </a>
 
         <!-- Right: Links -->
@@ -128,20 +128,69 @@ import happyLogo from "../assets/happy.png";
         padding: 0 16px; /* No vertical padding, 16px horizontal */
         height: 52.5px; /* 1.5 times the 35px filter bar height */
         box-sizing: border-box;
-        background: var(--bg-glass);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border-bottom: 1px solid var(--border-subtle);
+        background: transparent;
         display: flex;
         align-items: center;
     }
 
     .home-nav-container {
+        position: relative;
+        isolation: isolate;
         display: flex;
         justify-content: space-between;
         align-items: center;
         width: 100%;
         height: 100%;
+	}
+
+    .home-nav-container::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+            to bottom,
+            rgba(255, 255, 255, 0.24) 0%,
+            rgba(255, 255, 255, 0.2) 10%,
+            rgba(255, 255, 255, 0.14) 24%,
+            rgba(255, 255, 255, 0.08) 40%,
+            rgba(255, 255, 255, 0.035) 58%,
+            rgba(255, 255, 255, 0.012) 74%,
+            rgba(255, 255, 255, 0) 100%
+        );
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        -webkit-mask-image: linear-gradient(
+            to bottom,
+            black 0%,
+            black 18%,
+            rgba(0, 0, 0, 0.92) 34%,
+            rgba(0, 0, 0, 0.6) 52%,
+            rgba(0, 0, 0, 0.22) 70%,
+            transparent 100%
+        );
+        mask-image: linear-gradient(
+            to bottom,
+            black 0%,
+            black 18%,
+            rgba(0, 0, 0, 0.92) 34%,
+            rgba(0, 0, 0, 0.6) 52%,
+            rgba(0, 0, 0, 0.22) 70%,
+            transparent 100%
+        );
+        z-index: -1;
+    }
+
+    :global(html:not([data-theme="light"])) .home-nav-container::before {
+        background: linear-gradient(
+            to bottom,
+            rgba(0, 0, 0, 0.6) 0%,
+            rgba(0, 0, 0, 0.5) 10%,
+            rgba(0, 0, 0, 0.35) 24%,
+            rgba(0, 0, 0, 0.2) 40%,
+            rgba(0, 0, 0, 0.09) 58%,
+            rgba(0, 0, 0, 0.03) 74%,
+            rgba(0, 0, 0, 0) 100%
+        );
     }
 
     .home-nav-logo {
@@ -183,10 +232,10 @@ import happyLogo from "../assets/happy.png";
 
     .logo-name {
         font-family: var(--font-sans);
-        font-size: 12px;
+        font-size: 14px;
         font-weight: 450;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
+        text-transform: none;
+        letter-spacing: 0.01rem;
         line-height: 1;
         cursor: pointer;
         transition: font-weight 0.2s ease, color 0.2s ease;
@@ -200,10 +249,10 @@ import happyLogo from "../assets/happy.png";
 
     .home-nav-link {
         font-family: var(--font-sans);
-        font-size: 12px;
+        font-size: 14px;
         font-weight: 450;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
+        text-transform: none;
+        letter-spacing: 0;
         line-height: 1;
         color: var(--text-secondary);
         text-decoration: none;
