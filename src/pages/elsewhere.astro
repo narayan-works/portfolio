@@ -35,7 +35,7 @@ const imageScales: Record<string, number> = {
 	description="Side quests, visual studies, and early prototypes that give me space to keep shaping how I think about people, systems, and context."
 	fullWidth={true}
 >
-	<HomeNavigation transition:persist />
+	<HomeNavigation />
 
 	<div class="elsewhere-layout">
 		<header class="elsewhere-header">
@@ -146,8 +146,8 @@ const imageScales: Record<string, number> = {
 
 	.elsewhere-title {
 		font-family: "Google Sans", sans-serif;
-		font-size: 96px;
-		font-weight: 500;
+		font-size: 48px;
+		font-weight: 450;
 		line-height: 1.05;
 		color: var(--text-primary);
 		margin: 0 0 24px 0;
@@ -155,9 +155,9 @@ const imageScales: Record<string, number> = {
 
 	.elsewhere-intro {
 		font-family: "Google Sans", var(--font-sans), sans-serif;
-		font-size: 18px;
+		font-size: 14px;
 		font-weight: 300;
-		line-height: 1.45;
+		line-height: 1.2;
 		color: var(--text-secondary);
 		letter-spacing: -0.02em;
 		margin: 0;
@@ -256,21 +256,22 @@ const imageScales: Record<string, number> = {
 	}
 
 	.elsewhere-card-title {
-		font-family: "Bricolage Grotesque", sans-serif;
-		font-size: 24px;
-		font-weight: 500;
+		font-family: "Google Sans", sans-serif;
+		font-size: 28px;
+		font-weight: 300;
 		line-height: 1.2;
+		letter-spacing: -0.02em;
 		color: #ffffff;
 		margin: 0 0 8px 0;
 	}
 
 	.elsewhere-card-tags {
-		font-family: var(--font-mono), monospace;
+		font-family: "Google Sans", var(--font-sans), sans-serif;
 		font-size: 11px;
-		font-weight: 700;
+		font-weight: 500;
 		color: rgba(255, 255, 255, 0.8);
-		text-transform: uppercase;
-		letter-spacing: 0.08em;
+		/* text-transform: uppercase;
+		letter-spacing: 0.08em; */
 		margin-bottom: 16px;
 		line-height: 1.3;
 	}
@@ -322,3 +323,41 @@ const imageScales: Record<string, number> = {
 		}
 	}
 </style>
+
+<script>
+	document.addEventListener("astro:page-load", () => {
+		// Floating Theme Toggle Footer Collision Logic
+		const toggleFloater = document.querySelector(
+			".toggle-floater",
+		) as HTMLElement;
+		const footer = document.querySelector(".site-footer") as HTMLElement;
+		if (toggleFloater && footer) {
+			const updateTogglePosition = () => {
+				const footerRect = footer.getBoundingClientRect();
+				const windowHeight = window.innerHeight;
+				const margin = 20;
+
+				if (footerRect.top < windowHeight) {
+					const offset = windowHeight - footerRect.top + margin;
+					toggleFloater.style.setProperty(
+						"bottom",
+						`${offset}px`,
+						"important",
+					);
+				} else {
+					toggleFloater.style.setProperty(
+						"bottom",
+						"20px",
+						"important",
+					);
+				}
+			};
+
+			window.addEventListener("scroll", updateTogglePosition, {
+				passive: true,
+			});
+			window.addEventListener("resize", updateTogglePosition);
+			updateTogglePosition();
+		}
+	});
+</script>

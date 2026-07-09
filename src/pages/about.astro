@@ -1,0 +1,257 @@
+---
+import Layout from "../layouts/Layout.astro";
+import HomeNavigation from "../components/HomeNavigation.astro";
+import ThemeToggle from "../components/ThemeToggle.astro";
+import Footer from "../components/Footer.astro";
+import GhostRunner from "../components/GhostRunner.astro";
+---
+
+<Layout
+	title="About | Narayan Ashanahalli"
+	description="Product Designer & Prototyper building 0-to-1 experiences across AI, hardware, and digital infrastructure."
+	fullWidth={true}
+>
+	<HomeNavigation />
+
+	<div class="about-layout">
+		<header class="about-header">
+			<h1 class="about-title">About</h1>
+		</header>
+
+		<div class="about-divider"></div>
+
+		<div class="about-body">
+			<p>
+				👋 I'm Narayan Ashanahalli, a Product Designer &
+				Prototyper building [0-to-1]&nbsp;experiences across AI,
+				hardware, and digital infrastructure. With a foundation in
+				architecture, I apply systems thinking and rapid
+				prototyping to create digital products that feel responsive
+				and grounded in existing ecosystems.
+			</p>
+			<p>
+				🎯 The question I keep coming back to: how do we make
+				technology feel present in the physical world rather than
+				extracting people into screens? I care about interactions
+				that feel natural, where the interface fades and people
+				focus on what they're actually doing.
+			</p>
+			<p>
+				🔧 I'm currently working as a Design Researcher at Lab 4
+				Cybernetics with <a
+					href="https://pangaro.com/"
+					target="_blank"
+					rel="noopener noreferrer">Paul Pangaro</a
+				>, building the lab's digital infrastructure: <a
+					href="https://lab4cybernetics.vercel.app"
+					target="_blank"
+					rel="noopener noreferrer">the website</a
+				>, a practitioner-scholar <a
+					href="https://l4cybernetics.vercel.app/matching"
+					target="_blank"
+					rel="noopener noreferrer">matching platform</a
+				>, and a knowledge graph system organizing <a
+					href="https://publish.obsidian.md/lab4c"
+					target="_blank"
+					rel="noopener noreferrer">cybernetics concepts</a
+				>.
+			</p>
+			<p>
+				🤖 My thesis project, supported by the <a
+					href="https://studioforcreativeinquiry.org/frff-grants-microgrants"
+					target="_blank"
+					rel="noopener noreferrer">Frank-Ratchye Further Fund</a
+				>, explores how physically embodied AI can provide spatial
+				task assistance through laser-pointing, bridging LLM
+				reasoning with physical spatial referencing.
+			</p>
+			<p>
+				💡 I'm learning that the best design work happens in the
+				infrastructure: building repositories, systems, and tools
+				that let others create and scale. I want to build tools
+				that feel like extensions of how people naturally think and
+				interact, not systems they have to manage.
+			</p>
+		</div>
+
+		<Footer />
+		<div class="game-bottom-wrapper">
+			<GhostRunner />
+		</div>
+	</div>
+
+	<div class="toggle-floater">
+		<div class="sidebar-controls">
+			<ThemeToggle />
+		</div>
+	</div>
+</Layout>
+
+<style>
+	.about-layout {
+		width: 100%;
+		max-width: 100%;
+		box-sizing: border-box;
+		padding: 140px 48px 0;
+		margin: 0;
+		background: var(--bg-primary);
+		min-height: 100vh;
+	}
+
+	.toggle-floater {
+		position: fixed !important;
+		bottom: 20px !important;
+		right: 20px !important;
+		top: auto !important;
+		margin: 0 !important;
+		padding: 0 !important;
+		z-index: 9999 !important;
+		width: auto;
+		display: flex;
+		justify-content: flex-end;
+	}
+
+	.sidebar-controls {
+		display: flex;
+		gap: 1rem;
+		align-items: center;
+	}
+
+	.about-header {
+		max-width: 860px;
+		margin-bottom: 48px;
+		text-align: left;
+	}
+
+	.about-title {
+		font-family: "Google Sans", sans-serif;
+		font-size: 48px;
+		font-weight: 450;
+		line-height: 1.05;
+		color: var(--text-primary);
+		margin: 0;
+	}
+
+	.about-divider {
+		width: 100%;
+		height: 1px;
+		background: var(--border-subtle);
+		margin-bottom: 48px;
+	}
+
+	.about-body {
+		display: flex;
+		flex-direction: column;
+		gap: 1.5rem;
+		max-width: 860px;
+		margin-bottom: 96px;
+	}
+
+	.about-body p {
+		font-family: var(--font-sans);
+		font-size: 1.5rem;
+		line-height: 1.4;
+		color: var(--text-secondary);
+		font-weight: 300;
+		text-align: left;
+		margin: 0;
+	}
+
+	.about-body a {
+		color: inherit;
+		text-decoration: underline;
+		text-underline-offset: 3px;
+		text-decoration-thickness: 1px;
+	}
+
+	.about-body a:hover {
+		color: var(--accent-secondary);
+	}
+
+	:global(.about-layout) :global(.site-footer) {
+		width: calc(100% + 96px) !important;
+		margin-left: -48px !important;
+		margin-right: -48px !important;
+	}
+
+	.game-bottom-wrapper {
+		position: relative;
+		width: calc(100% + 96px);
+		margin-left: -48px;
+		margin-top: 0px;
+		margin-bottom: 0px;
+		z-index: 0;
+	}
+
+	.game-bottom-wrapper :global(.ghost-game-container) {
+		border-radius: 0;
+		border: none;
+		border-top: 1px solid var(--border-subtle);
+		width: 100%;
+	}
+
+	@media (max-width: 1024px) {
+		.about-title {
+			font-size: 64px;
+		}
+	}
+
+	@media (max-width: 640px) {
+		.about-layout {
+			padding: 100px 16px 0;
+		}
+		:global(.about-layout) :global(.site-footer) {
+			width: calc(100% + 32px) !important;
+			margin-left: -16px !important;
+			margin-right: -16px !important;
+		}
+		.game-bottom-wrapper {
+			width: calc(100% + 32px);
+			margin-left: -16px;
+		}
+		.about-title {
+			font-size: 40px;
+		}
+		.about-body p {
+			font-size: 1.1rem;
+		}
+	}
+</style>
+
+<script>
+	document.addEventListener("astro:page-load", () => {
+		// Floating Theme Toggle Footer Collision Logic
+		const toggleFloater = document.querySelector(
+			".toggle-floater",
+		) as HTMLElement;
+		const footer = document.querySelector(".site-footer") as HTMLElement;
+		if (toggleFloater && footer) {
+			const updateTogglePosition = () => {
+				const footerRect = footer.getBoundingClientRect();
+				const windowHeight = window.innerHeight;
+				const margin = 20;
+
+				if (footerRect.top < windowHeight) {
+					const offset = windowHeight - footerRect.top + margin;
+					toggleFloater.style.setProperty(
+						"bottom",
+						`${offset}px`,
+						"important",
+					);
+				} else {
+					toggleFloater.style.setProperty(
+						"bottom",
+						"20px",
+						"important",
+					);
+				}
+			};
+
+			window.addEventListener("scroll", updateTogglePosition, {
+				passive: true,
+			});
+			window.addEventListener("resize", updateTogglePosition);
+			updateTogglePosition();
+		}
+	});
+</script>

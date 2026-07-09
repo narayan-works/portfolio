@@ -70,7 +70,7 @@ const xfiguraProject = allProjects.find((project) => project.slug === "xfigura")
 	description="👋 I'm Narayan, a Product Designer & Prototyper building 0-to-1 experiences across AI, hardware, and digital infrastructure."
 	fullWidth={true}
 >
-	<HomeNavigation transition:persist />
+	<HomeNavigation />
 
 	<div class="toggle-floater">
 		<div class="sidebar-controls">
@@ -100,61 +100,6 @@ const xfiguraProject = allProjects.find((project) => project.slug === "xfigura")
 								building [0-to-1]&nbsp;experiences across<br />AI, hardware, and digital infrastructure.
 						</div>
 					</div>
-					<div class="hero-headline bio-long">
-						<div class="bio-text">
-							<span class="dynamic-color-text"
-								>👋 I'm Narayan Ashanahalli,<br />
-								a Product Designer & Prototyper</span
-							><br /><br />
-							building [0-to-1]&nbsp;experiences across AI, hardware, and digital infrastructure. With a foundation
-							in architecture, I apply systems thinking and rapid prototyping
-							to create digital products that feel responsive and grounded
-							in existing ecosystems.
-							<br /><br />
-							🎯 The question I keep coming back to: how do we make
-							technology feel present in the physical world rather than
-							extracting people into screens? I care about interactions
-							that feel natural, where the interface fades and people
-							focus on what they're actually doing.
-							<br /><br />
-							🔧 I'm currently working as a Design Researcher at Lab
-							4 Cybernetics with <a
-								href="https://pangaro.com/"
-								target="_blank"
-								rel="noopener noreferrer">Paul Pangaro</a
-							>, building the lab's digital infrastructure: <a
-								href="https://lab4cybernetics.vercel.app"
-								target="_blank"
-								rel="noopener noreferrer">the website</a
-							>, a practitioner-scholar <a
-								href="https://l4cybernetics.vercel.app/matching"
-								target="_blank"
-								rel="noopener noreferrer">matching platform</a
-							>, and a knowledge graph system organizing <a
-								href="https://publish.obsidian.md/lab4c"
-								target="_blank"
-								rel="noopener noreferrer"
-								>cybernetics concepts</a
-							>.
-							<br /><br />
-							🤖 My thesis project, supported by the <a
-								href="https://studioforcreativeinquiry.org/frff-grants-microgrants"
-								target="_blank"
-								rel="noopener noreferrer"
-								>Frank-Ratchye Further Fund</a
-							>, explores how physically embodied AI can provide
-							spatial task assistance through laser-pointing,
-							bridging LLM reasoning with physical spatial
-							referencing.
-							<br /><br />
-							💡 I'm learning that the best design work happens in the
-							infrastructure: building repositories, systems, and tools
-							that let others create and scale. I want to build tools
-							that feel like extensions of how people naturally think
-							and interact, not systems they have to manage.
-						</div>
-					</div>
-					<div class="emoji-display"></div>
 				</div>
 
 				<div class="hero-actions-row">
@@ -1120,9 +1065,6 @@ const xfiguraProject = allProjects.find((project) => project.slug === "xfigura")
 		.bio-line-2 {
 			font-size: 32px;
 		}
-		.bio-text {
-			font-size: 22px;
-		}
 	}
 
 	@media (max-width: 768px) {
@@ -1229,50 +1171,11 @@ const xfiguraProject = allProjects.find((project) => project.slug === "xfigura")
 			font-size: 24px;
 			letter-spacing: -0.01em;
 		}
-		.bio-text {
-			font-size: 14px; /* More readable body font size on mobile */
-			font-weight: 300;
-			letter-spacing: 0em;
-		}
 		.action-link {
 			font-size: 12px !important;
 		}
 	}
 
-	/* Emoji Hover Effect */
-	.emoji-hover {
-		position: relative;
-		cursor: pointer;
-		transition: color 0.2s ease;
-	}
-
-	.emoji-hover:hover {
-		color: var(--accent-secondary);
-	}
-
-	.emoji-display {
-		position: absolute;
-		bottom: -0.5em;
-		right: -2.5em;
-		font-size: 2em;
-		pointer-events: none;
-		min-height: 2em;
-		display: flex;
-		align-items: center;
-	}
-
-	@media (max-width: 1024px) {
-		.emoji-display {
-			position: static;
-			font-size: 1.5em;
-			margin-top: 0.25em;
-			margin-bottom: 0.25em;
-		}
-	}
-
-	.emoji-display.hidden {
-		display: none;
-	}
 	:global([data-theme="light"]) .bio-short .highlight .u-item {
 		text-decoration: underline;
 		text-underline-offset: 4px;
@@ -1282,61 +1185,6 @@ const xfiguraProject = allProjects.find((project) => project.slug === "xfigura")
 	/* The parent highlight still controls color */
 	:global([data-theme="light"]) .bio-short .highlight {
 		color: var(--text-highlight);
-	}
-
-	.bio-long {
-		width: 100%;
-		/* max-width removed to span full width (2 columns) */
-		display: none; /* Default hidden */
-		opacity: 0;
-		transition: opacity 0.4s ease;
-		text-align: left;
-
-		/* Remove grid-template-columns which forced width */
-		/* grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); */
-		gap: 1.25rem;
-	}
-
-	/* When active, we set display: block/grid in JS. 
-	   If we use block, width works fine. */
-
-	.bio-text {
-		font-family: var(--font-sans);
-		font-size: var(--text-base);
-		line-height: var(--body-line-height);
-		color: var(--text-secondary);
-		font-weight: 300;
-		text-align: left;
-	}
-
-	.bio-text a {
-		text-decoration: underline;
-		text-underline-offset: 3px;
-		text-decoration-thickness: 1px;
-	}
-
-	.bio-text a:hover {
-		color: var(--accent-secondary);
-	}
-
-	/* Desktop: larger font size */
-	@media (min-width: 769px) {
-		.bio-text {
-			--text-base: 1.5rem;
-			--body-line-height: 1.15;
-			font-weight: 300;
-		}
-	}
-
-	@media (max-width: 768px) {
-		/* Collapse to single column on mobile */
-		.bio-text {
-			grid-column: 1 / -1;
-		}
-		.bio-long {
-			max-width: 100%;
-			width: 100%;
-		}
 	}
 
 	/* Hero Actions (Links) */
@@ -1366,14 +1214,6 @@ const xfiguraProject = allProjects.find((project) => project.slug === "xfigura")
 		transition: color 0.2s ease;
 	}
 
-	#read-more-btn {
-		font-family: "Google Sans", sans-serif;
-		font-size: 16px;
-		font-weight: 400;
-		letter-spacing: 0em;
-		line-height: 1;
-	}
-
 	.action-link:hover {
 		color: var(--accent-secondary);
 	}
@@ -1396,245 +1236,22 @@ const xfiguraProject = allProjects.find((project) => project.slug === "xfigura")
 		transform: scaleX(1);
 		transform-origin: left;
 	}
-
-	/* Chevron Animation */
-	.chevron {
-		transition: transform 0.3s ease;
-	}
-
-	.read-more.active .chevron {
-		transform: rotate(180deg);
-	}
 </style>
 
 <script>
 	document.addEventListener("astro:page-load", () => {
-		const navAbout = document.getElementById("nav-about");
-		const bioContent = document.querySelector(
-			".bio-content",
-		) as HTMLElement;
-		const bioShort = document.querySelector(".bio-short") as HTMLElement;
-		const bioLong = document.querySelector(".bio-long") as HTMLElement;
-
-		if (bioContent && bioShort && bioLong) {
-			let isBioExpanded = false;
-			const toggleBio = () => {
-				isBioExpanded = !isBioExpanded;
-
-				const isShortVisible =
-					getComputedStyle(bioShort).display !== "none";
-
-				// 1. Lock Container Height (Current State)
-				const startHeight = bioContent.offsetHeight;
-				bioContent.style.height = `${startHeight}px`;
-
-				if (isShortVisible) {
-					// EXPANDING: Short -> Long
-
-					// Instant Disappear Short
-					bioShort.style.display = "none";
-
-					// Prepare Long (Grid)
-					bioLong.style.display = "grid";
-					bioLong.style.opacity = "0";
-
-					// Measure Target Height
-					// Unset container height temporarily to measure
-					bioContent.style.height = "auto";
-					const targetHeight = bioContent.scrollHeight;
-					// Reset to start
-					bioContent.style.height = `${startHeight}px`;
-
-					// Force Reflow
-					void bioContent.offsetWidth;
-
-					// Animate
-					bioContent.style.height = `${targetHeight}px`;
-					bioLong.style.opacity = "1";
+		// HOME Link Click - smooth scroll to top
+		const homeLink = document.getElementById("nav-home-link");
+		if (homeLink) {
+			homeLink.addEventListener("click", (e) => {
+				e.preventDefault();
+				if ((window as any).lenis) {
+					(window as any).lenis.scrollTo(0);
 				} else {
-					// COLLAPSING: Long -> Short
-
-					// Instant Disappear Long
-					bioLong.style.display = "none";
-					bioLong.style.opacity = "0";
-
-					// Prepare Short
-					bioShort.style.display = "block";
-
-					// Measure Target Height
-					bioContent.style.height = "auto";
-					const targetHeight = bioContent.scrollHeight;
-					bioContent.style.height = `${startHeight}px`;
-
-					// Force Reflow
-					void bioContent.offsetWidth;
-
-					// Animate
-					bioContent.style.height = `${targetHeight}px`;
+					window.scrollTo({ top: 0, behavior: "smooth" });
 				}
-
-				// Cleanup after transition
-				setTimeout(() => {
-					bioContent.style.height = "auto";
-				}, 400);
-			};
-
-			// Auto-Expand if URL has #about hash (on page load)
-			if (window.location.hash === "#about") {
-				if (!isBioExpanded) {
-					// Delay slightly to ensure DOM is ready
-					setTimeout(() => {
-						toggleBio();
-					}, 100);
-				}
-			}
-
-			// About Link Click handler (works for both dropdown and inline nav)
-			let isNavigatingToAbout = false;
-
-			const aboutClickTargets = [
-				document.getElementById("nav-about"),
-				document.getElementById("nav-about-link"),
-			].filter(Boolean);
-
-			aboutClickTargets.forEach((aboutEl) => {
-				aboutEl!.addEventListener("click", (e) => {
-					e.preventDefault();
-
-					// Set flag to prevent auto-collapse
-					isNavigatingToAbout = true;
-
-					// 1. Expand Bio FIRST (before navigation)
-					if (!isBioExpanded) {
-						toggleBio();
-					}
-
-					// 2. Scroll to top to show the bio
-					if ((window as any).lenis) {
-						(window as any).lenis.scrollTo(0);
-					} else {
-						window.scrollTo({ top: 0, behavior: "smooth" });
-					}
-
-					// 3. Clear flag after a delay
-					setTimeout(() => {
-						isNavigatingToAbout = false;
-					}, 1500);
-				});
 			});
-
-			// HOME Link Click - collapse long bio back to short
-			const homeLink = document.getElementById("nav-home-link");
-			if (homeLink) {
-				homeLink.addEventListener("click", (e) => {
-					e.preventDefault();
-					// If long bio is showing, collapse it
-					if (isBioExpanded) {
-						const scrollY = window.scrollY;
-						toggleBio();
-						window.scrollTo(0, scrollY);
-					}
-					// Scroll to top
-					if ((window as any).lenis) {
-						(window as any).lenis.scrollTo(0);
-					} else {
-						window.scrollTo({ top: 0, behavior: "smooth" });
-					}
-				});
-			}
-			// Auto-Collapse Logic (Silent with Scroll Compensation)
-			let isCollapsing = false;
-			window.addEventListener(
-				"scroll",
-				() => {
-					if (isCollapsing) return; // Guard against re-entrant scroll events
-
-					const worksSection = document.getElementById("works");
-
-					// Only run if Expanded AND Works section exists AND not navigating to About
-					if (
-						isBioExpanded &&
-						worksSection &&
-						!isNavigatingToAbout
-					) {
-						const worksTop = worksSection.offsetTop;
-						const scrollY = window.scrollY;
-
-						// Check if we have scrolled into Works (with a small buffer)
-						if (scrollY > worksTop - 100) {
-							isCollapsing = true;
-
-							// 1. Snapshot relative position of the anchor element (Works)
-							const worksViewportTop =
-								worksSection.getBoundingClientRect().top;
-
-							// 2. Disable smooth scroll & anchoring to prevent jump
-							document.documentElement.style.scrollBehavior =
-								"auto";
-							document.body.style.overflowAnchor = "none";
-
-							// 3. Hide container to prevent flash
-							bioContent.style.transition = "none";
-							bioContent.style.visibility = "hidden";
-
-							// 4. Swap Content
-							isBioExpanded = false;
-							bioLong.style.display = "none";
-							bioLong.style.opacity = "0";
-							bioShort.style.display = "block";
-							bioContent.style.height = "auto";
-
-							// 5. Force layout update
-							void bioContent.offsetHeight;
-
-							// 6. Calculate new absolute position and scroll to restore viewport position
-							const newWorksTop = worksSection.offsetTop;
-							window.scrollTo(0, newWorksTop - worksViewportTop);
-
-							// 7. Show content
-							bioContent.style.visibility = "";
-
-							// 8. Restore settings in next frame
-							requestAnimationFrame(() => {
-								document.documentElement.style.scrollBehavior =
-									"";
-								document.body.style.overflowAnchor = "";
-								bioContent.style.transition = "";
-								isCollapsing = false;
-							});
-						}
-					}
-				},
-				{ passive: true },
-			);
-			}
-
-			// Emoji Hover Display
-			const emojiDisplay = document.querySelector(
-				".emoji-display",
-			) as HTMLElement;
-			const emojiHovers = document.querySelectorAll(".emoji-hover");
-
-			emojiHovers.forEach((hover) => {
-				hover.addEventListener("mouseenter", () => {
-					const emoji = hover.getAttribute("data-emoji");
-					if (emojiDisplay && emoji) {
-						emojiDisplay.textContent = emoji;
-						emojiDisplay.classList.remove("hidden");
-					}
-				});
-
-				hover.addEventListener("mouseleave", () => {
-					if (emojiDisplay) {
-						emojiDisplay.classList.add("hidden");
-					}
-				});
-			});
-
-			// Hide emoji display initially
-			if (emojiDisplay) {
-				emojiDisplay.classList.add("hidden");
-			}
+		}
 
 			// Bracket Hover Transition Width Measurement & State Management
 			const bracketWrappers = document.querySelectorAll(
