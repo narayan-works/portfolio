@@ -227,8 +227,20 @@
                 }
             };
             window.addEventListener("resize", resize);
-            // Call resize initially
-            setTimeout(resize, 0); // Defer slightly to ensure parent exists/sized
+            // A single setTimeout(0)/"load" call isn't reliable: this section is
+            // the very last thing on a huge, image-heavy homepage, so on a slow
+            // connection "load" can be delayed arbitrarily (or never fire) while
+            // everything above is still downloading, leaving the canvas sized to
+            // whatever its container measured at 0. A ResizeObserver instead
+            // fires with the container's real size the moment it's observed,
+            // and again any time that size actually changes (images/fonts
+            // above finishing, viewport resize) — independent of page load time.
+            if ("ResizeObserver" in window) {
+                new ResizeObserver(resize).observe(canvas.parentElement!);
+            } else {
+                setTimeout(resize, 0);
+                window.addEventListener("load", resize);
+            }
 
             // Input
             const startHold = (e: Event) => {

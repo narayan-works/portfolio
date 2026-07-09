@@ -9,46 +9,97 @@ import { Image } from "astro:assets";
 
 interface Props {
     slides: Slide[];
+    constrain?: boolean;
+    autoplay?: boolean;
+    interval?: number;
+    showControls?: boolean;
+    transitionType?: "slide" | "instant";
+    indicatorType?: "segmented" | "dots";
+    variant?: "standard" | "carousel";
+    initialIndex?: number;
 }
 
-const { slides } = Astro.props;
+const {
+    slides,
+    constrain = true,
+    autoplay = false,
+    interval = 3000,
+    showControls = true,
+    transitionType = "slide",
+    indicatorType = "segmented",
+    variant = "standard",
+    initialIndex = 0,
+} = Astro.props;
 const sliderId = `slider-${Math.random().toString(36).substr(2, 9)}`;
 ---
 
-<div class="image-slider" id={sliderId}>
+<div
+    class:list={["image-slider", { constrained: constrain }]}
+    id={sliderId}
+    data-transition={transitionType}
+    data-variant={variant}
+>
     <div class="slider-display">
         <div class="slider-track">
             {
                 slides.map((slide, index) => (
                     <div class="slide" data-index={index}>
-                        <Image
-                            src={slide.src}
-                            alt={slide.alt}
-                            width={1920}
-                            height={1080}
-                            loading="lazy"
-                            decoding="async"
-                            class="optimized-slide-image"
-                        />
+                        {typeof slide.src === "string" && slide.src.endsWith(".gif") ? (
+                            <img
+                                src={slide.src}
+                                alt={slide.alt}
+                                loading="lazy"
+                                decoding="async"
+                                class="optimized-slide-image"
+                            />
+                        ) : (
+                            <Image
+                                src={slide.src}
+                                alt={slide.alt}
+                                width={1920}
+                                height={1080}
+                                loading="lazy"
+                                decoding="async"
+                                class="optimized-slide-image"
+                            />
+                        )}
                     </div>
                 ))
             }
         </div>
     </div>
 
-    <div class="slider-controls">
-        <div class="active-pill"></div>
-        {
-            slides.map((slide, index) => (
-                <button
-                    class={`control-btn ${index === 0 ? "active" : ""}`}
-                    data-target={index}
-                >
-                    {slide.label}
-                </button>
-            ))
-        }
-    </div>
+    {showControls && (
+        indicatorType === "segmented" ? (
+            <div class="slider-controls">
+                <div class="active-pill"></div>
+                {
+                    slides.map((slide, index) => (
+                        <button
+                            class={`control-btn ${index === initialIndex ? "active" : ""}`}
+                            data-target={index}
+                        >
+                            {slide.label}
+                        </button>
+                    ))
+                }
+            </div>
+        ) : (
+            <div class="slider-dots">
+                {
+                    slides.map((slide, index) => (
+                        <button
+                            class={`slider-dot-wrap ${index === initialIndex ? "active" : ""}`}
+                            data-target={index}
+                            aria-label={`Go to slide ${index + 1}`}
+                        >
+                            <span class="slider-dot-pill" />
+                        </button>
+                    ))
+                }
+            </div>
+        )
+    )}
 </div>
 
 <style>
@@ -59,9 +110,16 @@ const sliderId = `slider-${Math.random().toString(36).substr(2, 9)}`;
         display: flex;
         flex-direction: column;
         gap: 1rem;
-        /* Constrain to 900px body width */
-        padding-inline: max(0rem, calc(50% - 450px));
+        padding-inline: 0;
         box-sizing: border-box;
+        overflow: hidden; /* Contain horizontal overflow bleed */
+        user-select: none; /* Prevent accidental text highlighting during drag */
+    }
+
+    .image-slider.constrained {
+        max-width: min(750px, 100%);
+        margin-left: auto;
+        margin-right: auto;
     }
 
     .slider-display {
@@ -71,6 +129,12 @@ const sliderId = `slider-${Math.random().toString(36).substr(2, 9)}`;
         border-radius: var(--radius-md);
         overflow: hidden;
         background: var(--surface-secondary);
+        cursor: grab;
+        touch-action: pan-y; /* Prevent browser horizontal swipe gestures from interrupting slider drag */
+    }
+
+    .slider-display:active {
+        cursor: grabbing;
     }
 
     .slider-track {
@@ -78,18 +142,71 @@ const sliderId = `slider-${Math.random().toString(36).substr(2, 9)}`;
         width: 100%;
         height: 100%;
         transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+        will-change: transform;
+    }
+
+    .image-slider[data-transition="instant"] .slider-track {
+        transition: none !important;
     }
 
     .slide {
         min-width: 100%;
         height: 100%;
         position: relative;
+        z-index: 1;
     }
 
     .slide .optimized-slide-image {
         width: 100%;
         height: 100%;
         object-fit: cover;
+        pointer-events: none; /* Prevent browser native image dragging */
+        background: var(--bg-primary); /* Solid background to block transparency bleed through */
+    }
+
+    /* CAROUSEL VARIANT (Cover Flow / Peeking Adjacent Slides) */
+    .image-slider[data-variant="carousel"] {
+        padding-top: 24px;
+        padding-bottom: 24px;
+    }
+
+    .image-slider[data-variant="carousel"] .slider-display {
+        width: 55%; /* Slightly wider center slide */
+        overflow: visible;
+        margin: 0 auto;
+        aspect-ratio: 16/10;
+        background: transparent;
+        border-radius: 0;
+    }
+
+    .image-slider[data-variant="carousel"] .slide {
+        min-width: 100%;
+        padding: 0 4px; /* Reduced gap from 12px to 4px to pull slides closer */
+        box-sizing: border-box;
+        opacity: 0.35;
+        transform: scale(0.85);
+        transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    /* Align scaling towards center image to minimize perceived spacing gaps */
+    .image-slider[data-variant="carousel"] .slide.prev {
+        transform-origin: right center;
+    }
+
+    .image-slider[data-variant="carousel"] .slide.next {
+        transform-origin: left center;
+    }
+
+    .image-slider[data-variant="carousel"] .slide.active {
+        opacity: 1;
+        transform: scale(1.05);
+        transform-origin: center center;
+        z-index: 10;
+    }
+
+    .image-slider[data-variant="carousel"] .slide .optimized-slide-image {
+        border-radius: var(--radius-md);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
     }
 
     /* CONTROLS (Bento Segmented Control) */
@@ -99,7 +216,7 @@ const sliderId = `slider-${Math.random().toString(36).substr(2, 9)}`;
         justify-content: center;
         gap: 0;
         background: var(--bg-surface);
-        padding: 4px; /* Reduced from 6px back to 4px for tighter bento */
+        padding: 4px;
         border-radius: var(--radius-md);
         border: 1px solid var(--border-subtle);
         width: fit-content;
@@ -108,13 +225,13 @@ const sliderId = `slider-${Math.random().toString(36).substr(2, 9)}`;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
     }
 
-    /* Default State (Problem / Index 0) - Blue */
+    /* Default State */
     .active-pill {
         position: absolute;
-        top: 4px; /* Matches container padding */
+        top: 4px;
         left: 4px;
         height: calc(100% - 8px);
-        background: #2196F3; /* Blue for both light and dark mode */
+        background: #2196F3;
         border-radius: var(--radius-sm);
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
         transition:
@@ -125,25 +242,23 @@ const sliderId = `slider-${Math.random().toString(36).substr(2, 9)}`;
         opacity: 0;
     }
 
-    /* Conditional State: Opportunity (Index 1) - Blue */
     .slider-controls[data-active-index="1"] .active-pill {
-        background: #2196F3; /* Blue for both light and dark mode */
+        background: #2196F3;
     }
 
     .control-btn {
         background: transparent;
         border: none;
-        padding: 0.5rem 1rem; /* Decreased padding for smaller size */
+        padding: 0.5rem 1rem;
         border-radius: var(--radius-sm);
         color: var(--text-secondary);
-        font-size: 12px; /* User Request: 12px */
+        font-size: 12px;
         font-weight: 600;
         cursor: pointer;
         transition: color 0.2s ease;
         z-index: 2;
         position: relative;
         font-family: var(--font-sans);
-        text-transform: uppercase; /* Usually bento nav items are uppercase, checking ref... SidebarNav uses uppercase. Let's add uppercase to match "bento" feel if appropriate, or keep mixed case. User didn't ask for uppercase but usually 12px works well with it. I'll stick to original casing unless SidebarNav dictates. SidebarNav "HOME", "ABOUT" are uppercase. ImageSlider labels "The Problem" are sentence case. I'll keep user labels. */
         letter-spacing: 0.02em;
     }
 
@@ -152,32 +267,118 @@ const sliderId = `slider-${Math.random().toString(36).substr(2, 9)}`;
     }
 
     .control-btn.active {
-        color: var(--bg-surface); /* Contrast text */
+        color: var(--bg-surface);
+    }
+
+    /* HORIZONTAL DOTS TRACK */
+    .slider-dots {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 4px;
+        margin: 1rem auto 0 auto;
+        width: fit-content;
+    }
+
+    .slider-dot-wrap {
+        background: none;
+        border: none;
+        padding: 6px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        outline: none;
+        transition: transform 0.2s ease;
+    }
+
+    .slider-dot-wrap:hover {
+        transform: scale(1.25);
+    }
+
+    .slider-dot-pill {
+        width: 6px;
+        height: 6px;
+        border-radius: 3px;
+        background: var(--text-primary);
+        opacity: 0.35;
+        transition:
+            width 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+            opacity 0.25s ease,
+            background-color 0.25s ease;
+    }
+
+    .slider-dot-wrap.active .slider-dot-pill {
+        width: 20px;
+        opacity: 0.85;
+        background: var(--project-category-hover-color, var(--accent-secondary, #42bd49));
+    }
+
+    @media (max-width: 1024px) {
+        .image-slider[data-variant="carousel"] .slider-display {
+            width: 70%; /* Show larger slide on tablet */
+        }
     }
 
     @media (max-width: 768px) {
         .slider-controls {
-            margin-left: 0; /* Left align */
-            justify-content: flex-start; /* Ensure content starts from left if width expands */
+            margin-left: 0;
+            justify-content: flex-start;
+        }
+
+        .image-slider[data-variant="carousel"] .slider-display {
+            width: 85%; /* Show even larger slide on mobile */
         }
     }
 </style>
 
-<script define:vars={{ sliderId }}>
-    document.addEventListener("DOMContentLoaded", () => {
+<script define:vars={{ sliderId, autoplay, interval, initialIndex }}>
+    const initSlider = () => {
         const slider = document.getElementById(sliderId);
         if (!slider) return;
 
+        const display = slider.querySelector(".slider-display");
         const track = slider.querySelector(".slider-track");
         const controls = slider.querySelector(".slider-controls");
         const buttons = slider.querySelectorAll(".control-btn");
         const pill = slider.querySelector(".active-pill");
+        const dotContainer = slider.querySelector(".slider-dots");
+
+        const originalSlides = Array.from(track.children);
+        const totalSlides = originalSlides.length;
+        if (totalSlides <= 1) return;
+
+        // --- PREVENT DUPLICATE CLONING ---
+        // Since initSlider can run multiple times due to view transitions, check if clones already exist.
+        if (track.querySelector(".clone")) {
+            return;
+        }
+
+        // --- INFINITE LOOP TRIPLE-SET CLONING SETUP ---
+        const leftClones = originalSlides.map(s => {
+            const clone = s.cloneNode(true);
+            clone.classList.add("clone");
+            return clone;
+        });
+        const rightClones = originalSlides.map(s => {
+            const clone = s.cloneNode(true);
+            clone.classList.add("clone");
+            return clone;
+        });
+
+        // Append right clones
+        rightClones.forEach(clone => track.appendChild(clone));
+
+        // Prepend left clones
+        const firstOriginal = originalSlides[0];
+        leftClones.forEach(clone => track.insertBefore(clone, firstOriginal));
 
         let isDragging = false;
         let dragStarted = false;
         let startX = 0;
-        let startY = 0;
         let currentHoverButton = null;
+        let autoplayTimer = null;
+        let activeIndex = initialIndex + totalSlides;
 
         const movePillTo = (targetBtn) => {
             if (!targetBtn || !pill) return;
@@ -190,126 +391,286 @@ const sliderId = `slider-${Math.random().toString(36).substr(2, 9)}`;
             pill.style.opacity = "1";
         };
 
-        const switchToSlide = (targetBtn) => {
-            if (!targetBtn) return;
-            
-            const targetIndex = parseInt(targetBtn.getAttribute("data-target"));
+        const updateSlideActiveClasses = (targetIndex) => {
+            const allSlides = track.children;
+            Array.from(allSlides).forEach((s, idx) => {
+                s.classList.remove("active", "prev", "next");
+                if (idx === targetIndex) {
+                    s.classList.add("active");
+                } else if (idx < targetIndex) {
+                    s.classList.add("prev");
+                } else {
+                    s.classList.add("next");
+                }
+            });
+        };
 
-            // Update Buttons
-            buttons.forEach((b) => b.classList.remove("active"));
-            targetBtn.classList.add("active");
+        const switchToSlideByIndex = (targetIndex, animate = true) => {
+            activeIndex = targetIndex;
+
+            if (!animate) {
+                track.style.transition = 'none';
+            } else {
+                track.style.removeProperty('transition');
+            }
+
+            // Update classes
+            updateSlideActiveClasses(targetIndex);
+
+            // Calculate active index relative to original slides (0 to totalSlides - 1)
+            let realIndex = (targetIndex - totalSlides) % totalSlides;
+            if (realIndex < 0) {
+                realIndex += totalSlides;
+            }
+
+            // Update Buttons if controls are visible
+            if (buttons && buttons.length > 0 && buttons[realIndex]) {
+                buttons.forEach((b) => b.classList.remove("active"));
+                buttons[realIndex].classList.add("active");
+                movePillTo(buttons[realIndex]);
+            }
+
+            // Update Dots if dots indicator is visible
+            const dotButtons = slider.querySelectorAll(".slider-dot-wrap");
+            if (dotButtons && dotButtons.length > 0) {
+                dotButtons.forEach((d) => d.classList.remove("active"));
+                if (dotButtons[realIndex]) {
+                    dotButtons[realIndex].classList.add("active");
+                }
+            }
 
             // Update Container State (Color)
             if (controls)
-                controls.setAttribute("data-active-index", targetIndex);
-
-            // Move Pill
-            movePillTo(targetBtn);
+                controls.setAttribute("data-active-index", realIndex);
 
             // Sliding Animation
             const percentage = targetIndex * 100;
             track.style.transform = `translateX(-${percentage}%)`;
+
+            if (!animate) {
+                // Force layout reflow
+                track.offsetHeight;
+                track.style.removeProperty('transition');
+            }
         };
 
-        // Initialize Pill
-        const initialActive = slider.querySelector(".control-btn.active");
+        const switchToSlide = (targetBtn) => {
+            if (!targetBtn) return;
+            const targetIndex = parseInt(targetBtn.getAttribute("data-target")) + totalSlides;
+            switchToSlideByIndex(targetIndex);
+        };
+
+        // Transition End listener for silent snaps back to middle set (infinite loop wrap)
+        track.addEventListener("transitionend", () => {
+            if (activeIndex < totalSlides || activeIndex >= 2 * totalSlides) {
+                let snappedIndex = (activeIndex % totalSlides);
+                if (snappedIndex < 0) snappedIndex += totalSlides;
+                snappedIndex += totalSlides;
+                switchToSlideByIndex(snappedIndex, false);
+            }
+        });
+
+        // Autoplay Logic
+        const startAutoplay = () => {
+            if (!autoplay) return;
+            stopAutoplay();
+            autoplayTimer = setInterval(() => {
+                const nextIndex = activeIndex + 1;
+                switchToSlideByIndex(nextIndex);
+            }, interval);
+        };
+
+        const stopAutoplay = () => {
+            if (autoplayTimer) {
+                clearInterval(autoplayTimer);
+                autoplayTimer = null;
+            }
+        };
+
+        // Initialize active slides at middle set
+        switchToSlideByIndex(initialIndex + totalSlides, false);
+
         setTimeout(() => {
-            if (initialActive) {
-                movePillTo(initialActive);
-                const idx = initialActive.getAttribute("data-target");
-                if (controls) controls.setAttribute("data-active-index", idx);
+            const activeBtn = slider.querySelector(`.control-btn[data-target="${initialIndex}"]`) || slider.querySelector(".control-btn.active");
+            if (activeBtn) {
+                movePillTo(activeBtn);
+                if (controls) controls.setAttribute("data-active-index", initialIndex);
+            }
+            if (autoplay) {
+                startAutoplay();
             }
         }, 50);
 
+        // --- BUTTONS DRAG INTERACTION (Segmented thumb dragging) ---
         const handleStart = (e) => {
-            const clientX = e.type.startsWith('touch') ? e.touches[0].clientX : e.clientX;
-            const clientY = e.type.startsWith('touch') ? e.touches[0].clientY : e.clientY;
-            
-            startX = clientX;
-            startY = clientY;
+            stopAutoplay(); // Stop auto-sliding on manual interaction
+            startX = e.clientX;
             isDragging = true;
             dragStarted = false;
+            controls.setPointerCapture(e.pointerId);
         };
 
         const handleMove = (e) => {
             if (!isDragging) return;
+            dragStarted = true;
 
-            const clientX = e.type.startsWith('touch') ? e.touches[0].clientX : e.clientX;
-            const clientY = e.type.startsWith('touch') ? e.touches[0].clientY : e.clientY;
-            
-            const deltaX = Math.abs(clientX - startX);
-            const deltaY = Math.abs(clientY - startY);
+            // Find which button we're hovering over
+            const hoveredBtn = Array.from(buttons).find((btn) => {
+                const rect = btn.getBoundingClientRect();
+                return e.clientX >= rect.left && e.clientX <= rect.right;
+            });
 
-            // Only activate drag if moving more horizontally than vertically
-            if (deltaX > 5 && deltaX > deltaY) {
-                dragStarted = true;
-
-                // Find which button we're hovering over
-                const hoveredBtn = Array.from(buttons).find((btn) => {
-                    const rect = btn.getBoundingClientRect();
-                    return clientX >= rect.left && clientX <= rect.right;
-                });
-
-                if (hoveredBtn !== currentHoverButton) {
-                    currentHoverButton = hoveredBtn;
-                    
-                    // Move pill to hovered button
-                    if (hoveredBtn) {
-                        movePillTo(hoveredBtn);
-                    }
+            if (hoveredBtn !== currentHoverButton) {
+                currentHoverButton = hoveredBtn;
+                if (hoveredBtn) {
+                    movePillTo(hoveredBtn);
                 }
-                
-                // Update text colors: white for both active and currently hovered buttons
-                buttons.forEach((btn) => {
-                    if (btn.classList.contains('active') || btn === currentHoverButton) {
-                        btn.style.color = 'var(--bg-surface)'; // White text
-                    } else {
-                        btn.style.color = ''; // Reset to default
-                    }
-                });
-
-                e.preventDefault();
             }
+            
+            buttons.forEach((btn) => {
+                if (btn.classList.contains('active') || btn === currentHoverButton) {
+                    btn.style.color = 'var(--bg-surface)'; // White text
+                } else {
+                    btn.style.color = ''; // Reset to default
+                }
+            });
         };
 
         const handleEnd = (e) => {
             if (!isDragging) return;
+            isDragging = false;
+            
+            controls.releasePointerCapture(e.pointerId);
 
             if (dragStarted && currentHoverButton) {
-                // Switch to the button we released on
                 switchToSlide(currentHoverButton);
             } else if (!dragStarted) {
-                // It was just a click - find which button was clicked
                 const target = e.target.closest('.control-btn');
                 if (target) {
                     switchToSlide(target);
                 }
             }
 
-            // Reset text colors
             buttons.forEach((btn) => {
                 btn.style.color = '';
             });
             
-            isDragging = false;
             dragStarted = false;
             currentHoverButton = null;
         };
 
-        // Attach events to controls container
-        controls.addEventListener("mousedown", handleStart);
-        controls.addEventListener("touchstart", handleStart, { passive: true });
-        
-        document.addEventListener("mousemove", handleMove);
-        document.addEventListener("touchmove", handleMove, { passive: false });
-        
-        document.addEventListener("mouseup", handleEnd);
-        document.addEventListener("touchend", handleEnd);
+        if (controls) {
+            controls.addEventListener("pointerdown", handleStart);
+            controls.addEventListener("pointermove", handleMove);
+            controls.addEventListener("pointerup", handleEnd);
+            controls.addEventListener("pointercancel", handleEnd);
+        }
 
-        // Handle Resize
-        window.addEventListener("resize", () => {
-            const active = slider.querySelector(".control-btn.active");
-            if (active) movePillTo(active);
-        });
-    });
+        // --- DISPLAY DRAG INTERACTION (Swipe & Drag slides directly) ---
+        let isDisplayDragging = false;
+        let displayStartX = 0;
+        let displayCurrentTranslate = 0;
+        let displayPrevTranslate = 0;
+
+        const handleDisplayStart = (e) => {
+            stopAutoplay();
+            
+            // Silently snap back to the middle set if currently positioned on a clone before starting drag
+            if (activeIndex < totalSlides || activeIndex >= 2 * totalSlides) {
+                let snappedIndex = (activeIndex % totalSlides);
+                if (snappedIndex < 0) snappedIndex += totalSlides;
+                snappedIndex += totalSlides;
+                switchToSlideByIndex(snappedIndex, false);
+            }
+
+            isDisplayDragging = true;
+            displayStartX = e.clientX;
+            displayPrevTranslate = activeIndex * -100;
+            displayCurrentTranslate = displayPrevTranslate;
+            
+            // Disable transition for real-time drag response
+            track.style.transition = 'none';
+
+            display.setPointerCapture(e.pointerId);
+            e.preventDefault();
+        };
+
+        const handleDisplayMove = (e) => {
+            if (!isDisplayDragging) return;
+            
+            const deltaX = e.clientX - displayStartX;
+            const displayWidth = display.offsetWidth;
+            const percentageOffset = (deltaX / displayWidth) * 100;
+            
+            let translation = displayPrevTranslate + percentageOffset;
+            
+            // Clamp within the full 3-set bounds
+            const minBound = 0;
+            const maxBound = (3 * totalSlides - 1) * -100;
+            if (translation > minBound) {
+                translation = minBound + (translation - minBound) * 0.35;
+            } else if (translation < maxBound) {
+                translation = maxBound + (translation - maxBound) * 0.35;
+            }
+
+            displayCurrentTranslate = translation;
+            track.style.transform = `translateX(${displayCurrentTranslate}%)`;
+
+            // DYNAMIC OPACITY & SCALING UPDATE WHILE DRAGGING
+            let closestIndex = Math.round(-translation / 100);
+            closestIndex = Math.max(0, Math.min(3 * totalSlides - 1, closestIndex));
+            updateSlideActiveClasses(closestIndex);
+        };
+
+        const handleDisplayEnd = (e) => {
+            if (!isDisplayDragging) return;
+            isDisplayDragging = false;
+            
+            display.releasePointerCapture(e.pointerId);
+            
+            // Restore transition style
+            track.style.removeProperty('transition');
+            
+            const percentageDifference = displayCurrentTranslate - displayPrevTranslate;
+            const threshold = 15;
+            let targetIndex = activeIndex;
+            
+            if (percentageDifference < -threshold) {
+                targetIndex = activeIndex + 1;
+            } else if (percentageDifference > threshold) {
+                targetIndex = activeIndex - 1;
+            }
+            
+            switchToSlideByIndex(targetIndex);
+        };
+
+        if (display) {
+            display.addEventListener("pointerdown", handleDisplayStart);
+            display.addEventListener("pointermove", handleDisplayMove);
+            display.addEventListener("pointerup", handleDisplayEnd);
+            display.addEventListener("pointercancel", handleDisplayEnd);
+        }
+
+        // Handle dot clicks
+        if (dotContainer) {
+            dotContainer.addEventListener("click", (e) => {
+                stopAutoplay();
+                const target = e.target.closest('.slider-dot-wrap');
+                if (target) {
+                    const targetIndex = parseInt(target.getAttribute("data-target")) + totalSlides;
+                    switchToSlideByIndex(targetIndex);
+                }
+            });
+        }
+    };
+
+    // Run immediately if DOM is ready, otherwise wait
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initSlider);
+    } else {
+        initSlider();
+    }
+
+    // Also re-run on Astro page load if View Transitions are used
+    document.addEventListener("astro:page-load", initSlider);
 </script>

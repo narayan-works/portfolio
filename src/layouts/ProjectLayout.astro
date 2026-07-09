@@ -3,6 +3,8 @@ import Layout from "./Layout.astro";
 import ThemeToggle from "../components/ThemeToggle.astro";
 import SidebarNavigation from "../components/SidebarNavigation.astro";
 import Footer from "../components/Footer.astro";
+import NextProjectBanner from "../components/NextProjectBanner.astro";
+import { Image } from "astro:assets";
 
 interface Props {
     title: string;
@@ -13,6 +15,15 @@ interface Props {
     ctaText?: string;
     sections?: { id: string; label: string }[];
     heroImage?: string;
+    category?: string;
+    nextProject?: {
+        slug: string;
+        title: string;
+        description?: string;
+        tags?: string[];
+        heroImage?: string;
+        category?: string;
+    };
 }
 
 const {
@@ -24,6 +35,8 @@ const {
     ctaText,
     sections: propSections,
     heroImage,
+    category,
+    nextProject,
 } = Astro.props;
 
 // Convert meta object to array for iteration
@@ -31,30 +44,67 @@ const metaEntries = Object.entries(meta).filter(
     ([_, value]) => value && value.trim() !== "",
 );
 
-// Standard Sections for Navigation (Fallback)
-const defaultSections = [
-    { id: "outcome", label: "What's the outcome?" },
-    { id: "problem-opportunity", label: "Why build it?" },
-    { id: "approach", label: "What's the approach?" },
-    { id: "interaction-model", label: "How does it work?" },
-    { id: "implementation", label: "How is it built?" },
-];
-
-const sections = propSections || defaultSections;
+const sections = propSections || [];
 
 // Map project slugs to their category-specific active colors (matching homepage WorksFilter colors)
 const slug = Astro.url.pathname.split("/").filter(Boolean).pop() || "";
 const categoryColors: Record<string, string> = {
-    pointo: "#68B5ED", // physical-ixd
-    piko: "#68B5ED", // physical-ixd
-    musibuddy: "#68B5ED", // physical-ixd
-    "dot-threads": "#F6631A", // web-ux
-    detour: "#FACC09", // mobile-ux
-    serendipidity: "#FACC09", // mobile-ux
-    "tirupati-campus": "#2B923D", // spatial-xd
-    "skywalk-sanctuary": "#2B923D", // spatial-xd
+    pointo: "var(--category-hardware-ux)",
+    piko: "var(--category-hardware-ux)",
+    musibuddy: "var(--category-hardware-ux)",
+    "dot-threads": "var(--category-web-ux)",
+    lab4c: "var(--category-web-ux)",
+    xfigura: "var(--category-web-ux)",
+    detour: "var(--category-mobile-ux)",
+    serendipidity: "var(--category-mobile-ux)",
+    "tirupati-campus": "var(--category-spatial-xd)",
+    "skywalk-sanctuary": "var(--category-spatial-xd)",
 };
-const activeColor = categoryColors[slug] || "var(--accent-secondary)";
+
+const categoryHoverColors: Record<string, string> = {
+    pointo: "var(--category-hardware-ux-hover)",
+    piko: "var(--category-hardware-ux-hover)",
+    musibuddy: "var(--category-hardware-ux-hover)",
+    "dot-threads": "var(--category-web-ux-hover)",
+    lab4c: "var(--category-web-ux-hover)",
+    xfigura: "var(--category-web-ux-hover)",
+    detour: "var(--category-mobile-ux-hover)",
+    serendipidity: "var(--category-mobile-ux-hover)",
+    "tirupati-campus": "var(--category-spatial-xd-hover)",
+    "skywalk-sanctuary": "var(--category-spatial-xd-hover)",
+};
+
+// Fallback category-to-color mapping (for archives / other project files)
+const fallbackColors: Record<string, string> = {
+    embodied: "var(--category-hardware-ux)",
+    thinking: "var(--category-web-ux)",
+    spatial: "var(--category-spatial-xd)",
+    strategy: "var(--category-spatial-xd)",
+    archive: "var(--category-hardware-ux)",
+};
+
+const fallbackHoverColors: Record<string, string> = {
+    embodied: "var(--category-hardware-ux-hover)",
+    thinking: "var(--category-web-ux-hover)",
+    spatial: "var(--category-spatial-xd-hover)",
+    strategy: "var(--category-spatial-xd-hover)",
+    archive: "var(--category-hardware-ux-hover)",
+};
+
+// Clean category string (handles e.g. "embodied[work in progess]")
+const cleanCategory = (category || "")
+    .toLowerCase()
+    .replace(/\[.*\]/, "")
+    .trim();
+
+const activeColor =
+    categoryColors[slug] ||
+    fallbackColors[cleanCategory] ||
+    "var(--accent-secondary)";
+const hoverColor =
+    categoryHoverColors[slug] ||
+    fallbackHoverColors[cleanCategory] ||
+    "var(--accent-secondary)";
 ---
 
 <Layout title={`${title} | Narayan Ashanahalli`} preloadImageHref={heroImage}>
@@ -102,8 +152,25 @@ const activeColor = categoryColors[slug] || "var(--accent-secondary)";
                             target="_blank"
                             rel="noopener noreferrer"
                             class="sidebar-cta-button"
+                            style={`--cta-active-color: ${activeColor}; --cta-hover-color: ${hoverColor};`}
                         >
                             {ctaText || "Try it out"}
+                            <svg
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                                class="sidebar-cta-arrow"
+                            >
+                                <path
+                                    d="M5 12H19M19 12L12 5M19 12L12 19"
+                                    stroke="currentColor"
+                                    stroke-width="2.5"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                ></path>
+                            </svg>
                         </a>
                     )
                 }
@@ -138,9 +205,21 @@ const activeColor = categoryColors[slug] || "var(--accent-secondary)";
         </div>
     </div>
 
-    <!-- RIGHT CONTENT SLOT -->
-    <article class="right-content">
+    <article
+        class={`right-content ${nextProject ? "has-next-project" : ""}`}
+        style={`--project-category-color: ${activeColor}; --project-category-hover-color: ${hoverColor};`}
+    >
         <slot />
+        {nextProject && (
+            <NextProjectBanner
+                slug={nextProject.slug}
+                title={nextProject.title}
+                description={nextProject.description}
+                tags={nextProject.tags}
+                heroImage={nextProject.heroImage}
+                category={nextProject.category}
+            />
+        )}
         <Footer />
     </article>
 </Layout>
@@ -273,21 +352,24 @@ const activeColor = categoryColors[slug] || "var(--accent-secondary)";
 
         function updateThemeTogglePosition() {
             if (!footer || !themeToggleWrapper) return;
-            const isMobile = window.innerWidth <= 1024;
-            if (!isMobile) {
-                themeToggleWrapper.style.bottom = "";
-                return;
-            }
 
             const footerRect = footer.getBoundingClientRect();
             const windowHeight = window.innerHeight;
-            const margin = 10;
+            const margin = 20;
 
             if (footerRect.top < windowHeight) {
                 const offset = windowHeight - footerRect.top + margin;
-                themeToggleWrapper.style.bottom = offset + "px";
+                themeToggleWrapper.style.setProperty(
+                    "bottom",
+                    `${offset}px`,
+                    "important",
+                );
             } else {
-                themeToggleWrapper.style.bottom = "var(--space-md)";
+                themeToggleWrapper.style.setProperty(
+                    "bottom",
+                    "20px",
+                    "important",
+                );
             }
         }
 
@@ -326,7 +408,7 @@ const activeColor = categoryColors[slug] || "var(--accent-secondary)";
         flex-direction: column;
         justify-content: space-between;
         height: 100%;
-        font-family: "Inter", sans-serif;
+        font-family: var(--font-sans);
     }
 
     /* Allow scrolling if content is too tall */
@@ -343,12 +425,13 @@ const activeColor = categoryColors[slug] || "var(--accent-secondary)";
     }
 
     .sidebar-project-title {
-        font-size: 1.125rem; /* ~18px */
-        line-height: 1.3;
-        font-weight: 600;
-        margin-top: var(--space-lg);
-        margin-bottom: 0.5rem;
-        letter-spacing: -0.01em;
+        font-family: "Bricolage Grotesque", sans-serif;
+        font-size: 54px;
+        line-height: 0.9;
+        font-weight: 400;
+        margin-top: 9px;
+        margin-bottom: 9px;
+        letter-spacing: -0.05em;
     }
 
     .sidebar-tags {
@@ -359,11 +442,15 @@ const activeColor = categoryColors[slug] || "var(--accent-secondary)";
     }
 
     .sidebar-tags span {
-        font-size: 0.75rem; /* 12px */
+        font-family: "Geist", sans-serif;
+        font-size: 12px;
         color: var(--text-muted);
         text-transform: uppercase;
-        letter-spacing: 0.05em;
-        font-weight: 500;
+        letter-spacing: 0.035em;
+        font-weight: 400;
+        line-height: 1.2;
+        display: inline-flex;
+        align-items: center;
     }
 
     .sidebar-tags span:not(:last-child)::after {
@@ -373,39 +460,59 @@ const activeColor = categoryColors[slug] || "var(--accent-secondary)";
     }
 
     .sidebar-project-desc {
+        font-family: "Google Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 300;
         color: var(--text-secondary);
-        line-height: 1.6;
-        font-size: 0.75rem; /* 14px */
+        line-height: 1.2;
+        letter-spacing: -0.01em;
         margin-bottom: 2rem;
     }
 
     .sidebar-cta-button {
-        display: inline-block;
-        background-color: var(--surface-secondary);
-        color: var(--text-primary);
-        border: 2px solid var(--accent-secondary);
-        padding: 6px 8px; /* Matched to Navbar */
-        border-radius: var(--radius-md); /* Matched to Navbar (8px) */
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 0.5em;
+        position: relative;
+        background: var(--bg-surface, #ffffff);
+        color: var(--cta-active-color, var(--accent-secondary)) !important;
+        border: 1px solid var(--border-subtle, rgba(0, 0, 0, 0.15));
+        padding: 9px 16px;
+        border-radius: var(--radius-md);
         text-decoration: none;
-        font-weight: 500;
-        font-size: 0.875rem;
+        font-family: "Google Sans", sans-serif;
+        font-weight: 600;
+        font-size: 14px;
+        letter-spacing: 0.05em;
         margin-top: 1.5rem;
         margin-bottom: 1rem;
-        transition:
-            box-shadow 0.2s ease,
-            opacity 0.2s;
-        text-align: center;
         width: 100%;
         box-sizing: border-box;
+        transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        cursor: pointer;
+    }
+    .sidebar-cta-button .sidebar-cta-arrow {
+        display: inline-block;
+        width: 26px;
+        height: 26px;
+        flex-shrink: 0;
+        transition: transform 0.3s ease;
     }
     .sidebar-cta-button:hover {
-        box-shadow: 0 0 16px rgba(100, 200, 150, 0.5);
-        background-color: var(--surface-primary); /* Brighter overlap */
-        filter: brightness(1.05);
+        background: var(--cta-hover-color, var(--accent-secondary));
+        border-color: var(--cta-hover-color, var(--accent-secondary));
+        color: var(--bg-surface, #ffffff) !important;
     }
-    :global(.dark) .sidebar-cta-button:hover {
-        background-color: var(--surface-tertiary); /* Darker overlap */
-        filter: brightness(0.92);
+    .sidebar-cta-button:hover .sidebar-cta-arrow {
+        transform: rotate(-45deg);
+    }
+    .sidebar-cta-button:active {
+        background: var(--cta-active-color, var(--accent-secondary));
+        border-color: var(--cta-active-color, var(--accent-secondary));
+        color: var(--bg-surface, #ffffff) !important;
+        filter: brightness(0.95);
     }
 
     /* TABLET/MOBILE STYLES */
@@ -416,6 +523,10 @@ const activeColor = categoryColors[slug] || "var(--accent-secondary)";
 
         .toc-nav {
             display: none;
+        }
+
+        .project-meta-table {
+            display: none !important;
         }
     }
 
@@ -428,7 +539,7 @@ const activeColor = categoryColors[slug] || "var(--accent-secondary)";
         padding: 0;
         display: flex;
         flex-direction: column;
-        gap: 6px; /* Highly compressed gap */
+        gap: 1px; /* Reduced gap to compress spacing between lines */
         margin: 0;
         position: relative;
     }
@@ -470,7 +581,7 @@ const activeColor = categoryColors[slug] || "var(--accent-secondary)";
     .toc-link {
         color: var(--text-primary);
         text-decoration: none;
-        font-size: 24px; /* Compressed font size */
+        font-size: 24px;
         line-height: 1.2;
         transition:
             opacity 0.25s ease,
@@ -478,6 +589,7 @@ const activeColor = categoryColors[slug] || "var(--accent-secondary)";
         display: inline-block;
         font-weight: 500;
         opacity: 0.4; /* Default muted opacity */
+        font-family: "Bricolage Grotesque", sans-serif;
     }
 
     .toc-item:hover .toc-pill {
@@ -514,24 +626,34 @@ const activeColor = categoryColors[slug] || "var(--accent-secondary)";
         gap: 1rem;
         padding: 0.3rem 0;
         border-bottom: 1px solid var(--border-subtle);
-        font-size: 0.75rem; /* 12px */
+        font-size: var(--text-sm);
     }
 
     .meta-label {
-        font-weight: 600;
+        font-family: "Google Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 400;
         color: var(--text-primary);
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
+        letter-spacing: 0.015em;
+        line-height: 1.5;
     }
 
     .meta-value {
+        font-family: "Google Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 300;
         color: var(--text-secondary);
-        line-height: 1.4;
+        letter-spacing: 0em;
+        line-height: 1.15;
     }
 
     .theme-toggle-wrapper {
-        margin-top: auto;
-        padding-top: 10px;
+        position: fixed !important;
+        bottom: 20px !important;
+        right: 20px !important;
+        z-index: 100;
+        margin: 0 !important;
+        padding: 0 !important;
     }
 
     /* RIGHT CONTENT STYLES (Hero Section) */
@@ -540,8 +662,8 @@ const activeColor = categoryColors[slug] || "var(--accent-secondary)";
         padding: 20px 20px 0px 20px; /* 20px top/left/right, bottom 0px */
         max-width: none; /* Use full available width */
         margin: 0;
-        font-family: "Geist", sans-serif;
-        scroll-behavior: smooth;
+        font-family: var(--font-sans);
+        scroll-behavior: auto;
     }
 
     /* Remove redundant top margin from first element (Hero Image usually) */
@@ -566,9 +688,9 @@ const activeColor = categoryColors[slug] || "var(--accent-secondary)";
 
         /* Fixed Theme Toggle on Mobile */
         .theme-toggle-wrapper {
-            position: fixed;
-            bottom: var(--space-md);
-            left: var(--space-md); /* Moved to Bottom Left */
+            position: fixed !important;
+            right: 48px !important;
+            left: auto !important;
             z-index: 90;
             margin-top: 0;
         }
@@ -580,9 +702,23 @@ const activeColor = categoryColors[slug] || "var(--accent-secondary)";
         }
     }
 
+    @media (max-width: 768px) {
+        .theme-toggle-wrapper {
+            right: 24px !important;
+        }
+
+        .project-meta-table {
+            display: none !important;
+        }
+    }
+
     /* Force 240px margin for footer on project pages */
     .right-content :global(.site-footer) {
         margin-top: 240px !important;
+    }
+
+    .right-content.has-next-project :global(.site-footer) {
+        margin-top: 0 !important;
     }
 
     /* Smart Spacing: If section follows a visual, keep tight margin (new topic separation handled by image's bottom margin) */
@@ -598,5 +734,19 @@ const activeColor = categoryColors[slug] || "var(--accent-secondary)";
     .right-content :global(.project-section + .figma-container),
     .right-content :global(.project-section + .pdf-viewer-wrapper) {
         margin-top: 1rem !important; /* Tight - text above describes this image */
+    }
+
+    /* Style inline section headings to match ProjectSection title styling */
+    .right-content :global(.inline-section-title) {
+        font-family: "Google Sans", sans-serif !important;
+        font-size: 12px !important;
+        font-weight: 800 !important;
+        color: var(--project-category-hover-color, var(--accent-secondary, #42bd49)) !important;
+        line-height: 1.2 !important;
+        letter-spacing: 0.05em !important;
+        text-transform: uppercase !important;
+        margin-top: 3.5rem !important;
+        margin-bottom: 1.5rem !important;
+        display: block !important;
     }
 </style>

@@ -6,8 +6,8 @@ interface Props {
     id?: string;
     placeholder?: boolean; /* If true, adds a placeholder image at bottom */
     hideTitle?: boolean; /* If true, hides title and divider for continuation sections */
-    group?: string; /* ID of the parent section for sidebar highlighting */
     wide?: boolean; /* If true, section title aligns with full-width images */
+    hideDivider?: boolean; /* If true, hides the top section divider line */
 }
 
 const {
@@ -15,17 +15,13 @@ const {
     id,
     placeholder = false,
     hideTitle = false,
-    group,
     wide = false,
+    hideDivider = false,
 } = Astro.props;
 ---
 
-<section
-    class:list={["project-section", { continuation: hideTitle }]}
-    id={id}
-    data-toc-group={group}
->
-    {!hideTitle && <div class="section-divider" />}
+<section class:list={["project-section", { continuation: hideTitle }]} id={id}>
+    {!hideTitle && !hideDivider && <div class="section-divider" />}
 
     <div class="hero-text-container">
         <div class:list={["header-group", { continuation: hideTitle }]}>
@@ -72,9 +68,11 @@ const {
 
     /* Full Width Divider */
     .section-divider {
-        width: 100%;
+        width: calc(100% + 40px);
+        margin-left: -20px;
+        margin-right: -20px;
         border-top: 1px solid var(--border-subtle, rgba(0, 0, 0, 0.1));
-        margin-bottom: 2rem; /* Spacing between line and content */
+        margin-bottom: 20px; /* Spacing between line and content */
     }
 
     /* --- HERO TEXT CONTAINER (Centered on Desktop) --- */
@@ -89,7 +87,7 @@ const {
     .header-group {
         display: flex;
         flex-direction: column;
-        gap: 0.8rem; /* Vertical gap between title and content */
+        gap: 2rem; /* Vertical gap between title and content */
         overflow: visible;
         /* Border moved to .section-divider */
     }
@@ -101,8 +99,10 @@ const {
 
     /* --- TITLE STYLING (Section Subheadings) --- */
     .section-title {
-        padding-inline: max(0rem, calc(50% - 450px));
+        padding-inline: 0;
         box-sizing: border-box;
+        display: flex;
+        justify-content: flex-start;
     }
 
     /* Wide variant: title aligns with full-width images */
@@ -111,32 +111,43 @@ const {
     }
 
     .section-title h3 {
-        font-size: 2.25rem; /* 36px */
-        font-weight: 800;
-        color: var(--text-primary);
+        font-size: 12px;
+        font-weight: 800 !important;
+        color: var(
+            --project-category-hover-color,
+            var(--category-hardware-ux-hover)
+        );
         line-height: 1.2;
-        letter-spacing: -0.02em;
+        letter-spacing: 0.05em;
         margin: 0;
-        /* Removed sticky positioning for vertical layout */
-        font-family: "Geist", sans-serif;
+        font-family: "Google Sans", sans-serif;
+        text-transform: uppercase;
     }
 
     /* --- CONTENT STYLING (Body Text) --- */
     .section-content {
         font-size: 1rem; /* 20px */
-        line-height: 1.4; /* Reduced line spacing */
-        font-weight: 300; /* Light */
+        line-height: 1; /* Reduced line spacing */
+        font-weight: 200; /* Light */
         color: var(--text-secondary);
-        font-family: "Geist", sans-serif;
+        font-family: var(--font-sans);
         /* Padding moved to children to allow full-width images */
         padding-inline: 0;
         box-sizing: border-box;
         overflow: visible;
     }
 
+    .section-content :global(p) {
+        font-size: 1rem;
+        line-height: 1.2;
+        font-weight: 200;
+        color: var(--text-secondary);
+        font-family: var(--font-sans);
+    }
+
     /* Default: All content children get the centered constraints */
     .section-content > :global(*) {
-        padding-inline: max(0rem, calc(50% - 450px));
+        padding-inline: max(0rem, calc(50% - 375px));
         box-sizing: border-box;
     }
 
@@ -147,7 +158,7 @@ const {
         color: var(--text-primary);
         margin-top: 2rem;
         margin-bottom: 1rem;
-        font-family: "Geist", sans-serif;
+        font-family: var(--font-sans);
     }
 
     .section-content :global(h3.prominent-title) {
@@ -167,11 +178,11 @@ const {
         width: 100%;
     }
 
-    /* Style strong/bold text: Underlined and normal weight */
+    /* Style strong/bold text: Bold weight and no underline */
     .section-content :global(strong),
     .section-content :global(b) {
-        font-weight: inherit;
-        text-decoration: underline;
+        font-weight: 600;
+        text-decoration: none;
         color: inherit;
     }
 
@@ -199,7 +210,11 @@ const {
     .section-content > :global(.image-slider),
     .section-content > :global(.image-toggle-component),
     .section-content > :global(.video-switcher),
-    .section-content > :global(.video-embed) {
+    .section-content > :global(.video-embed),
+    .section-content > :global(.pdf-viewer-wrapper),
+    .section-content > :global(.xfigura-container),
+    .section-content > :global(.xf-grid),
+    .section-content > :global(.left-align) {
         padding-inline: 0 !important;
         max-width: 100%;
     }
@@ -208,10 +223,10 @@ const {
 
     /* Exception: constrained media gets body-width padding */
     .section-content > :global(.full-width-image.constrained),
-    .section-content > :global(.video-embed.constrained) {
-        padding-inline: max(0rem, calc(50% - 450px)) !important;
+    .section-content > :global(.video-embed.constrained),
+    .section-content > :global(.pdf-viewer-wrapper:not(.pdf-full-width)) {
+        padding-inline: 0 !important;
     }
-
 
     .section-content :global(.grid-2) {
         display: grid;
@@ -259,7 +274,7 @@ const {
         .section-title h3 {
             position: static;
             margin-bottom: 0.5rem;
-            font-size: 1.5rem; /* 24px for mobile title */
+            font-size: 14px;
         }
 
         .section-content {
@@ -308,7 +323,7 @@ const {
         border: 0;
         border-top: 1px dashed var(--border-subtle, rgba(0, 0, 0, 0.1));
         margin: 1rem auto;
-        max-width: 900px;
+        max-width: 750px;
         width: 100%;
         padding-inline: 0 !important;
     }
@@ -372,8 +387,15 @@ const {
         font-size: 0.9em;
         font-weight: 500;
         transition: all 0.2s ease;
-        margin: 8px 0 0 0; /* Top margin for spacing from text */
+        margin: 0;
         vertical-align: middle;
+        position: relative;
+        top: -1px; /* Subtle baseline alignment shift */
+    }
+
+    .section-content :global(.bento-button.standalone) {
+        margin-left: -12px;
+        margin-top: 0.75rem;
     }
 
     .section-content :global(.bento-button:hover) {
@@ -381,5 +403,27 @@ const {
         transform: translateY(-1px);
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
         color: #ee6b02;
+    }
+
+    /* --- TEXT WIDTH HELPERS (Responsive) --- */
+    @media (min-width: 1025px) {
+        .section-content :global(.half-width),
+        .section-content :global(.half-width-left) {
+            padding-right: 50% !important;
+        }
+        .section-content :global(.half-width-right) {
+            padding-left: 50% !important;
+        }
+        .section-content :global(.half-width-center) {
+            padding-left: calc(50% - 187.5px) !important;
+            padding-right: calc(50% - 187.5px) !important;
+        }
+    }
+
+    /* Breakout text option (takes full width of container, matching full-width images) */
+    .section-content :global(.breakout-text) {
+        padding-inline: 0 !important;
+        max-width: 100% !important;
+        width: 100% !important;
     }
 </style>

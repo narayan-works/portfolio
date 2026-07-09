@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portfolio Design System — Developer Docs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700&family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ─── TOKENS & DESIGN SYSTEM ────────────────────────────────── */
+    :root {
+      /* Typography */
+      --font-title: 'Google Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-bricolage: 'Bricolage Grotesque', sans-serif;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'Geist Mono', monospace;
+
+      --text-2xs: 0.556rem;
+      --text-xs: 0.667rem;
+      --text-sm: 0.778rem;
+      --text-base: 0.889rem;
+      --text-xl: 1.333rem;
+      --text-2xl: 1.333rem;
+      --text-3xl: 3.111rem;
+      --text-4xl: 3.111rem;
+
+      /* Spacing System */
+      --space-2xs: 0.25rem;
+      --space-xs: 0.5rem;
+      --space-sm: 0.75rem;
+      --space-md: 1.25rem;
+      --space-lg: 2.25rem;
+      --space-xl: 3.5rem;
+      --space-2xl: 6rem;
+
+      /* Radii */
+      --radius-sm: 4px;
+      --radius-md: 8px;
+      --radius-full: 9999px;
+
+      /* Dark Theme (Default) */
+      --bg-primary: #0a0a0a;
+      --bg-surface: #1e1e1e;
+      --bg-surface-hover: #292929;
+      --text-primary: #DADDD0;
+      --text-secondary: #A0A0A0;
+      --text-muted: #6e6e6e;
+      --border-subtle: rgba(218, 221, 208, 0.1);
+      --border-focus: rgba(218, 221, 208, 0.25);
+      --bg-glass: rgba(30, 30, 30, 0.8);
+      --text-highlight: #ffffff;
+      --pure-bg-inverse: #ffffff;
+
+      /* Accents & Brand Colors */
+      --accent-primary: #364CE4;
+      --accent-secondary: #42BD49;
+
+      /* Category Colors */
+      --category-hardware-ux: #68B5ED;
+      --category-web-ux: #F6631A;
+      --category-mobile-ux: #FACC09;
+      --category-spatial-xd: #2B923D;
+      
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
+      --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+    }
+
+    [data-theme="light"] {
+      /* Light Theme */
+      --bg-primary: #e8eae2;
+      --bg-surface: #E6E8E0;
+      --bg-surface-hover: #F0F2EA;
+      --text-primary: #282828;
+      --text-secondary: #525252;
+      --text-muted: #737373;
+      --border-subtle: rgba(40, 40, 40, 0.08);
+      --border-focus: rgba(40, 40, 40, 0.2);
+      --bg-glass: rgba(218, 221, 208, 0.85);
+      --text-highlight: #000000;
+      --pure-bg-inverse: #000000;
+
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    /* ─── RESET ───────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      font-size: var(--text-base);
+      color: var(--text-primary);
+      background: var(--bg-primary);
+      line-height: 1.5;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    /* ─── LAYOUT ──────────────────────────────────────────────── */
+    .page-wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 var(--space-lg);
+    }
+
+    /* ─── NAV ─────────────────────────────────────────────────── */
+    nav {
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 20px 0;
+      position: sticky;
+      top: 0;
+      background: var(--bg-glass);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 1000;
+    }
+    nav .inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-wordmark {
+      font-family: var(--font-title);
+      font-weight: 500;
+      font-size: 20px;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .nav-wordmark span {
+      background: var(--accent-secondary);
+      color: var(--bg-primary);
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .nav-links {
+      display: flex;
+      gap: var(--space-md);
+      list-style: none;
+      align-items: center;
+    }
+    .nav-links a {
+      font-size: var(--text-sm);
+      font-weight: 500;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .nav-links a:hover { color: var(--text-highlight); }
+    
+    .theme-toggle-btn {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-primary);
+      padding: 6px 12px;
+      border-radius: var(--radius-md);
+      font-size: var(--text-xs);
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+    .theme-toggle-btn:hover {
+      background: var(--bg-surface-hover);
+      border-color: var(--border-focus);
+    }
+
+    /* ─── HERO ────────────────────────────────────────────────── */
+    .hero {
+      padding: var(--space-xl) 0 var(--space-lg);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .eyebrow {
+      font-size: var(--text-xs);
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 16px;
+      font-family: var(--font-mono);
+    }
+    h1 {
+      font-family: var(--font-title);
+      font-size: clamp(36px, 5vw, 64px);
+      font-weight: 500;
+      letter-spacing: -0.04em;
+      color: var(--text-highlight);
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+    .hero-desc {
+      max-width: 720px;
+      color: var(--text-secondary);
+      font-size: 20px;
+      line-height: 1.4;
+    }
+
+    /* ─── SECTION ─────────────────────────────────────────────── */
+    .doc-section {
+      padding: var(--space-xl) 0 0;
+    }
+    h2 {
+      font-family: var(--font-title);
+      font-size: var(--text-xl);
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      color: var(--text-highlight);
+      margin-bottom: 8px;
+    }
+    .section-intro {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      margin-bottom: var(--space-md);
+      max-width: 680px;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid var(--border-subtle);
+      margin: var(--space-sm) 0 var(--space-md);
+    }
+
+    /* ─── COLORS ──────────────────────────────────────────────── */
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 16px;
+      margin-top: 8px;
+    }
+    .color-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: border-color 0.2s ease;
+    }
+    .color-card:hover {
+      border-color: var(--border-focus);
+    }
+    .color-swatch {
+      height: 110px;
+      position: relative;
+    }
+    .color-swatch-hex {
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      background: rgba(0, 0, 0, 0.6);
+      color: #fff;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    .color-info {
+      padding: 16px;
+    }
+    .color-name {
+      font-family: var(--font-title);
+      font-size: var(--text-sm);
+      font-weight: 600;
+      color: var(--text-highlight);
+    }
+    .color-token {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+    .color-usage {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-top: 8px;
+      line-height: 1.4;
+    }
+
+    /* ─── TYPOGRAPHY ──────────────────────────────────────────── */
+    .font-families {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: var(--space-lg);
+    }
+    .font-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      padding: 32px;
+      border-radius: var(--radius-md);
+    }
+    .font-card-label {
+      font-size: var(--text-2xs);
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 16px;
+      font-family: var(--font-mono);
+    }
+    .font-specimen {
+      font-size: var(--text-3xl);
+      color: var(--text-highlight);
+      line-height: 1.1;
+      margin-bottom: 12px;
+    }
+    .font-card-name {
+      font-size: var(--text-xs);
+      color: var(--text-secondary);
+    }
+
+    .type-stack {
+      display: flex;
+      flex-direction: column;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+    .type-row {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      align-items: center;
+      gap: 32px;
+      padding: 24px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .type-row:last-child { border-bottom: none; }
+    .type-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .type-token {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--accent-secondary);
+      background: rgba(66, 189, 73, 0.1);
+      padding: 2px 6px;
+      border-radius: 4px;
+      width: fit-content;
+    }
+    .type-size {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    /* specimens */
+    .spec-h1 { font-family: var(--font-title); font-size: var(--text-4xl); font-weight: 400; letter-spacing: -0.045em; line-height: 1.1; color: var(--text-highlight); }
+    .spec-h2 { font-family: var(--font-bricolage); font-size: var(--text-3xl); font-weight: 500; line-height: 1.2; color: var(--text-highlight); }
+    .spec-h3 { font-family: var(--font-title); font-size: var(--text-xl); font-weight: 400; letter-spacing: 0.02em; color: var(--text-highlight); }
+    .spec-base { font-family: var(--font-sans); font-size: var(--text-base); color: var(--text-primary); line-height: 1.5; }
+    .spec-mono { font-family: var(--font-mono); font-size: var(--text-sm); color: var(--text-secondary); }
+
+    /* ─── SPACING ─────────────────────────────────────────────── */
+    .spacing-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: var(--text-sm);
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+    .spacing-table th {
+      text-align: left;
+      font-family: var(--font-title);
+      font-weight: 600;
+      color: var(--text-highlight);
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border-subtle);
+      background: rgba(0, 0, 0, 0.05);
+    }
+    .spacing-table td {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border-subtle);
+      vertical-align: middle;
+    }
+    .spacing-table tr:last-child td { border-bottom: none; }
+    .token-pill {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--accent-secondary);
+      background: rgba(66, 189, 73, 0.1);
+      padding: 4px 8px;
+      border-radius: 4px;
+    }
+    .spacing-bar-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .spacing-bar {
+      height: 8px;
+      background: var(--accent-secondary);
+      border-radius: 2px;
+      display: inline-block;
+    }
+    .spacing-val {
+      font-size: 12px;
+      font-family: var(--font-mono);
+      color: var(--text-muted);
+    }
+
+    /* ─── COMPONENTS ──────────────────────────────────────────── */
+    .component-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+    .component-card {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .component-demo {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      padding: 32px;
+      border-radius: var(--radius-md);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      align-items: center;
+      justify-content: center;
+      min-height: 200px;
+      position: relative;
+    }
+    .component-label {
+      font-size: var(--text-xs);
+      font-weight: 500;
+      color: var(--text-secondary);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .component-label code {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--accent-secondary);
+      background: rgba(66, 189, 73, 0.1);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    /* Custom Demos styled identical to portfolio */
+    
+    /* Eyebrow Bento Button */
+    .next-eyebrow-bento {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.25em;
+      font-family: var(--font-title);
+      font-size: 32px;
+      font-weight: 500;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      color: var(--accent-secondary);
+      background: var(--bg-primary);
+      border: 1px solid var(--border-subtle);
+      padding: 0.15em 0.5em;
+      border-radius: 12px;
+      text-decoration: none;
+      width: 100%;
+      max-width: 320px;
+      box-sizing: border-box;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    .next-eyebrow-bento .eyebrow-arrow {
+      display: inline-block;
+      width: 0.8em;
+      height: 0.8em;
+      transition: transform 0.3s ease;
+    }
+    .next-eyebrow-bento:hover {
+      background: var(--accent-secondary);
+      border-color: var(--accent-secondary);
+      color: var(--bg-primary);
+    }
+    .next-eyebrow-bento:hover .eyebrow-arrow {
+      transform: translateX(4px);
+    }
+
+    /* WIP Orange Thinking Button */
+    .wip-cta-button {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5em;
+      font-family: var(--font-title);
+      font-size: 24px;
+      font-weight: 500;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      color: var(--category-web-ux); /* Thinking / Web UX orange */
+      background: var(--bg-primary);
+      border: 1px solid var(--border-subtle);
+      padding: 0.25em 0.5em;
+      border-radius: 12px;
+      text-decoration: none;
+      width: 100%;
+      max-width: 320px;
+      box-sizing: border-box;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    .wip-cta-button .eyebrow-arrow {
+      display: inline-block;
+      width: 0.8em;
+      height: 0.8em;
+      transition: transform 0.3s ease;
+    }
+    .wip-cta-button:hover {
+      background: var(--category-web-ux);
+      border-color: var(--category-web-ux);
+      color: #ffffff;
+    }
+    .wip-cta-button:hover .eyebrow-arrow {
+      transform: translateX(6px);
+    }
+
+    /* Bento Pill */
+    .bento-pill {
+      font-size: 11px;
+      font-weight: 500;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      background: var(--bg-primary);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+      display: inline-block;
+    }
+
+    /* Spec Panel */
+    .spec-panel {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
+    }
+    .spec-panel-title {
+      font-family: var(--font-title);
+      font-size: var(--text-xs);
+      font-weight: 600;
+      color: var(--text-highlight);
+      margin-bottom: 10px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .spec-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      padding: 6px 0;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .spec-row:last-child { border-bottom: none; }
+    .spec-key { color: var(--text-secondary); }
+    .spec-value { font-family: var(--font-mono); color: var(--text-highlight); }
+
+    /* ─── FOOTER ──────────────────────────────────────────────── */
+    footer {
+      margin-top: var(--space-2xl);
+      padding: var(--space-md) 0 var(--space-lg);
+      border-top: 1px solid var(--border-subtle);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    footer .f-left {
+      font-family: var(--font-title);
+      font-weight: 500;
+      font-size: var(--text-sm);
+      color: var(--text-primary);
+    }
+    footer .f-right {
+      font-size: var(--text-xs);
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+    }
+
+    @media (max-width: 900px) {
+      .font-families { grid-template-columns: 1fr; }
+      .component-grid { grid-template-columns: 1fr; }
+      .type-row { grid-template-columns: 1fr; gap: 12px; }
+    }
+
+    @media (max-width: 600px) {
+      .page-wrap { padding: 0 var(--space-md); }
+      nav .inner { flex-direction: column; gap: 16px; align-items: flex-start; }
+      footer { flex-direction: column; gap: 16px; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="page-wrap">
+    <div class="inner">
+      <a class="nav-wordmark" href="#">
+        Narayan Ashanahalli <span>Portfolio Docs</span>
+      </a>
+      <div class="nav-links">
+        <a href="#colors">Colors</a>
+        <a href="#typography">Typography</a>
+        <a href="#spacing">Spacing</a>
+        <a href="#components">Components</a>
+        <button class="theme-toggle-btn" id="theme-toggle">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 4px;"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+          Toggle Light Mode
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="page-wrap">
+  <div class="hero">
+    <p class="eyebrow">Developer Documentation · v1.1 · July 2026</p>
+    <h1>Portfolio Design System</h1>
+    <p class="hero-desc">
+      A directory of the core design tokens, typography scales, layout spacings, and bento components powering Narayan's portfolio. Encoded in <code>global.css</code> and styled using semantic Custom Properties.
+    </p>
+  </div>
+</div>
+
+<div class="page-wrap">
+  <!-- ─── COLORS ─────────────────────────────────────────────────────────────── -->
+  <section class="doc-section" id="colors">
+    <h2>Color Palette</h2>
+    <p class="section-intro">
+      The color palette leverages CSS Custom Properties mapped to specific roles. The layout automatically swaps colors on light mode by setting the <code>[data-theme="light"]</code> selector.
+    </p>
+    <hr />
+    
+    <div class="color-grid">
+      <!-- Dark Core -->
+      <div class="color-card">
+        <div class="color-swatch" style="background:#0a0a0a; border-bottom: 1px solid var(--border-subtle)">
+          <span class="color-swatch-hex">#0a0a0a</span>
+        </div>
+        <div class="color-info">
+          <div class="color-name">Primary BG (Dark)</div>
+          <div class="color-token">--bg-primary</div>
+          <div class="color-usage">Main page background in dark mode</div>
+        </div>
+      </div>
+
+      <!-- Light Core -->
+      <div class="color-card">
+        <div class="color-swatch" style="background:#e8eae2; border-bottom: 1px solid var(--border-subtle)">
+          <span class="color-swatch-hex">#e8eae2</span>
+        </div>
+        <div class="color-info">
+          <div class="color-name">Primary BG (Light)</div>
+          <div class="color-token">--bg-primary</div>
+          <div class="color-usage">Main page background in light mode</div>
+        </div>
+      </div>
+
+      <!-- Text High -->
+      <div class="color-card">
+        <div class="color-swatch" style="background:#DADDD0; border-bottom: 1px solid var(--border-subtle)">
+          <span class="color-swatch-hex">#DADDD0</span>
+        </div>
+        <div class="color-info">
+          <div class="color-name">Text Primary (Dark)</div>
+          <div class="color-token">--text-primary</div>
+          <div class="color-usage">Body text and paragraph readability in dark mode</div>
+        </div>
+      </div>
+
+      <!-- Text Dark -->
+      <div class="color-card">
+        <div class="color-swatch" style="background:#282828; border-bottom: 1px solid var(--border-subtle)">
+          <span class="color-swatch-hex">#282828</span>
+        </div>
+        <div class="color-info">
+          <div class="color-name">Text Primary (Light)</div>
+          <div class="color-token">--text-primary</div>
+          <div class="color-usage">Body text and paragraph readability in light mode</div>
+        </div>
+      </div>
+
+      <!-- Brand Blue -->
+      <div class="color-card">
+        <div class="color-swatch" style="background:#364CE4;">
+          <span class="color-swatch-hex">#364CE4</span>
+        </div>
+        <div class="color-info">
+          <div class="color-name">Accent Primary</div>
+          <div class="color-token">--accent-primary</div>
+          <div class="color-usage">Interactive buttons, links, custom cursor "You" tag</div>
+        </div>
+      </div>
+
+      <!-- Brand Green -->
+      <div class="color-card">
+        <div class="color-swatch" style="background:#42BD49;">
+          <span class="color-swatch-hex">#42BD49</span>
+        </div>
+        <div class="color-info">
+          <div class="color-name">Accent Secondary</div>
+          <div class="color-token">--accent-secondary</div>
+          <div class="color-usage">Next Project pill secondary accent, active hovers</div>
+        </div>
+      </div>
+
+      <!-- Category Web UX -->
+      <div class="color-card">
+        <div class="color-swatch" style="background:#F6631A;">
+          <span class="color-swatch-hex">#F6631A</span>
+        </div>
+        <div class="color-info">
+          <div class="color-name">Category: Web UX</div>
+          <div class="color-token">--category-web-ux</div>
+          <div class="color-usage">Thinking category color, lab4c WIP components</div>
+        </div>
+      </div>
+
+      <!-- Category Spatial XD -->
+      <div class="color-card">
+        <div class="color-swatch" style="background:#2B923D;">
+          <span class="color-swatch-hex">#2B923D</span>
+        </div>
+        <div class="color-info">
+          <div class="color-name">Category: Spatial XD</div>
+          <div class="color-token">--category-spatial-xd</div>
+          <div class="color-usage">Spatial design category indicator (e.g. Tirupati)</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── TYPOGRAPHY ──────────────────────────────────────────────────────── -->
+  <section class="doc-section" id="typography">
+    <h2>Typography System</h2>
+    <p class="section-intro">
+      We load Geist, Bricolage Grotesque, Google Sans, and Geist Mono fonts. Case studies override headers to Bricolage Grotesque for an editorial design system.
+    </p>
+    <hr />
+
+    <div class="font-families">
+      <div class="font-card">
+        <div class="font-card-label">Headings &amp; Titles</div>
+        <div class="font-specimen" style="font-family: var(--font-title); font-weight: 400; letter-spacing: -0.04em;">Aa Bb Cc 0123</div>
+        <div class="font-card-name">Google Sans · Regular 400 (used for primary headers)</div>
+      </div>
+      <div class="font-card">
+        <div class="font-card-label">Body Text / Copy</div>
+        <div class="font-specimen" style="font-family: var(--font-sans); font-weight: 400; letter-spacing: 0;">Aa Bb Cc 0123</div>
+        <div class="font-card-name">Inter / Google Sans · Regular 400 / Medium 500</div>
+      </div>
+    </div>
+
+    <div class="type-stack">
+      <div class="type-row">
+        <div class="type-meta">
+          <span class="type-token">--text-4xl</span>
+          <span class="type-size">3.111rem (56px) · Google Sans · 400</span>
+        </div>
+        <div class="spec-h1">Selected Works</div>
+      </div>
+      <div class="type-row">
+        <div class="type-meta">
+          <span class="type-token">--text-3xl</span>
+          <span class="type-size">3.111rem (56px) · Bricolage · 500</span>
+        </div>
+        <div class="spec-h2">Case Study Section</div>
+      </div>
+      <div class="type-row">
+        <div class="type-meta">
+          <span class="type-token">--text-xl</span>
+          <span class="type-size">1.333rem (24px) · Geist · 400</span>
+        </div>
+        <div class="spec-h3">Component Header Block</div>
+      </div>
+      <div class="type-row">
+        <div class="type-meta">
+          <span class="type-token">--text-base</span>
+          <span class="type-size">0.889rem (16px) · Inter · 400</span>
+        </div>
+        <div class="spec-base">Standard paragraph layout used for reading body contents and bento descriptions. Responsive line spacing makes for high text legibility.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── SPACING ─────────────────────────────────────────────────────────── -->
+  <section class="doc-section" id="spacing">
+    <h2>Layout &amp; Spacing</h2>
+    <p class="section-intro">
+      The spacing tokens govern margins, grid gaps, padding, and layout bounds to produce a compact, structurally rigid grid layout.
+    </p>
+    <hr />
+    
+    <table class="spacing-table">
+      <thead>
+        <tr>
+          <th>Token</th>
+          <th>Value</th>
+          <th>Visual</th>
+          <th>Usage / Purpose</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="token-pill">--space-2xs</span></td>
+          <td>0.25rem (4px)</td>
+          <td>
+            <div class="spacing-bar-wrap">
+              <div class="spacing-bar" style="width:4px;"></div>
+              <span class="spacing-val">4px</span>
+            </div>
+          </td>
+          <td>Bento compact vertical pad, tiny utility margins</td>
+        </tr>
+        <tr>
+          <td><span class="token-pill">--space-xs</span></td>
+          <td>0.5rem (8px)</td>
+          <td>
+            <div class="spacing-bar-wrap">
+              <div class="spacing-bar" style="width:8px;"></div>
+              <span class="spacing-val">8px</span>
+            </div>
+          </td>
+          <td>Bento horizontal padding, tag layouts</td>
+        </tr>
+        <tr>
+          <td><span class="token-pill">--space-sm</span></td>
+          <td>0.75rem (12px)</td>
+          <td>
+            <div class="spacing-bar-wrap">
+              <div class="spacing-bar" style="width:12px;"></div>
+              <span class="spacing-val">12px</span>
+            </div>
+          </td>
+          <td>Inner card layouts, card padding</td>
+        </tr>
+        <tr>
+          <td><span class="token-pill">--space-md</span></td>
+          <td>1.25rem (20px)</td>
+          <td>
+            <div class="spacing-bar-wrap">
+              <div class="spacing-bar" style="width:20px;"></div>
+              <span class="spacing-val">20px</span>
+            </div>
+          </td>
+          <td>Theme toggle edge offset, filter row paddings</td>
+        </tr>
+        <tr>
+          <td><span class="token-pill">--space-lg</span></td>
+          <td>2.25rem (36px)</td>
+          <td>
+            <div class="spacing-bar-wrap">
+              <div class="spacing-bar" style="width:36px;"></div>
+              <span class="spacing-val">36px</span>
+            </div>
+          </td>
+          <td>Main headings gap, layout elements spacer</td>
+        </tr>
+        <tr>
+          <td><span class="token-pill">--space-2xl</span></td>
+          <td>6.0rem (96px)</td>
+          <td>
+            <div class="spacing-bar-wrap">
+              <div class="spacing-bar" style="width:96px;"></div>
+              <span class="spacing-val">96px</span>
+            </div>
+          </td>
+          <td>Bottom margin for footer, section blocks spacer</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ─── COMPONENTS ───────────────────────────────────────────────────────── -->
+  <section class="doc-section" id="components">
+    <h2>Component Patterns</h2>
+    <p class="section-intro">
+      Reusable markup elements that compose the case study pages, bento cards, and interactive navigation elements.
+    </p>
+    <hr />
+
+    <div class="component-grid">
+      <!-- Next Project Pill -->
+      <div class="component-card">
+        <div class="component-label">
+          <span>Next Project Banner Pill</span>
+          <code>NextProjectBanner.astro</code>
+        </div>
+        <div class="component-demo">
+          <a class="next-eyebrow-bento">
+            Next Project
+            <svg class="eyebrow-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12H19M19 12L12 5M19 12L12 19"></path>
+            </svg>
+          </a>
+        </div>
+        <div class="spec-panel">
+          <div class="spec-panel-title">Specifications</div>
+          <div class="spec-row"><span class="spec-key">Border Radius</span><span class="spec-value">12px</span></div>
+          <div class="spec-row"><span class="spec-key">Hover transition</span><span class="spec-value">Swaps text/bg color, arrow moves right</span></div>
+          <div class="spec-row"><span class="spec-key">Color</span><span class="spec-value">--accent-secondary (#42BD49)</span></div>
+        </div>
+      </div>
+
+      <!-- WIP Thinking CTA -->
+      <div class="component-card">
+        <div class="component-label">
+          <span>WIP Case Study CTA Button</span>
+          <code>lab4c.mdx</code>
+        </div>
+        <div class="component-demo">
+          <a class="wip-cta-button">
+            See the Live Website
+            <svg class="eyebrow-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12H19M19 12L12 5M19 12L12 19"></path>
+            </svg>
+          </a>
+        </div>
+        <div class="spec-panel">
+          <div class="spec-panel-title">Specifications</div>
+          <div class="spec-row"><span class="spec-key">Color Token</span><span class="spec-value">--category-web-ux (#F6631A)</span></div>
+          <div class="spec-row"><span class="spec-key">Action Alignment</span><span class="spec-value">Stacked vertically, centered on screen</span></div>
+          <div class="spec-row"><span class="spec-key">Hover Animation</span><span class="spec-value">Pill fill transition, arrow translate X</span></div>
+        </div>
+      </div>
+
+      <!-- Bento Tags -->
+      <div class="component-card">
+        <div class="component-label">
+          <span>Metadata Tags (Bento Style)</span>
+          <code>HomeProjectCard.astro</code>
+        </div>
+        <div class="component-demo" style="flex-direction: row; gap: 8px;">
+          <span class="bento-pill">Knowledge Tools</span>
+          <span class="bento-pill">Shipped</span>
+          <span class="bento-pill">Front-End Development</span>
+        </div>
+        <div class="spec-panel">
+          <div class="spec-panel-title">Specifications</div>
+          <div class="spec-row"><span class="spec-key">Font Scale</span><span class="spec-value">11px · Mono</span></div>
+          <div class="spec-row"><span class="spec-key">Padding</span><span class="spec-value">4px 10px</span></div>
+          <div class="spec-row"><span class="spec-key">Border Color</span><span class="spec-value">var(--border-subtle)</span></div>
+        </div>
+      </div>
+
+      <!-- Theme Switcher -->
+      <div class="component-card">
+        <div class="component-label">
+          <span>Universal Theme Toggle</span>
+          <code>ThemeToggle.astro</code>
+        </div>
+        <div class="component-demo">
+          <button class="theme-toggle-btn" style="padding: 10px 16px; font-size: 13px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 4px;"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+            Toggle Light Mode
+          </button>
+        </div>
+        <div class="spec-panel">
+          <div class="spec-panel-title">Specifications</div>
+          <div class="spec-row"><span class="spec-key">Script Placement</span><span class="spec-value">Inline in Layout.astro &lt;head&gt;</span></div>
+          <div class="spec-row"><span class="spec-key">Storage Key</span><span class="spec-value">localStorage.getItem("theme")</span></div>
+          <div class="spec-row"><span class="spec-key">Target Attribute</span><span class="spec-value">[data-theme="light"] on &lt;html&gt;</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="f-left">Narayan Ashanahalli — Portfolio</div>
+    <div class="f-right">Developer Documentation · Design System · v1.1</div>
+  </footer>
+</div>
+
+<script>
+  // Interactive Theme Toggle for Documentation Previews
+  const toggleBtn = document.getElementById('theme-toggle');
+  const html = document.documentElement;
+
+  toggleBtn.addEventListener('click', () => {
+    const isDark = html.getAttribute('data-theme') === 'dark';
+    if (isDark) {
+      html.setAttribute('data-theme', 'light');
+      toggleBtn.innerHTML = `
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 4px;"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+        Toggle Dark Mode
+      `;
+    } else {
+      html.setAttribute('data-theme', 'dark');
+      toggleBtn.innerHTML = `
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 4px;"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        Toggle Light Mode
+      `;
+    }
+  });
+</script>
+
+</body>
+</html>

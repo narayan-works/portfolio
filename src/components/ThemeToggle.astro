@@ -94,39 +94,48 @@
 </style>
 
 <script is:inline>
-    const theme = (() => {
-        if (
-            typeof localStorage !== "undefined" &&
-            localStorage.getItem("theme")
-        ) {
-            return localStorage.getItem("theme");
-        }
-        if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-            return "dark";
-        }
-        return "light";
-    })();
+    (() => {
+        const theme = (() => {
+            if (
+                typeof localStorage !== "undefined" &&
+                localStorage.getItem("theme")
+            ) {
+                return localStorage.getItem("theme");
+            }
+            if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+                return "dark";
+            }
+            return "light";
+        })();
 
-    if (theme === "light") {
-        document.documentElement.setAttribute("data-theme", "light");
-    } else {
-        document.documentElement.removeAttribute("data-theme");
-    }
-
-    window.localStorage.setItem("theme", theme);
-
-    const handleToggleClick = () => {
-        const element = document.documentElement;
-        if (element.getAttribute("data-theme") === "light") {
-            element.removeAttribute("data-theme");
-            localStorage.setItem("theme", "dark");
+        if (theme === "light") {
+            document.documentElement.setAttribute("data-theme", "light");
         } else {
-            element.setAttribute("data-theme", "light");
-            localStorage.setItem("theme", "light");
+            document.documentElement.removeAttribute("data-theme");
         }
-    };
 
-    document
-        .getElementById("theme-toggle")
-        .addEventListener("click", handleToggleClick);
+        window.localStorage.setItem("theme", theme);
+
+        const handleToggleClick = () => {
+            const element = document.documentElement;
+            if (element.getAttribute("data-theme") === "light") {
+                element.removeAttribute("data-theme");
+                localStorage.setItem("theme", "dark");
+            } else {
+                element.setAttribute("data-theme", "light");
+                localStorage.setItem("theme", "light");
+            }
+        };
+
+        const setupToggle = () => {
+            const btn = document.getElementById("theme-toggle");
+            if (btn) {
+                btn.removeEventListener("click", handleToggleClick);
+                btn.addEventListener("click", handleToggleClick);
+            }
+        };
+
+        setupToggle();
+        document.addEventListener("astro:page-load", setupToggle);
+    })();
 </script>

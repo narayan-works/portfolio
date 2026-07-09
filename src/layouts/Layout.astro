@@ -2,6 +2,8 @@
 import SpeedInsights from "@vercel/speed-insights/astro";
 import "../styles/global.css";
 import CustomCursor from "../components/CustomCursor.astro";
+import TypographyInspector from "../components/TypographyInspector.astro";
+import { ViewTransitions } from "astro:transitions";
 
 interface Props {
 	title: string;
@@ -23,8 +25,11 @@ const {
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="description" content={description} />
+		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
+		<meta property="og:type" content="website" />
 		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
 		<meta name="twitter:description" content={description} />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -33,7 +38,23 @@ const {
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link
-			href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400&family=Geist:wght@300;400;500;600;700;800;900&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap"
+			href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@200..800&family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&family=Inter:wght@400;500;600&display=swap"
+			rel="stylesheet"
+		/>
+		<link
+			href="https://cdn.jsdelivr.net/npm/@fontsource/google-sans@5.0.1/300.css"
+			rel="stylesheet"
+		/>
+		<link
+			href="https://cdn.jsdelivr.net/npm/@fontsource/google-sans@5.0.1/400.css"
+			rel="stylesheet"
+		/>
+		<link
+			href="https://cdn.jsdelivr.net/npm/@fontsource/google-sans@5.0.1/500.css"
+			rel="stylesheet"
+		/>
+		<link
+			href="https://cdn.jsdelivr.net/npm/@fontsource/google-sans@5.0.1/700.css"
 			rel="stylesheet"
 		/>
 		{
@@ -58,7 +79,10 @@ const {
 		<title>{title}</title>
 		<script defer src="/_vercel/insights/script.js"></script>
 		<!-- Google tag (gtag.js) -->
-		<script async src="https://www.googletagmanager.com/gtag/js?id=G-E94KJKFM6G"></script>
+		<script
+			async
+			src="https://www.googletagmanager.com/gtag/js?id=G-E94KJKFM6G"
+		></script>
 		<script>
 			const w = window as typeof window & {
 				dataLayer?: unknown[][];
@@ -81,9 +105,59 @@ const {
 				window.addEventListener("load", initAnalytics, { once: true });
 			}
 		</script>
+		<!-- Microsoft Clarity -->
+		<script type="text/javascript" is:inline>
+			(function (c, l, a, r, i, t, y) {
+				c[a] =
+					c[a] ||
+					function () {
+						(c[a].q = c[a].q || []).push(arguments);
+					};
+				t = l.createElement(r);
+				t.async = 1;
+				t.src = "https://www.clarity.ms/tag/" + i;
+				y = l.getElementsByTagName(r)[0];
+				y.parentNode.insertBefore(t, y);
+			})(window, document, "clarity", "script", "x4yo8ojdri");
+		</script>
+		<script is:inline>
+			(() => {
+				const applyTheme = () => {
+					const theme = (() => {
+						if (
+							typeof localStorage !== "undefined" &&
+							localStorage.getItem("theme")
+						) {
+							return localStorage.getItem("theme");
+						}
+						if (
+							window.matchMedia("(prefers-color-scheme: dark)").matches
+						) {
+							return "dark";
+						}
+						return "light";
+					})();
+
+					if (theme === "light") {
+						document.documentElement.setAttribute("data-theme", "light");
+					} else {
+						document.documentElement.removeAttribute("data-theme");
+					}
+					window.localStorage.setItem("theme", theme);
+				};
+
+				applyTheme();
+				// Re-apply after client-side view transitions: unchanged inline
+				// head scripts don't re-run on swap, so without this the new
+				// page's <html> keeps its SSR-default (dark) state.
+				document.addEventListener("astro:after-swap", applyTheme);
+			})();
+		</script>
+		<ViewTransitions />
 	</head>
 	<body>
 		<CustomCursor />
+		<TypographyInspector />
 		<div class={`universal-layout ${fullWidth ? "full-width" : ""}`}>
 			<!-- Sidebar Slot (Universal Left) -->
 			<aside class="layout-sidebar">
@@ -97,7 +171,7 @@ const {
 		</div>
 		<SpeedInsights />
 		<script>
-			import Lenis from 'lenis';
+			import Lenis from "lenis";
 
 			// Initialize Lenis for buttery smooth scrolling
 			const w = window as any;
@@ -105,8 +179,8 @@ const {
 				const lenis = new Lenis({
 					duration: 1.2,
 					easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-					orientation: 'vertical',
-					gestureOrientation: 'vertical',
+					orientation: "vertical",
+					gestureOrientation: "vertical",
 					smoothWheel: true,
 					wheelMultiplier: 1,
 					touchMultiplier: 2,
@@ -120,8 +194,24 @@ const {
 
 				requestAnimationFrame(raf);
 				w.lenis = lenis;
+
+				// Intercept local anchor link clicks on the document for smooth Lenis scrolling
+				document.addEventListener("click", (e) => {
+					const target = e.target as HTMLElement;
+					const anchor = target.closest("a");
+					if (anchor) {
+						const href = anchor.getAttribute("href");
+						if (href && href.startsWith("#") && href.length > 1) {
+							const targetEl = document.querySelector(href);
+							if (targetEl) {
+								e.preventDefault();
+								lenis.scrollTo(targetEl, { duration: 1.2 });
+							}
+						}
+					}
+				});
 			}
-			
+
 			// Reset scroll on Astro view transitions
 			document.addEventListener("astro:after-swap", () => {
 				if (w.lenis) {
@@ -148,8 +238,11 @@ const {
 		}
 		/* Ensure links also don't show cursor */
 		a,
+		a *,
 		button,
-		[role="button"] {
+		button *,
+		[role="button"],
+		[role="button"] * {
 			cursor: none !important;
 		}
 	}
@@ -165,21 +258,25 @@ const {
 	}
 
 	.layout-sidebar {
-		background: var(--bg-primary);
+		background: #000000; /* Dark mode: pure black */
 		border-right: 1px solid var(--border-subtle);
 		border-left: none;
-		padding: var(--space-md);
+		padding: 20px;
 		position: sticky;
 		top: 0;
 		height: 100vh;
 		overflow-y: auto;
 		display: flex;
 		flex-direction: column;
-		width: 320px; /* Explicit width constraint */
-		box-sizing: border-box; /* Include padding in width */
-		/* Ensure it sits in the first column */
+		width: 320px;
+		box-sizing: border-box;
 		grid-column: 1 / 2;
 		grid-row: 1;
+		z-index: 10000; /* High z-index to elevate child stacking contexts (theme toggle) above right content */
+	}
+
+	[data-theme="light"] .layout-sidebar {
+		background: #e5e6df; /* Light mode: dark beige */
 	}
 
 	.layout-content {
@@ -215,7 +312,7 @@ const {
 			grid-column: auto;
 		}
 
-		/* Show default cursor on mobile/touch devices if needed, 
+		/* Show default cursor on mobile/touch devices if needed,
 		   though 'cursor: none' is usually fine as they don't have a cursor. 
 		   But if a mouse is connected to iPad: */
 	}

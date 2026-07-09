@@ -1,28 +1,24 @@
 ---
 title: "MusiBuddy"
-description: "An interactive desktop companion that reimagines the relationship between listener and device using Gordon Pask's Conversation Theory. Instead of passive visualization, the system analyzes musical structure—beats, bars, and complexity—to maintain a dynamic feedback loop. The device exhibits a form of 'aesthetic intelligence,' regulating its output to express boredom or engagement or user state depending on the song's novelty, transforming the playback experience into an active dialogue."
-category: "archive"
+description: "An interactive AI speaker inspired by Gordon Pask’s Conversation Theory, responding to music and user state to turn listening into a feedback loop between listener and device."
+category: "experiments"
 heroImage: "/assets/projects/musibuddy/hero-musibuddy.gif"
-tags: ["Tangible Interaction", "Prototyping", "Cybernetics"]
+tags: ["Embodied AI"]
 meta:
-  Duration: "2 weeks (sprint)"
-  Tools: "Figma, Rhino, After Effects"
-  Advisor: "Paul Pangaro"
-  Course: "History and Future of IxD"
-  Prior Art: "Cybernetics & MusiColour (1953)"
+  Role: "Interaction + Industrial Design"
+  Duration: "2 Weeks"
   Year: "2024"
+  Advisor: "Paul Pangaro"
+  Focus: "Cybernetics, Adaptive Interfaces"
 sections:
-
-  - id: "outcome"
-    label: "What's the outcome?"
-  - id: "premise"
+  - id: "problem"
     label: "Why build it?"
-  - id: "approach"
-    label: "What's the approach?"
-  - id: "interaction-model"
-    label: "How does it work?"
-  - id: "product-vision"
-    label: "How is it built?"
+  - id: "outcome"
+    label: "What came out of it?"
+  - id: "research"
+    label: "Finding the dots"
+  - id: "process"
+    label: "Connecting the dots"
 ---
 
 import ProjectSection from '../../components/ProjectSection.astro';
@@ -31,6 +27,11 @@ import VideoSwitcher from '../../components/VideoSwitcher.astro';
 import ImageToggle from '../../components/ImageToggle.astro';
 
 <FullWidthImage src="/assets/projects/musibuddy/hero.png" constrain={false} />
+
+<ProjectSection title="Premise" id="problem" wide={true}>
+    <p>MusicBuddy is an attempt to build a machine with "aesthetic intelligence." Inspired by Gordon Pask's MusiColour (1953), this prototype deconstructs audio into deep structural data (Tatums, Beats, Bars) to create a feedback loop where the machine doesn't just display the music, but "performs" it—getting bored if the song is too repetitive, or overwhelmed if it's too complex.</p>
+    <FullWidthImage src="/assets/projects/musibuddy/premise.png" constrain={false} />
+</ProjectSection>
 
 <div class="musibuddy-project">
   <ProjectSection title="Outcome" id="outcome" wide={true}>
@@ -50,18 +51,12 @@ import ImageToggle from '../../components/ImageToggle.astro';
   </ProjectSection>
 </div>
 
-
-<ProjectSection title="Premise" id="premise" wide={true}>
-    <p>MusicBuddy is an attempt to build a machine with "aesthetic intelligence." Inspired by Gordon Pask's MusiColour (1953), this prototype deconstructs audio into deep structural data (Tatums, Beats, Bars) to create a feedback loop where the machine doesn't just display the music, but "performs" it—getting bored if the song is too repetitive, or overwhelmed if it's too complex.</p>
-    <FullWidthImage src="/assets/projects/musibuddy/premise.png" constrain={false} />
-  </ProjectSection>
-
-  <ProjectSection title="Approach" id="approach" wide={true}>
+  <ProjectSection title="Approach" id="research" wide={true}>
     <FullWidthImage src="/assets/projects/musibuddy/approach-1.png" constrain={false} />
     <FullWidthImage src="/assets/projects/musibuddy/approach-2.png" constrain={false} />
   </ProjectSection>
 
-  <ProjectSection title="Interaction Model" id="interaction-model" wide={true}>
+  <ProjectSection title="Interaction Model" id="process" wide={true}>
     <ImageToggle 
       image1="/assets/projects/musibuddy/Interaction model-1.png"
       image2="/assets/projects/musibuddy/Interaction model-2.png"
@@ -70,7 +65,7 @@ import ImageToggle from '../../components/ImageToggle.astro';
     />
   </ProjectSection>
 
-  <ProjectSection title="Product Vision" id="product-vision" wide={true}>
+  <ProjectSection title="Product Vision" id="process" wide={true}>
     <FullWidthImage src="/assets/projects/musibuddy/How is it built-1.png" constrain={false} />
     <FullWidthImage src="/assets/projects/musibuddy/How is it built-2.png" constrain={false} />
   </ProjectSection>

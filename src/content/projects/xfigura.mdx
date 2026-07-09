@@ -1,0 +1,312 @@
+---
+title: "Prompt Nodes"
+description: "A generative text-to-node product architecture editor, mapping design opportunities directly to workflow primitives on an infinite spatial canvas."
+category: "web-ux"
+heroImage: "/assets/projects/xfigura/hero-xfigura.png"
+order: 2
+tags: ["Knowledge Tools", "AI Workflow"]
+ctaUrl: "https://xfigura.narayan.works/"
+ctaText: "Checkout the proposal"
+meta:
+  Role: "Product Builder"
+  Duration: "1 Week"
+  Year: "2026"
+  Focus: "Frontend Development, Prototyping"
+sections:
+  - { id: "problem", label: "Why build it?" }
+  - { id: "outcome", label: "What came out of it?" }
+  - { id: "research", label: "Finding the dots" }
+  - { id: "process", label: "Connecting the dots" }
+---
+
+import ProjectSection from '../../components/ProjectSection.astro';
+import FullWidthImage from '../../components/FullWidthImage.astro';
+import XFiguraEmbed from '../../components/XFiguraEmbed.astro';
+import '../../styles/xfigura-layouts.css';
+
+<FullWidthImage src="/assets/projects/xfigura/hero-xfigura.png" constrain={false} />
+
+<ProjectSection title="Why build it?" id="problem" wide={true}>
+    <p>I built this as a quick product probe for <a href="https://xfigura.ai/" target="_blank" rel="noopener noreferrer">xFigura</a>. <em>(Self-initiated concept prototype. Not affiliated with or endorsed by <a href="https://xfigura.ai/" target="_blank" rel="noopener noreferrer">xFigura</a>.)</em> It explores one idea:</p>
+    <div class="centered-tagline orange-bar breakout-text">
+        <h2 class="left-align">turning prompts on the canvas into editable nodes, instead of leaving them as one-off text inputs.</h2>
+    </div>
+</ProjectSection>
+
+<ProjectSection title="What came out of it?" id="outcome" wide={true}>
+    <h2 class="left-align">The canvas prototype</h2>
+    <p class="left-align section-tagline">Below is the live, interactive xFigura canvas prototype.</p>
+    
+    <XFiguraEmbed />
+</ProjectSection>
+
+<ProjectSection title="Finding the dots" id="research" wide={true}>
+    <h2 class="left-align">Product Understanding</h2>
+    <p class="left-align section-tagline">Four product layers</p>
+
+    <div class="xf-grid grid-4">
+        <article class="xf-card">
+            <div class="card-header">
+                <span class="card-id">L1</span>
+                <span class="card-label">Layer</span>
+            </div>
+            <div class="card-icon-container">
+                <img src="/canvas.png" alt="Canvas" class="card-icon" />
+            </div>
+            <h3 class="card-title">Canvas-Based Interaction</h3>
+            <p class="card-desc">The spatial workspace where users drop, arrange, and wire text, image, video, and 3D preview nodes.</p>
+        </article>
+
+        <article class="xf-card">
+            <div class="card-header">
+                <span class="card-id">L2</span>
+                <span class="card-label">Layer</span>
+            </div>
+            <div class="card-icon-container">
+                <img src="/infrastructure.png" alt="Infrastructure" class="card-icon" />
+            </div>
+            <h3 class="card-title">Infrastructure Layer</h3>
+            <p class="card-desc">The desktop-to-cloud data pipeline managing the Rhino plugin, parameter inputs, Speckle integration, and the Revit connection.</p>
+        </article>
+
+        <article class="xf-card">
+            <div class="card-header">
+                <span class="card-id">L3</span>
+                <span class="card-label">Layer</span>
+            </div>
+            <div class="card-icon-container">
+                <img src="/model.png" alt="Model Marketplace" class="card-icon" />
+            </div>
+            <h3 class="card-title">Model Marketplace</h3>
+            <p class="card-desc">The backend aggregator engine that routes and processes third-party and proprietary models, including Flux, upscalers, and the Nano Banana suite.</p>
+        </article>
+
+        <article class="xf-card">
+            <div class="card-header">
+                <span class="card-id">L4</span>
+                <span class="card-label">Layer</span>
+            </div>
+            <div class="card-icon-container">
+                <img src="/human.png" alt="Human Connection" class="card-icon" />
+            </div>
+            <h3 class="card-title">Human Connection Layer</h3>
+            <p class="card-desc">The multiplayer environment hosting markup tools, team collaboration features, and text annotations for design redlines.</p>
+        </article>
+    </div>
+
+    <h2 class="left-align">Early Design Development</h2>
+    <p class="left-align section-tagline">Baseline workflow primitives</p>
+
+    <div class="xf-grid grid-4">
+        <article class="xf-card">
+            <div class="card-header">
+                <span class="card-id font-emerald">P-01</span>
+                
+            </div>
+            <div class="card-icon-container">
+                <img src="/massing.png" alt="Massing" class="card-icon" />
+            </div>
+            <h3 class="card-title">Massing &amp; Adjacencies</h3>
+            <p class="card-desc">The geometry block handling spatial logic, bubble diagrams, volumetric configurations, and programmatic layouts.</p>
+        </article>
+
+        <article class="xf-card">
+            <div class="card-header">
+                <span class="card-id font-emerald">P-02</span>
+            </div>
+            <div class="card-icon-container">
+                <img src="/materiality.png" alt="Materiality" class="card-icon" />
+            </div>
+            <h3 class="card-title">Surface &amp; Materiality</h3>
+            <p class="card-desc">The tactical block handling tectonic properties, surface textures, roughness, porosity, and material specifications.</p>
+        </article>
+
+        <article class="xf-card">
+            <div class="card-header">
+                <span class="card-id font-emerald">P-03</span>
+            </div>
+            <div class="card-icon-container">
+                <img src="/environmental.png" alt="Environmental" class="card-icon" />
+            </div>
+            <h3 class="card-title">Environmental Values</h3>
+            <p class="card-desc">The contextual data block tracking solar orientation, azimuth angles, time of day, and microclimate conditions.</p>
+        </article>
+
+        <article class="xf-card">
+            <div class="card-header">
+                <span class="card-id font-emerald">P-04</span>
+            </div>
+            <div class="card-icon-container">
+                <img src="/discourse.png" alt="Discourse" class="card-icon" />
+            </div>
+            <h3 class="card-title">Markup &amp; Discourse</h3>
+            <p class="card-desc">The feedback block capturing sketch overlays, live review comments, annotations, and designer-to-principal team alignment.</p>
+        </article>
+    </div>
+</ProjectSection>
+
+<ProjectSection title="Connecting the dots" id="process" wide={true}>
+    <h2 class="left-align">Opportunities into UI</h2>
+    <h3 class="left-align" style="margin-top: 1.5rem !important;">Active Focus: <span class="active-readout">OP-1</span></h3>
+
+    <div class="xf-grid grid-3">
+        <article class="opp-card active-glow">
+            <div>
+                <h3 class="opp-title active-title">Parametricizing<br />Text Inputs</h3>
+                
+                <div class="opp-rows">
+                    <div class="opp-row">
+                        <span class="opp-row-label">Product</span>
+                        <div class="opp-chips">
+                            <span class="opp-chip">
+                                <span class="chip-circle"><img src="/massing.png" class="chip-img" alt="" /></span>
+                                <span class="chip-name">massing</span>
+                            </span>
+                            <span class="chip-plus">+</span>
+                            <span class="opp-chip">
+                                <span class="chip-circle"><img src="/canvas.png" class="chip-img" alt="" /></span>
+                                <span class="chip-name">canvas</span>
+                            </span>
+                            <span class="chip-plus">+</span>
+                            <span class="opp-chip">
+                                <span class="chip-circle"><img src="/infrastructure.png" class="chip-img" alt="" /></span>
+                                <span class="chip-name">infra</span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="opp-row">
+                        <span class="opp-row-label">Workflow</span>
+                        <div class="opp-chips">
+                            <span class="opp-chip">
+                                <span class="chip-circle"><img src="/materiality.png" class="chip-img" alt="" /></span>
+                                <span class="chip-name">material</span>
+                            </span>
+                            <span class="chip-plus">+</span>
+                            <span class="opp-chip">
+                                <span class="chip-circle"><img src="/environmental.png" class="chip-img" alt="" /></span>
+                                <span class="chip-name">environ</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="opp-footer">
+                <p class="opp-desc active-desc">Translating qualitative text strings into structured UI components — converting descriptive language directly into parametric input blocks within the canvas framework.</p>
+                <div class="opp-meta-row">
+                    <span class="opp-status font-emerald">
+                        <span class="status-dot"></span> Opportunity 1
+                    </span>
+                    <span class="opp-badge bg-emerald">12 nodes</span>
+                </div>
+            </div>
+        </article>
+
+        <article class="opp-card inactive-faded">
+            <div>
+                <h3 class="opp-title">Async Context<br />Capture</h3>
+                
+                <div class="opp-rows">
+                    <div class="opp-row">
+                        <span class="opp-row-label">Product</span>
+                        <div class="opp-chips">
+                            <span class="opp-chip">
+                                <span class="chip-circle"><img src="/canvas.png" class="chip-img" alt="" /></span>
+                                <span class="chip-name">canvas</span>
+                            </span>
+                            <span class="chip-plus">+</span>
+                            <span class="opp-chip">
+                                <span class="chip-circle"><img src="/infrastructure.png" class="chip-img" alt="" /></span>
+                                <span class="chip-name">infra</span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="opp-row">
+                        <span class="opp-row-label">Workflow</span>
+                        <div class="opp-chips">
+                            <span class="opp-chip">
+                                <span class="chip-circle"><img src="/materiality.png" class="chip-img" alt="" /></span>
+                                <span class="chip-name">material</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="opp-footer">
+                <p class="opp-desc">Caching dynamic Revit changes and local viewport snapshots to resolve coordinates, making sure changes propagate asynchronously to nodes.</p>
+                <div class="opp-meta-row">
+                    <span class="opp-status font-muted">Opportunity 2</span>
+                    <span class="opp-badge bg-muted">4 nodes</span>
+                </div>
+            </div>
+        </article>
+
+        <article class="opp-card inactive-faded">
+            <div>
+                <h3 class="opp-title">Parametric<br />Visualization</h3>
+                
+                <div class="opp-rows">
+                    <div class="opp-row">
+                        <span class="opp-row-label">Product</span>
+                        <div class="opp-chips">
+                            <span class="opp-chip">
+                                <span class="chip-circle"><img src="/canvas.png" class="chip-img" alt="" /></span>
+                                <span class="chip-name">canvas</span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="opp-row">
+                        <span class="opp-row-label">Workflow</span>
+                        <div class="opp-chips">
+                            <span class="opp-chip">
+                                <span class="chip-circle"><img src="/materiality.png" class="chip-img" alt="" /></span>
+                                <span class="chip-name">material</span>
+                            </span>
+                            <span class="chip-plus">+</span>
+                            <span class="opp-chip">
+                                <span class="chip-circle"><img src="/environmental.png" class="chip-img" alt="" /></span>
+                                <span class="chip-name">environ</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="opp-footer">
+                <p class="opp-desc">Translating structural parameters (spacing, angle, thickness) into live 3D web graphics, syncing them to model runs.</p>
+                <div class="opp-meta-row">
+                    <span class="opp-status font-muted">Opportunity 3</span>
+                    <span class="opp-badge bg-muted">7 nodes</span>
+                </div>
+            </div>
+        </article>
+    </div>
+
+    <h2 class="left-align core-section-title">The Core UI Elements &amp; Interactions</h2>
+    <p class="left-align core-section-desc">The text-to-node interface relies on three core UI components that work together across the layout canvas:</p>
+
+    <div class="xf-grid grid-3">
+        <article class="core-card">
+            <h3 class="core-card-title">Source Text Node</h3>
+            <p class="core-card-desc">The entry point on the left of the canvas where you type the prompt. It tokenizes terms like <code>/visualization</code>, <code>/deep</code>, and <code>/rotate</code> into active pills. Clicking Parametricize kicks off the graph generation.</p>
+        </article>
+
+        <article class="core-card">
+            <h3 class="core-card-title">Decoupled Parameter Sliders</h3>
+            <p class="core-card-desc">Independent control cards that spawn on the canvas with clear 20px vertical spacing. They map the parsed variables into manual controls with direct numeric readouts (20 mm, 44°, 70%, 5').</p>
+        </article>
+
+        <article class="core-card">
+            <h3 class="core-card-title">Main Generation Hub</h3>
+            <p class="core-card-desc">The central parent card positioned in the middle of the workspace. It features visual input sockets on the left edge to receive data wires from the parameter sliders, a reference image dropzone, and a Generate Visualization button at the base to render the final preview node.</p>
+        </article>
+    </div>
+
+    <div class="ui-image-wrapper left-align">
+        <img src="/UI components.png" alt="The Core UI Elements &amp; Interactions Diagram" class="ui-image" />
+    </div>
+</ProjectSection>

@@ -1,0 +1,280 @@
+---
+import { Image } from "astro:assets";
+import happyLogo from "../assets/happy.png";
+
+const isHomePage = Astro.url.pathname === "/";
+const isAboutPage = Astro.url.pathname.startsWith("/about");
+const isElsewherePage = Astro.url.pathname.startsWith("/elsewhere");
+---
+
+<nav class="home-navigation">
+    <div class="home-nav-container">
+        <!-- Left: Logo & Name -->
+        <a href="/" class="home-nav-logo">
+            <div class="logo-img-wrapper">
+                <Image
+                    src={happyLogo}
+                    alt="na"
+                    class="logo-img"
+                    loading="eager"
+                    decoding="async"
+                    width={96}
+                    height={96}
+                />
+            </div>
+            <span class="logo-name"></span>
+        </a>
+
+        <!-- Right: Links -->
+        <div class="home-nav-links">
+            <a
+                href={isHomePage ? "#" : "/"}
+                id="nav-home-link"
+                class="home-nav-link"
+                data-section="home"
+            >
+                Home
+            </a>
+            <a
+                href="/about"
+                id="nav-about-link"
+                class={`home-nav-link ${isAboutPage ? "active-scroll" : ""}`}
+                data-section="about"
+            >
+                About
+            </a>
+            <a
+                href={isHomePage ? "#works" : "/#works"}
+                id="nav-works-link"
+                class="home-nav-link"
+                data-section="works"
+            >
+                Work
+            </a>
+            <a
+                href="/elsewhere"
+                target="_blank"
+                id="nav-elsewhere-link"
+                class={`home-nav-link ${isElsewherePage ? "active-scroll" : ""}`}
+            >
+                Elsewhere
+            </a>
+        </div>
+    </div>
+</nav>
+
+<script>
+    function setupScrollSpy() {
+        // Home/Works highlighting is homepage-only scroll spying. About and
+        // Elsewhere are static per-page links, highlighted server-side
+        // based on the current route (see isAboutPage/isElsewherePage).
+        const homeLink = document.getElementById("nav-home-link");
+        const worksLink = document.getElementById("nav-works-link");
+        const worksSection = document.getElementById("works");
+
+        if (!worksSection) {
+            homeLink?.classList.remove("active-scroll");
+            worksLink?.classList.remove("active-scroll");
+            return;
+        }
+
+        function updateHomeActiveState() {
+            homeLink?.classList.remove("active-scroll");
+            worksLink?.classList.remove("active-scroll");
+
+            const worksTop = worksSection.offsetTop - 120;
+
+            if (window.scrollY < worksTop) {
+                homeLink?.classList.add("active-scroll");
+            } else {
+                worksLink?.classList.add("active-scroll");
+            }
+        }
+
+        window.addEventListener("scroll", () => {
+            window.requestAnimationFrame(updateHomeActiveState);
+        });
+
+        // Initial call
+        updateHomeActiveState();
+    }
+
+    // Run setup on load and on page transition (Astro View Transitions compatibility)
+    setupScrollSpy();
+    document.addEventListener("astro:page-load", setupScrollSpy);
+</script>
+
+<style>
+    .home-navigation {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 200;
+        padding: 0 16px; /* No vertical padding, 16px horizontal */
+        height: 52.5px; /* 1.5 times the 35px filter bar height */
+        box-sizing: border-box;
+        background: transparent;
+        display: flex;
+        align-items: center;
+    }
+
+    .home-nav-container {
+        position: relative;
+        isolation: isolate;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+	}
+
+    .home-nav-container::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+            to bottom,
+            rgba(255, 255, 255, 0.24) 0%,
+            rgba(255, 255, 255, 0.2) 10%,
+            rgba(255, 255, 255, 0.14) 24%,
+            rgba(255, 255, 255, 0.08) 40%,
+            rgba(255, 255, 255, 0.035) 58%,
+            rgba(255, 255, 255, 0.012) 74%,
+            rgba(255, 255, 255, 0) 100%
+        );
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        -webkit-mask-image: linear-gradient(
+            to bottom,
+            black 0%,
+            black 18%,
+            rgba(0, 0, 0, 0.92) 34%,
+            rgba(0, 0, 0, 0.6) 52%,
+            rgba(0, 0, 0, 0.22) 70%,
+            transparent 100%
+        );
+        mask-image: linear-gradient(
+            to bottom,
+            black 0%,
+            black 18%,
+            rgba(0, 0, 0, 0.92) 34%,
+            rgba(0, 0, 0, 0.6) 52%,
+            rgba(0, 0, 0, 0.22) 70%,
+            transparent 100%
+        );
+        z-index: -1;
+    }
+
+    :global(html:not([data-theme="light"])) .home-nav-container::before {
+        background: linear-gradient(
+            to bottom,
+            rgba(0, 0, 0, 0.6) 0%,
+            rgba(0, 0, 0, 0.5) 10%,
+            rgba(0, 0, 0, 0.35) 24%,
+            rgba(0, 0, 0, 0.2) 40%,
+            rgba(0, 0, 0, 0.09) 58%,
+            rgba(0, 0, 0, 0.03) 74%,
+            rgba(0, 0, 0, 0) 100%
+        );
+    }
+
+    .home-nav-logo {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        text-decoration: none;
+        color: var(--text-secondary);
+        transition: color 0.2s ease;
+        cursor: pointer;
+        user-select: none;
+        height: 100%;
+    }
+
+    .home-nav-logo:hover {
+        color: var(--accent-secondary);
+    }
+
+    .home-nav-logo:hover .logo-name {
+        font-weight: 600;
+    }
+
+    .logo-img-wrapper {
+        width: 52.5px; /* Perfect square matching container height */
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--accent-secondary); /* Green background */
+        margin-left: -16px; /* Pull to the absolute left edge of the navigation bar */
+    }
+
+    .logo-img {
+        display: block;
+        width: 36px;
+        height: 36px;
+        object-fit: contain;
+    }
+
+    .logo-name {
+        font-family: var(--font-sans);
+        font-size: 14px;
+        font-weight: 450;
+        text-transform: none;
+        letter-spacing: 0.01rem;
+        line-height: 1;
+        cursor: pointer;
+        transition: font-weight 0.2s ease, color 0.2s ease;
+    }
+
+    .home-nav-links {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+    }
+
+    .home-nav-link {
+        font-family: var(--font-sans);
+        font-size: 14px;
+        font-weight: 450;
+        text-transform: none;
+        letter-spacing: 0;
+        line-height: 1;
+        color: var(--text-secondary);
+        text-decoration: none;
+        transition: font-weight 0.2s ease, color 0.2s ease;
+    }
+
+    .home-nav-link:hover {
+        color: var(--accent-secondary);
+        font-weight: 600;
+    }
+
+    .home-nav-link.active-scroll {
+        color: var(--text-primary);
+        font-weight: 600;
+    }
+
+    /* Responsive overrides */
+    @media (max-width: 768px) {
+        .home-nav-container {
+            justify-content: space-between;
+        }
+
+        .logo-name {
+            display: none;
+        }
+
+        .logo-img-wrapper {
+            margin-left: -16px;
+        }
+
+        /* Center links absolutely within the bar */
+        .home-nav-links {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            gap: 20px;
+        }
+    }
+</style>
