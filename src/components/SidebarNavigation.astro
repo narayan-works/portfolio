@@ -14,11 +14,11 @@ const { title, isHome = false } = Astro.props;
 const allProjects = await getCollection("projects");
 const featuredSlugs = [
     "detour",
-    "tirupati-campus",
+    "working-living-innovating",
     "skywalk-sanctuary",
     "dot-threads",
     "piko",
-    "xfigura",
+    "prompt-nodes",
 ];
 const sortedProjects = allProjects
     .filter((project) => featuredSlugs.includes(project.slug))
@@ -79,11 +79,11 @@ const sortedProjects = allProjects
                             Works
                         </a>
                         <a
-                            href="/elsewhere"
+                            href="/archive"
                             target="_blank"
                             class="nav-inline-link"
                         >
-                            Elsewhere
+                            Archive
                         </a>
                     </div>
                 ) : (
@@ -246,10 +246,10 @@ const sortedProjects = allProjects
                         </div>
                     </div>
 
-                    {/* 4. Elsewhere */}
+                    {/* 4. Archive */}
                     <div class="tree-item">
                         <a
-                            href="/elsewhere"
+                            href="/archive"
                             target="_blank"
                             class="tree-link single-action"
                         >
@@ -267,7 +267,7 @@ const sortedProjects = allProjects
                                     <path d="M6 2h12M14 2v6.5l5.5 8.5A2 2 0 0 1 17.8 20H6.2a2 2 0 0 1-1.7-3L10 8.5V2" />
                                 </svg>
                             </span>
-                            <span class="tree-label">ELSEWHERE</span>
+                            <span class="tree-label">ARCHIVE</span>
                         </a>
                     </div>
                 </nav>

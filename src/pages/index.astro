@@ -26,7 +26,7 @@ const allProjects = (await getCollection("projects"))
 	.filter((project) =>
 		[
 			"detour",
-			"tirupati-campus",
+			"working-living-innovating",
 			"skywalk-sanctuary",
 			"dot-threads",
 			"pointo",
@@ -34,7 +34,7 @@ const allProjects = (await getCollection("projects"))
 			"piko",
 			"musibuddy",
 			"lab4c",
-			"xfigura",
+			"prompt-nodes",
 		].includes(project.slug),
 	)
 	.sort((a, b) => (a.data.order || 0) - (b.data.order || 0));
@@ -44,7 +44,7 @@ const heroImages: Record<string, ImageMetadata> = {
 	detour: deturHero,
 	piko: pikoHero,
 	"skywalk-sanctuary": sanctuaryHero,
-	"tirupati-campus": tirupatiHero,
+	"working-living-innovating": tirupatiHero,
 	pointo: pointoHero,
 	serendipidity: serendipityHero,
 	musibuddy: musibuddyHero,
@@ -62,8 +62,8 @@ const serendipityProject = allProjects.find(
 	(project) => project.slug === "serendipidity",
 );
 const lab4cProject = allProjects.find((project) => project.slug === "lab4c");
-const xfiguraProject = allProjects.find(
-	(project) => project.slug === "xfigura",
+const promptNodesProject = allProjects.find(
+	(project) => project.slug === "prompt-nodes",
 );
 ---
 
@@ -212,23 +212,23 @@ const xfiguraProject = allProjects.find(
 						)
 					}
 					{
-						xfiguraProject && (
+						promptNodesProject && (
 							<div
 								class="project-card-wrapper"
 								data-categories="web-ux"
 							>
 								<HomeProjectCard
-									title={xfiguraProject.data.title}
+									title={promptNodesProject.data.title}
 									image={
-										heroImages[xfiguraProject.slug] ||
-										xfiguraProject.data.heroImage
+										heroImages[promptNodesProject.slug] ||
+										promptNodesProject.data.heroImage
 									}
 									loading="lazy"
-									href={`/works/${xfiguraProject.slug}`}
-									tags={xfiguraProject.data.tags}
-									meta={xfiguraProject.data.meta}
+									href={`/works/${promptNodesProject.slug}`}
+									tags={promptNodesProject.data.tags}
+									meta={promptNodesProject.data.meta}
 									description={
-										xfiguraProject.data.description
+										promptNodesProject.data.description
 									}
 									categories={["web-ux"]}
 								/>
@@ -1282,6 +1282,14 @@ const xfiguraProject = allProjects.find(
 		const homeLink = document.getElementById("nav-home-link");
 		if (homeLink) {
 			homeLink.addEventListener("click", (e) => {
+				// This script (and its astro:page-load listener) stays
+				// registered across client-side navigations, but
+				// nav-home-link exists on every page via HomeNavigation.
+				// Only intercept the click for the in-page scroll-to-top
+				// behavior while actually on the home page — otherwise let
+				// the link's real href="/" navigate normally.
+				if (window.location.pathname !== "/") return;
+
 				e.preventDefault();
 				if ((window as any).lenis) {
 					(window as any).lenis.scrollTo(0);
@@ -1667,7 +1675,7 @@ const xfiguraProject = allProjects.find(
 			// motion (with happy frames) once it's released instead.
 			if (isDragging) return;
 			startFrameCycle(HAPPY_FRAMES);
-		}, 3000);
+		}, 2000);
 	});
 </script>
 

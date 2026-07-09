@@ -25,9 +25,9 @@ Each project is one MDX file in `src/content/projects/`, validated by the `proje
 Several unrelated files each maintain their own `Record<slug, ...>` map keyed by project slug, and they must be kept in sync by hand — there is no single source of truth:
 
 - `src/pages/works/[...slug].astro` — `HOME_ORDER`: controls next-project banner cycling (only a subset of projects).
-- `src/pages/index.astro` — a separate slug allowlist filtering which projects render on the homepage, plus a `heroImages` map of manually imported (for `astro:assets` optimization) hero images per slug, plus one `const xProject = allProjects.find(...)` per featured project used for manual bento column placement.
+- `src/pages/index.astro` — a separate slug allowlist filtering which projects render on the homepage, plus a `heroImages` map of manually imported (for `astro:assets` optimization) hero images per slug, plus one `const promptNodesProject = allProjects.find(...)` per featured project used for manual bento column placement.
 - `src/layouts/ProjectLayout.astro` — `categoryColors` / `categoryHoverColors` maps (slug → CSS var) for the project page's accent color, plus separate `fallbackColors`/`fallbackHoverColors` maps keyed by the free-form `category` string instead of slug.
-- `src/pages/elsewhere.astro` — its own `elsewhereSlugs` allowlist, `categoryColors`, and `imageScales` maps for the non-homepage "side quest" projects.
+- `src/pages/archive.astro` — its own `archiveSlugs` allowlist, `categoryColors`, and `imageScales` maps for the non-homepage "side quest" projects.
 
 When adding a new project or renaming a slug/category, grep for the slug across these files rather than assuming one config location.
 
@@ -41,11 +41,7 @@ Documented in `ASSET_MANAGEMENT.md`. Summary: all project images live in `public
 
 ### Global layout shell
 
-`src/layouts/Layout.astro` is the outer HTML shell used by every page (fonts, meta tags, analytics, `<ViewTransitions />`, Lenis smooth-scroll init, `CustomCursor`, `TypographyInspector`). It exposes a `sidebar` named slot plus a default slot. `ProjectLayout.astro` (used by all project pages) and page-level layouts build on top of it rather than duplicating the `<head>`/shell.
-
-### Dev-only typography inspector
-
-`TypographyInspector.astro` is a live in-browser style editor (hold Ctrl/Cmd + click any text element) for experimenting with font/size/weight/spacing. It persists overrides via two dev-only endpoints implemented as a custom Vite middleware plugin directly in `astro.config.mjs` (`devSaveTypographyPlugin`, handling `/api/save-typography` and `/api/load-typography`) — not as Astro API routes under `src/pages/api/` (that directory is empty). Saved overrides are written to `src/styles/typography-inspector-overrides.css`, imported at the top of `global.css`. This only works in `astro dev`, not in production builds.
+`src/layouts/Layout.astro` is the outer HTML shell used by every page (fonts, meta tags, analytics, `<ViewTransitions />`, Lenis smooth-scroll init, `CustomCursor`). It exposes a `sidebar` named slot plus a default slot. `ProjectLayout.astro` (used by all project pages) and page-level layouts build on top of it rather than duplicating the `<head>`/shell.
 
 ### Fonts
 

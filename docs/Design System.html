@@ -158,7 +158,91 @@
       transition: color 0.15s;
     }
     .nav-links a:hover { color: var(--text-highlight); }
-    
+
+    .searchbox {
+      box-sizing: border-box;
+      position: relative;
+      height: 34px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 0 10px;
+      width: 200px;
+      transition: border-color 0.2s ease;
+    }
+    .searchbox:focus-within { border-color: var(--border-focus); }
+    .searchbox .search-icon { opacity: 0.5; font-size: var(--text-sm); flex-shrink: 0; }
+    .searchbox input {
+      flex: 1;
+      min-width: 0;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      font-size: var(--text-sm);
+    }
+    .searchbox input::placeholder { color: var(--text-muted); }
+    .searchbox .search-kbd {
+      flex-shrink: 0;
+      font-size: 10px;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      border: 1px solid var(--border-subtle);
+      border-radius: 4px;
+      padding: 1px 5px;
+    }
+    .search-results {
+      display: none;
+      position: absolute;
+      top: calc(100% + 6px);
+      right: 0;
+      width: 320px;
+      max-height: 360px;
+      overflow-y: auto;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-md);
+      padding: 6px;
+      z-index: 1100;
+    }
+    .search-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 8px 10px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+    }
+    .search-item:hover { background: var(--bg-surface-hover); }
+    .search-item-label {
+      font-size: var(--text-sm);
+      color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .search-item-type {
+      flex-shrink: 0;
+      font-size: 10px;
+      font-family: var(--font-mono);
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .search-empty { padding: 10px; font-size: var(--text-sm); color: var(--text-muted); text-align: center; }
+
+    @keyframes search-flash {
+      0%, 100% { box-shadow: none; }
+      30% { box-shadow: 0 0 0 3px var(--accent-secondary); }
+    }
+    .search-flash-target { animation: search-flash 1.1s ease; }
+
     .theme-toggle-btn {
       background: var(--bg-surface);
       border: 1px solid var(--border-subtle);
@@ -617,6 +701,12 @@
         <a href="#typography">Typography</a>
         <a href="#spacing">Spacing</a>
         <a href="#components">Components</a>
+        <div class="searchbox">
+          <span class="search-icon">⌕</span>
+          <input type="text" id="search-input" placeholder="Search docs..." autocomplete="off">
+          <span class="search-kbd">⌘K</span>
+          <div id="search-results" class="search-results"></div>
+        </div>
         <button class="theme-toggle-btn" id="theme-toggle">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 4px;"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
           Toggle Light Mode
@@ -1006,6 +1096,102 @@
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 4px;"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
         Toggle Light Mode
       `;
+    }
+  });
+
+  // ─── SEARCH ──────────────────────────────────────────────────────
+  // Single-page doc (no tabs), so results just scroll the matched
+  // element into view and flash-highlight it, instead of switching
+  // panels like Developer Documentation.html's version does.
+  function buildSearchIndex() {
+    const index = [];
+
+    document.querySelectorAll('.doc-section').forEach(section => {
+      const h2 = section.querySelector('h2');
+      if (h2) index.push({ label: h2.textContent.trim(), type: 'Section', el: section });
+    });
+
+    document.querySelectorAll('.color-name').forEach(el => {
+      index.push({ label: el.textContent.trim(), type: 'Color', el: el.closest('.color-swatch') || el });
+    });
+
+    document.querySelectorAll('.token-pill').forEach(el => {
+      index.push({ label: el.textContent.trim(), type: 'Token', el: el.closest('tr') || el });
+    });
+
+    document.querySelectorAll('.font-card').forEach(card => {
+      const label = card.querySelector('.font-card-label');
+      if (label) index.push({ label: label.textContent.trim(), type: 'Typeface', el: card });
+    });
+
+    document.querySelectorAll('.type-row').forEach(row => {
+      const token = row.querySelector('.type-token');
+      if (token) index.push({ label: token.textContent.trim(), type: 'Type Scale', el: row });
+    });
+
+    document.querySelectorAll('.component-card').forEach(card => {
+      const label = card.querySelector('.component-label span');
+      if (label) index.push({ label: label.textContent.trim(), type: 'Component', el: card });
+    });
+
+    return index;
+  }
+
+  const searchIndex = buildSearchIndex();
+  const searchInput = document.getElementById('search-input');
+  const searchResults = document.getElementById('search-results');
+
+  function goToSearchResult(item) {
+    item.el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    item.el.classList.remove('search-flash-target');
+    // Force reflow so re-adding the class restarts the animation even
+    // if the same result is clicked twice in a row.
+    void item.el.offsetWidth;
+    item.el.classList.add('search-flash-target');
+    searchResults.style.display = 'none';
+    searchResults.innerHTML = '';
+    searchInput.value = '';
+  }
+
+  searchInput.addEventListener('input', (e) => {
+    const query = e.target.value.toLowerCase().trim();
+    if (!query || query.length < 2) {
+      searchResults.style.display = 'none';
+      return;
+    }
+
+    const matches = searchIndex.filter(item => item.label.toLowerCase().includes(query));
+
+    if (matches.length > 0) {
+      searchResults.innerHTML = matches.slice(0, 10).map((item, i) => `
+        <div class="search-item" data-index="${i}">
+          <span class="search-item-label">${item.label}</span>
+          <span class="search-item-type">${item.type}</span>
+        </div>
+      `).join('');
+      Array.from(searchResults.querySelectorAll('.search-item')).forEach((el, i) => {
+        el.addEventListener('click', () => goToSearchResult(matches[i]));
+      });
+    } else {
+      searchResults.innerHTML = '<div class="search-empty">No matches</div>';
+    }
+    searchResults.style.display = 'block';
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+      e.preventDefault();
+      searchInput.focus();
+    }
+    if (e.key === 'Escape') {
+      searchResults.style.display = 'none';
+      searchInput.blur();
+    }
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.searchbox')) {
+      searchResults.style.display = 'none';
     }
   });
 </script>

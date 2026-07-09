@@ -1,13 +1,17 @@
 ---
 const isHomePage = Astro.url.pathname === "/";
 const isAboutPage = Astro.url.pathname.startsWith("/about");
-const isElsewherePage = Astro.url.pathname.startsWith("/elsewhere");
+const isArchivePage = Astro.url.pathname.startsWith("/archive");
+const isWorksPage = Astro.url.pathname.startsWith("/works");
 ---
 
 <nav class="home-navigation">
     <div class="home-nav-container">
         <!-- Left: Logo & Name -->
-        <a href="/" class="home-nav-logo">
+        <a
+            href="/"
+            class={`home-nav-logo ${isHomePage || isWorksPage ? "home-nav-logo--hidden" : ""}`}
+        >
             <div class="logo-img-wrapper">
                 <span class="logo-circle">
                     <img
@@ -52,12 +56,12 @@ const isElsewherePage = Astro.url.pathname.startsWith("/elsewhere");
                 Work
             </a>
             <a
-                href="/elsewhere"
+                href="/archive"
                 target="_blank"
-                id="nav-elsewhere-link"
-                class={`home-nav-link ${isElsewherePage ? "active-scroll" : ""}`}
+                id="nav-archive-link"
+                class={`home-nav-link ${isArchivePage ? "active-scroll" : ""}`}
             >
-                Elsewhere
+                Archive
             </a>
         </div>
     </div>
@@ -66,8 +70,8 @@ const isElsewherePage = Astro.url.pathname.startsWith("/elsewhere");
 <script>
     function setupScrollSpy() {
         // Home/Works highlighting is homepage-only scroll spying. About and
-        // Elsewhere are static per-page links, highlighted server-side
-        // based on the current route (see isAboutPage/isElsewherePage).
+        // Archive are static per-page links, highlighted server-side
+        // based on the current route (see isAboutPage/isArchivePage).
         const homeLink = document.getElementById("nav-home-link");
         const worksLink = document.getElementById("nav-works-link");
         const worksSection = document.getElementById("works");
@@ -222,6 +226,12 @@ const isElsewherePage = Astro.url.pathname.startsWith("/elsewhere");
 
     .home-nav-logo:hover {
         color: var(--accent-secondary);
+    }
+
+    /* Hidden on Home (floating bio ghost takes over) and on Works/project
+       pages. Still shown on About and Archive. */
+    .home-nav-logo--hidden {
+        visibility: hidden;
     }
 
     .home-nav-logo:hover .logo-name {

@@ -858,7 +858,7 @@
       transform: translateX(2px);
     }
 
-    /* Elsewhere Card Showcase */
+    /* Archive Card Showcase */
     .ds-elsewhere-card {
       display: flex;
       flex-direction: column;
@@ -1079,7 +1079,7 @@
       <ul class="sidebar-menu">
         <li><a href="#index-astro">index.astro</a></li>
         <li><a href="#slug-astro">works/[...slug].astro</a></li>
-        <li><a href="#elsewhere-astro">elsewhere.astro</a></li>
+        <li><a href="#elsewhere-astro">archive.astro</a></li>
         <li><a href="#font-astro">font.astro</a></li>
         <li><a href="#404-astro">404.astro</a></li>
       </ul>
@@ -1114,7 +1114,7 @@
         <li><a href="#c-videoembed">VideoEmbed</a></li>
         <li><a href="#c-figmaembed">FigmaEmbed</a></li>
         <li><a href="#c-pdfembed">PdfEmbed</a></li>
-        <li><a href="#c-xfiguraembed">XFiguraEmbed</a></li>
+        <li><a href="#c-prompt-nodesembed">XFiguraEmbed</a></li>
         <li><a href="#c-reviews">ReviewContainer / ReviewBubble</a></li>
       </ul>
       <h3 class="sidebar-heading">Dev-Only Tools</h3>
@@ -1133,7 +1133,7 @@
         <li><a href="#layout-spacing">Spacing &amp; Radius Tokens</a></li>
         <li><a href="#component-patterns">Component Patterns</a></li>
         <li><a href="#mdx-blocks">MDX Content Building Blocks</a></li>
-        <li><a href="#xfigura-css">xfigura-layouts.css</a></li>
+        <li><a href="#prompt-nodes-css">prompt-nodes-layouts.css</a></li>
       </ul>
     </div>
     <!-- Issues -->
@@ -1183,9 +1183,9 @@
         <div class="tree">
           <span class="tree-folder">portfolio/</span><br />
           ├── <span class="tree-folder">docs/</span> <span class="tree-file"># This documentation file</span><br />
-          ├── <span class="tree-folder">public/</span> <span class="tree-file"># favicon.svg, robots.txt, logos/, assets/, and the pre-built xFigura embed at public/xfigura/</span><br />
+          ├── <span class="tree-folder">public/</span> <span class="tree-file"># favicon.svg, robots.txt, logos/, assets/, and the pre-built Prompt Nodes embed at public/prompt-nodes/</span><br />
           ├── <span class="tree-folder">scripts/</span><span class="tree-file">optimize-images.sh <span class="tree-dim"># pngquant/gifsicle/imagemagick compression helper, see ASSET_MANAGEMENT.md</span></span><br />
-          ├── <span class="tree-folder">xfigura-src/</span> <span class="tree-dim"># Entire separate xFigura editor project, copied in wholesale purely to be built &amp; embedded via XFiguraEmbed.astro — treat as a foreign/vendored sub-project, not part of the portfolio's own architecture</span><br />
+          ├── <span class="tree-folder">prompt-nodes-src/</span> <span class="tree-dim"># Entire separate Prompt Nodes editor project, copied in wholesale purely to be built &amp; embedded via XFiguraEmbed.astro — treat as a foreign/vendored sub-project, not part of the portfolio's own architecture</span><br />
           ├── <span class="tree-folder">_legacy/</span> <span class="tree-dim"># Pre-Astro static HTML/CSS snapshot of an earlier version of the site</span><br />
           ├── astro.config.mjs <span class="tree-dim"># mdx() + sitemap() + react(), custom dev-only typography-save Vite plugin</span><br />
           ├── ASSET_MANAGEMENT.md <span class="tree-dim"># Documents the src/assets (hero-only) vs public/assets (everything else) workflow</span><br />
@@ -1200,7 +1200,7 @@
           &nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;└── ProjectLayout.astro <span class="tree-dim"># Case-study shell: sidebar meta panel + article content</span><br />
           &nbsp;&nbsp;&nbsp;&nbsp;├── <span class="tree-folder">pages/</span><br />
           &nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── index.astro <span class="tree-dim"># Homepage — hero/bio + curated works grid (2348 lines)</span><br />
-          &nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── elsewhere.astro <span class="tree-dim"># 3-project secondary index</span><br />
+          &nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── archive.astro <span class="tree-dim"># 3-project secondary index</span><br />
           &nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── font.astro <span class="tree-dim"># Internal typography playground/exporter</span><br />
           &nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── 404.astro <span class="tree-dim"># Standalone error page (does not use Layout.astro)</span><br />
           &nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;└── <span class="tree-folder">works/</span><br />
@@ -1208,7 +1208,7 @@
           &nbsp;&nbsp;&nbsp;&nbsp;└── <span class="tree-folder">styles/</span><br />
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── global.css <span class="tree-dim"># Design tokens, base rules, dark/light theme overrides</span><br />
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── typography-inspector-overrides.css <span class="tree-dim"># Dev-generated overrides file, currently empty/header-only</span><br />
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── xfigura-layouts.css <span class="tree-dim"># Case-study-specific overrides, imported only by xfigura.mdx</span>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── prompt-nodes-layouts.css <span class="tree-dim"># Case-study-specific overrides, imported only by prompt-nodes.mdx</span>
         </div>
       </section>
 
@@ -1243,9 +1243,9 @@ export const collections = { projects };</code></pre>
           <tbody>
             <tr><td><code>title</code>, <code>description</code></td><td>required string</td><td>Page <code>&lt;title&gt;</code>/OG tags, sidebar heading, card titles everywhere.</td></tr>
             <tr><td><code>category</code></td><td>free-text string</td><td>Normalized at render time (lowercased, bracket-suffix stripped) in <code>ProjectLayout.astro</code> and <code>NextProjectBanner.astro</code> to resolve a category accent color. <strong>Not a Zod enum</strong> — typos silently fall through to a default color.</td></tr>
-            <tr><td><code>heroImage</code></td><td>plain string path</td><td>Not Astro's <code>image()</code> helper, so it isn't validated/optimized by the schema itself; consuming components resolve it manually (build-time <code>import</code> map in <code>index.astro</code>, or <code>astro:assets</code> <code>&lt;Image&gt;</code> in <code>elsewhere.astro</code>).</td></tr>
-            <tr><td><code>order</code></td><td>number, default 0</td><td>Sorts <code>elsewhere.astro</code>'s subset (indirectly, via a hardcoded array — see below) and <code>SidebarNavigation.astro</code>'s dropdown works list. <strong>Does not</strong> drive the homepage's card sequence — that's hardcoded (see "Homepage Ordering").</td></tr>
-            <tr><td><code>tags</code></td><td>string array</td><td>Rendered as pill lists in <code>HomeProjectCard</code>, <code>NextProjectBanner</code>, sidebar tag rows, <code>elsewhere.astro</code> cards.</td></tr>
+            <tr><td><code>heroImage</code></td><td>plain string path</td><td>Not Astro's <code>image()</code> helper, so it isn't validated/optimized by the schema itself; consuming components resolve it manually (build-time <code>import</code> map in <code>index.astro</code>, or <code>astro:assets</code> <code>&lt;Image&gt;</code> in <code>archive.astro</code>).</td></tr>
+            <tr><td><code>order</code></td><td>number, default 0</td><td>Sorts <code>archive.astro</code>'s subset (indirectly, via a hardcoded array — see below) and <code>SidebarNavigation.astro</code>'s dropdown works list. <strong>Does not</strong> drive the homepage's card sequence — that's hardcoded (see "Homepage Ordering").</td></tr>
+            <tr><td><code>tags</code></td><td>string array</td><td>Rendered as pill lists in <code>HomeProjectCard</code>, <code>NextProjectBanner</code>, sidebar tag rows, <code>archive.astro</code> cards.</td></tr>
             <tr><td><code>ctaUrl</code> / <code>ctaText</code></td><td>optional strings</td><td>External CTA button in <code>ProjectLayout.astro</code>'s sidebar; <code>ctaText</code> defaults to <code>"Try it out"</code> if omitted.</td></tr>
             <tr><td><code>meta</code></td><td><code>Record&lt;string,string&gt;</code></td><td>Rendered as a metadata table (Role/Duration/Year/etc). Filtered to drop blank values. <code>HomeProjectCard</code> additionally truncates to the first 6 entries.</td></tr>
             <tr><td><code>bentoSize</code></td><td>enum, default <code>small</code></td><td>Typed homepage bento sizing hint (large/medium/small/wide/tall) set per-project in frontmatter.</td></tr>
@@ -1262,14 +1262,14 @@ export const collections = { projects };</code></pre>
           <tbody>
             <tr><td><code>pointo</code></td><td>Pointobot</td><td>embodied[work in progess]</td><td>6</td><td>large</td><td>Home #1</td></tr>
             <tr><td><code>dot-threads</code></td><td>Dot Threads</td><td>web-ux</td><td>1</td><td>medium</td><td>Home #2</td></tr>
-            <tr><td><code>xfigura</code></td><td>Prompt Nodes</td><td>web-ux</td><td>2</td><td>—</td><td>Home #3</td></tr>
+            <tr><td><code>prompt-nodes</code></td><td>Prompt Nodes</td><td>web-ux</td><td>2</td><td>—</td><td>Home #3</td></tr>
             <tr><td><code>lab4c</code></td><td>Lab for Cybernetics</td><td>thinking</td><td>9</td><td>medium</td><td>Home #4</td></tr>
             <tr><td><code>detour</code></td><td>Detour</td><td>mobile-ux</td><td>3</td><td>tall</td><td>Home #5</td></tr>
             <tr><td><code>piko</code></td><td>Piko</td><td>embodied</td><td>5</td><td>large</td><td>Home #6</td></tr>
             <tr><td><code>serendipidity</code></td><td>Serendipity</td><td>mobile-ux</td><td>4</td><td>—</td><td>Home #7</td></tr>
-            <tr><td><code>musibuddy</code></td><td>MusiBuddy</td><td>experiments</td><td>—</td><td>—</td><td>Elsewhere</td></tr>
-            <tr><td><code>tirupati-campus</code></td><td>Working, Living &amp; Innovating</td><td>experiments</td><td>7</td><td>wide</td><td>Elsewhere</td></tr>
-            <tr><td><code>skywalk-sanctuary</code></td><td>In Search of a Third Place</td><td>experiments</td><td>4</td><td>medium</td><td>Elsewhere</td></tr>
+            <tr><td><code>musibuddy</code></td><td>MusiBuddy</td><td>experiments</td><td>—</td><td>—</td><td>Archive</td></tr>
+            <tr><td><code>working-living-innovating</code></td><td>Working, Living &amp; Innovating</td><td>experiments</td><td>7</td><td>wide</td><td>Archive</td></tr>
+            <tr><td><code>skywalk-sanctuary</code></td><td>In Search of a Third Place</td><td>experiments</td><td>4</td><td>medium</td><td>Archive</td></tr>
             <tr><td><code>dag</code></td><td>DAG</td><td>thinking</td><td>2</td><td>small</td><td>Unlisted (buildable at <code>/works/dag</code> only)</td></tr>
             <tr><td><code>dymoflo</code></td><td>Dymoflo</td><td>archive</td><td>—</td><td>—</td><td>Unlisted</td></tr>
             <tr><td><code>google-cal</code></td><td>Google Cal</td><td>archive</td><td>—</td><td>—</td><td>Unlisted</td></tr>
@@ -1281,7 +1281,7 @@ export const collections = { projects };</code></pre>
         </table>
         <div class="callout tip">
           <div class="callout-title">"Unlisted" projects are still publicly buildable</div>
-          <div class="callout-body"><code>works/[...slug].astro</code>'s <code>getStaticPaths()</code> builds a static <code>/works/&lt;slug&gt;</code> page for <strong>every</strong> entry in the collection, regardless of homepage/elsewhere inclusion. The 7 "unlisted" projects above have no on-site incoming links but are reachable at a direct/known URL.</div>
+          <div class="callout-body"><code>works/[...slug].astro</code>'s <code>getStaticPaths()</code> builds a static <code>/works/&lt;slug&gt;</code> page for <strong>every</strong> entry in the collection, regardless of homepage/archive inclusion. The 7 "unlisted" projects above have no on-site incoming links but are reachable at a direct/known URL.</div>
         </div>
       </section>
 
@@ -1292,7 +1292,7 @@ export const collections = { projects };</code></pre>
         </p>
         <pre><code>export async function getStaticPaths() {
   const HOME_ORDER = [
-    "pointo", "dot-threads", "xfigura", "lab4c", "detour", "piko", "serendipidity",
+    "pointo", "dot-threads", "prompt-nodes", "lab4c", "detour", "piko", "serendipidity",
   ];
   const allProjects = await getCollection("projects");
 
@@ -1339,19 +1339,19 @@ export const collections = { projects };</code></pre>
             <tr>
               <td>Homepage allow-list filter</td>
               <td><code>index.astro</code> top of frontmatter</td>
-              <td><code>detour, tirupati-campus, skywalk-sanctuary, dot-threads, pointo, serendipidity, piko, musibuddy, lab4c, xfigura</code> (10)</td>
-              <td>Filters the collection down to candidates before sorting by <code>order</code>. <strong>Over-inclusive</strong> — 3 of these (<code>tirupati-campus</code>, <code>skywalk-sanctuary</code>, <code>musibuddy</code>) are fetched here but never actually rendered as homepage cards.</td>
+              <td><code>detour, working-living-innovating, skywalk-sanctuary, dot-threads, pointo, serendipidity, piko, musibuddy, lab4c, prompt-nodes</code> (10)</td>
+              <td>Filters the collection down to candidates before sorting by <code>order</code>. <strong>Over-inclusive</strong> — 3 of these (<code>working-living-innovating</code>, <code>skywalk-sanctuary</code>, <code>musibuddy</code>) are fetched here but never actually rendered as homepage cards.</td>
             </tr>
             <tr>
               <td>Actually-rendered homepage cards</td>
               <td><code>index.astro</code> template (7 hardcoded, non-looped <code>&lt;HomeProjectCard&gt;</code> blocks)</td>
-              <td><code>pointo, dot-threads, xfigura, lab4c, detour, serendipidity, piko</code> (7)</td>
+              <td><code>pointo, dot-threads, prompt-nodes, lab4c, detour, serendipidity, piko</code> (7)</td>
               <td>The actual visual sequence on the homepage. Order here is <strong>independent of the <code>order</code> frontmatter field</strong> — reordering requires manually moving the JSX blocks.</td>
             </tr>
             <tr>
               <td><code>HOME_ORDER</code></td>
               <td><code>works/[...slug].astro</code></td>
-              <td><code>pointo, dot-threads, xfigura, lab4c, detour, piko, serendipidity</code> (7)</td>
+              <td><code>pointo, dot-threads, prompt-nodes, lab4c, detour, piko, serendipidity</code> (7)</td>
               <td>Drives the "next project" circular rotation. Matches the rendered card set above (good), but is a fully separate, hand-maintained copy of the same sequence.</td>
             </tr>
           </tbody>
@@ -1363,7 +1363,7 @@ export const collections = { projects };</code></pre>
           </div>
         </div>
         <p>
-          The 3 "orphaned from the homepage" slugs above aren't actually dead — <code>elsewhere.astro</code> has its own independent, hardcoded 3-slug array (<code>musibuddy, tirupati-campus, skywalk-sanctuary</code>) that renders them on a dedicated <code>/elsewhere</code> grid page, sorted by that array's order (not the <code>order</code> frontmatter field). <code>index.astro</code>'s fetch of these three (and its <code>tirupatiHero</code>/<code>sanctuaryHero</code> imports) is therefore <strong>redundant dead weight</strong> rather than a bug — the projects do appear on-site, just via a different page.
+          The 3 "orphaned from the homepage" slugs above aren't actually dead — <code>archive.astro</code> has its own independent, hardcoded 3-slug array (<code>musibuddy, working-living-innovating, skywalk-sanctuary</code>) that renders them on a dedicated <code>/archive</code> grid page, sorted by that array's order (not the <code>order</code> frontmatter field). <code>index.astro</code>'s fetch of these three (and its <code>tirupatiHero</code>/<code>sanctuaryHero</code> imports) is therefore <strong>redundant dead weight</strong> rather than a bug — the projects do appear on-site, just via a different page.
         </p>
       </section>
 
@@ -1451,7 +1451,7 @@ document.addEventListener("astro:after-swap", () => {
           The <code>if (!w.lenis)</code> guard means the instance is constructed exactly once per full page lifetime; the anchor-click interception is bound once inside that guard. The <code>astro:after-swap</code> reset listener, however, re-registers on every script execution (i.e. every transition) since it sits outside the guard — harmless since it's idempotent (always just resets to 0), but a minor duplicate-listener accumulation.
         </p>
         <p>
-          Elsewhere in the codebase, <code>window.lenis</code> is treated as a <strong>soft dependency</strong> — every scroll-triggering script (homepage dot-nav, TOC scroll, bio-toggle scroll restore) checks <code>if (window.lenis)</code> and falls back to native <code>scrollTo</code>/<code>scrollIntoView</code> if it's absent.
+          Archive in the codebase, <code>window.lenis</code> is treated as a <strong>soft dependency</strong> — every scroll-triggering script (homepage dot-nav, TOC scroll, bio-toggle scroll restore) checks <code>if (window.lenis)</code> and falls back to native <code>scrollTo</code>/<code>scrollIntoView</code> if it's absent.
         </p>
         <p><code>global.css</code> deliberately sets <code>html { scroll-behavior: auto; }</code> with an explicit comment that this is to avoid fighting with Lenis's own smooth-scroll implementation, plus Lenis-specific compatibility rules: <code>.lenis.lenis-smooth [data-lenis-prevent] { scroll-behavior: contain; }</code> (used by <code>TypographyInspector</code>'s internally-scrollable panel) and <code>.lenis.lenis-scrolling iframe { pointer-events: none; }</code> (stops embedded iframes from swallowing wheel events mid-scroll).</p>
       </section>
@@ -1588,7 +1588,7 @@ document.addEventListener("astro:after-swap", () => {
         <h4>Category color resolution (3-layer fallback)</h4>
         <p>The active accent color for a case study's CTA button, TOC active-state, and inline <code>.accent-text</code> is resolved in priority order:</p>
         <ol>
-          <li><strong>Exact slug map</strong> — e.g. <code>pointo</code>/<code>piko</code>/<code>musibuddy</code> → hardware-ux blue; <code>dot-threads</code>/<code>lab4c</code>/<code>xfigura</code> → web-ux orange; <code>detour</code>/<code>serendipidity</code> → mobile-ux yellow; <code>tirupati-campus</code>/<code>skywalk-sanctuary</code> → spatial-xd green.</li>
+          <li><strong>Exact slug map</strong> — e.g. <code>pointo</code>/<code>piko</code>/<code>musibuddy</code> → hardware-ux blue; <code>dot-threads</code>/<code>lab4c</code>/<code>prompt-nodes</code> → web-ux orange; <code>detour</code>/<code>serendipidity</code> → mobile-ux yellow; <code>working-living-innovating</code>/<code>skywalk-sanctuary</code> → spatial-xd green.</li>
           <li><strong>Cleaned-category fallback map</strong> — keyed by the normalized <code>category</code> string (<code>embodied</code>, <code>thinking</code>, <code>spatial</code>, <code>strategy</code>, <code>archive</code>) for any project not in the slug map.</li>
           <li><strong>Final fallback</strong> — <code>var(--accent-secondary)</code> (green).</li>
         </ol>
@@ -1644,17 +1644,17 @@ import { Image } from "astro:assets";
       </section>
 
       <section id="elsewhere-astro">
-        <h2>elsewhere.astro <span class="badge badge-live">Secondary Index</span></h2>
+        <h2>archive.astro <span class="badge badge-live">Secondary Index</span></h2>
         <p><strong>286 lines.</strong> A full-width, 3-column bento grid showcasing exactly three "side quest" projects, styled with solid category-colored card backgrounds rather than the homepage's gradient-on-hover treatment.</p>
         <h4>Data logic</h4>
-        <pre><code>const elsewhereSlugs = ["musibuddy", "tirupati-campus", "skywalk-sanctuary"];
+        <pre><code>const elsewhereSlugs = ["musibuddy", "working-living-innovating", "skywalk-sanctuary"];
 const allProjects = await getCollection("projects");
 const elsewhereProjects = allProjects
 	.filter((p) => elsewhereSlugs.includes(p.slug))
 	.sort((a, b) => elsewhereSlugs.indexOf(a.slug) - elsewhereSlugs.indexOf(b.slug));
 
 // hardcoded per-project visual tuning, independent of global.css category tokens
-const categoryColors = { musibuddy: "#0d8ce9", "tirupati-campus": "#258835", "skywalk-sanctuary": "#258835" };
+const categoryColors = { musibuddy: "#0d8ce9", "working-living-innovating": "#258835", "skywalk-sanctuary": "#258835" };
 const imageScales = { musibuddy: 1.45 }; // "MusiBuddy needs to be scaled up"</code></pre>
         <p>Uses <code>Layout</code> with <code>fullWidth={true}</code> and <code>&lt;HomeNavigation transition:persist /&gt;</code> — the <strong>only</strong> use of Astro's <code>transition:persist</code> directive found in the codebase, meaning this specific nav DOM node (and any live state) survives across view transitions rather than being torn down/recreated like everywhere else.</p>
         <p>Cards are sharp-cornered by default (<code>border-radius: 0</code>, explicit comment "Bento cards without round corners"), rounding to 12px only on hover along with a <code>translateY(-4px)</code> lift — a deliberate "sharp until you touch it" interaction.</p>
@@ -1689,9 +1689,9 @@ const imageScales = { musibuddy: 1.45 }; // "MusiBuddy needs to be scaled up"</c
          ═══════════════════════════════════════════════════════════ -->
     <div class="tab-content" id="tab-comps">
 
-      <h2 id="c-homenav" style="margin-top:0;">HomeNavigation.astro <span class="badge badge-live">index.astro, elsewhere.astro</span></h2>
+      <h2 id="c-homenav" style="margin-top:0;">HomeNavigation.astro <span class="badge badge-live">index.astro, archive.astro</span></h2>
       <div class="file-card">
-        <p>The real, live fixed top nav — logo + Home/About/Works scroll-spy links + external "Elsewhere" link. (A differently-named, unrelated <code>Navigation.astro</code> used to exist as an orphaned/unused component — it's since been removed.)</p>
+        <p>The real, live fixed top nav — logo + Home/About/Works scroll-spy links + external "Archive" link. (A differently-named, unrelated <code>Navigation.astro</code> used to exist as an orphaned/unused component — it's since been removed.)</p>
         <h4>Imports</h4><p><code>{ Image }</code> from <code>astro:assets</code>, <code>happyLogo</code> asset.</p>
         <h4>Scroll-spy logic</h4>
         <pre><code>function updateHomeActiveState() {
@@ -1712,13 +1712,13 @@ const imageScales = { musibuddy: 1.45 }; // "MusiBuddy needs to be scaled up"</c
 
       <h2 id="c-sidebarnav">SidebarNavigation.astro <span class="badge badge-live">ProjectLayout.astro</span></h2>
       <div class="file-card">
-        <p><strong>892 lines.</strong> A dual-mode top bar (despite the "Sidebar" name — it renders as a horizontal breadcrumb, not a vertical sidebar). On the homepage (<code>isHome</code>) it's a compact inline-link pill with no dropdown. On project pages, it's a breadcrumb trigger (<code>Works &gt; {title}</code>) that opens a file-tree-style dropdown: Home, About, an expandable "Works" folder listing 6 curated projects, and Elsewhere.</p>
+        <p><strong>892 lines.</strong> A dual-mode top bar (despite the "Sidebar" name — it renders as a horizontal breadcrumb, not a vertical sidebar). On the homepage (<code>isHome</code>) it's a compact inline-link pill with no dropdown. On project pages, it's a breadcrumb trigger (<code>Works &gt; {title}</code>) that opens a file-tree-style dropdown: Home, About, an expandable "Works" folder listing 6 curated projects, and Archive.</p>
         <h4>Props</h4>
         <pre><code>interface Props { title?: string; isHome?: boolean; }
 const { title, isHome = false } = Astro.props;</code></pre>
         <h4>Imports</h4>
         <p><code>{ getCollection }</code>, <code>{ Image }</code>, <code>happyLogo</code>.</p>
-        <pre><code>const featuredSlugs = ["detour", "tirupati-campus", "skywalk-sanctuary", "dot-threads", "piko", "xfigura"];
+        <pre><code>const featuredSlugs = ["detour", "working-living-innovating", "skywalk-sanctuary", "dot-threads", "piko", "prompt-nodes"];
 const sortedProjects = allProjects
     .filter((project) =&gt; featuredSlugs.includes(project.slug))
     .sort((a, b) =&gt; (a.data.order || 0) - (b.data.order || 0));</code></pre>
@@ -1728,7 +1728,7 @@ const sortedProjects = allProjects
         <p>Correctly re-initializes via <code>document.addEventListener("astro:page-load", setupSidebarNavigation)</code>.</p>
       </div>
 
-      <h2 id="c-themetoggle">ThemeToggle.astro <span class="badge badge-live">index.astro, elsewhere.astro, ProjectLayout.astro</span></h2>
+      <h2 id="c-themetoggle">ThemeToggle.astro <span class="badge badge-live">index.astro, archive.astro, ProjectLayout.astro</span></h2>
       <div class="file-card">
         <p>The canonical theme-switching button. Fully documented under <a href="#theme">Theme System</a> in the Architecture tab, including the full <code>is:inline</code> script. Notably, the button itself is styled with <em>inverse</em> colors relative to the page (a light-toned button appears in dark mode and vice versa) so it always contrasts against surrounding chrome — non-obvious from a glance at the markup.</p>
       </div>
@@ -1828,7 +1828,7 @@ const dataCategory = categoryMap[cleanCat] || "web-ux"; // silent fallback</code
 .section-content &gt; :global(.video-switcher),
 .section-content &gt; :global(.video-embed),
 .section-content &gt; :global(.pdf-viewer-wrapper),
-.section-content &gt; :global(.xfigura-container),
+.section-content &gt; :global(.prompt-nodes-container),
 .section-content &gt; :global(.xf-grid),
 .section-content &gt; :global(.left-align) { padding-inline: 0 !important; max-width: 100%; }</code></pre>
         <div class="callout warning">
@@ -1919,7 +1919,7 @@ try {
         <p><strong>141 lines.</strong> Iframe embed of a Figma prototype with a dismissible "click to interact" hint icon overlaid (shared default icon path <code>/assets/logos/click.png</code> with <code>ImageToggle</code>). Builds the embed URL by appending <code>hide-ui=1</code>/<code>footer=0</code> query params via plain <code>.includes()</code> string checks (not real URL parsing). The click-hint can only ever be dismissed by clicking the icon itself — cross-domain iframe interaction can't be detected, an explicitly-acknowledged limitation in a code comment.</p>
       </div>
 
-      <h2 id="c-pdfembed">PdfEmbed.astro <span class="badge badge-mdx">pointo.mdx ×7, tirupati-campus.mdx ×5, detour.mdx ×3</span></h2>
+      <h2 id="c-pdfembed">PdfEmbed.astro <span class="badge badge-mdx">pointo.mdx ×7, working-living-innovating.mdx ×5, detour.mdx ×3</span></h2>
       <div class="file-card">
         <p><strong>495 lines.</strong> A canvas-based PDF viewer/carousel using Mozilla's <code>pdf.js</code>, lazily loaded from a CDN (pinned to <code>3.11.174</code>) rather than bundled as an npm dependency.</p>
         <h4>Rendering strategy</h4>
@@ -1932,9 +1932,9 @@ try {
         </div>
       </div>
 
-      <h2 id="c-xfiguraembed">XFiguraEmbed.astro <span class="badge badge-mdx">xfigura.mdx (single usage, zero props)</span></h2>
+      <h2 id="c-prompt-nodesembed">XFiguraEmbed.astro <span class="badge badge-mdx">prompt-nodes.mdx (single usage, zero props)</span></h2>
       <div class="file-card">
-        <p><strong>71 lines.</strong> Embeds a separately-built sub-project (the entire <code>xfigura-src/</code> tree, vendored into this repo purely to be built and dropped at <code>public/xfigura/</code>) via a sandboxed iframe pointing at a <strong>fixed, non-prop-driven</strong> path: <code>src="/xfigura/index.html?embed=true"</code>.</p>
+        <p><strong>71 lines.</strong> Embeds a separately-built sub-project (the entire <code>prompt-nodes-src/</code> tree, vendored into this repo purely to be built and dropped at <code>public/prompt-nodes/</code>) via a sandboxed iframe pointing at a <strong>fixed, non-prop-driven</strong> path: <code>src="/prompt-nodes/index.html?embed=true"</code>.</p>
         <h4>Props</h4>
         <pre><code>interface Props { height?: string; aspectRatio?: string; }
 // height = "750px", aspectRatio = "16/9"</code></pre>
@@ -1942,7 +1942,7 @@ try {
           <div class="callout-title">aspectRatio prop is dead</div>
           <div class="callout-body">Declared and destructured with a default, but never referenced anywhere in the template or styles — only <code>height</code> actually affects layout. Its sibling <code>FigmaEmbed.astro</code> implements the equivalent prop correctly, making this a clear, findable inconsistency.</div>
         </div>
-        <p><code>sandbox="allow-scripts allow-same-origin"</code> — acceptable since it's first-party content the site owner built, but worth flagging that this combination can in principle let framed content lift its own sandbox restrictions. Real usage in <code>xfigura.mdx</code> passes zero props, so both defaults are what's actually live.</p>
+        <p><code>sandbox="allow-scripts allow-same-origin"</code> — acceptable since it's first-party content the site owner built, but worth flagging that this combination can in principle let framed content lift its own sandbox restrictions. Real usage in <code>prompt-nodes.mdx</code> passes zero props, so both defaults are what's actually live.</p>
       </div>
 
       <h2 id="c-reviews">ReviewContainer.astro / ReviewBubble.astro <span class="badge badge-mdx">detour.mdx, dot-threads.mdx</span></h2>
@@ -2035,14 +2035,14 @@ try {
 
       <section id="category-colors">
         <h2>Category Color System</h2>
-        <p>Four conceptual project categories exist across the codebase — hardware-ux, web-ux, mobile-ux, and spatial-xd — each consumed independently by the global tokens, <code>HomeProjectCard</code>, <code>WorksFilter</code>, <code>ProjectLayout</code>, and <code>elsewhere.astro</code>.</p>
+        <p>Four conceptual project categories exist across the codebase — hardware-ux, web-ux, mobile-ux, and spatial-xd — each consumed independently by the global tokens, <code>HomeProjectCard</code>, <code>WorksFilter</code>, <code>ProjectLayout</code>, and <code>archive.astro</code>.</p>
         <table class="docs-table">
           <thead><tr><th>Category</th><th><code>global.css</code> token</th><th>Used for</th></tr></thead>
           <tbody>
             <tr><td><span class="color-chip" style="background:#68B5ED;"></span>Hardware UX</td><td><code>--category-hardware-ux</code>: <code>#68B5ED</code> (hover <code>#57A4DC</code>)</td><td>pointo, piko, musibuddy</td></tr>
-            <tr><td><span class="color-chip" style="background:#F6631A;"></span>Web UX</td><td><code>--category-web-ux</code>: <code>#F6631A</code> (hover <code>#E05105</code>)</td><td>dot-threads, lab4c, xfigura</td></tr>
+            <tr><td><span class="color-chip" style="background:#F6631A;"></span>Web UX</td><td><code>--category-web-ux</code>: <code>#F6631A</code> (hover <code>#E05105</code>)</td><td>dot-threads, lab4c, prompt-nodes</td></tr>
             <tr><td><span class="color-chip" style="background:#FACC09;"></span>Mobile UX</td><td><code>--category-mobile-ux</code>: <code>#FACC09</code> (hover <code>#E5BA05</code>)</td><td>detour, serendipidity</td></tr>
-            <tr><td><span class="color-chip" style="background:#2B923D;"></span>Spatial XD</td><td><code>--category-spatial-xd</code>: <code>#2B923D</code> (hover <code>#227B32</code>)</td><td>tirupati-campus, skywalk-sanctuary</td></tr>
+            <tr><td><span class="color-chip" style="background:#2B923D;"></span>Spatial XD</td><td><code>--category-spatial-xd</code>: <code>#2B923D</code> (hover <code>#227B32</code>)</td><td>working-living-innovating, skywalk-sanctuary</td></tr>
           </tbody>
         </table>
       </section>
@@ -2249,9 +2249,9 @@ try {
         <p class="section-intro" style="color:var(--text-secondary); font-size:var(--text-sm); margin-bottom:16px; max-width:680px;">Reusable, live-rendered patterns pulled directly from the real components — the actual colors, radii, and hover transitions used across the case study pages, bento cards, and filter controls.</p>
 
         <div class="component-grid">
-          <!-- 1. Grid Cards (Bento & Elsewhere) -->
+          <!-- 1. Grid Cards (Bento & Archive) -->
           <div class="component-card" style="grid-column: span 2;">
-            <div class="component-label"><span>Project Card Types (Hover to Test Interactivity)</span><code>HomeProjectCard.astro</code> &amp; <code>elsewhere.astro</code></div>
+            <div class="component-label"><span>Project Card Types (Hover to Test Interactivity)</span><code>HomeProjectCard.astro</code> &amp; <code>archive.astro</code></div>
             <div class="component-demo" style="padding: 32px 24px; background: var(--bg-surface-hover); min-height: auto; flex-direction: column; gap: 32px; align-items: stretch; width: 100%; box-sizing: border-box;">
               <div style="display: flex; flex-direction: column; gap: 32px; width: 100%;">
                 
@@ -2294,9 +2294,9 @@ try {
                   </div>
                 </div>
 
-                <!-- Bottom: Generic Elsewhere Card -->
+                <!-- Bottom: Generic Archive Card -->
                 <div style="display: flex; flex-direction: column; gap: 8px; width: 100%; max-width: 480px; align-self: flex-start;">
-                  <span style="font-size: 10px; color: var(--text-muted); font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.08em;">Elsewhere Card</span>
+                  <span style="font-size: 10px; color: var(--text-muted); font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.08em;">Archive Card</span>
                   <div class="ds-elsewhere-card" style="--card-bg: var(--category-spatial-xd); --base-scale: 1;">
                     <div class="ds-elsewhere-image-box">
                       <div style="width: 100%; height: 180px; background: #ffffff; display: flex; align-items: center; justify-content: center;">
@@ -2316,8 +2316,8 @@ try {
             <div class="spec-panel">
               <div class="spec-panel-title">Specifications</div>
               <div class="spec-row"><span class="spec-key">Bento Card radius</span><span class="spec-value">20px (card) / 8px (image)</span></div>
-              <div class="spec-row"><span class="spec-key">Elsewhere Card radius</span><span class="spec-value">0px (sharp) &rarr; transitions to 12px (rounded) on hover</span></div>
-              <div class="spec-row"><span class="spec-key">Elsewhere Image radius</span><span class="spec-value">0px &rarr; transitions to 6px on hover</span></div>
+              <div class="spec-row"><span class="spec-key">Archive Card radius</span><span class="spec-value">0px (sharp) &rarr; transitions to 12px (rounded) on hover</span></div>
+              <div class="spec-row"><span class="spec-key">Archive Image radius</span><span class="spec-value">0px &rarr; transitions to 6px on hover</span></div>
             </div>
           </div>
 
@@ -2537,13 +2537,13 @@ try {
             </div>
           </div>
 
-          <!-- 12. xFigura Canvas Embed -->
+          <!-- 12. Prompt Nodes Canvas Embed -->
           <div class="component-card">
-            <div class="component-label"><span>xFigura Interactive Embed</span><code>XFiguraEmbed.astro</code></div>
+            <div class="component-label"><span>Prompt Nodes Interactive Embed</span><code>XFiguraEmbed.astro</code></div>
             <div class="component-demo" style="padding: 16px;">
               <div style="width: 220px; height: 120px; border: 1px dashed var(--border-subtle); border-radius: 8px; display:flex; flex-direction:column; align-items:center; justify-content:center; background:var(--bg-primary);">
-                <span style="font-weight:600; font-size:12px; color:var(--category-web-ux)">xFigura Nodes Canvas</span>
-                <span style="font-size:9px; color:var(--text-muted); margin-top:4px;">src="/xfigura/index.html?embed=true"</span>
+                <span style="font-weight:600; font-size:12px; color:var(--category-web-ux)">Prompt Nodes Nodes Canvas</span>
+                <span style="font-size:9px; color:var(--text-muted); margin-top:4px;">src="/prompt-nodes/index.html?embed=true"</span>
               </div>
             </div>
             <div class="spec-panel">
@@ -2694,7 +2694,7 @@ try {
         <div class="callout danger">
           <div class="callout-title">Undefined token: <code>--bg-secondary</code></div>
           <div class="callout-body">
-            Both <code>.bento-button</code> and <code>.attribute-pill</code> set <code>background: var(--bg-secondary)</code>, but <strong><code>--bg-secondary</code> is only ever defined inside <code>xfigura-layouts.css</code></strong> (as <code>var(--bg-surface)</code>), which is imported by <code>xfigura.mdx</code> alone. On every other case-study page the token is undefined, so these pills/buttons fall back to a <em>transparent</em> background — only the xFigura page renders them with the intended surface fill. The demos below reflect the real (transparent) result.
+            Both <code>.bento-button</code> and <code>.attribute-pill</code> set <code>background: var(--bg-secondary)</code>, but <strong><code>--bg-secondary</code> is only ever defined inside <code>prompt-nodes-layouts.css</code></strong> (as <code>var(--bg-surface)</code>), which is imported by <code>prompt-nodes.mdx</code> alone. On every other case-study page the token is undefined, so these pills/buttons fall back to a <em>transparent</em> background — only the Prompt Nodes page renders them with the intended surface fill. The demos below reflect the real (transparent) result.
           </div>
         </div>
 
@@ -2740,12 +2740,12 @@ try {
         </div>
       </section>
 
-      <section id="xfigura-css">
-        <h2>src/styles/xfigura-layouts.css</h2>
-        <p><strong>498 lines.</strong> Imported only by <code>xfigura.mdx</code> — styles the surrounding case-study prose/cards around the <code>XFiguraEmbed</code> iframe (not the embedded app itself, which is a separate vendored project). Contains: light-theme variable overrides scoped to this page, typography utilities (<code>.section-intro</code>, <code>.active-readout</code>), responsive grid utilities (<code>.xf-grid</code>, <code>.grid-3</code>, <code>.grid-4</code>), several card variants (<code>.xf-card</code>, <code>.opp-card</code> with active/inactive glow states, <code>.core-card</code>), and a full-bleed "thesis statement" orange bar breaking out via negative margins.</p>
+      <section id="prompt-nodes-css">
+        <h2>src/styles/prompt-nodes-layouts.css</h2>
+        <p><strong>498 lines.</strong> Imported only by <code>prompt-nodes.mdx</code> — styles the surrounding case-study prose/cards around the <code>XFiguraEmbed</code> iframe (not the embedded app itself, which is a separate vendored project). Contains: light-theme variable overrides scoped to this page, typography utilities (<code>.section-intro</code>, <code>.active-readout</code>), responsive grid utilities (<code>.xf-grid</code>, <code>.grid-3</code>, <code>.grid-4</code>), several card variants (<code>.xf-card</code>, <code>.opp-card</code> with active/inactive glow states, <code>.core-card</code>), and a full-bleed "thesis statement" orange bar breaking out via negative margins.</p>
         <div class="callout tip">
           <div class="callout-title">Naming vs. actual color mismatch</div>
-          <div class="callout-body">Classes named <code>.font-emerald</code>/<code>.bg-emerald</code> are actually colored orange (<code>#F6631A</code>, xFigura's own brand accent — not the site's green <code>--accent-secondary</code>). Deliberate for this one case study, but a naming trap for future maintainers expecting "emerald" to mean green.</div>
+          <div class="callout-body">Classes named <code>.font-emerald</code>/<code>.bg-emerald</code> are actually colored orange (<code>#F6631A</code>, Prompt Nodes's own brand accent — not the site's green <code>--accent-secondary</code>). Deliberate for this one case study, but a naming trap for future maintainers expecting "emerald" to mean green.</div>
         </div>
       </section>
 
