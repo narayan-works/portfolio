@@ -258,6 +258,12 @@ figcaption {
   cursor: text;
 }
 
+/* Media never inherits the text cursor from a wrapping heading/paragraph/span */
+img,
+svg {
+  cursor: default;
+}
+
 /* Arrow Utility Styles */
 .arrow-svg {
   display: inline-block;

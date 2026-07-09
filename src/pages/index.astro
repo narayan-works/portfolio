@@ -74,6 +74,18 @@ const xfiguraProject = allProjects.find(
 >
 	<HomeNavigation />
 
+	<img
+		id="bio-ghost-walker"
+		class="bio-ghost-walker"
+		src="/logos/happy 1.png"
+		alt=""
+		width="53"
+		height="53"
+		loading="eager"
+		decoding="async"
+		draggable="false"
+	/>
+
 	<div class="toggle-floater">
 		<div class="sidebar-controls">
 			<ThemeToggle />
@@ -651,6 +663,23 @@ const xfiguraProject = allProjects.find(
 		font-weight: 400;
 		font-size: 36px;
 		margin-bottom: 0px; /* Gap below line */
+	}
+
+	.bio-ghost-walker {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 52.5px;
+		height: 52.5px;
+		object-fit: contain;
+		pointer-events: auto;
+		touch-action: none;
+		user-select: none;
+		-webkit-user-drag: none;
+		/* Above the nav bar (200) and everything else in the page,
+		   so it isn't clipped by any container's own padding/margins */
+		z-index: 210;
+		will-change: transform;
 	}
 
 	.hero-divider {
@@ -1425,6 +1454,184 @@ const xfiguraProject = allProjects.find(
 			window.addEventListener("resize", updateWorksFilterPosition);
 			updateWorksFilterPosition();
 		}
+	});
+</script>
+
+<script>
+	document.addEventListener("astro:page-load", () => {
+		const ghost = document.getElementById(
+			"bio-ghost-walker",
+		) as HTMLImageElement | null;
+		const navLogo = document.getElementById(
+			"nav-logo-happy",
+		) as HTMLImageElement | null;
+		const heroDivider = document.querySelector(
+			".hero-divider",
+		) as HTMLElement | null;
+		if (!ghost || !navLogo || !heroDivider) return;
+
+		const HAPPY_FRAMES = [
+			"/logos/happy 1.png",
+			"/logos/happy 2.png",
+			"/logos/happy 3.png",
+		];
+		const SAD_FRAMES = [
+			"/logos/sad 1.png",
+			"/logos/sad 2.png",
+			"/logos/sad 3.png",
+		];
+		let frameIndex = 0;
+		const w = window as any;
+
+		if (w._bioGhostStartTimeout) clearTimeout(w._bioGhostStartTimeout);
+		if (w._bioGhostFrameInterval) clearInterval(w._bioGhostFrameInterval);
+		if (w._bioGhostRAF) cancelAnimationFrame(w._bioGhostRAF);
+
+		const SIZE = 52.5; // matches the nav logo's full circle/wrapper size
+
+		// Start exactly where the (now-hidden) nav logo sits, and hold
+		// there before setting off. Center-aligned since the two elements
+		// aren't the same size.
+		const navLogoRect = navLogo.getBoundingClientRect();
+		const START_X = navLogoRect.left + navLogoRect.width / 2 - SIZE / 2;
+		const START_Y = navLogoRect.top + navLogoRect.height / 2 - SIZE / 2;
+
+		// The hero section's own divider line is the floor: nothing (the
+		// autonomous float or a manual drag) is allowed to cross below it.
+		const dividerY = heroDivider.getBoundingClientRect().top;
+		const clampX = (val: number) =>
+			Math.max(0, Math.min(val, window.innerWidth - SIZE));
+		const clampY = (val: number) =>
+			Math.max(0, Math.min(val, dividerY - SIZE));
+
+		ghost.style.transform = `translate(${START_X}px, ${START_Y}px)`;
+
+		// Continuous drift: position is a sum of a few sine waves at
+		// different frequencies (never all zero-velocity at once) plus a
+		// slow rightward crawl, instead of easing toward discrete
+		// waypoints. There's nothing to "arrive at" and wait for, so it
+		// never hitches — just perpetual, bubble-like motion.
+		let baseX = START_X;
+		// anchorY is the vertical center the wobble oscillates around. It
+		// eases (once) from the nav logo's height down into the open
+		// floating band, then just holds — dragging the ghost updates it
+		// directly so motion resumes from wherever it's dropped instead of
+		// drifting back toward the nav logo's height.
+		let anchorY = START_Y;
+		let targetAnchorY = clampY(START_Y + 260);
+		let elapsed = 0;
+		let lastTime = performance.now();
+		let phY1 = Math.random() * Math.PI * 2;
+		let phY2 = Math.random() * Math.PI * 2;
+		let speedPhase = Math.random() * Math.PI * 2;
+		let isDragging = false;
+
+		const tick = (now: number) => {
+			// Stop once this page's DOM has been swapped out (view transitions)
+			if (!ghost.isConnected) return;
+			// Paused while the user is holding it — pointermove drives
+			// position directly during a drag.
+			if (isDragging) return;
+
+			const dt = Math.min((now - lastTime) / 1000, 0.05);
+			lastTime = now;
+			elapsed += dt;
+
+			// Once its left edge has crossed the right edge of the
+			// viewport (fully offscreen), wrap back around to just off
+			// the left edge — invisible when it happens, and re-roll the
+			// wobble phases so the next pass never repeats the same path.
+			if (baseX > window.innerWidth) {
+				baseX = -SIZE;
+				phY1 = Math.random() * Math.PI * 2;
+				phY2 = Math.random() * Math.PI * 2;
+				speedPhase = Math.random() * Math.PI * 2;
+			}
+
+			// Gentle forward crawl, speed itself drifting smoothly between
+			// ~9 and ~54px/s rather than a fixed value. Always positive,
+			// so horizontal movement never reverses — always left to right.
+			const speed = 31.5 + 22.5 * Math.sin(speedPhase + elapsed * 0.375);
+			baseX += speed * dt;
+
+			anchorY += (targetAnchorY - anchorY) * (1 - Math.exp(-0.6 * dt));
+			const wobbleY =
+				34 * (Math.sin(phY1 + elapsed * 0.525) - Math.sin(phY1)) +
+				18 * (Math.sin(phY2 + elapsed * 1.2) - Math.sin(phY2));
+
+			const x = baseX;
+			const y = clampY(anchorY + wobbleY);
+
+			ghost.style.transform = `translate(${x}px, ${y}px)`;
+			w._bioGhostRAF = requestAnimationFrame(tick);
+		};
+
+		const startFrameCycle = (frameList: string[]) => {
+			if (w._bioGhostFrameInterval) clearInterval(w._bioGhostFrameInterval);
+			ghost.src = frameList[frameIndex % frameList.length];
+			w._bioGhostFrameInterval = window.setInterval(() => {
+				frameIndex = (frameIndex + 1) % frameList.length;
+				ghost.src = frameList[frameIndex];
+			}, 420);
+		};
+
+		// --- Click-and-hold to pick it up and move it ---
+		let dragOffsetX = 0;
+		let dragOffsetY = 0;
+
+		ghost.addEventListener("pointerdown", (e: PointerEvent) => {
+			// Not calling e.preventDefault() here: doing so on pointerdown
+			// suppresses the browser's synthetic mousedown/mousemove/mouseup
+			// for the whole gesture, which froze the custom cursor overlay
+			// (it listens for mousemove) at the press position during a
+			// drag. draggable="false" + user-select:none already stop the
+			// native image-drag and text-selection behaviors we needed
+			// prevented, without that side effect.
+			isDragging = true;
+			ghost.setPointerCapture(e.pointerId);
+			if (w._bioGhostRAF) cancelAnimationFrame(w._bioGhostRAF);
+
+			const rect = ghost.getBoundingClientRect();
+			dragOffsetX = e.clientX - rect.left;
+			dragOffsetY = e.clientY - rect.top;
+
+			startFrameCycle(SAD_FRAMES);
+		});
+
+		ghost.addEventListener("pointermove", (e: PointerEvent) => {
+			if (!isDragging) return;
+			baseX = clampX(e.clientX - dragOffsetX);
+			anchorY = clampY(e.clientY - dragOffsetY);
+			targetAnchorY = anchorY;
+			ghost.style.transform = `translate(${baseX}px, ${anchorY}px)`;
+		});
+
+		const endDrag = (e: PointerEvent) => {
+			if (!isDragging) return;
+			isDragging = false;
+			ghost.releasePointerCapture(e.pointerId);
+
+			startFrameCycle(HAPPY_FRAMES);
+
+			// Resume from exactly where it was dropped — wobble phases
+			// are re-offset to 0 at elapsed=0, so this is a zero-jump handoff.
+			elapsed = 0;
+			lastTime = performance.now();
+			w._bioGhostRAF = requestAnimationFrame(tick);
+		};
+
+		ghost.addEventListener("pointerup", endDrag);
+		ghost.addEventListener("pointercancel", endDrag);
+
+		// Hold still at the nav logo's spot for 3s before setting off
+		w._bioGhostStartTimeout = window.setTimeout(() => {
+			// If it's already being held when this fires, endDrag will
+			// take over the handoff once it's released instead.
+			if (isDragging) return;
+			startFrameCycle(HAPPY_FRAMES);
+			lastTime = performance.now();
+			w._bioGhostRAF = requestAnimationFrame(tick);
+		}, 3000);
 	});
 </script>
 

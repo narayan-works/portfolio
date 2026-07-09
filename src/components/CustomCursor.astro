@@ -150,7 +150,7 @@
 
         // Interactive Elements
         const interactiveSelectors =
-            'a, button, [role="button"], input, select, textarea, .folder-trigger';
+            'a, button, [role="button"], input, select, textarea, .folder-trigger, .bio-ghost-walker';
         // Text Elements that should show I-beam
         const textSelectors =
             "p, h1, h2, h3, h4, h5, h6, span, li, blockquote, dt, dd, figcaption";
@@ -177,7 +177,8 @@
             }
 
             const interactive = target.closest(interactiveSelectors);
-            const text = target.closest(textSelectors);
+            const media = target.closest("img, svg");
+            const text = media ? null : target.closest(textSelectors);
             const game = target.closest(gameSelector);
             const pdf = target.closest(".pdf-viewer-wrapper");
 

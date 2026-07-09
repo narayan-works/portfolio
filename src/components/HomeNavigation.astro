@@ -7,7 +7,10 @@ const isElsewherePage = Astro.url.pathname.startsWith("/elsewhere");
 <nav class="home-navigation">
     <div class="home-nav-container">
         <!-- Left: Logo & Name -->
-        <a href="/" class="home-nav-logo">
+        <a
+            href="/"
+            class={`home-nav-logo ${isHomePage ? "home-nav-logo--hidden" : ""}`}
+        >
             <div class="logo-img-wrapper">
                 <span class="logo-circle">
                     <img
@@ -224,6 +227,11 @@ const isElsewherePage = Astro.url.pathname.startsWith("/elsewhere");
         color: var(--accent-secondary);
     }
 
+    /* On the home page the floating bio ghost takes over this spot instead */
+    .home-nav-logo--hidden {
+        visibility: hidden;
+    }
+
     .home-nav-logo:hover .logo-name {
         font-weight: 600;
     }
@@ -237,14 +245,14 @@ const isElsewherePage = Astro.url.pathname.startsWith("/elsewhere");
         margin-left: -16px; /* Pull to the absolute left edge of the navigation bar */
     }
 
-    /* .logo-circle {
+    .logo-circle {
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 0px;
+        width: 42px;
+        height: 42px;
         border-radius: 50%;
-        background-color: var(--accent-secondary);
-    } */
+    }
 
     .logo-img {
         display: block;
@@ -292,7 +300,7 @@ const isElsewherePage = Astro.url.pathname.startsWith("/elsewhere");
     }
 
     .home-nav-link.active-scroll {
-        color: var(--text-primary);
+        color: var(--accent-secondary);
         font-weight: 600;
     }
 
