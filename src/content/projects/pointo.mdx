@@ -30,6 +30,7 @@ ctaText: "Watch full demo"
 import ProjectSection from '../../components/ProjectSection.astro';
 import FullWidthImage from '../../components/FullWidthImage.astro';
 import PdfEmbed from '../../components/PdfEmbed.astro';
+import ImageSlider from '../../components/ImageSlider.astro';
 
 <FullWidthImage src="/assets/projects/pointo/cover.gif" height="520px" loading="eager" constrain={false} borderRadius="0"/>
 
@@ -347,6 +348,40 @@ import PdfEmbed from '../../components/PdfEmbed.astro';
             padding-top: 32px;
         }
     }
+
+    /* Reference-images slider (Finding Pointing): the three source images
+       have different aspect ratios, so size the frame to each slide's own
+       image instead of a fixed box + cover crop, which was cutting them off. */
+    .image-slider[data-variant="carousel"] .slider-display {
+        aspect-ratio: auto;
+        height: auto;
+    }
+
+    .image-slider[data-variant="carousel"] .slider-track {
+        height: auto;
+        align-items: center;
+    }
+
+    .image-slider[data-variant="carousel"] .slide {
+        height: auto;
+    }
+
+    .image-slider[data-variant="carousel"] .optimized-slide-image {
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+    }
+
+    /* Flush against the layout's left edge (matching the full-width
+       sliders below) while staying capped to normal body-copy width,
+       instead of ProjectSection's default centered-column position. */
+    .section-content .pointo-flush-heading.left-align {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        margin-left: 0 !important;
+        max-width: 750px !important;
+        text-align: left !important;
+    }
 `}</style>
 
 <script is:inline>{`
@@ -497,12 +532,60 @@ import PdfEmbed from '../../components/PdfEmbed.astro';
 </ProjectSection>
 
 <ProjectSection title="Finding Pointing" id="research">
+    <h3 class="prominent-title pointo-flush-heading left-align">Pointing has always been central to how we interact with computers — and yet, AI is still stuck in a text box.</h3>
+    <ImageSlider
+        variant="carousel"
+        autoplay={true}
+        indicatorType="dots"
+        constrain={false}
+        slides={[
+            {
+                src: "/assets/projects/pointo/pointing.gif",
+                alt: "Building up the case for physical pointing",
+                label: "01",
+            },
+            {
+                src: "/assets/projects/pointo/pointing-textbox.png",
+                alt: "Interaction confined to a text box",
+                label: "02",
+            },
+        ]}
+    />
+
+    <h3 class="prominent-title pointo-flush-heading left-align">A few related works to ground my efforts.</h3>
+    <ImageSlider
+        variant="carousel"
+        autoplay={true}
+        indicatorType="dots"
+        constrain={false}
+        slides={[
+            {
+                src: "/assets/projects/pointo/ref-0.gif",
+                alt: "Expressive vs. functional robot behavior comparison",
+                label: "01",
+                title: "ELEGNT: Expressive and Functional Movement Design for Non-anthropomorphic Robot — Yuhan Hu, Peide Huang, Mouli Sivapurapu, Jian Zhang, DIS 2025",
+            },
+            {
+                src: "/assets/projects/pointo/ref-1.png",
+                alt: "Bolt's Put-That-There paper",
+                label: "02",
+                title: "Put-That-There — Richard Bolt, MIT Architecture Machine Group (1980)",
+            },
+            {
+                src: "/assets/projects/pointo/ref-2.png",
+                alt: "Lamp robot gesture recognition study figure",
+                label: "03",
+                title: "Make It Move: A Movement Design Method of Simple Standing Products Based on Systematic Mapping of Torso Movements & Product Messages — Jinyung Jung, Seok-Hyung Bae, Joon Hyub Lee, Myung-Suk Kim, CHI 2013",
+            },
+        ]}
+    />
+
     <PdfEmbed src="/assets/projects/pointo/sketches.pdf"/>
 
-    <h2>VLM Experiments</h2>
+    <h3 class="prominent-title pointo-flush-heading left-align">VLM Experiments</h3>
     <FullWidthImage src="/assets/projects/pointo/testing.gif" height="420px" caption="Iteration and testing in context" constrain={false}/>
 
-    <h2>Scale Pivot: Tabletop → Room-scale</h2>
+    <h3 class="prominent-title pointo-flush-heading left-align">Scale Pivot: Tabletop → Room-scale</h3>
     <PdfEmbed src="/assets/projects/pointo/testing-pivot.pdf"/>
 </ProjectSection>
 

@@ -204,6 +204,34 @@ const {
         margin-bottom: 2rem !important;
     }
 
+    /* Tighten top margin for visual/media elements that immediately follow headings */
+    .section-content :global(h2 + .full-width-image),
+    .section-content :global(h3 + .full-width-image),
+    .section-content :global(h4 + .full-width-image),
+    .section-content :global(h2 + .pdf-viewer-wrapper),
+    .section-content :global(h3 + .pdf-viewer-wrapper),
+    .section-content :global(h4 + .pdf-viewer-wrapper),
+    .section-content :global(h2 + .image-slider),
+    .section-content :global(h3 + .image-slider),
+    .section-content :global(h4 + .image-slider),
+    .section-content :global(h2 + .video-embed),
+    .section-content :global(h3 + .video-embed),
+    .section-content :global(h4 + .video-embed),
+    .section-content :global(h2 + img),
+    .section-content :global(h3 + img),
+    .section-content :global(h4 + img),
+    .section-content :global(h2 + video),
+    .section-content :global(h3 + video),
+    .section-content :global(h4 + video),
+    .section-content :global(h2 + .figma-container),
+    .section-content :global(h3 + .figma-container),
+    .section-content :global(h4 + .figma-container),
+    .section-content :global(h2 + .xfigura-container),
+    .section-content :global(h3 + .xfigura-container),
+    .section-content :global(h4 + .xfigura-container) {
+        margin-top: 1rem !important;
+    }
+
     /* Media components handle their own body-width padding */
     .section-content > :global(.full-width-image),
     .section-content > :global(.figma-container),
