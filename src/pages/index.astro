@@ -680,6 +680,7 @@ const xfiguraProject = allProjects.find(
 		   so it isn't clipped by any container's own padding/margins */
 		z-index: 210;
 		will-change: transform;
+		transition: opacity 0.25s ease;
 	}
 
 	.hero-divider {
@@ -1468,7 +1469,8 @@ const xfiguraProject = allProjects.find(
 		const heroDivider = document.querySelector(
 			".hero-divider",
 		) as HTMLElement | null;
-		if (!ghost || !navLogo || !heroDivider) return;
+		const heroSection = document.querySelector(".hero") as HTMLElement | null;
+		if (!ghost || !navLogo || !heroDivider || !heroSection) return;
 
 		const HAPPY_FRAMES = [
 			"/logos/happy 1.png",
@@ -1489,6 +1491,18 @@ const xfiguraProject = allProjects.find(
 
 		const SIZE = 52.5; // matches the nav logo's full circle/wrapper size
 
+		// The ghost is position:fixed (so it isn't clipped by any
+		// container's own padding/margins), but it should still scroll
+		// away with the hero section rather than stay glued to the
+		// viewport. All the position math below works in "document space"
+		// (as measured at this setup moment); toViewportY converts that to
+		// the actual fixed-position pixels for the current scroll offset,
+		// so scrolling down moves the ghost up off-screen along with the
+		// rest of the hero content.
+		const scrollYAtSetup = window.scrollY;
+		const toViewportY = (docY: number) =>
+			docY - (window.scrollY - scrollYAtSetup);
+
 		// Start exactly where the (now-hidden) nav logo sits, and hold
 		// there before setting off. Center-aligned since the two elements
 		// aren't the same size.
@@ -1504,7 +1518,7 @@ const xfiguraProject = allProjects.find(
 		const clampY = (val: number) =>
 			Math.max(0, Math.min(val, dividerY - SIZE));
 
-		ghost.style.transform = `translate(${START_X}px, ${START_Y}px)`;
+		ghost.style.transform = `translate(${START_X}px, ${toViewportY(START_Y)}px)`;
 
 		// Continuous drift: position is a sum of a few sine waves at
 		// different frequencies (never all zero-velocity at once) plus a
@@ -1525,6 +1539,10 @@ const xfiguraProject = allProjects.find(
 		let phY2 = Math.random() * Math.PI * 2;
 		let speedPhase = Math.random() * Math.PI * 2;
 		let isDragging = false;
+		// Held still at the nav logo's spot until the 3s timeout below
+		// flips this — the loop still runs so it keeps scroll-compensating
+		// during the hold instead of staying pinned at a stale pixel spot.
+		let hasLaunched = false;
 
 		const tick = (now: number) => {
 			// Stop once this page's DOM has been swapped out (view transitions)
@@ -1535,6 +1553,13 @@ const xfiguraProject = allProjects.find(
 
 			const dt = Math.min((now - lastTime) / 1000, 0.05);
 			lastTime = now;
+
+			if (!hasLaunched) {
+				ghost.style.transform = `translate(${START_X}px, ${toViewportY(START_Y)}px)`;
+				w._bioGhostRAF = requestAnimationFrame(tick);
+				return;
+			}
+
 			elapsed += dt;
 
 			// Once its left edge has crossed the right edge of the
@@ -1562,9 +1587,12 @@ const xfiguraProject = allProjects.find(
 			const x = baseX;
 			const y = clampY(anchorY + wobbleY);
 
-			ghost.style.transform = `translate(${x}px, ${y}px)`;
+			ghost.style.transform = `translate(${x}px, ${toViewportY(y)}px)`;
 			w._bioGhostRAF = requestAnimationFrame(tick);
 		};
+
+		lastTime = performance.now();
+		w._bioGhostRAF = requestAnimationFrame(tick);
 
 		const startFrameCycle = (frameList: string[]) => {
 			if (w._bioGhostFrameInterval) clearInterval(w._bioGhostFrameInterval);
@@ -1601,9 +1629,14 @@ const xfiguraProject = allProjects.find(
 		ghost.addEventListener("pointermove", (e: PointerEvent) => {
 			if (!isDragging) return;
 			baseX = clampX(e.clientX - dragOffsetX);
-			anchorY = clampY(e.clientY - dragOffsetY);
+			// Convert the live viewport coordinate into the same
+			// "document space" convention everything else here uses,
+			// so clampY's divider-line bound stays correct even if the
+			// page has been scrolled since setup.
+			const docY = e.clientY - dragOffsetY + (window.scrollY - scrollYAtSetup);
+			anchorY = clampY(docY);
 			targetAnchorY = anchorY;
-			ghost.style.transform = `translate(${baseX}px, ${anchorY}px)`;
+			ghost.style.transform = `translate(${baseX}px, ${toViewportY(anchorY)}px)`;
 		});
 
 		const endDrag = (e: PointerEvent) => {
@@ -1611,6 +1644,8 @@ const xfiguraProject = allProjects.find(
 			isDragging = false;
 			ghost.releasePointerCapture(e.pointerId);
 
+			hasLaunched = true;
+			clearTimeout(w._bioGhostStartTimeout);
 			startFrameCycle(HAPPY_FRAMES);
 
 			// Resume from exactly where it was dropped — wobble phases
@@ -1623,14 +1658,15 @@ const xfiguraProject = allProjects.find(
 		ghost.addEventListener("pointerup", endDrag);
 		ghost.addEventListener("pointercancel", endDrag);
 
-		// Hold still at the nav logo's spot for 3s before setting off
+		// Hold still at the nav logo's spot for 3s before setting off. The
+		// main loop (started above) is already running continuously, so
+		// this just flips the flag rather than starting another one.
 		w._bioGhostStartTimeout = window.setTimeout(() => {
-			// If it's already being held when this fires, endDrag will
-			// take over the handoff once it's released instead.
+			hasLaunched = true;
+			// If it's being held right now, endDrag will pick up wander
+			// motion (with happy frames) once it's released instead.
 			if (isDragging) return;
 			startFrameCycle(HAPPY_FRAMES);
-			lastTime = performance.now();
-			w._bioGhostRAF = requestAnimationFrame(tick);
 		}, 3000);
 	});
 </script>
