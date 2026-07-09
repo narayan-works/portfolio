@@ -1,7 +1,4 @@
 ---
-import { Image } from "astro:assets";
-import happyLogo from "../assets/happy.png";
-
 const isHomePage = Astro.url.pathname === "/";
 const isAboutPage = Astro.url.pathname.startsWith("/about");
 const isElsewherePage = Astro.url.pathname.startsWith("/elsewhere");
@@ -12,15 +9,18 @@ const isElsewherePage = Astro.url.pathname.startsWith("/elsewhere");
         <!-- Left: Logo & Name -->
         <a href="/" class="home-nav-logo">
             <div class="logo-img-wrapper">
-                <Image
-                    src={happyLogo}
-                    alt="na"
-                    class="logo-img"
-                    loading="eager"
-                    decoding="async"
-                    width={96}
-                    height={96}
-                />
+                <span class="logo-circle">
+                    <img
+                        id="nav-logo-happy"
+                        src="/logos/happy 1.png"
+                        alt="na"
+                        class="logo-img"
+                        loading="eager"
+                        decoding="async"
+                        width="36"
+                        height="36"
+                    />
+                </span>
             </div>
             <span class="logo-name"></span>
         </a>
@@ -99,9 +99,38 @@ const isElsewherePage = Astro.url.pathname.startsWith("/elsewhere");
         updateHomeActiveState();
     }
 
+    function setupLogoAnimation() {
+        const img = document.getElementById(
+            "nav-logo-happy",
+        ) as HTMLImageElement | null;
+        if (!img) return;
+
+        const frames = [
+            "/logos/happy 1.png",
+            "/logos/happy 2.png",
+            "/logos/happy 3.png",
+        ];
+        let frameIndex = 0;
+
+        // Clear any interval left over from a previous page (the interval
+        // itself persists across soft navigations since it's on `window`)
+        const w = window as any;
+        if (w._navLogoInterval) {
+            clearInterval(w._navLogoInterval);
+        }
+
+        // Matches the idle walk-cycle speed used for the ghost in GhostRunner
+        w._navLogoInterval = window.setInterval(() => {
+            frameIndex = (frameIndex + 1) % frames.length;
+            img.src = frames[frameIndex];
+        }, 420);
+    }
+
     // Run setup on load and on page transition (Astro View Transitions compatibility)
     setupScrollSpy();
+    setupLogoAnimation();
     document.addEventListener("astro:page-load", setupScrollSpy);
+    document.addEventListener("astro:page-load", setupLogoAnimation);
 </script>
 
 <style>
@@ -127,7 +156,7 @@ const isElsewherePage = Astro.url.pathname.startsWith("/elsewhere");
         align-items: center;
         width: 100%;
         height: 100%;
-	}
+    }
 
     .home-nav-container::before {
         content: "";
@@ -205,14 +234,22 @@ const isElsewherePage = Astro.url.pathname.startsWith("/elsewhere");
         display: flex;
         align-items: center;
         justify-content: center;
-        background-color: var(--accent-secondary); /* Green background */
         margin-left: -16px; /* Pull to the absolute left edge of the navigation bar */
     }
 
+    /* .logo-circle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0px;
+        border-radius: 50%;
+        background-color: var(--accent-secondary);
+    } */
+
     .logo-img {
         display: block;
-        width: 36px;
-        height: 36px;
+        width: 42px;
+        height: 42px;
         object-fit: contain;
     }
 
@@ -224,7 +261,9 @@ const isElsewherePage = Astro.url.pathname.startsWith("/elsewhere");
         letter-spacing: 0.01rem;
         line-height: 1;
         cursor: pointer;
-        transition: font-weight 0.2s ease, color 0.2s ease;
+        transition:
+            font-weight 0.2s ease,
+            color 0.2s ease;
     }
 
     .home-nav-links {
@@ -242,7 +281,9 @@ const isElsewherePage = Astro.url.pathname.startsWith("/elsewhere");
         line-height: 1;
         color: var(--text-secondary);
         text-decoration: none;
-        transition: font-weight 0.2s ease, color 0.2s ease;
+        transition:
+            font-weight 0.2s ease,
+            color 0.2s ease;
     }
 
     .home-nav-link:hover {

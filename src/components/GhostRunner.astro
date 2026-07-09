@@ -9,6 +9,17 @@
 </div>
 
 <script>
+    // View Transitions keep the same document/module across client-side
+    // navigations, so this script only ever evaluates once. Without
+    // wrapping it in a re-runnable init + tearing down the previous
+    // instance's loop/listeners, the game only ever wires up on a hard
+    // reload, and repeated navigations would stack duplicate loops.
+    let stopPreviousGhostRunner: (() => void) | null = null;
+
+    function initGhostRunner() {
+    stopPreviousGhostRunner?.();
+    stopPreviousGhostRunner = null;
+
     const canvas = document.getElementById(
         "ghost-lane-canvas",
     ) as HTMLCanvasElement;
@@ -235,8 +246,10 @@
             // fires with the container's real size the moment it's observed,
             // and again any time that size actually changes (images/fonts
             // above finishing, viewport resize) — independent of page load time.
+            let resizeObserverInstance: ResizeObserver | null = null;
             if ("ResizeObserver" in window) {
-                new ResizeObserver(resize).observe(canvas.parentElement!);
+                resizeObserverInstance = new ResizeObserver(resize);
+                resizeObserverInstance.observe(canvas.parentElement!);
             } else {
                 setTimeout(resize, 0);
                 window.addEventListener("load", resize);
@@ -276,15 +289,31 @@
             );
             window.addEventListener("touchend", endHold);
 
-            window.addEventListener("keydown", (e) => {
+            const handleKeyDown = (e: KeyboardEvent) => {
                 if (e.code === "Space") {
                     e.preventDefault();
                     startHold(e);
                 }
-            });
-            window.addEventListener("keyup", (e) => {
+            };
+            const handleKeyUp = (e: KeyboardEvent) => {
                 if (e.code === "Space") endHold(e);
-            });
+            };
+            window.addEventListener("keydown", handleKeyDown);
+            window.addEventListener("keyup", handleKeyUp);
+
+            stopPreviousGhostRunner = () => {
+                if (frameId) {
+                    cancelAnimationFrame(frameId);
+                    frameId = 0;
+                }
+                resizeObserverInstance?.disconnect();
+                window.removeEventListener("resize", resize);
+                window.removeEventListener("load", resize);
+                window.removeEventListener("mouseup", endHold);
+                window.removeEventListener("touchend", endHold);
+                window.removeEventListener("keydown", handleKeyDown);
+                window.removeEventListener("keyup", handleKeyUp);
+            };
 
             const resetGame = () => {
                 // Cancel any existing game loop to prevent speed accumulation
@@ -997,6 +1026,10 @@
     } else {
         bootGame();
     }
+    }
+
+    initGhostRunner();
+    document.addEventListener("astro:page-load", initGhostRunner);
 </script>
 
 <style>

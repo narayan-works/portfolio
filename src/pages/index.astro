@@ -62,7 +62,9 @@ const serendipityProject = allProjects.find(
 	(project) => project.slug === "serendipidity",
 );
 const lab4cProject = allProjects.find((project) => project.slug === "lab4c");
-const xfiguraProject = allProjects.find((project) => project.slug === "xfigura");
+const xfiguraProject = allProjects.find(
+	(project) => project.slug === "xfigura",
+);
 ---
 
 <Layout
@@ -97,7 +99,8 @@ const xfiguraProject = allProjects.find((project) => project.slug === "xfigura")
 							>
 						</div>
 						<div class="bio-line-2">
-								building [0-to-1]&nbsp;experiences across<br />AI, hardware, and digital infrastructure.
+							building [0-to-1]&nbsp;experiences across<br />AI,
+							hardware, and digital infrastructure.
 						</div>
 					</div>
 				</div>
@@ -212,7 +215,9 @@ const xfiguraProject = allProjects.find((project) => project.slug === "xfigura")
 									href={`/works/${xfiguraProject.slug}`}
 									tags={xfiguraProject.data.tags}
 									meta={xfiguraProject.data.meta}
-									description={xfiguraProject.data.description}
+									description={
+										xfiguraProject.data.description
+									}
 									categories={["web-ux"]}
 								/>
 							</div>
@@ -311,7 +316,6 @@ const xfiguraProject = allProjects.find((project) => project.slug === "xfigura")
 							</div>
 						)
 					}
-
 				</div>
 
 				<!-- See More button: visible only when a filter is active and hides some projects -->
@@ -714,7 +718,11 @@ const xfiguraProject = allProjects.find((project) => project.slug === "xfigura")
 
 	@media (max-width: 768px) {
 		.works-header-sticky {
-			top: 10px !important;
+			position: fixed !important;
+			top: auto !important;
+			bottom: 20px !important;
+			left: 48px !important;
+			right: 48px !important;
 		}
 	}
 
@@ -1069,7 +1077,7 @@ const xfiguraProject = allProjects.find((project) => project.slug === "xfigura")
 
 	@media (max-width: 768px) {
 		.home-content {
-			padding: 136px 24px 0 24px;
+			padding: 430px 24px 0 24px;
 		}
 		.bio-content {
 			padding-inline: 24px;
@@ -1253,133 +1261,170 @@ const xfiguraProject = allProjects.find((project) => project.slug === "xfigura")
 			});
 		}
 
-			// Bracket Hover Transition Width Measurement & State Management
-			const bracketWrappers = document.querySelectorAll(
-				".bracket-hover-wrapper",
-			);
-			bracketWrappers.forEach((wrapper) => {
-				const content = wrapper.querySelector(
-					".bracket-content",
-				) as HTMLElement;
-				const inner = wrapper.querySelector(
-					".bracket-inner",
-				) as HTMLElement;
-				const container =
-					wrapper.closest(".bio-line-2") ||
-					wrapper.closest(".bio-text");
+		// Bracket Hover Transition Width Measurement & State Management
+		const bracketWrappers = document.querySelectorAll(
+			".bracket-hover-wrapper",
+		);
+		bracketWrappers.forEach((wrapper) => {
+			const content = wrapper.querySelector(
+				".bracket-content",
+			) as HTMLElement;
+			const inner = wrapper.querySelector(
+				".bracket-inner",
+			) as HTMLElement;
+			const container =
+				wrapper.closest(".bio-line-2") || wrapper.closest(".bio-text");
 
-				if (content && inner) {
-					const setWidth = () => {
-						const width = inner.scrollWidth;
-						if (width > 0) {
-							content.style.setProperty(
-								"--expanded-width",
-								`${width}px`,
-							);
-						}
-					};
-					// Measure immediately on DOMContentLoaded
-					setWidth();
-					// Fallbacks to handle font loading or dynamic adjustments
-					wrapper.addEventListener("mouseenter", setWidth);
-					window.addEventListener("load", setWidth);
-
-					// Trigger expand when mouse enters the bracket itself
-					wrapper.addEventListener("mouseenter", () => {
-						wrapper.classList.add("is-hovered");
-					});
-
-					// Only collapse when mouse leaves the broader container (preventing layout shift flicker)
-					if (container) {
-						container.addEventListener("mouseleave", () => {
-							wrapper.classList.remove("is-hovered");
-						});
-					} else {
-						// Fallback if no container is found
-						wrapper.addEventListener("mouseleave", () => {
-							wrapper.classList.remove("is-hovered");
-						});
+			if (content && inner) {
+				const setWidth = () => {
+					const width = inner.scrollWidth;
+					if (width > 0) {
+						content.style.setProperty(
+							"--expanded-width",
+							`${width}px`,
+						);
 					}
+				};
+				// Measure immediately on DOMContentLoaded
+				setWidth();
+				// Fallbacks to handle font loading or dynamic adjustments
+				wrapper.addEventListener("mouseenter", setWidth);
+				window.addEventListener("load", setWidth);
+
+				// Trigger expand when mouse enters the bracket itself
+				wrapper.addEventListener("mouseenter", () => {
+					wrapper.classList.add("is-hovered");
+				});
+
+				// Only collapse when mouse leaves the broader container (preventing layout shift flicker)
+				if (container) {
+					container.addEventListener("mouseleave", () => {
+						wrapper.classList.remove("is-hovered");
+					});
+				} else {
+					// Fallback if no container is found
+					wrapper.addEventListener("mouseleave", () => {
+						wrapper.classList.remove("is-hovered");
+					});
 				}
-			});
+			}
+		});
 
-			// Dynamic Bio Text Color based on filter selection
-			const FILTER_COLORS: Record<string, string> = {
-				all: "#42BE4A", // Default state color (#42BE4A)
-				"hardware-ux": "#0D8CE9", // Hover state blue color
-				"web-ux": "#F6631A",
-				"mobile-ux": "#FACC09",
-				"spatial-xd": "#2B923D",
-			};
+		// Dynamic Bio Text Color based on filter selection
+		const FILTER_COLORS: Record<string, string> = {
+			all: "#42BE4A", // Default state color (#42BE4A)
+			"hardware-ux": "#0D8CE9", // Hover state blue color
+			"web-ux": "#F6631A",
+			"mobile-ux": "#FACC09",
+			"spatial-xd": "#2B923D",
+		};
 
-			const hash = window.location.hash.slice(1);
-			const initialColor = FILTER_COLORS[hash] || FILTER_COLORS["all"];
+		const hash = window.location.hash.slice(1);
+		const initialColor = FILTER_COLORS[hash] || FILTER_COLORS["all"];
+		const dynamicTexts = document.querySelectorAll(".dynamic-color-text");
+		dynamicTexts.forEach((el) => {
+			(el as HTMLElement).style.color = initialColor;
+		});
+
+		const onWorksFilterChangeColor = (e: any) => {
+			const filter = e.detail.filter;
+			const color = FILTER_COLORS[filter] || FILTER_COLORS["all"];
 			const dynamicTexts = document.querySelectorAll(
 				".dynamic-color-text",
 			);
 			dynamicTexts.forEach((el) => {
-				(el as HTMLElement).style.color = initialColor;
+				(el as HTMLElement).style.color = color;
 			});
+		};
 
-			const onWorksFilterChangeColor = (e: any) => {
-				const filter = e.detail.filter;
-				const color = FILTER_COLORS[filter] || FILTER_COLORS["all"];
-				const dynamicTexts = document.querySelectorAll(
-					".dynamic-color-text",
-				);
-				dynamicTexts.forEach((el) => {
-					(el as HTMLElement).style.color = color;
-				});
+		if ((window as any)._worksFilterColorListener) {
+			window.removeEventListener(
+				"works-filter-change",
+				(window as any)._worksFilterColorListener,
+			);
+		}
+		(window as any)._worksFilterColorListener = onWorksFilterChangeColor;
+		window.addEventListener(
+			"works-filter-change",
+			onWorksFilterChangeColor,
+		);
+
+		// Floating Theme Toggle Footer Collision Logic
+		const toggleFloater = document.querySelector(
+			".toggle-floater",
+		) as HTMLElement;
+		const footer = document.querySelector(".site-footer") as HTMLElement;
+		if (toggleFloater && footer) {
+			const updateTogglePosition = () => {
+				const footerRect = footer.getBoundingClientRect();
+				const windowHeight = window.innerHeight;
+				const margin = 20;
+
+				if (footerRect.top < windowHeight) {
+					const offset = windowHeight - footerRect.top + margin;
+					toggleFloater.style.setProperty(
+						"bottom",
+						`${offset}px`,
+						"important",
+					);
+				} else {
+					toggleFloater.style.setProperty(
+						"bottom",
+						"20px",
+						"important",
+					);
+				}
 			};
 
-			if ((window as any)._worksFilterColorListener) {
-				window.removeEventListener(
-					"works-filter-change",
-					(window as any)._worksFilterColorListener,
-				);
-			}
-			(window as any)._worksFilterColorListener =
-				onWorksFilterChangeColor;
-			window.addEventListener(
-				"works-filter-change",
-				onWorksFilterChangeColor,
-			);
+			window.addEventListener("scroll", updateTogglePosition, {
+				passive: true,
+			});
+			window.addEventListener("resize", updateTogglePosition);
+			updateTogglePosition();
+		}
 
-			// Floating Theme Toggle Footer Collision Logic
-			const toggleFloater = document.querySelector(
-				".toggle-floater",
-			) as HTMLElement;
-			const footer = document.querySelector(
-				".site-footer",
-			) as HTMLElement;
-			if (toggleFloater && footer) {
-				const updateTogglePosition = () => {
-					const footerRect = footer.getBoundingClientRect();
-					const windowHeight = window.innerHeight;
-					const margin = 20;
+		// Mobile Works Filter Footer Collision Logic (mirrors the
+		// theme toggle above): on mobile the filter is fixed to the
+		// bottom edge instead of sticky-top, so it needs the same
+		// "stop above the footer" handling.
+		const worksHeaderSticky = document.querySelector(
+			".works-header-sticky",
+		) as HTMLElement;
+		if (worksHeaderSticky && footer) {
+			const mobileFilterQuery = window.matchMedia("(max-width: 768px)");
 
-					if (footerRect.top < windowHeight) {
-						const offset = windowHeight - footerRect.top + margin;
-						toggleFloater.style.setProperty(
-							"bottom",
-							`${offset}px`,
-							"important",
-						);
-					} else {
-						toggleFloater.style.setProperty(
-							"bottom",
-							"20px",
-							"important",
-						);
-					}
-				};
+			const updateWorksFilterPosition = () => {
+				if (!mobileFilterQuery.matches) {
+					worksHeaderSticky.style.removeProperty("bottom");
+					return;
+				}
 
-				window.addEventListener("scroll", updateTogglePosition, {
-					passive: true,
-				});
-				window.addEventListener("resize", updateTogglePosition);
-				updateTogglePosition();
-			}
+				const footerRect = footer.getBoundingClientRect();
+				const windowHeight = window.innerHeight;
+				const margin = 20;
+
+				if (footerRect.top < windowHeight) {
+					const offset = windowHeight - footerRect.top + margin;
+					worksHeaderSticky.style.setProperty(
+						"bottom",
+						`${offset}px`,
+						"important",
+					);
+				} else {
+					worksHeaderSticky.style.setProperty(
+						"bottom",
+						"20px",
+						"important",
+					);
+				}
+			};
+
+			window.addEventListener("scroll", updateWorksFilterPosition, {
+				passive: true,
+			});
+			window.addEventListener("resize", updateWorksFilterPosition);
+			updateWorksFilterPosition();
+		}
 	});
 </script>
 

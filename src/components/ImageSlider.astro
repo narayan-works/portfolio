@@ -44,7 +44,17 @@ const sliderId = `slider-${Math.random().toString(36).substr(2, 9)}`;
             {
                 slides.map((slide, index) => (
                     <div class="slide" data-index={index}>
-                        {typeof slide.src === "string" && slide.src.endsWith(".gif") ? (
+                        {typeof slide.src === "string" && slide.src.endsWith(".mp4") ? (
+                            <video
+                                src={slide.src}
+                                autoplay
+                                loop
+                                muted
+                                playsinline
+                                preload="metadata"
+                                class="optimized-slide-image"
+                            />
+                        ) : typeof slide.src === "string" && slide.src.endsWith(".gif") ? (
                             <img
                                 src={slide.src}
                                 alt={slide.alt}

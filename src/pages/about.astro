@@ -4,6 +4,7 @@ import HomeNavigation from "../components/HomeNavigation.astro";
 import ThemeToggle from "../components/ThemeToggle.astro";
 import Footer from "../components/Footer.astro";
 import GhostRunner from "../components/GhostRunner.astro";
+import ImageSlider from "../components/ImageSlider.astro";
 ---
 
 <Layout
@@ -20,58 +21,95 @@ import GhostRunner from "../components/GhostRunner.astro";
 
 		<div class="about-divider"></div>
 
-		<div class="about-body">
-			<p>
-				👋 I'm Narayan Ashanahalli, a Product Designer &
-				Prototyper building [0-to-1]&nbsp;experiences across AI,
-				hardware, and digital infrastructure. With a foundation in
-				architecture, I apply systems thinking and rapid
-				prototyping to create digital products that feel responsive
-				and grounded in existing ecosystems.
-			</p>
-			<p>
-				🎯 The question I keep coming back to: how do we make
-				technology feel present in the physical world rather than
-				extracting people into screens? I care about interactions
-				that feel natural, where the interface fades and people
-				focus on what they're actually doing.
-			</p>
-			<p>
-				🔧 I'm currently working as a Design Researcher at Lab 4
-				Cybernetics with <a
-					href="https://pangaro.com/"
-					target="_blank"
-					rel="noopener noreferrer">Paul Pangaro</a
-				>, building the lab's digital infrastructure: <a
-					href="https://lab4cybernetics.vercel.app"
-					target="_blank"
-					rel="noopener noreferrer">the website</a
-				>, a practitioner-scholar <a
-					href="https://l4cybernetics.vercel.app/matching"
-					target="_blank"
-					rel="noopener noreferrer">matching platform</a
-				>, and a knowledge graph system organizing <a
-					href="https://publish.obsidian.md/lab4c"
-					target="_blank"
-					rel="noopener noreferrer">cybernetics concepts</a
-				>.
-			</p>
-			<p>
-				🤖 My thesis project, supported by the <a
-					href="https://studioforcreativeinquiry.org/frff-grants-microgrants"
-					target="_blank"
-					rel="noopener noreferrer">Frank-Ratchye Further Fund</a
-				>, explores how physically embodied AI can provide spatial
-				task assistance through laser-pointing, bridging LLM
-				reasoning with physical spatial referencing.
-			</p>
-			<p>
-				💡 I'm learning that the best design work happens in the
-				infrastructure: building repositories, systems, and tools
-				that let others create and scale. I want to build tools
-				that feel like extensions of how people naturally think and
-				interact, not systems they have to manage.
-			</p>
+		<div class="about-content-grid">
+			<div class="about-body">
+				<p>
+					👋 I'm Narayan Ashanahalli, a Product Designer &
+					Prototyper building [0-to-1]&nbsp;experiences across AI,
+					hardware, and digital infrastructure. With a foundation in
+					architecture, I apply systems thinking and rapid
+					prototyping to create digital products that feel responsive
+					and grounded in existing ecosystems.
+				</p>
+				<p>
+					🎯 The question I keep coming back to: how do we make
+					technology feel present in the physical world rather than
+					extracting people into screens? I care about interactions
+					that feel natural, where the interface fades and people
+					focus on what they're actually doing.
+				</p>
+				<p>
+					🔧 I'm currently working as a Design Researcher at Lab 4
+					Cybernetics with <a
+						href="https://pangaro.com/"
+						target="_blank"
+						rel="noopener noreferrer">Paul Pangaro</a
+					>, building the lab's digital infrastructure: <a
+						href="https://lab4cybernetics.vercel.app"
+						target="_blank"
+						rel="noopener noreferrer">the website</a
+					>, a practitioner-scholar <a
+						href="https://l4cybernetics.vercel.app/matching"
+						target="_blank"
+						rel="noopener noreferrer">matching platform</a
+					>, and a knowledge graph system organizing <a
+						href="https://publish.obsidian.md/lab4c"
+						target="_blank"
+						rel="noopener noreferrer">cybernetics concepts</a
+					>.
+				</p>
+				<p>
+					🤖 My thesis project, supported by the <a
+						href="https://studioforcreativeinquiry.org/frff-grants-microgrants"
+						target="_blank"
+						rel="noopener noreferrer">Frank-Ratchye Further Fund</a
+					>, explores how physically embodied AI can provide spatial
+					task assistance through laser-pointing, bridging LLM
+					reasoning with physical spatial referencing.
+				</p>
+				<p>
+					💡 I'm learning that the best design work happens in the
+					infrastructure: building repositories, systems, and tools
+					that let others create and scale. I want to build tools
+					that feel like extensions of how people naturally think and
+					interact, not systems they have to manage.
+				</p>
+			</div>
+
+			<div class="about-media">
+				<ImageSlider
+					variant="carousel"
+					autoplay={true}
+					indicatorType="dots"
+					slides={[
+						{
+							src: "/assets/projects/about/1.jpeg",
+							alt: "Narayan — photo 1",
+							label: "01",
+						},
+						{
+							src: "/assets/projects/about/2.jpeg",
+							alt: "Narayan — photo 2",
+							label: "02",
+						},
+						{
+							src: "/assets/projects/about/3.jpg",
+							alt: "Narayan — photo 3",
+							label: "03",
+						},
+						{
+							src: "/assets/projects/about/4-compressed.mp4",
+							alt: "Narayan — video 4",
+							label: "04",
+						},
+						{
+							src: "/assets/projects/about/5-compressed.gif",
+							alt: "Narayan — photo 5",
+							label: "05",
+						},
+					]}
+				/>
+			</div>
 		</div>
 
 		<Footer />
@@ -139,12 +177,65 @@ import GhostRunner from "../components/GhostRunner.astro";
 		margin-bottom: 48px;
 	}
 
+	.about-content-grid {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+		gap: 64px;
+		align-items: center;
+		margin-bottom: 96px;
+	}
+
 	.about-body {
 		display: flex;
 		flex-direction: column;
 		gap: 1.5rem;
-		max-width: 860px;
-		margin-bottom: 96px;
+	}
+
+	.about-media {
+		width: 100%;
+	}
+
+	/* No cropping, no fixed frame: each slide sizes itself to its own
+	   image's natural aspect ratio instead of being forced into a
+	   shared box (which would need a letterbox band to avoid cropping).
+	   Different slides can be different heights here. Scoped to this
+	   page only. */
+	.about-media :global(.image-slider[data-variant="carousel"] .slider-display) {
+		aspect-ratio: auto;
+		height: auto;
+		width: 85%;
+	}
+
+	.about-media :global(.image-slider[data-variant="carousel"] .slider-track) {
+		height: auto;
+		align-items: center;
+	}
+
+	.about-media :global(.image-slider[data-variant="carousel"] .slide) {
+		height: auto;
+	}
+
+	/* Visually pull the peeking side slides closer to overlap the
+	   active one, using transform (not margin) so the flex layout
+	   itself is untouched and the active slide's centered position
+	   (driven by the track's own translateX) can't be thrown off. */
+	.about-media :global(.image-slider[data-variant="carousel"] .slide.prev) {
+		transform: scale(0.85) translateX(40px);
+	}
+
+	.about-media :global(.image-slider[data-variant="carousel"] .slide.next) {
+		transform: scale(0.85) translateX(-40px);
+	}
+
+	.about-media :global(.image-slider[data-variant="carousel"] .optimized-slide-image) {
+		width: 100%;
+		height: auto;
+		object-fit: contain;
+	}
+
+	.about-media :global(.image-slider[data-variant="carousel"] .slide .optimized-slide-image) {
+		border: 1px solid var(--border-subtle);
+		border-radius: var(--radius-md);
 	}
 
 	.about-body p {
@@ -193,6 +284,10 @@ import GhostRunner from "../components/GhostRunner.astro";
 	@media (max-width: 1024px) {
 		.about-title {
 			font-size: 64px;
+		}
+		.about-content-grid {
+			grid-template-columns: 1fr;
+			gap: 40px;
 		}
 	}
 
