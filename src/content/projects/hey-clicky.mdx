@@ -1,0 +1,56 @@
+---
+title: "Hey Clicky"
+description: "Ambient correction and embodiment for AI teaching assistants, exploring subtle guidance, progression state tracking, and shared attention mechanics."
+category: "web-ux"
+order: 1
+heroImage: "/assets/projects/clicky/clicky.gif"
+ctaUrl: "https://heyclicky.narayan.works"
+ctaText: "Launch Interactive Walkthrough"
+bentoSize: "large"
+tags: ["Embodied Interaction", "AI Guidance", "Teaching UX"]
+meta:
+  Role: "Product Designer & Prototyper"
+  Duration: "5 Days"
+  Year: "2026"
+  Focus: "System Design, Shared Attention, UI Components"
+sections:
+  - id: "why"
+    label: "Why build it"
+  - id: "finding-the-dots"
+    label: "Finding the dots"
+  - id: "connecting-the-dots"
+    label: "Connecting the dots"
+  - id: "stepper"
+    label: "Step Tracker"
+  - id: "gestures"
+    label: "Gestures"
+---
+
+import ProjectSection from '../../components/ProjectSection.astro';
+import FullWidthImage from '../../components/FullWidthImage.astro';
+
+<FullWidthImage src="/assets/projects/clicky/clicky.gif" caption="Hey Clicky — Ambient Correction & Embodiment" loading="eager" constrain={false} />
+
+<ProjectSection title="Premise" id="why">
+    <p>When someone teaches us something, we don't always need the answer shipped into us. We want to think it through ourselves, while someone who's watching guides us there. Hand over the answer too early and the guiding stops being teaching — it becomes dictation.</p>
+    <p class="centered-tagline">Teaching is Clicky's strongest use case. Teaching means guidance. Guidance means correction.</p>
+    <p>Hey Clicky explores how an AI teaching assistant can correct user mistakes subtly—without taking over agency or interrupting the flow of active learning.</p>
+</ProjectSection>
+
+<ProjectSection title="Finding the Dots" id="finding-the-dots">
+    <p>Two fundamental insights shaped the system architecture:</p>
+    <ul>
+        <li><strong>Two-Layer Reasoning:</strong> Perception happens first (coupling user action with object context to infer intent), before any verbal or visual response decision is made.</li>
+        <li><strong>Clarification vs. Guidance:</strong> Clarification is taskless (no ongoing state), while Guidance is task-full (requiring real-time state tracking against user screen state).</li>
+    </ul>
+</ProjectSection>
+
+<ProjectSection title="Connecting the Dots" id="connecting-the-dots">
+    <p>Four core interaction mechanisms follow from the architectural discoveries:</p>
+    <ul>
+        <li><strong>Automation as Branch Unchanged:</strong> Preserving full manual execution paths.</li>
+        <li><strong>Subtle Correction:</strong> Multi-channel ambient feedback through position (Step Tracker red indicator) and state (Eye gesture shake).</li>
+        <li><strong>Recovery Keeps Agency:</strong> Allowing users to redo steps or query the prompt bar without forcing automated overrides.</li>
+        <li><strong>Shared Attention:</strong> Directing gaze and visual pointers (<code>[POINT:...]</code> tags) so user and AI attend to the same spatial context.</li>
+    </ul>
+</ProjectSection>

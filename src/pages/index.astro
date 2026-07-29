@@ -20,11 +20,13 @@ import pointoHero from "../assets/projects/pointo/cover.gif";
 import serendipityHero from "../assets/projects/serendipity/hero-serendipidity.png";
 import musibuddyHero from "../assets/projects/musibuddy/hero-musibuddy.gif";
 import lab4cHero from "../assets/projects/lab4c/hero.jpeg";
+import clickyHero from "../assets/projects/clicky/clicky.gif";
 
 // Fetch all projects
 const allProjects = (await getCollection("projects"))
 	.filter((project) =>
 		[
+			"hey-clicky",
 			"detour",
 			"working-living-innovating",
 			"skywalk-sanctuary",
@@ -40,6 +42,7 @@ const allProjects = (await getCollection("projects"))
 	.sort((a, b) => (a.data.order || 0) - (b.data.order || 0));
 
 const heroImages: Record<string, ImageMetadata> = {
+	"hey-clicky": clickyHero,
 	"dot-threads": dotThreadsHero,
 	detour: deturHero,
 	piko: pikoHero,
@@ -52,6 +55,9 @@ const heroImages: Record<string, ImageMetadata> = {
 };
 
 // Convenience references by slug for manual column layout
+const heyClickyProject = allProjects.find(
+	(project) => project.slug === "hey-clicky",
+);
 const dotThreadsProject = allProjects.find(
 	(project) => project.slug === "dot-threads",
 );
@@ -207,6 +213,33 @@ const promptNodesProject = allProjects.find(
 									meta={pointoProject.data.meta}
 									description={pointoProject.data.description}
 									categories={["hardware-ux"]}
+								/>
+							</div>
+						)
+					}
+					{
+						heyClickyProject && (
+							<div
+								class="project-card-wrapper"
+								data-categories="web-ux"
+							>
+								<HomeProjectCard
+									title={heyClickyProject.data.title}
+									image={
+										heroImages[heyClickyProject.slug] ||
+										heyClickyProject.data.heroImage
+									}
+									loading="lazy"
+									href={
+										heyClickyProject.data.ctaUrl ||
+										`/works/${heyClickyProject.slug}`
+									}
+									tags={heyClickyProject.data.tags}
+									meta={heyClickyProject.data.meta}
+									description={
+										heyClickyProject.data.description
+									}
+									categories={["web-ux"]}
 								/>
 							</div>
 						)

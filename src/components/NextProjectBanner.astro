@@ -6,6 +6,7 @@ interface Props {
     tags?: string[];
     heroImage?: string;
     category?: string;
+    ctaUrl?: string;
 }
 
 const {
@@ -15,8 +16,9 @@ const {
     tags = [],
     heroImage,
     category = "",
+    ctaUrl,
 } = Astro.props;
-const href = `/works/${slug}`;
+const href = ctaUrl || `/works/${slug}`;
 
 // Normalize category for data attribute (matches HomeProjectCard categories)
 const categoryMap: Record<string, string> = {
@@ -40,6 +42,8 @@ const dataCategory = categoryMap[cleanCat] || "web-ux";
     <a
         href={href}
         class="next-project-container"
+        target={href.startsWith("http") ? "_blank" : undefined}
+        rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
     >
         <!-- Left: Metadata Panel -->
         <div class="next-project-meta">
@@ -233,14 +237,12 @@ const dataCategory = categoryMap[cleanCat] || "web-ux";
         letter-spacing: -0.04em;
         transition:
             color 0.3s ease,
-            font-weight 0.3s ease,
-            letter-spacing 0.3s ease;
+            text-shadow 0.3s ease;
     }
 
     .next-project-section:hover .next-title {
         color: #000000;
-        font-weight: 500;
-        letter-spacing: -0.05em;
+        text-shadow: 0.5px 0 0 #000000;
     }
 
     .next-tags {

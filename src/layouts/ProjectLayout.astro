@@ -23,6 +23,7 @@ interface Props {
         tags?: string[];
         heroImage?: string;
         category?: string;
+        ctaUrl?: string;
     };
 }
 
@@ -218,6 +219,7 @@ const hoverColor =
                 tags={nextProject.tags}
                 heroImage={nextProject.heroImage}
                 category={nextProject.category}
+                ctaUrl={nextProject.ctaUrl}
             />
         )}
         <Footer />
