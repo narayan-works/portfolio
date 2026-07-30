@@ -7,6 +7,7 @@ import { ViewTransitions } from "astro:transitions";
 interface Props {
 	title: string;
 	description?: string;
+	image?: string;
 	fullWidth?: boolean;
 	preloadImageHref?: string;
 }
@@ -14,9 +15,12 @@ interface Props {
 const {
 	title,
 	description = "Design Technologist Portfolio",
+	image = "/og-image.png",
 	fullWidth = false,
 	preloadImageHref,
 } = Astro.props;
+
+const canonicalImageURL = new URL(image, Astro.site || "https://narayan.works").href;
 ---
 
 <!doctype html>
@@ -27,9 +31,11 @@ const {
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
 		<meta property="og:type" content="website" />
+		<meta property="og:image" content={canonicalImageURL} />
 		<meta name="twitter:card" content="summary_large_image" />
 		<meta name="twitter:title" content={title} />
 		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={canonicalImageURL} />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" type="image/png" href="/happy.png" />
