@@ -217,22 +217,26 @@ import ImageToggle from "../components/ImageToggle.astro";
 	   860px text-body width above (.about-media matches .about-body's
 	   max-width) rather than the full page width. */
 	.about-media :global(.image-slider.constrained) {
-		max-width: 600px;
+		max-width: 860px;
 		margin-left: auto;
 		margin-right: auto;
 	}
 
-	/* No cropping, no fixed frame: each slide sizes itself to its own
-	   image's natural aspect ratio instead of being forced into a
-	   shared box (which would need a letterbox band to avoid cropping).
-	   Different slides can be different heights here. Fixed px (not a %
-	   of the clipping box above) so widening that box doesn't scale the
-	   image up - it only adds peek margin. Scoped to this page only. */
+	/* Dynamic width for portrait vs landscape slides to eliminate dead whitespace around portrait photos */
 	.about-media :global(.image-slider[data-variant="carousel"] .slider-display) {
 		aspect-ratio: auto;
-		height: 380px;
-		width: 380px;
-		max-width: 100%;
+		height: 400px;
+		width: 580px;
+		max-width: 85%;
+		transition: width 0.45s cubic-bezier(0.25, 1, 0.35, 1);
+	}
+
+	.about-media :global(.image-slider[data-variant="carousel"] .slider-display[data-active-orientation="portrait"]) {
+		width: 300px;
+	}
+
+	.about-media :global(.image-slider[data-variant="carousel"] .slider-display[data-active-orientation="landscape"]) {
+		width: 580px;
 	}
 
 	.about-media :global(.image-slider[data-variant="carousel"] .slider-track) {

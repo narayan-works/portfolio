@@ -48,24 +48,26 @@ const sliderId = `slider-${Math.random().toString(36).substr(2, 9)}`;
                         {slide.title && (
                             <div class="slide-title">{slide.title}</div>
                         )}
-                        {typeof slide.src === "string" && slide.src.endsWith(".mp4") ? (
-                            <video
-                                src={slide.src}
-                                autoplay
-                                loop
-                                muted
-                                playsinline
-                                preload="metadata"
-                                class="optimized-slide-image"
-                            />
-                        ) : typeof slide.src === "string" && slide.src.endsWith(".gif") ? (
-                            <img
-                                src={slide.src}
-                                alt={slide.alt}
-                                loading="lazy"
-                                decoding="async"
-                                class="optimized-slide-image"
-                            />
+                        {typeof slide.src === "string" ? (
+                            slide.src.endsWith(".mp4") ? (
+                                <video
+                                    src={slide.src}
+                                    autoplay
+                                    loop
+                                    muted
+                                    playsinline
+                                    preload="metadata"
+                                    class="optimized-slide-image"
+                                />
+                            ) : (
+                                <img
+                                    src={slide.src}
+                                    alt={slide.alt}
+                                    loading="lazy"
+                                    decoding="async"
+                                    class="optimized-slide-image"
+                                />
+                            )
                         ) : (
                             <Image
                                 src={slide.src}
@@ -229,22 +231,32 @@ const sliderId = `slider-${Math.random().toString(36).substr(2, 9)}`;
         min-width: 100%;
         padding: 0 4px; /* Reduced gap from 12px to 4px to pull slides closer */
         box-sizing: border-box;
-        opacity: 0.35;
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
         transform: scale(0.85);
-        transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+        transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.5s cubic-bezier(0.25, 1, 0.5, 1), visibility 0.5s;
     }
 
     /* Align scaling towards center image to minimize perceived spacing gaps */
     .image-slider[data-variant="carousel"] .slide.prev {
+        opacity: 0.35;
+        visibility: visible;
+        pointer-events: auto;
         transform-origin: right center;
     }
 
     .image-slider[data-variant="carousel"] .slide.next {
+        opacity: 0.35;
+        visibility: visible;
+        pointer-events: auto;
         transform-origin: left center;
     }
 
     .image-slider[data-variant="carousel"] .slide.active {
         opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
         transform: scale(1.05);
         transform-origin: center center;
         z-index: 10;
@@ -440,15 +452,48 @@ const sliderId = `slider-${Math.random().toString(36).substr(2, 9)}`;
         const updateSlideActiveClasses = (targetIndex) => {
             const allSlides = track.children;
             Array.from(allSlides).forEach((s, idx) => {
-                s.classList.remove("active", "prev", "next");
+                s.classList.remove("active", "prev", "next", "far-prev", "far-next");
                 if (idx === targetIndex) {
                     s.classList.add("active");
-                } else if (idx < targetIndex) {
+                } else if (idx === targetIndex - 1) {
                     s.classList.add("prev");
-                } else {
+                } else if (idx === targetIndex + 1) {
                     s.classList.add("next");
+                } else if (idx < targetIndex - 1) {
+                    s.classList.add("far-prev");
+                } else {
+                    s.classList.add("far-next");
                 }
             });
+        };
+
+        const updateDisplayOrientation = (targetIndex) => {
+            if (!display || !track) return;
+            const currentSlide = track.children[targetIndex];
+            if (!currentSlide) return;
+
+            const media = currentSlide.querySelector("img, video");
+            if (!media) return;
+
+            const applyOrientation = () => {
+                let isPortrait = false;
+                if (media.tagName === "VIDEO") {
+                    const v = media;
+                    if (v.videoWidth && v.videoHeight) {
+                        isPortrait = v.videoWidth < v.videoHeight;
+                    }
+                } else if (media.tagName === "IMG") {
+                    const img = media;
+                    if (img.naturalWidth && img.naturalHeight) {
+                        isPortrait = img.naturalWidth < img.naturalHeight;
+                    }
+                }
+                display.setAttribute("data-active-orientation", isPortrait ? "portrait" : "landscape");
+            };
+
+            applyOrientation();
+            media.addEventListener("load", applyOrientation, { once: true });
+            media.addEventListener("loadedmetadata", applyOrientation, { once: true });
         };
 
         const switchToSlideByIndex = (targetIndex, animate = true) => {
@@ -460,8 +505,9 @@ const sliderId = `slider-${Math.random().toString(36).substr(2, 9)}`;
                 track.style.removeProperty('transition');
             }
 
-            // Update classes
+            // Update classes & orientation state
             updateSlideActiveClasses(targetIndex);
+            updateDisplayOrientation(targetIndex);
 
             // Calculate active index relative to original slides (0 to totalSlides - 1)
             let realIndex = (targetIndex - totalSlides) % totalSlides;
