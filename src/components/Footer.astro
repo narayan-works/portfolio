@@ -1,8 +1,11 @@
 ---
-
+import AsciiFluidFlow from "./ascii/AsciiFluidFlow.astro";
+import { FaLinkedin, FaGithub, FaInstagram } from "react-icons/fa6";
 ---
 
 <footer class="site-footer" id="footer">
+    <AsciiFluidFlow id="footer-ascii-fluid" />
+
     <div class="footer-divider"></div>
 
     <div class="footer-content">
@@ -11,103 +14,72 @@
                 Let's build something worth caring about. Say hi! 👀
             </p>
             <div class="contact-buttons">
+                <div class="social-icons-group">
+                    <a
+                        href="https://linkedin.com/in/narayan-ashanahalli/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="icon-link"
+                        title="LinkedIn"
+                    >
+                        <FaLinkedin size={24} />
+                    </a>
+                    <a
+                        href="https://github.com/narayan-works"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="icon-link"
+                        title="GitHub"
+                    >
+                        <FaGithub size={24} />
+                    </a>
+                    <a
+                        href="https://www.instagram.com/narayan.3dm/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="icon-link"
+                        title="Instagram"
+                    >
+                        <FaInstagram size={24} />
+                    </a>
+                </div>
                 <button
-                    class="copy-btn"
+                    class="demo-btn copy-btn"
+                    data-clipboard-text="412-626-2332"
+                    title="Click to copy phone number"
+                >
+                    <span class="btn-text">412-626-2332</span>
+                </button>
+                <button
+                    class="demo-btn copy-btn"
                     data-clipboard-text="hello@narayan.works"
+                    title="Click to copy email"
                 >
                     <span class="btn-text">hello@narayan.works</span>
-                    <span class="copy-icon">
-                        <svg
-                            width="12"
-                            height="12"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                        >
-                            <rect x="9" y="9" width="13" height="13" rx="2"
-                            ></rect>
-                            <path
-                                d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2-2v1"
-                            ></path>
-                        </svg>
-                    </span>
                 </button>
-                <button class="copy-btn" data-clipboard-text="412-626-2332">
-                    <span class="btn-text">412-626-2332</span>
-                    <span class="copy-icon">
-                        <svg
-                            width="12"
-                            height="12"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                        >
-                            <rect x="9" y="9" width="13" height="13" rx="2"
-                            ></rect>
-                            <path
-                                d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2-2v1"
-                            ></path>
-                        </svg>
-                    </span>
-                </button>
-                 <a
-                    href="https://linkedin.com/in/narayan-ashanahalli/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="social-footer-link"
-                >
-                    <span class="btn-text"
-                        >LinkedIn <svg viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg" class="arrow-svg arrow-up-right"><path d="M2 8L8 2M8 2H4M8 2V6"/></svg></span
-                    >
-                </a>
-                <a
-                    href="https://www.instagram.com/narayan.3dm/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="social-footer-link"
-                >
-                    <span class="btn-text"
-                        >Instagram <svg viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg" class="arrow-svg arrow-up-right"><path d="M2 8L8 2M8 2H4M8 2V6"/></svg></span
-                    >
-                </a>
-                <a
-                    href="https://github.com/narayan-works"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="social-footer-link"
-                >
-                    <span class="btn-text"
-                        >GitHub <svg viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg" class="arrow-svg arrow-up-right"><path d="M2 8L8 2M8 2H4M8 2V6"/></svg></span
-                    >
-                </a>
-                <a
-                    href="/documentation.html"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="social-footer-link"
-                >
-                    <span class="btn-text"
-                        >Documentation <svg viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg" class="arrow-svg arrow-up-right"><path d="M2 8L8 2M8 2H4M8 2V6"/></svg></span
-                    >
-                </a>
             </div>
         </div>
         <div class="footer-right">
             <p class="built-message">
-                Designed in Figma. Built with <a
+                Designed in Figma. Built in <a
                     href="https://astro.build"
                     target="_blank"
-                    rel="noopener noreferrer">Astro</a
-                > in <a
+                    rel="noopener noreferrer"
+                    class="built-link">Astro</a
+                > with <a
                     href="https://antigravity.google"
                     target="_blank"
-                    rel="noopener noreferrer">Antigravity</a
+                    rel="noopener noreferrer"
+                    class="built-link">Antigravity</a
                 >.
             </p>
             <p class="copyright">
-                © {new Date().getFullYear()} Narayan Ashnahalli
+                <a
+                    href="/documentation.html"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="doc-link">Documentation</a
+                > &nbsp;|&nbsp; © {new Date().getFullYear()} Narayan Ashnahalli
             </p>
         </div>
     </div>
@@ -115,79 +87,100 @@
 
 <script>
     document.addEventListener("astro:page-load", () => {
-        // Clipboard Copy Logic
+        // Clipboard Copy Logic + Green State + ASCII Shockwave Reaction
         const copyBtns = document.querySelectorAll(".copy-btn");
         copyBtns.forEach((btn) => {
-            btn.addEventListener("click", () => {
+            const btnTextSpan = btn.querySelector(".btn-text");
+            const originalText = btnTextSpan ? btnTextSpan.textContent : "";
+
+            btn.addEventListener("click", (e) => {
                 const text = btn.getAttribute("data-clipboard-text");
                 if (text) {
+                    // Lock current width to prevent bento box shrink
+                    const currentWidth = btn.getBoundingClientRect().width;
+                    (btn as HTMLElement).style.width = `${currentWidth}px`;
+                    (btn as HTMLElement).style.justifyContent = "center";
+
                     navigator.clipboard.writeText(text).then(() => {
+                        if (btnTextSpan) btnTextSpan.textContent = "copied!";
                         btn.classList.add("copied");
+
+                        // Trigger ASCII canvas shockwave ripple at click location
+                        const container = document.querySelector(
+                            "#footer-ascii-fluid-container",
+                        );
+                        if (container) {
+                            const rect = container.getBoundingClientRect();
+                            const clickX =
+                                (e as MouseEvent).clientX - rect.left;
+                            const clickY = (e as MouseEvent).clientY - rect.top;
+
+                            container.dispatchEvent(
+                                new CustomEvent("trigger-ascii-ripple", {
+                                    detail: { x: clickX, y: clickY },
+                                }),
+                            );
+                        }
+
                         setTimeout(() => {
+                            if (btnTextSpan && originalText)
+                                btnTextSpan.textContent = originalText;
                             btn.classList.remove("copied");
-                        }, 1000);
+                            (btn as HTMLElement).style.width = "";
+                            (btn as HTMLElement).style.justifyContent = "";
+                        }, 650);
                     });
                 }
             });
         });
 
-        // Hover Ripple Animation with Scroll Delay and Viewport Tracking
-        const footer = document.querySelector(".site-footer") as HTMLElement;
-        if (footer) {
-            let hoverTimeout: any = null;
-            let lastClientX = 0;
-            let lastClientY = 0;
+        // Theme Sync for ASCII Vector Fluid Canvas
+        const syncFooterTheme = () => {
+            const isLight =
+                document.documentElement.getAttribute("data-theme") === "light";
+            const container = document.querySelector(
+                "#footer-ascii-fluid-container",
+            );
+            if (container) {
+                const computed = getComputedStyle(document.documentElement);
+                const brandGreen =
+                    computed.getPropertyValue("--accent-secondary").trim() ||
+                    "#42BD49";
+                const surfaceColor = computed
+                    .getPropertyValue("--bg-surface")
+                    .trim();
 
-            // Track global viewport coordinates
-            document.addEventListener("mousemove", (e) => {
-                lastClientX = e.clientX;
-                lastClientY = e.clientY;
-            });
-
-            const updateCoords = () => {
-                const rect = footer.getBoundingClientRect();
-                const x = lastClientX - rect.left;
-                const y = lastClientY - rect.top;
-                footer.style.setProperty("--mouse-x", `${x}px`);
-                footer.style.setProperty("--mouse-y", `${y}px`);
-            };
-
-            footer.addEventListener("mouseenter", (e) => {
-                if (hoverTimeout) clearTimeout(hoverTimeout);
-                lastClientX = e.clientX;
-                lastClientY = e.clientY;
-                updateCoords();
-                
-                hoverTimeout = setTimeout(() => {
-                    // Recalculate right before transition starts to account for scroll offsets
-                    updateCoords();
-                    footer.classList.add("is-hovered");
-                }, 150); // Reduced delay to 150ms
-            });
-
-            footer.addEventListener("mousemove", (e) => {
-                lastClientX = e.clientX;
-                lastClientY = e.clientY;
-                updateCoords();
-            });
-
-            footer.addEventListener("mouseleave", () => {
-                if (hoverTimeout) clearTimeout(hoverTimeout);
-                footer.classList.remove("is-hovered");
-            });
-
-            // Keep coords pinned to cursor during scroll
-            document.addEventListener("scroll", () => {
-                if (footer.classList.contains("is-hovered")) {
-                    updateCoords();
+                if (isLight) {
+                    container.setAttribute("data-color", brandGreen);
+                    container.setAttribute(
+                        "data-bg",
+                        surfaceColor || "#E6E8E0",
+                    );
+                    container.setAttribute("data-highlight", "#111111");
+                } else {
+                    container.setAttribute("data-color", brandGreen);
+                    container.setAttribute(
+                        "data-bg",
+                        surfaceColor || "#333333",
+                    );
+                    container.setAttribute("data-highlight", "#FFFFFF");
                 }
-            });
-        }
+            }
+        };
+
+        syncFooterTheme();
+
+        const observer = new MutationObserver(() => syncFooterTheme());
+        observer.observe(document.documentElement, {
+            attributes: true,
+            attributeFilter: ["data-theme"],
+        });
     });
 </script>
 
 <style>
     .site-footer {
+        position: relative;
         display: flex;
         flex-direction: column;
         margin-top: 128px;
@@ -201,6 +194,7 @@
         padding-bottom: 20px !important;
         background: var(--bg-surface);
         box-sizing: border-box;
+        overflow: hidden;
     }
 
     :global(.home-content) .site-footer {
@@ -212,6 +206,36 @@
         padding-right: 20px !important;
         padding-bottom: 20px !important;
         margin-bottom: 0px !important;
+    }
+
+    .footer-divider,
+    .footer-content {
+        position: relative;
+        z-index: 1;
+        pointer-events: none;
+    }
+
+    .contact-buttons,
+    .email-phone-group,
+    .social-icons-group,
+    .demo-btn,
+    .copy-btn,
+    .icon-link,
+    .social-footer-link,
+    .built-message a,
+    .built-link,
+    .copyright a,
+    .doc-link,
+    a,
+    button {
+        pointer-events: auto !important;
+        cursor: pointer !important;
+    }
+
+    .icon-link svg,
+    .icon-link path,
+    .demo-btn * {
+        cursor: pointer !important;
     }
 
     .footer-content {
@@ -226,7 +250,7 @@
         flex-direction: column;
         justify-content: flex-start;
         align-items: flex-start;
-        gap: 20px;
+        gap: 128px;
     }
 
     .footer-right {
@@ -238,6 +262,7 @@
         text-align: right;
     }
 
+    /* Preserve 100% original tag line font size */
     .contact-message {
         font-family: "Bricolage Grotesque", sans-serif;
         font-size: 72px;
@@ -252,20 +277,23 @@
 
     .built-message {
         font-size: 14px;
+        font-family: "Bricolage Grotesque", sans-serif;
         color: var(--text-secondary);
         margin: 0;
         line-height: 1.3;
         text-align: right;
     }
 
+    .built-link,
     .built-message a {
         color: var(--text-primary);
         text-decoration: underline;
         text-underline-offset: 2px;
-        opacity: 0.7;
+        opacity: 0.85;
         transition: opacity 0.2s ease;
     }
 
+    .built-link:hover,
     .built-message a:hover {
         opacity: 1;
     }
@@ -281,164 +309,145 @@
 
     .contact-buttons {
         display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 6px;
-    }
-
-    .copy-btn {
-        display: flex;
+        flex-direction: row;
         align-items: center;
-        gap: 8px;
-        padding: 6px 12px;
-        background: transparent;
-        border: 1px solid transparent; /* No bento in normal state */
-        border-radius: var(--radius-md);
-        color: var(--text-secondary);
-        font-size: 14px;
-        font-family: "Bricolage Grotesque", sans-serif;
-        font-weight: 450;
-        letter-spacing: 0em;
-        line-height: 1.1;
-        cursor: pointer;
-        transition: all 0.15s ease;
-        position: relative;
-        user-select: none;
-        margin-left: -12px; /* Align text perfectly with left edge of top text */
-        margin-top: -6px; /* Keep vertical spacing tight in unhovered state */
-        margin-bottom: -6px;
+        gap: 12px;
+        flex-wrap: wrap;
     }
 
-    .copy-btn:hover:not(.copied) {
-        color: var(--accent-secondary);
-    }
+    /* Desktop order: email (last button) first, phone (2nd button) second, icons third */
+    .contact-buttons > button:last-child {
+        order: 1;
+    } /* email */
+    .contact-buttons > button:nth-child(2) {
+        order: 2;
+    } /* phone */
+    .contact-buttons > .social-icons-group {
+        order: 3;
+    } /* icons */
 
-    .social-footer-link {
+    .email-phone-group {
         display: flex;
+        flex-direction: row;
         align-items: center;
-        gap: 8px;
-        padding: 6px 12px;
-        background: transparent;
-        border: 1px solid transparent;
-        border-radius: var(--radius-md);
-        color: var(--text-secondary);
-        font-size: 14px;
+        gap: 12px;
+    }
+
+    .social-icons-group {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .demo-btn {
+        display: inline-flex;
+        align-items: center;
+        height: 24px;
+        padding: 0 10px;
+        border-radius: 6px;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid var(--border-focus, rgba(255, 255, 255, 0.25));
+        color: var(--text-primary);
         font-family: "Bricolage Grotesque", sans-serif;
+        font-size: 12px;
         font-weight: 500;
-        letter-spacing: 0em;
-        line-height: 1.5;
+        line-height: 1;
         cursor: pointer;
-        transition: all 0.15s ease;
-        position: relative;
-        user-select: none;
-        margin-left: -12px;
-        margin-top: -6px;
-        margin-bottom: -6px;
-        text-decoration: none;
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.18),
+            inset 0 -1px 0 rgba(0, 0, 0, 0.3),
+            0 2px 6px rgba(0, 0, 0, 0.18);
+        transition: all 0.2s ease;
+        box-sizing: border-box;
     }
 
-    .social-footer-link:hover {
-        color: var(--accent-secondary);
+    .demo-btn:hover {
+        background: rgba(255, 255, 255, 0.16);
+        border-color: var(--text-primary);
+        color: var(--text-highlight);
+        box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.28),
+            inset 0 -1px 0 rgba(0, 0, 0, 0.4),
+            0 4px 12px rgba(0, 0, 0, 0.24);
+        transform: translateY(-1px);
     }
 
-    .footer-arrow {
-        font-family: var(--font-sans);
-        display: inline-block;
-        transition: transform 0.2s ease;
-        margin-left: 2px;
+    :global([data-theme="light"]) .demo-btn {
+        background: rgba(0, 0, 0, 0.05);
+        border: 1px solid rgba(0, 0, 0, 0.3);
+        box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.7),
+            inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+            0 2px 6px rgba(0, 0, 0, 0.08);
     }
 
-    .social-footer-link:hover .footer-arrow {
-        transform: translate(2px, -2px);
+    :global([data-theme="light"]) .demo-btn:hover {
+        background: rgba(0, 0, 0, 0.09);
+        border-color: rgba(0, 0, 0, 0.55);
+        box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.85),
+            inset 0 -1px 0 rgba(0, 0, 0, 0.22),
+            0 4px 10px rgba(0, 0, 0, 0.12);
     }
 
-    .btn-text {
-        position: relative;
-        display: inline-block;
+    .demo-btn.copied {
+        background: var(--accent-secondary, #42bd49) !important;
+        color: #ffffff !important;
+        border-color: var(--accent-secondary, #42bd49) !important;
+        box-shadow:
+            inset 0 2px 4px rgba(0, 0, 0, 0.35),
+            inset 0 -1px 0 rgba(255, 255, 255, 0.25),
+            0 1px 2px rgba(0, 0, 0, 0.12) !important;
+        transform: translateY(1px) !important;
     }
 
-    .btn-text::after {
-        content: "";
-        position: absolute;
-        bottom: -2px;
-        left: 0;
-        width: 100%;
-        height: 1px;
-        background-color: var(--accent-secondary);
-        transform: scaleX(0);
-        transform-origin: right;
-        transition: transform 0.2s ease;
+    .demo-btn.copied .btn-text {
+        color: #ffffff !important;
+        font-weight: 600 !important;
     }
 
-    .copy-btn:hover:not(.copied) .btn-text::after,
-    .social-footer-link:hover .btn-text::after,
-    .copy-btn.copied .btn-text::after {
-        transform: scaleX(1);
-        transform-origin: left;
-    }
-
-    .copy-btn * {
-        cursor: pointer;
-    }
-
-    .copy-icon {
-        display: flex;
+    .icon-link {
+        display: inline-flex;
         align-items: center;
         justify-content: center;
-        width: 20px;
-        height: 20px;
-        border: 1px solid transparent;
-        border-radius: var(--radius-sm);
-        color: var(--text-secondary);
+        height: 24px;
+        width: 24px;
+        padding: 0;
         background: transparent;
-        transition: all 0.15s ease;
+        border: none;
+        color: var(--text-secondary);
+        text-decoration: none;
+        transition: all 0.2s ease;
         box-sizing: border-box;
-        opacity: 0.5;
     }
 
-    .copy-btn:hover:not(.copied) .copy-icon {
-        border-color: var(--accent-secondary);
-        color: var(--accent-secondary);
-        opacity: 1;
-    }
-
-    /* Default copied state (Dark Mode: Beige background, dark text/strokes) */
-    .copy-btn.copied {
-        background: #f4f0ea !important;
-        color: #111111 !important;
-        border: 1px solid #f4f0ea !important;
-        border-radius: var(--radius-md) !important;
-    }
-
-    .copy-btn.copied .copy-icon {
-        background: transparent !important;
-        border-color: transparent !important;
-        color: #111111 !important;
-        opacity: 1 !important;
-    }
-
-    .copy-btn.copied .copy-icon svg {
-        stroke: #111111 !important;
-    }
-
-
-
-    /* Snappy transition for copy feedback */
-    .copy-btn,
-    .copy-btn .copy-icon,
-    .copy-btn .copy-icon svg {
-        transition: all 0.25s ease-in-out !important;
-    }
-
-    .footer-text {
-        text-align: right;
+    .icon-link:hover {
+        color: var(--text-primary);
+        transform: translateY(-1px);
     }
 
     .copyright {
         font-size: 14px;
-        color: var(--text-muted);
+        font-family: "Bricolage Grotesque", sans-serif;
+        color: var(--text-secondary);
         margin: 0;
         line-height: 1.3;
+    }
+
+    .doc-link {
+        color: inherit;
+        text-decoration: underline;
+        text-underline-offset: 2px;
+        opacity: 0.85;
+        transition: opacity 0.2s ease;
+    }
+
+    .doc-link:hover {
+        opacity: 1;
+        color: var(--text-primary);
     }
 
     @media (max-width: 1024px) {
@@ -469,145 +478,89 @@
             margin-right: -24px !important;
             width: calc(100% + 48px) !important;
         }
-        .built-message,
-        .copyright,
-        .copy-btn,
-        .social-footer-link {
-            font-size: 14px !important;
-        }
     }
 
+    /* Mobile Clean Vertical Stack Layout */
     @media (max-width: 600px) {
         .site-footer {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
+            padding-left: 20px !important;
+            padding-right: 20px !important;
+            padding-top: 24px !important;
+            padding-bottom: 24px !important;
         }
 
-        .footer-content,
-        .footer-left,
-        .footer-right {
-            display: contents;
+        .footer-content {
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            justify-content: flex-start !important;
+            gap: 8px !important;
+            width: 100% !important;
+        }
+
+        .footer-left {
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            justify-content: flex-start !important;
+            gap: 36px !important;
+            width: 100% !important;
         }
 
         .contact-message {
-            order: 1;
-            max-width: 100%;
-            margin-bottom: 0;
-            text-align: left;
-            font-size: 36px;
-            line-height: 1.25;
+            font-size: 44px !important;
+            line-height: 0.88 !important;
+            margin: 0 !important;
+            text-align: left !important;
+            width: 100% !important;
         }
 
         .contact-buttons {
-            order: 2;
-            flex-wrap: wrap;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 8px !important;
+            width: 100% !important;
         }
 
-        .footer-divider {
-            order: 0;
-            margin-top: 0px !important;
-            margin-bottom: 20px !important;
-            margin-left: -24px !important;
-            margin-right: -24px !important;
-            width: calc(100% + 48px) !important;
+        /* Mobile order: icons first, phone second, email third (HTML source order) */
+        .contact-buttons > .social-icons-group {
+            order: 1 !important;
+        }
+        .contact-buttons > button:nth-child(2) {
+            order: 2 !important;
+        } /* phone */
+        .contact-buttons > button:last-child {
+            order: 3 !important;
+        } /* email */
+
+        .social-icons-group {
+            display: flex !important;
+            flex-direction: row !important;
+            align-items: center !important;
+            gap: 8px !important;
+            margin-top: 0 !important;
+        }
+
+        .footer-right {
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            justify-content: flex-start !important;
+            text-align: left !important;
+            gap: 4px !important;
+            width: 100% !important;
+            margin-top: 4px !important;
         }
 
         .built-message {
-            order: 4;
-            text-align: left;
-            margin-bottom: 0;
+            text-align: left !important;
+            font-size: 14px !important;
         }
 
         .copyright {
-            order: 5;
-            text-align: left;
+            text-align: left !important;
+            font-size: 14px !important;
         }
     }
-
-    /* Footer Green Ripple & Hover Overrides */
-    @property --ripple-radius {
-        syntax: '<length-percentage>';
-        inherits: false;
-        initial-value: 0px;
-    }
-
-    .site-footer {
-        position: relative;
-        overflow: hidden;
-        background-color: var(--bg-surface) !important;
-        background-image: radial-gradient(
-            circle var(--ripple-radius) at var(--mouse-x, 50%) var(--mouse-y, 50%),
-            var(--accent-secondary, #42BD49) 0%,
-            var(--accent-secondary, #42BD49) 100%,
-            transparent 100%
-        ) !important;
-        /* On leave: soft shrink */
-        transition: --ripple-radius 1.1s ease-in-out;
-        --ripple-radius: 0px;
-    }
-
-    .site-footer.is-hovered {
-        --ripple-radius: 120vw;
-        /* On enter: radial expansion */
-        transition: --ripple-radius 1.1s ease-in-out;
-    }
-
-    .footer-divider,
-    .footer-content {
-        position: relative;
-        z-index: 1;
-    }
-
-    .contact-message,
-    .built-message,
-    .copyright,
-    .social-footer-link,
-    .copy-btn,
-    .copy-icon svg,
-    .arrow-svg path,
-    .footer-divider {
-        transition: color 1.1s ease-in-out, 
-                    stroke 1.1s ease-in-out, 
-                    background-color 1.1s ease-in-out,
-                    background 1.1s ease-in-out !important;
-    }
-
-    .site-footer.is-hovered .contact-message {
-        color: #111111 !important;
-    }
-
-    .site-footer.is-hovered .built-message,
-    .site-footer.is-hovered .copyright {
-        color: rgba(17, 17, 17, 0.7) !important;
-    }
-
-    .site-footer.is-hovered .built-message a {
-        color: #111111 !important;
-        opacity: 0.8 !important;
-    }
-
-    .site-footer.is-hovered .social-footer-link,
-    .site-footer.is-hovered .copy-btn {
-        color: #111111 !important;
-    }
-
-    .site-footer.is-hovered .copy-btn:hover:not(.copied),
-    .site-footer.is-hovered .social-footer-link:hover {
-        color: #000000 !important;
-        opacity: 1 !important;
-    }
-
-    .site-footer.is-hovered .footer-divider {
-        background: rgba(17, 17, 17, 0.12) !important;
-    }
-
-    .site-footer.is-hovered .copy-icon svg {
-        stroke: #111111 !important;
-    }
-
-    .site-footer.is-hovered .arrow-svg path {
-        stroke: #111111 !important;
-    }
-
 </style>

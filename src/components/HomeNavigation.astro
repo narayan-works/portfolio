@@ -299,11 +299,19 @@ const isWorksPage = Astro.url.pathname.startsWith("/works");
     .home-nav-link:hover {
         color: var(--accent-secondary);
         font-weight: 600;
+        text-decoration: underline;
+        text-decoration-color: var(--accent-secondary);
+        text-decoration-thickness: 2px;
+        text-underline-offset: 4px;
     }
 
     .home-nav-link.active-scroll {
         color: var(--accent-secondary);
         font-weight: 600;
+        text-decoration: underline;
+        text-decoration-color: var(--accent-secondary);
+        text-decoration-thickness: 2px;
+        text-underline-offset: 4px;
     }
 
     /* Responsive overrides */

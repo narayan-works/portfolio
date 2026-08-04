@@ -1,0 +1,162 @@
+---
+interface Props {
+  color?: string;
+  id?: string;
+}
+
+const { color = '#42BD49', id = 'ascii-terrain-3d' } = Astro.props;
+---
+
+<div class="ascii-canvas-container" id={`${id}-container`}>
+  <canvas class="ascii-canvas" id={id}></canvas>
+</div>
+
+<script>
+  function initTerrain3D() {
+    const containers = document.querySelectorAll('.ascii-canvas-container');
+    containers.forEach((container) => {
+      const canvas = container.querySelector('canvas') as HTMLCanvasElement;
+      if (!canvas || canvas.dataset.terrainInitialized) return;
+      if (canvas.id.indexOf('terrain') === -1 && canvas.id.indexOf('option-3') === -1) return;
+      canvas.dataset.terrainInitialized = 'true';
+
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+
+      let animationFrameId: number;
+      let width = 0;
+      let height = 0;
+
+      let time = 0;
+      let mouseX = 0;
+      let mouseY = 0;
+      let targetMouseX = 0;
+      let targetMouseY = 0;
+
+      // ASCII Shade Ramp
+      const ramp = [' ', '.', ':', '-', '=', '+', '*', '#', '%', '@', '█'];
+
+      function resize() {
+        const rect = container.getBoundingClientRect();
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        width = rect.width;
+        height = rect.height;
+        canvas.width = width * dpr;
+        canvas.height = height * dpr;
+        ctx?.scale(dpr, dpr);
+      }
+
+      window.addEventListener('resize', resize);
+      resize();
+
+      container.addEventListener('mousemove', (e) => {
+        const rect = container.getBoundingClientRect();
+        targetMouseX = ((e as MouseEvent).clientX - rect.left - width / 2) / (width / 2);
+        targetMouseY = ((e as MouseEvent).clientY - rect.top - height / 2) / (height / 2);
+      });
+
+      container.addEventListener('mouseleave', () => {
+        targetMouseX = 0;
+        targetMouseY = 0;
+      });
+
+      function draw() {
+        time += 0.025;
+        mouseX += (targetMouseX - mouseX) * 0.08;
+        mouseY += (targetMouseY - mouseY) * 0.08;
+
+        const currentColor = container.getAttribute('data-color') || '#42BD49';
+        const bgFill = container.getAttribute('data-bg') || '#0a0a0a';
+
+        ctx!.fillStyle = bgFill;
+        ctx!.fillRect(0, 0, width, height);
+
+        ctx!.font = '600 12px "Geist Mono", monospace';
+        ctx!.textAlign = 'center';
+        ctx!.textBaseline = 'middle';
+
+        // Grid Dimensions for 3D Mesh
+        const cols = 45;
+        const rows = 28;
+        const cellW = width / (cols * 0.8);
+        const cellH = height / (rows * 0.8);
+
+        const cx = width / 2;
+        const cy = height / 2;
+
+        for (let r = 0; r < rows; r++) {
+          for (let c = 0; c < cols; c++) {
+            // Normalized coords [-1, 1]
+            const nx = (c - cols / 2) / (cols / 2);
+            const ny = (r - rows / 2) / (rows / 2);
+
+            // 3D Height function
+            const distToCenter = Math.sqrt(nx * nx + ny * ny);
+            const wave1 = Math.sin(nx * 3.5 + time) * Math.cos(ny * 3.5 + time * 0.8);
+            const wave2 = Math.sin(distToCenter * 6 - time * 1.5) * 0.4;
+            
+            // Mouse wave elevation & lighting influence
+            const distToMouse = Math.sqrt(Math.pow(nx - mouseX, 2) + Math.pow(ny - mouseY, 2));
+            const mouseRipple = Math.exp(-distToMouse * 4) * Math.sin(distToMouse * 12 - time * 3) * 0.8;
+
+            const z = wave1 + wave2 + mouseRipple;
+
+            // 3D Perspective projection offset
+            const tiltX = mouseX * 25;
+            const tiltY = mouseY * 25;
+            const projX = cx + (c - cols / 2) * cellW * 0.75 + (ny * tiltX) + (z * 12 * mouseX);
+            const projY = cy + (r - rows / 2) * cellH * 0.7 + (nx * tiltY) - (z * 18);
+
+            // Shade ramp index based on height and light vector
+            const normZ = (z + 1.8) / 3.6;
+            const shadeIdx = Math.min(ramp.length - 1, Math.max(0, Math.floor(normZ * ramp.length)));
+            const charToDraw = ramp[shadeIdx];
+
+            if (charToDraw !== ' ') {
+              ctx!.save();
+              ctx!.translate(projX, projY);
+
+              // Highlighting near mouse or peaks
+              if (distToMouse < 0.35) {
+                const highlightFactor = 1 - distToMouse / 0.35;
+                ctx!.fillStyle = highlightFactor > 0.6 ? '#FFFFFF' : currentColor;
+                ctx!.globalAlpha = 0.5 + highlightFactor * 0.5;
+              } else {
+                ctx!.fillStyle = currentColor;
+                ctx!.globalAlpha = 0.15 + normZ * 0.65;
+              }
+
+              ctx!.fillText(charToDraw, 0, 0);
+              ctx!.restore();
+            }
+          }
+        }
+
+        animationFrameId = requestAnimationFrame(draw);
+      }
+
+      draw();
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', initTerrain3D);
+  document.addEventListener('astro:page-load', initTerrain3D);
+</script>
+
+<style>
+  .ascii-canvas-container {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: auto;
+    z-index: 0;
+  }
+
+  .ascii-canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+</style>

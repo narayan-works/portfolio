@@ -1,0 +1,31 @@
+---
+title: "Notionify"
+description: "A web app that automatically parses pasted text or URLs and writes structured data directly into Notion databases."
+category: "web-ux"
+heroImage: "/assets/projects/notionify/notionify.gif"
+ctaUrl: "https://notion-nify.vercel.app/"
+ctaText: "Launch Notionify"
+tags: ["AI Tool", "Notion API", "Web App"]
+meta:
+  Role: "Product Designer & Developer"
+  Duration: "2026"
+  Focus: "Notion Integration, AI Parsing, Data Extraction"
+sections:
+  - id: "overview"
+    label: "Overview"
+  - id: "problem"
+    label: "Problem"
+---
+
+import ProjectSection from '../../components/ProjectSection.astro';
+import FullWidthImage from '../../components/FullWidthImage.astro';
+
+<FullWidthImage src="/assets/projects/notionify/notionify.gif" caption="Notionify — Automated Data Transfer to Notion" loading="eager" constrain={false} />
+
+<ProjectSection title="Overview" id="overview">
+    <p>Notionify lets you connect Notion databases to simple parsing pipelines. Paste any text or job posting URL, and the app automatically extracts, maps, and writes the structured data to your database.</p>
+</ProjectSection>
+
+<ProjectSection title="Problem" id="problem">
+    <p>Manually copying information like job postings into multi-property Notion databases is tedious. Notionify replaces manual field-by-field copy-pasting with a single paste action.</p>
+</ProjectSection>

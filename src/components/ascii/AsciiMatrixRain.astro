@@ -1,0 +1,170 @@
+---
+interface Props {
+  color?: string;
+  fontSize?: number;
+  id?: string;
+}
+
+const { color = '#42BD49', fontSize = 14, id = 'ascii-matrix-rain' } = Astro.props;
+---
+
+<div class="ascii-canvas-container" id={`${id}-container`}>
+  <canvas class="ascii-canvas" id={id}></canvas>
+</div>
+
+<script>
+  function initMatrixRain() {
+    const containers = document.querySelectorAll('.ascii-canvas-container');
+    containers.forEach((container) => {
+      const canvas = container.querySelector('canvas') as HTMLCanvasElement;
+      if (!canvas || canvas.dataset.initialized) return;
+      canvas.dataset.initialized = 'true';
+
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+
+      let animationFrameId: number;
+      let width = 0;
+      let height = 0;
+
+      // Font & Grid Settings
+      let fontSize = 14;
+      let columns = 0;
+      let drops: number[] = [];
+      let speeds: number[] = [];
+
+      // Mouse State
+      let mouseX = -1000;
+      let mouseY = -1000;
+      let targetMouseX = -1000;
+      let targetMouseY = -1000;
+      let mouseRadius = 160;
+
+      const chars = '0123456789ABCDEFGHJKLMNPQRSTUVWXYZ@#$%&*+=~:;<>[]{}|/\\';
+      const highDensityChars = '█▓▒░@#$%&';
+
+      function resize() {
+        const rect = container.getBoundingClientRect();
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        width = rect.width;
+        height = rect.height;
+        canvas.width = width * dpr;
+        canvas.height = height * dpr;
+        ctx?.scale(dpr, dpr);
+
+        columns = Math.floor(width / (fontSize * 0.85));
+        drops = [];
+        speeds = [];
+        for (let i = 0; i < columns; i++) {
+          drops[i] = Math.random() * -100;
+          speeds[i] = 1 + Math.random() * 1.5;
+        }
+      }
+
+      window.addEventListener('resize', resize);
+      resize();
+
+      container.addEventListener('mousemove', (e) => {
+        const rect = container.getBoundingClientRect();
+        targetMouseX = (e as MouseEvent).clientX - rect.left;
+        targetMouseY = (e as MouseEvent).clientY - rect.top;
+      });
+
+      container.addEventListener('mouseleave', () => {
+        targetMouseX = -1000;
+        targetMouseY = -1000;
+      });
+
+      function draw() {
+        // Smooth lerp mouse
+        mouseX += (targetMouseX - mouseX) * 0.15;
+        mouseY += (targetMouseY - mouseY) * 0.15;
+
+        // Custom theme color read from container property or fallback
+        const currentColor = container.getAttribute('data-color') || '#42BD49';
+        const bgFill = container.getAttribute('data-bg') || 'rgba(10, 10, 10, 0.16)';
+
+        // Fade effect for trails
+        ctx!.fillStyle = bgFill;
+        ctx!.fillRect(0, 0, width, height);
+
+        ctx!.font = `600 ${fontSize}px "Geist Mono", "Courier New", monospace`;
+        ctx!.textBaseline = 'top';
+
+        for (let i = 0; i < columns; i++) {
+          const colX = i * (fontSize * 0.85);
+          const dropY = drops[i] * fontSize;
+
+          // Distance to mouse
+          const dx = colX - mouseX;
+          const dy = dropY - mouseY;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          let charToDraw = chars[Math.floor(Math.random() * chars.length)];
+          let opacity = 0.45;
+          let fillStyle = currentColor;
+
+          // Mouse shockwave & highlight interaction
+          if (dist < mouseRadius) {
+            const factor = 1 - dist / mouseRadius;
+            opacity = 0.7 + factor * 0.3;
+            // High intensity near cursor
+            if (dist < mouseRadius * 0.4) {
+              charToDraw = highDensityChars[Math.floor(Math.random() * highDensityChars.length)];
+              fillStyle = '#FFFFFF';
+            } else {
+              fillStyle = currentColor;
+            }
+            // Accelerate drops near cursor
+            drops[i] += factor * 0.8;
+          }
+
+          ctx!.fillStyle = fillStyle;
+          ctx!.globalAlpha = opacity;
+          ctx!.fillText(charToDraw, colX, dropY);
+
+          // Lead character glow
+          if (Math.random() > 0.88) {
+            ctx!.fillStyle = '#FFFFFF';
+            ctx!.globalAlpha = 0.95;
+            ctx!.fillText(charToDraw, colX, dropY);
+          }
+
+          // Reset drop when off screen
+          if (dropY > height && Math.random() > 0.975) {
+            drops[i] = 0;
+            speeds[i] = 1 + Math.random() * 1.5;
+          }
+
+          drops[i] += speeds[i] * 0.5;
+        }
+
+        ctx!.globalAlpha = 1;
+        animationFrameId = requestAnimationFrame(draw);
+      }
+
+      draw();
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', initMatrixRain);
+  document.addEventListener('astro:page-load', initMatrixRain);
+</script>
+
+<style>
+  .ascii-canvas-container {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: auto;
+    z-index: 0;
+  }
+
+  .ascii-canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+</style>

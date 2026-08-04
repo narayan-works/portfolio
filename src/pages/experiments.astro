@@ -1,0 +1,770 @@
+---
+import Layout from "../layouts/Layout.astro";
+import HomeNavigation from "../components/HomeNavigation.astro";
+import AsciiMatrixRain from "../components/ascii/AsciiMatrixRain.astro";
+import AsciiFluidFlow from "../components/ascii/AsciiFluidFlow.astro";
+import AsciiTerrain3D from "../components/ascii/AsciiTerrain3D.astro";
+import AsciiConstellation from "../components/ascii/AsciiConstellation.astro";
+import AsciiThermalLens from "../components/ascii/AsciiThermalLens.astro";
+import { FaLinkedin, FaGithub, FaInstagram } from "react-icons/fa6";
+---
+
+<Layout
+  title="ASCII Background Experiments | Narayan Ashanahalli"
+  description="5 interactive ASCII background panels designed to replace the footer green expanding ripple effect."
+  fullWidth={true}
+>
+  <HomeNavigation />
+
+  <main class="experiments-container">
+    <header class="experiments-header">
+      <div class="badge-tag">Interactive Design Experiments</div>
+      <h1 class="experiments-title">5 Interactive ASCII Footer Panels</h1>
+      <p class="experiments-subtitle">
+        Explore 5 distinct interactive ASCII art background options designed to replace the current footer expanding green radial effect. Hover and move your cursor over each panel to test its reactivity, and try changing the color themes below.
+      </p>
+
+      <div class="theme-bar">
+        <span class="theme-label">Global Preset Palette:</span>
+        <button class="theme-chip active" data-color="#42BD49" data-bg="#0a0a0a" data-highlight="#FFFFFF">
+          <span class="dot" style="background: #42BD49;"></span> Dark Green
+        </button>
+        <button class="theme-chip" data-color="#FFB000" data-bg="#0c0a04" data-highlight="#FFFFFF">
+          <span class="dot" style="background: #FFB000;"></span> Dark Amber
+        </button>
+        <button class="theme-chip" data-color="#00F0FF" data-bg="#040b0e" data-highlight="#FFFFFF">
+          <span class="dot" style="background: #00F0FF;"></span> Dark Cyan
+        </button>
+        <button class="theme-chip" data-color="#FFFFFF" data-bg="#0a0a0a" data-highlight="#42BD49">
+          <span class="dot" style="background: #FFFFFF;"></span> Dark Mono
+        </button>
+        <span class="theme-divider">|</span>
+        <button class="theme-chip" data-color="#2E7D32" data-bg="#F4F0EA" data-highlight="#000000" data-mode="light">
+          <span class="dot" style="background: #2E7D32; border: 1px solid #ccc;"></span> Light Green
+        </button>
+        <button class="theme-chip" data-color="#111111" data-bg="#F4F0EA" data-highlight="#42BD49" data-mode="light">
+          <span class="dot" style="background: #111111;"></span> Light Charcoal
+        </button>
+        <button class="theme-chip" data-color="#111111" data-bg="#FFFFFF" data-highlight="#000000" data-mode="light">
+          <span class="dot" style="background: #FFFFFF; border: 1px solid #111;"></span> Light Mono
+        </button>
+      </div>
+    </header>
+
+    <div class="experiments-list">
+      <!-- Option 1: Matrix Digital Rain -->
+      <section class="experiment-card" id="opt-1">
+        <div class="card-header">
+          <div class="header-info">
+            <span class="option-badge">Option 01</span>
+            <h2>ASCII Matrix Rain & Cursor Shockwave</h2>
+            <p>Downward streaming ASCII characters with interactive cursor shockwaves and density bursts.</p>
+          </div>
+          <div class="tags">
+            <span class="tag">Digital Cascade</span>
+            <span class="tag">Interactive Shockwave</span>
+          </div>
+        </div>
+
+        <div class="footer-preview-wrapper" data-preset="#42BD49">
+          <AsciiMatrixRain id="option-1-canvas" />
+
+          <!-- Overlaid Footer Content Replica with Icons -->
+          <div class="footer-overlay">
+            <div class="footer-divider"></div>
+            <div class="footer-content">
+              <div class="footer-left">
+                <p class="contact-message">Let's build something worth caring about. Say hi! 👀</p>
+                <div class="contact-buttons">
+                  <button class="demo-btn">hello@narayan.works</button>
+                  <button class="demo-btn">412-626-2332</button>
+                  <a href="https://linkedin.com/in/narayan-ashanahalli/" target="_blank" class="icon-link" title="LinkedIn">
+                    <FaLinkedin size={24} />
+                  </a>
+                  <a href="https://github.com/narayan-works" target="_blank" class="icon-link" title="GitHub">
+                    <FaGithub size={24} />
+                  </a>
+                  <a href="https://www.instagram.com/narayan.3dm/" target="_blank" class="icon-link" title="Instagram">
+                    <FaInstagram size={24} />
+                  </a>
+                </div>
+              </div>
+              <div class="footer-right">
+                <p class="built-message">Designed in Figma. Built in <a href="https://astro.build" target="_blank" rel="noopener noreferrer" class="built-link">Astro</a> with <a href="https://antigravity.google" target="_blank" rel="noopener noreferrer" class="built-link">Antigravity</a>.</p>
+                <p class="copyright">
+                  <a href="/documentation.html" target="_blank" rel="noopener noreferrer" class="doc-link">Documentation</a> &nbsp;|&nbsp; © {new Date().getFullYear()} Narayan Ashanahalli
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Option 2: Fluid Flow Field -->
+      <section class="experiment-card" id="opt-2">
+        <div class="card-header">
+          <div class="header-info">
+            <span class="option-badge">Option 02 ★ Recommended</span>
+            <h2>Vector Field & ASCII Fluid Turbulence (Click Ripple Enabled)</h2>
+            <p>Grid of directional ASCII glyphs acting as a fluid field. Hover to stir the field, click anywhere to trigger expanding shockwave ripples. Displayed below in both Dark Mode and Light Mode.</p>
+          </div>
+          <div class="tags">
+            <span class="tag">Vector Field</span>
+            <span class="tag">Click Shockwave</span>
+            <span class="tag">Dark & Light Mode</span>
+          </div>
+        </div>
+
+        <div class="mode-grid">
+          <!-- Dark Mode Preview -->
+          <div class="mode-block">
+            <div class="mode-title">🌙 Dark Mode Preview</div>
+            <div class="footer-preview-wrapper dark-mode-wrapper">
+              <AsciiFluidFlow id="option-2-dark-canvas" />
+
+              <div class="footer-overlay">
+                <div class="footer-divider"></div>
+                <div class="footer-content">
+                  <div class="footer-left">
+                    <p class="contact-message">Let's build something worth caring about. Say hi! 👀</p>
+                    <div class="contact-buttons">
+                      <button class="demo-btn">hello@narayan.works</button>
+                      <button class="demo-btn">412-626-2332</button>
+                      <a href="https://linkedin.com/in/narayan-ashanahalli/" target="_blank" class="icon-link" title="LinkedIn">
+                        <FaLinkedin size={24} />
+                      </a>
+                      <a href="https://github.com/narayan-works" target="_blank" class="icon-link" title="GitHub">
+                        <FaGithub size={24} />
+                      </a>
+                      <a href="https://www.instagram.com/narayan.3dm/" target="_blank" class="icon-link" title="Instagram">
+                        <FaInstagram size={24} />
+                      </a>
+                    </div>
+                  </div>
+                  <div class="footer-right">
+                    <p class="built-message">Designed in Figma. Built in <a href="https://astro.build" target="_blank" rel="noopener noreferrer" class="built-link">Astro</a> with <a href="https://antigravity.google" target="_blank" rel="noopener noreferrer" class="built-link">Antigravity</a>.</p>
+                    <p class="copyright">
+                  <a href="/documentation.html" target="_blank" rel="noopener noreferrer" class="doc-link">Documentation</a> &nbsp;|&nbsp; © {new Date().getFullYear()} Narayan Ashanahalli
+                </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Light Mode Preview -->
+          <div class="mode-block">
+            <div class="mode-title">☀️ Light Mode Preview</div>
+            <div class="footer-preview-wrapper light-mode-wrapper">
+              <AsciiFluidFlow id="option-2-light-canvas" />
+
+              <div class="footer-overlay light-overlay">
+                <div class="footer-divider"></div>
+                <div class="footer-content">
+                  <div class="footer-left">
+                    <p class="contact-message">Let's build something worth caring about. Say hi! 👀</p>
+                    <div class="contact-buttons">
+                      <button class="demo-btn">hello@narayan.works</button>
+                      <button class="demo-btn">412-626-2332</button>
+                      <a href="https://linkedin.com/in/narayan-ashanahalli/" target="_blank" class="icon-link" title="LinkedIn">
+                        <FaLinkedin size={24} />
+                      </a>
+                      <a href="https://github.com/narayan-works" target="_blank" class="icon-link" title="GitHub">
+                        <FaGithub size={24} />
+                      </a>
+                      <a href="https://www.instagram.com/narayan.3dm/" target="_blank" class="icon-link" title="Instagram">
+                        <FaInstagram size={24} />
+                      </a>
+                    </div>
+                  </div>
+                  <div class="footer-right">
+                    <p class="built-message">Designed in Figma. Built in <a href="https://astro.build" target="_blank" rel="noopener noreferrer" class="built-link">Astro</a> with <a href="https://antigravity.google" target="_blank" rel="noopener noreferrer" class="built-link">Antigravity</a>.</p>
+                    <p class="copyright">
+                  <a href="/documentation.html" target="_blank" rel="noopener noreferrer" class="doc-link">Documentation</a> &nbsp;|&nbsp; © {new Date().getFullYear()} Narayan Ashanahalli
+                </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Option 3: 3D Terrain Topography -->
+      <section class="experiment-card" id="opt-3">
+        <div class="card-header">
+          <div class="header-info">
+            <span class="option-badge">Option 03</span>
+            <h2>3D ASCII Topographic Mesh & Lighting</h2>
+            <p>Real-time 3D terrain rendered with ASCII shade characters (`. : - = + * # % @`). Cursor controls 3D light angle and height elevation waves.</p>
+          </div>
+          <div class="tags">
+            <span class="tag">3D Topography</span>
+            <span class="tag">Shade Ramp</span>
+          </div>
+        </div>
+
+        <div class="footer-preview-wrapper" data-preset="#42BD49">
+          <AsciiTerrain3D id="option-3-canvas" />
+
+          <div class="footer-overlay">
+            <div class="footer-divider"></div>
+            <div class="footer-content">
+              <div class="footer-left">
+                <p class="contact-message">Let's build something worth caring about. Say hi! 👀</p>
+                <div class="contact-buttons">
+                  <button class="demo-btn">hello@narayan.works</button>
+                  <button class="demo-btn">412-626-2332</button>
+                  <a href="https://linkedin.com/in/narayan-ashanahalli/" target="_blank" class="icon-link" title="LinkedIn">
+                    <FaLinkedin size={24} />
+                  </a>
+                  <a href="https://github.com/narayan-works" target="_blank" class="icon-link" title="GitHub">
+                    <FaGithub size={24} />
+                  </a>
+                  <a href="https://www.instagram.com/narayan.3dm/" target="_blank" class="icon-link" title="Instagram">
+                    <FaInstagram size={24} />
+                  </a>
+                </div>
+              </div>
+              <div class="footer-right">
+                <p class="built-message">Designed in Figma. Built in <a href="https://astro.build" target="_blank" rel="noopener noreferrer" class="built-link">Astro</a> with <a href="https://antigravity.google" target="_blank" rel="noopener noreferrer" class="built-link">Antigravity</a>.</p>
+                <p class="copyright">
+                  <a href="/documentation.html" target="_blank" rel="noopener noreferrer" class="doc-link">Documentation</a> &nbsp;|&nbsp; © {new Date().getFullYear()} Narayan Ashanahalli
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Option 4: Gravitational Constellation Particle Swarm -->
+      <section class="experiment-card" id="opt-4">
+        <div class="card-header">
+          <div class="header-info">
+            <span class="option-badge">Option 04</span>
+            <h2>Gravitational ASCII Swarm & Constellation</h2>
+            <p>Zero-gravity floating ASCII particles drawn toward the cursor into orbiting swarms, linking with dashed constellation lines.</p>
+          </div>
+          <div class="tags">
+            <span class="tag">Particle Physics</span>
+            <span class="tag">Constellation Links</span>
+          </div>
+        </div>
+
+        <div class="footer-preview-wrapper" data-preset="#42BD49">
+          <AsciiConstellation id="option-4-canvas" />
+
+          <div class="footer-overlay">
+            <div class="footer-divider"></div>
+            <div class="footer-content">
+              <div class="footer-left">
+                <p class="contact-message">Let's build something worth caring about. Say hi! 👀</p>
+                <div class="contact-buttons">
+                  <button class="demo-btn">hello@narayan.works</button>
+                  <button class="demo-btn">412-626-2332</button>
+                  <a href="https://linkedin.com/in/narayan-ashanahalli/" target="_blank" class="icon-link" title="LinkedIn">
+                    <FaLinkedin size={24} />
+                  </a>
+                  <a href="https://github.com/narayan-works" target="_blank" class="icon-link" title="GitHub">
+                    <FaGithub size={24} />
+                  </a>
+                  <a href="https://www.instagram.com/narayan.3dm/" target="_blank" class="icon-link" title="Instagram">
+                    <FaInstagram size={24} />
+                  </a>
+                </div>
+              </div>
+              <div class="footer-right">
+                <p class="built-message">Designed in Figma. Built in <a href="https://astro.build" target="_blank" rel="noopener noreferrer" class="built-link">Astro</a> with <a href="https://antigravity.google" target="_blank" rel="noopener noreferrer" class="built-link">Antigravity</a>.</p>
+                <p class="copyright">
+                  <a href="/documentation.html" target="_blank" rel="noopener noreferrer" class="doc-link">Documentation</a> &nbsp;|&nbsp; © {new Date().getFullYear()} Narayan Ashanahalli
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Option 5: Thermal Sonar Focus Lens -->
+      <section class="experiment-card" id="opt-5">
+        <div class="card-header">
+          <div class="header-info">
+            <span class="option-badge">Option 05</span>
+            <h2>Typographic Heatmap & Thermal Focus Lens</h2>
+            <p>Full-density background grid. Moving the cursor reveals a circular thermal lens that illuminates high-impact ASCII glyphs (`@ # % W M █`).</p>
+          </div>
+          <div class="tags">
+            <span class="tag">Thermal Lens</span>
+            <span class="tag">Heatmap Reveal</span>
+          </div>
+        </div>
+
+        <div class="footer-preview-wrapper" data-preset="#42BD49">
+          <AsciiThermalLens id="option-5-canvas" />
+
+          <div class="footer-overlay">
+            <div class="footer-divider"></div>
+            <div class="footer-content">
+              <div class="footer-left">
+                <p class="contact-message">Let's build something worth caring about. Say hi! 👀</p>
+                <div class="contact-buttons">
+                  <button class="demo-btn">hello@narayan.works</button>
+                  <button class="demo-btn">412-626-2332</button>
+                  <a href="https://linkedin.com/in/narayan-ashanahalli/" target="_blank" class="icon-link" title="LinkedIn">
+                    <FaLinkedin size={24} />
+                  </a>
+                  <a href="https://github.com/narayan-works" target="_blank" class="icon-link" title="GitHub">
+                    <FaGithub size={24} />
+                  </a>
+                  <a href="https://www.instagram.com/narayan.3dm/" target="_blank" class="icon-link" title="Instagram">
+                    <FaInstagram size={24} />
+                  </a>
+                </div>
+              </div>
+              <div class="footer-right">
+                <p class="built-message">Designed in Figma. Built with Astro in Antigravity.</p>
+                <p class="copyright">
+                  <a href="/documentation.html" target="_blank" rel="noopener noreferrer" class="doc-link">Documentation</a> &nbsp;|&nbsp; © {new Date().getFullYear()} Narayan Ashanahalli
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+</Layout>
+
+<script>
+  function setupThemePicker() {
+    const chips = document.querySelectorAll('.theme-chip');
+    const wrappers = document.querySelectorAll('.footer-preview-wrapper:not(.light-mode-wrapper)');
+    const containers = document.querySelectorAll('.ascii-canvas-container:not(#option-2-light-canvas-container)');
+
+    const lightContainer = document.querySelector('#option-2-light-canvas-container');
+    if (lightContainer) {
+      lightContainer.setAttribute('data-color', '#2E7D32');
+      lightContainer.setAttribute('data-bg', '#F4F0EA');
+      lightContainer.setAttribute('data-highlight', '#000000');
+      lightContainer.setAttribute('data-mode', 'light');
+    }
+
+    chips.forEach((chip) => {
+      chip.addEventListener('click', () => {
+        chips.forEach((c) => c.classList.remove('active'));
+        chip.classList.add('active');
+
+        const color = chip.getAttribute('data-color') || '#42BD49';
+        const bg = chip.getAttribute('data-bg') || '#0a0a0a';
+        const highlight = chip.getAttribute('data-highlight') || '#FFFFFF';
+
+        containers.forEach((container) => {
+          container.setAttribute('data-color', color);
+          container.setAttribute('data-bg', bg);
+          container.setAttribute('data-highlight', highlight);
+        });
+
+        wrappers.forEach((wrapper) => {
+          (wrapper as HTMLElement).style.backgroundColor = bg;
+        });
+      });
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', setupThemePicker);
+  document.addEventListener('astro:page-load', setupThemePicker);
+</script>
+
+<style>
+  .experiments-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 120px 24px 80px;
+    font-family: var(--font-sans);
+    color: var(--text-primary);
+  }
+
+  .badge-tag {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: var(--radius-full);
+    background: rgba(66, 189, 73, 0.12);
+    color: var(--accent-secondary);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 16px;
+    border: 1px solid rgba(66, 189, 73, 0.25);
+  }
+
+  .experiments-title {
+    font-family: "Bricolage Grotesque", sans-serif;
+    font-size: 48px;
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: -0.04em;
+    margin: 0 0 16px 0;
+  }
+
+  .experiments-subtitle {
+    font-size: 16px;
+    color: var(--text-secondary);
+    max-width: 760px;
+    line-height: 1.5;
+    margin: 0 0 32px 0;
+  }
+
+  .theme-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    padding: 14px 20px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    margin-bottom: 48px;
+  }
+
+  .theme-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+  }
+
+  .theme-divider {
+    color: rgba(255, 255, 255, 0.2);
+    margin: 0 4px;
+  }
+
+  .theme-chip {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    border-radius: var(--radius-sm);
+    background: transparent;
+    border: 1px solid var(--border-subtle);
+    color: var(--text-secondary);
+    font-size: 13px;
+    font-family: var(--font-sans);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .theme-chip:hover {
+    border-color: var(--text-primary);
+    color: var(--text-primary);
+  }
+
+  .theme-chip.active {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: var(--text-primary);
+    color: var(--text-highlight);
+    font-weight: 500;
+  }
+
+  .theme-chip .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+
+  .experiments-list {
+    display: flex;
+    flex-direction: column;
+    gap: 64px;
+  }
+
+  .experiment-card {
+    background: rgba(255, 255, 255, 0.015);
+    border: 1px solid var(--border-subtle);
+    border-radius: 16px;
+    padding: 32px;
+    transition: border-color 0.2s ease;
+  }
+
+  .experiment-card:hover {
+    border-color: var(--border-focus);
+  }
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 24px;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .option-badge {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--accent-secondary);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .header-info h2 {
+    font-family: "Bricolage Grotesque", sans-serif;
+    font-size: 26px;
+    font-weight: 500;
+    margin: 0 0 6px 0;
+  }
+
+  .header-info p {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin: 0;
+    max-width: 600px;
+  }
+
+  .tags {
+    display: flex;
+    gap: 8px;
+  }
+
+  .tag {
+    padding: 4px 10px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-secondary);
+    font-size: 12px;
+    font-family: var(--font-mono);
+  }
+
+  /* Mode Grid for Option 2 Dual Preview */
+  .mode-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+
+  .mode-block {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .mode-title {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    letter-spacing: 0.03em;
+  }
+
+  .footer-preview-wrapper {
+    position: relative;
+    width: 100%;
+    min-height: 380px;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #0a0a0a;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    align-items: flex-end;
+  }
+
+  .footer-preview-wrapper.light-mode-wrapper {
+    background: #F4F0EA !important;
+    border-color: rgba(0, 0, 0, 0.12);
+  }
+
+  .footer-overlay {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    padding: 32px 32px 28px;
+    background: linear-gradient(to top, rgba(10, 10, 10, 0.85) 0%, rgba(10, 10, 10, 0.4) 70%, transparent 100%);
+    pointer-events: none;
+  }
+
+  .footer-overlay.light-overlay {
+    background: linear-gradient(to top, rgba(244, 240, 234, 0.92) 0%, rgba(244, 240, 234, 0.5) 70%, transparent 100%);
+  }
+
+  .footer-divider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.15);
+    margin-bottom: 24px;
+    width: 100%;
+  }
+
+  .footer-overlay.light-overlay .footer-divider {
+    background: rgba(0, 0, 0, 0.15);
+  }
+
+  .footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 40px;
+    flex-wrap: wrap;
+  }
+
+  .footer-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-end;
+    gap: 4px;
+    text-align: right;
+  }
+
+  .contact-message {
+    font-family: "Bricolage Grotesque", sans-serif;
+    font-size: 42px;
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: -0.05em;
+    color: #FFFFFF;
+    margin: 0 0 16px 0;
+    max-width: 550px;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
+  }
+
+  .footer-overlay.light-overlay .contact-message {
+    color: #111111;
+    text-shadow: none;
+  }
+
+  .contact-buttons {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    pointer-events: auto;
+  }
+
+  .demo-btn {
+    display: inline-flex;
+    align-items: center;
+    height: 24px;
+    padding: 0 10px;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #FFFFFF;
+    font-family: "Bricolage Grotesque", sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1;
+    cursor: pointer;
+    backdrop-filter: blur(8px);
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+  }
+
+  .demo-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.4);
+  }
+
+  .footer-overlay.light-overlay .demo-btn {
+    background: rgba(17, 17, 17, 0.08);
+    border-color: rgba(17, 17, 17, 0.18);
+    color: #111111;
+  }
+
+  .footer-overlay.light-overlay .demo-btn:hover {
+    background: rgba(17, 17, 17, 0.16);
+    border-color: rgba(17, 17, 17, 0.35);
+  }
+
+  .icon-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 24px;
+    width: 24px;
+    padding: 0;
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.75);
+    text-decoration: none;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+  }
+
+  .icon-link:hover {
+    color: #FFFFFF;
+    transform: translateY(-1px);
+    opacity: 1;
+  }
+
+  .footer-overlay.light-overlay .icon-link {
+    color: rgba(17, 17, 17, 0.75);
+  }
+
+  .footer-overlay.light-overlay .icon-link:hover {
+    color: #000000;
+  }
+
+  .built-message {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0 0 4px 0;
+    text-align: right;
+  }
+
+  .built-link {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    opacity: 0.85;
+    transition: opacity 0.2s ease;
+  }
+
+  .built-link:hover {
+    opacity: 1;
+  }
+
+  .footer-overlay.light-overlay .built-message {
+    color: rgba(17, 17, 17, 0.7);
+  }
+
+  .copyright {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.45);
+    margin: 0;
+    text-align: right;
+  }
+
+  .doc-link {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    opacity: 0.85;
+    transition: opacity 0.2s ease;
+  }
+
+  .doc-link:hover {
+    opacity: 1;
+  }
+
+  .footer-overlay.light-overlay .copyright {
+    color: rgba(17, 17, 17, 0.45);
+  }
+
+  @media (max-width: 1024px) {
+    .mode-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .contact-message {
+      font-size: 28px;
+    }
+    .footer-content {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .built-message, .copyright {
+      text-align: left;
+    }
+  }
+</style>

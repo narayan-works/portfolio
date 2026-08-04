@@ -1,0 +1,363 @@
+---
+interface Props {
+  color?: string;
+  id?: string;
+}
+
+const { color = '#42BD49', id = 'ascii-fluid-flow' } = Astro.props;
+---
+
+<div class="ascii-canvas-container" id={`${id}-container`}>
+  <canvas class="ascii-canvas" id={id}></canvas>
+</div>
+
+<script>
+  interface ClickRipple {
+    x: number;
+    y: number;
+    radius: number;
+    maxRadius: number;
+    speed: number;
+    intensity: number;
+  }
+
+  function initFluidFlow() {
+    const containers = document.querySelectorAll('.ascii-canvas-container');
+    containers.forEach((container) => {
+      const canvas = container.querySelector('canvas') as HTMLCanvasElement;
+      if (!canvas || canvas.dataset.fluidInitialized) return;
+      if (canvas.id.indexOf('fluid') === -1 && canvas.id.indexOf('option-2') === -1) return;
+      canvas.dataset.fluidInitialized = 'true';
+
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+
+      let animationFrameId: number;
+      let width = 0;
+      let height = 0;
+
+      const cellSize = 11;
+      let cols = 0;
+      let rows = 0;
+
+      let time = 0;
+      let mouseX = -1000;
+      let mouseY = -1000;
+      let prevMouseX = -1000;
+      let prevMouseY = -1000;
+      let mouseVelX = 0;
+      let mouseVelY = 0;
+
+      // Click Ripples System
+      let ripples: ClickRipple[] = [];
+
+      // Directional & Density Characters
+      const dirChars = ['—', '/', '|', '\\', '—', '/', '|', '\\'];
+      const densityChars = ['.', '·', ':', '∴', '+', 'x', '*', '#', '%', '@', '█'];
+
+      function resize() {
+        const rect = container.getBoundingClientRect();
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        width = rect.width;
+        height = rect.height;
+        canvas.width = width * dpr;
+        canvas.height = height * dpr;
+        ctx?.scale(dpr, dpr);
+
+        cols = Math.ceil(width / cellSize);
+        rows = Math.ceil(height / cellSize);
+      }
+
+      window.addEventListener('resize', resize);
+      resize();
+
+      const targetElement = container.parentElement || container;
+
+      targetElement.addEventListener('mousemove', (e) => {
+        const rect = container.getBoundingClientRect();
+        const currentX = (e as MouseEvent).clientX - rect.left;
+        const currentY = (e as MouseEvent).clientY - rect.top;
+
+        if (prevMouseX !== -1000) {
+          mouseVelX = currentX - prevMouseX;
+          mouseVelY = currentY - prevMouseY;
+        }
+
+        mouseX = currentX;
+        mouseY = currentY;
+        prevMouseX = currentX;
+        prevMouseY = currentY;
+      });
+
+      // Interactive Click Ripple Trigger
+      targetElement.addEventListener('click', (e) => {
+        const rect = container.getBoundingClientRect();
+        const clickX = (e as MouseEvent).clientX - rect.left;
+        const clickY = (e as MouseEvent).clientY - rect.top;
+
+        ripples.push({
+          x: clickX,
+          y: clickY,
+          radius: 0,
+          maxRadius: Math.max(width, height) * 0.85,
+          speed: 10,
+          intensity: 1.0,
+        });
+      });
+
+      // Custom Event Trigger for programmatic ripples (e.g. from copy buttons)
+      const triggerRippleHandler = (e: Event) => {
+        const customEvt = e as CustomEvent;
+        if (customEvt.detail) {
+          ripples.push({
+            x: customEvt.detail.x,
+            y: customEvt.detail.y,
+            radius: 0,
+            maxRadius: Math.max(width, height) * 0.85,
+            speed: 10,
+            intensity: 1.0,
+          });
+        }
+      };
+      container.addEventListener('trigger-ascii-ripple', triggerRippleHandler);
+      targetElement.addEventListener('trigger-ascii-ripple', triggerRippleHandler);
+
+      targetElement.addEventListener('mouseleave', () => {
+        mouseX = -1000;
+        mouseY = -1000;
+        mouseVelX = 0;
+        mouseVelY = 0;
+      });
+
+      function draw() {
+        time += 0.02;
+        mouseVelX *= 0.92;
+        mouseVelY *= 0.92;
+
+        // Update active ripples
+        for (let i = ripples.length - 1; i >= 0; i--) {
+          const r = ripples[i];
+          r.radius += r.speed;
+          r.intensity *= 0.975;
+
+          if (r.radius > r.maxRadius || r.intensity < 0.03) {
+            ripples.splice(i, 1);
+          }
+        }
+
+        let currentColor = container.getAttribute('data-color') || '#42BD49';
+        let bgFill = container.getAttribute('data-bg') || '#0a0a0a';
+        let highlightColor = container.getAttribute('data-highlight') || '#FFFFFF';
+
+        if (bgFill.startsWith('var(')) {
+          const varName = bgFill.slice(4, -1).trim();
+          bgFill = getComputedStyle(document.documentElement).getPropertyValue(varName).trim() || '#0a0a0a';
+        }
+        if (currentColor.startsWith('var(')) {
+          const varName = currentColor.slice(4, -1).trim();
+          currentColor = getComputedStyle(document.documentElement).getPropertyValue(varName).trim() || '#42BD49';
+        }
+
+        ctx!.fillStyle = bgFill;
+        ctx!.fillRect(0, 0, width, height);
+
+        ctx!.font = '600 11px "Geist Mono", monospace';
+        ctx!.textAlign = 'center';
+        ctx!.textBaseline = 'middle';
+
+        const speedMag = Math.sqrt(mouseVelX * mouseVelX + mouseVelY * mouseVelY);
+
+        // Measure exact bounding box of Line 1 (.built-message), Line 2 (.copyright), and Contact Buttons (.contact-buttons) independently
+        const builtMessageEl = container.parentElement?.querySelector('.built-message') as HTMLElement;
+        const copyrightEl = container.parentElement?.querySelector('.copyright') as HTMLElement;
+        const contactButtonsEl = container.parentElement?.querySelector('.contact-buttons') as HTMLElement;
+        
+        let bLeft = width - 290, bTop = height - 48, bRight = width - 10, bBottom = height - 28;
+        let cLeft = width - 260, cTop = height - 25, cRight = width - 10, cBottom = height - 10;
+        let cbLeft = 0, cbTop = 0, cbRight = 0, cbBottom = 0;
+        let hasContactButtons = false;
+
+        if (builtMessageEl) {
+          const containerRect = container.getBoundingClientRect();
+          const r = builtMessageEl.getBoundingClientRect();
+          bLeft = r.left - containerRect.left;
+          bTop = r.top - containerRect.top;
+          bRight = r.right - containerRect.left;
+          bBottom = r.bottom - containerRect.top;
+        }
+
+        if (copyrightEl) {
+          const containerRect = container.getBoundingClientRect();
+          const r = copyrightEl.getBoundingClientRect();
+          cLeft = r.left - containerRect.left;
+          cTop = r.top - containerRect.top;
+          cRight = r.right - containerRect.left;
+          cBottom = r.bottom - containerRect.top;
+        }
+
+        if (contactButtonsEl) {
+          const containerRect = container.getBoundingClientRect();
+          const r = contactButtonsEl.getBoundingClientRect();
+          cbLeft = r.left - containerRect.left;
+          cbTop = r.top - containerRect.top;
+          cbRight = r.right - containerRect.left;
+          cbBottom = r.bottom - containerRect.top;
+          hasContactButtons = true;
+        }
+
+        for (let r = 0; r < rows; r++) {
+          for (let c = 0; c < cols; c++) {
+            const x = c * cellSize + cellSize / 2;
+            const y = r * cellSize + cellSize / 2;
+
+            // Mouse interaction & displacement
+            const dx = x - mouseX;
+            const dy = y - mouseY;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            const maxRadius = 180;
+
+            // Vector field flowing continuously from Right to Left (<-)
+            const noiseVal = Math.sin(c * 0.12 + time * 1.8) + Math.cos(r * 0.10 + time * 0.6);
+            let angle = Math.PI + noiseVal * 0.45;
+            let intensity = 0.22;
+            let isNearMouse = false;
+            let rippleHit = 0;
+
+            if (dist < maxRadius) {
+              isNearMouse = true;
+              const influence = (1 - dist / maxRadius);
+              
+              if (speedMag > 0.5) {
+                const mouseAngle = Math.atan2(mouseVelY, mouseVelX);
+                angle = angle * (1 - influence) + mouseAngle * influence;
+              } else {
+                angle += influence * Math.PI;
+              }
+
+              intensity = 0.35 + influence * 0.45;
+            }
+
+            // Click Shockwave Ripples Influence
+            for (let i = 0; i < ripples.length; i++) {
+              const rip = ripples[i];
+              const rdx = x - rip.x;
+              const rdy = y - rip.y;
+              const rDist = Math.sqrt(rdx * rdx + rdy * rdy);
+
+              const ringWidth = 45;
+              const ringDist = Math.abs(rDist - rip.radius);
+
+              if (ringDist < ringWidth) {
+                const waveFactor = (1 - ringDist / ringWidth) * rip.intensity;
+                rippleHit = Math.max(rippleHit, waveFactor);
+
+                const ripAngle = Math.atan2(rdy, rdx);
+                angle = angle * (1 - waveFactor) + ripAngle * waveFactor + waveFactor * Math.PI * 0.5;
+              }
+            }
+
+            // Organic wave wiggle
+            const organicWiggle = Math.sin(c * 0.35 + r * 0.35 + time * 1.2) * 4;
+            
+            // Separate Line 1 Force Field
+            const inLine1 = (
+              x >= (bLeft - 6 + organicWiggle) &&
+              x <= (bRight + 6 + organicWiggle) &&
+              y >= (bTop - 4 + organicWiggle) &&
+              y <= (bBottom + 4 + organicWiggle)
+            );
+
+            // Separate Line 2 Force Field
+            const inLine2 = (
+              x >= (cLeft - 6 + organicWiggle) &&
+              x <= (cRight + 6 + organicWiggle) &&
+              y >= (cTop - 4 + organicWiggle) &&
+              y <= (cBottom + 4 + organicWiggle)
+            );
+
+            // Separate Contact Buttons Force Field
+            const inContactButtons = hasContactButtons && (
+              x >= (cbLeft - 8 + organicWiggle) &&
+              x <= (cbRight + 8 + organicWiggle) &&
+              y >= (cbTop - 6 + organicWiggle) &&
+              y <= (cbBottom + 6 + organicWiggle)
+            );
+
+            const isTextZone = inLine1 || inLine2 || inContactButtons;
+            const textOpacityCap = isTextZone ? 0.20 : 1.0;
+
+            // Map angle to char index
+            const normalizedAngle = ((angle % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2);
+            const charIdx = Math.floor((normalizedAngle / (Math.PI * 2)) * dirChars.length) % dirChars.length;
+            
+            let charToDraw = dirChars[charIdx];
+
+            // Restore ASCII character density morphing on hover & click
+            if (rippleHit > 0.2 && !isTextZone) {
+              const densityIdx = Math.min(
+                densityChars.length - 1,
+                Math.floor(rippleHit * densityChars.length)
+              );
+              charToDraw = densityChars[densityIdx];
+            } else if (isNearMouse && dist < maxRadius * 0.4 && !isTextZone) {
+              const densityIdx = Math.min(
+                densityChars.length - 1,
+                Math.floor((1 - dist / (maxRadius * 0.4)) * densityChars.length)
+              );
+              charToDraw = densityChars[densityIdx];
+            }
+
+            ctx!.save();
+            ctx!.translate(x, y);
+
+            // Zero shadow blur (no green background glow)
+            ctx!.shadowBlur = 0;
+
+            if (!isTextZone && rippleHit > 0.45) {
+              ctx!.fillStyle = highlightColor;
+              ctx!.globalAlpha = 0.90;
+            } else if (rippleHit > 0.15) {
+              ctx!.fillStyle = currentColor;
+              ctx!.globalAlpha = Math.min(1.0, (0.5 + rippleHit * 0.3) * textOpacityCap);
+            } else if (!isTextZone && isNearMouse && dist < 60) {
+              ctx!.fillStyle = highlightColor;
+              ctx!.globalAlpha = 0.90;
+            } else {
+              ctx!.fillStyle = currentColor;
+              ctx!.globalAlpha = intensity * textOpacityCap;
+            }
+
+            ctx!.fillText(charToDraw, 0, 0);
+            ctx!.restore();
+          }
+        }
+
+        animationFrameId = requestAnimationFrame(draw);
+      }
+
+      draw();
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', initFluidFlow);
+  document.addEventListener('astro:page-load', initFluidFlow);
+</script>
+
+<style>
+  .ascii-canvas-container {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: auto;
+    z-index: 0;
+    cursor: pointer;
+  }
+
+  .ascii-canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+</style>

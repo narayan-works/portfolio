@@ -8,7 +8,7 @@ import { getCollection } from "astro:content";
 import { Image } from "astro:assets";
 
 // Fetch the archive projects
-const archiveSlugs = ["musibuddy", "working-living-innovating", "skywalk-sanctuary"];
+const archiveSlugs = ["musibuddy", "notionify", "working-living-innovating", "skywalk-sanctuary"];
 const allProjects = await getCollection("projects");
 const archiveProjects = allProjects
 	.filter((p) => archiveSlugs.includes(p.slug))
@@ -20,6 +20,7 @@ const archiveProjects = allProjects
 // Category colors mapping for solid backgrounds
 const categoryColors: Record<string, string> = {
 	musibuddy: "#0d8ce9", // Blue (originally hardware-ux)
+	notionify: "#f25c05", // Orange (web-ux)
 	"working-living-innovating": "#258835", // Green (originally spatial-xd)
 	"skywalk-sanctuary": "#258835", // Green (originally spatial-xd)
 };
@@ -54,9 +55,13 @@ const imageScales: Record<string, number> = {
 				archiveProjects.map((project) => {
 					const bgColor = categoryColors[project.slug] || "#258835";
 					const scale = imageScales[project.slug] || 1;
+					const targetUrl = project.data.ctaUrl || `/works/${project.slug}`;
+					const isExternal = targetUrl.startsWith("http");
 					return (
 						<a
-							href={`/works/${project.slug}`}
+							href={targetUrl}
+							target={isExternal ? "_blank" : undefined}
+							rel={isExternal ? "noopener noreferrer" : undefined}
 							class="archive-card"
 							style={`--card-bg: ${bgColor}; --base-scale: ${scale};`}
 						>

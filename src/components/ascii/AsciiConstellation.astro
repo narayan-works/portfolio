@@ -1,0 +1,205 @@
+---
+interface Props {
+  color?: string;
+  id?: string;
+}
+
+const { color = '#42BD49', id = 'ascii-constellation' } = Astro.props;
+---
+
+<div class="ascii-canvas-container" id={`${id}-container`}>
+  <canvas class="ascii-canvas" id={id}></canvas>
+</div>
+
+<script>
+  interface Particle {
+    x: number;
+    y: number;
+    vx: number;
+    vy: number;
+    baseX: number;
+    baseY: number;
+    char: string;
+    size: number;
+    alpha: number;
+  }
+
+  function initConstellation() {
+    const containers = document.querySelectorAll('.ascii-canvas-container');
+    containers.forEach((container) => {
+      const canvas = container.querySelector('canvas') as HTMLCanvasElement;
+      if (!canvas || canvas.dataset.constInitialized) return;
+      if (canvas.id.indexOf('constellation') === -1 && canvas.id.indexOf('option-4') === -1) return;
+      canvas.dataset.constInitialized = 'true';
+
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+
+      let animationFrameId: number;
+      let width = 0;
+      let height = 0;
+
+      let particles: Particle[] = [];
+      const particleChars = ['+', '*', '°', '•', 'x', 'o', '∆', '◊', '░', '·'];
+
+      let mouseX = -1000;
+      let mouseY = -1000;
+      let isMouseDown = false;
+
+      function resize() {
+        const rect = container.getBoundingClientRect();
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        width = rect.width;
+        height = rect.height;
+        canvas.width = width * dpr;
+        canvas.height = height * dpr;
+        ctx?.scale(dpr, dpr);
+
+        // Spawn particles
+        const count = Math.floor((width * height) / 4500);
+        particles = [];
+
+        for (let i = 0; i < count; i++) {
+          const x = Math.random() * width;
+          const y = Math.random() * height;
+          particles.push({
+            x,
+            y,
+            vx: (Math.random() - 0.5) * 0.8,
+            vy: (Math.random() - 0.5) * 0.8,
+            baseX: x,
+            baseY: y,
+            char: particleChars[Math.floor(Math.random() * particleChars.length)],
+            size: 11 + Math.random() * 5,
+            alpha: 0.2 + Math.random() * 0.5,
+          });
+        }
+      }
+
+      window.addEventListener('resize', resize);
+      resize();
+
+      container.addEventListener('mousemove', (e) => {
+        const rect = container.getBoundingClientRect();
+        mouseX = (e as MouseEvent).clientX - rect.left;
+        mouseY = (e as MouseEvent).clientY - rect.top;
+      });
+
+      container.addEventListener('mousedown', () => {
+        isMouseDown = true;
+      });
+
+      container.addEventListener('mouseup', () => {
+        isMouseDown = false;
+      });
+
+      container.addEventListener('mouseleave', () => {
+        mouseX = -1000;
+        mouseY = -1000;
+        isMouseDown = false;
+      });
+
+      function draw() {
+        const currentColor = container.getAttribute('data-color') || '#42BD49';
+        const bgFill = container.getAttribute('data-bg') || '#0a0a0a';
+
+        ctx!.fillStyle = bgFill;
+        ctx!.fillRect(0, 0, width, height);
+
+        ctx!.textAlign = 'center';
+        ctx!.textBaseline = 'middle';
+
+        const gravRadius = isMouseDown ? 300 : 180;
+        const gravForce = isMouseDown ? -0.35 : 0.08; // Click repels/explodes, hover attracts
+
+        for (let i = 0; i < particles.length; i++) {
+          const p = particles[i];
+
+          // Particle physics update
+          p.x += p.vx;
+          p.y += p.vy;
+
+          // Soft bounce off walls
+          if (p.x < 0 || p.x > width) p.vx *= -1;
+          if (p.y < 0 || p.y > height) p.vy *= -1;
+
+          // Mouse gravity interaction
+          const dx = mouseX - p.x;
+          const dy = mouseY - p.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < gravRadius && dist > 1) {
+            const force = (1 - dist / gravRadius) * gravForce;
+            p.vx += (dx / dist) * force;
+            p.vy += (dy / dist) * force;
+          }
+
+          // Friction
+          p.vx *= 0.96;
+          p.vy *= 0.96;
+
+          // Render Particle
+          ctx!.font = `600 ${p.size}px "Geist Mono", monospace`;
+          
+          if (dist < 100) {
+            ctx!.fillStyle = '#FFFFFF';
+            ctx!.globalAlpha = 0.95;
+          } else {
+            ctx!.fillStyle = currentColor;
+            ctx!.globalAlpha = p.alpha;
+          }
+
+          ctx!.fillText(p.char, p.x, p.y);
+
+          // ASCII Constellation line links near mouse
+          if (dist < 160) {
+            for (let j = i + 1; j < particles.length; j++) {
+              const p2 = particles[j];
+              const dx2 = p.x - p2.x;
+              const dy2 = p.y - p2.y;
+              const dist2 = Math.sqrt(dx2 * dx2 + dy2 * dy2);
+
+              if (dist2 < 70) {
+                const linkAlpha = (1 - dist2 / 70) * (1 - dist / 160) * 0.45;
+                ctx!.strokeStyle = currentColor;
+                ctx!.globalAlpha = linkAlpha;
+                ctx!.beginPath();
+                ctx!.setLineDash([2, 4]);
+                ctx!.moveTo(p.x, p.y);
+                ctx!.lineTo(p2.x, p2.y);
+                ctx!.stroke();
+                ctx!.setLineDash([]);
+              }
+            }
+          }
+        }
+
+        ctx!.globalAlpha = 1;
+        animationFrameId = requestAnimationFrame(draw);
+      }
+
+      draw();
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', initConstellation);
+  document.addEventListener('astro:page-load', initConstellation);
+</script>
+
+<style>
+  .ascii-canvas-container {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: auto;
+    z-index: 0;
+  }
+
+  .ascii-canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+</style>

@@ -5,6 +5,7 @@ import ThemeToggle from "../components/ThemeToggle.astro";
 import Footer from "../components/Footer.astro";
 import GhostRunner from "../components/GhostRunner.astro";
 import ImageSlider from "../components/ImageSlider.astro";
+import ImageToggle from "../components/ImageToggle.astro";
 ---
 
 <Layout
@@ -32,47 +33,7 @@ import ImageSlider from "../components/ImageSlider.astro";
 					and grounded in existing ecosystems.
 				</p>
 				<p>
-					🎯 The question I keep coming back to: how do we make
-					technology feel present in the physical world rather than
-					extracting people into screens? I care about interactions
-					that feel natural, where the interface fades and people
-					focus on what they're actually doing.
-				</p>
-				<p>
-					🔧 I'm currently working as a Design Researcher at Lab 4
-					Cybernetics with <a
-						href="https://pangaro.com/"
-						target="_blank"
-						rel="noopener noreferrer">Paul Pangaro</a
-					>, building the lab's digital infrastructure: <a
-						href="https://lab4cybernetics.vercel.app"
-						target="_blank"
-						rel="noopener noreferrer">the website</a
-					>, a practitioner-scholar <a
-						href="https://l4cybernetics.vercel.app/matching"
-						target="_blank"
-						rel="noopener noreferrer">matching platform</a
-					>, and a knowledge graph system organizing <a
-						href="https://publish.obsidian.md/lab4c"
-						target="_blank"
-						rel="noopener noreferrer">cybernetics concepts</a
-					>.
-				</p>
-				<p>
-					🤖 My thesis project, supported by the <a
-						href="https://studioforcreativeinquiry.org/frff-grants-microgrants"
-						target="_blank"
-						rel="noopener noreferrer">Frank-Ratchye Further Fund</a
-					>, explores how physically embodied AI can provide spatial
-					task assistance through laser-pointing, bridging LLM
-					reasoning with physical spatial referencing.
-				</p>
-				<p>
-					💡 I'm learning that the best design work happens in the
-					infrastructure: building repositories, systems, and tools
-					that let others create and scale. I want to build tools
-					that feel like extensions of how people naturally think and
-					interact, not systems they have to manage.
+					🎯 I'm looking to work with people and teams shaping a new era of human–AI interaction—across physical AI, intelligent tools, and products that augment how people think, build, and live. People who are genuinely excited about this future and care as much about how these systems feel in use as what they can technically do.
 				</p>
 			</div>
 
@@ -109,6 +70,44 @@ import ImageSlider from "../components/ImageSlider.astro";
 						},
 					]}
 				/>
+			</div>
+
+			<div class="about-body">
+				<p>
+					❓The question I keep coming back to: how do we design AI that understands the context around what people are doing and becomes part of how they think and act, rather than another system they have to manage? And at the core how to build for the technology can work alongside people while the interaction stays grounded in the task, the environment, and what they are actually trying to do.
+				</p>
+				<p>
+					🔧 I'm currently working as a Design Researcher at Lab 4
+					Cybernetics with <a
+						href="https://pangaro.com/"
+						target="_blank"
+						rel="noopener noreferrer">Paul Pangaro</a
+					>, building the lab's digital infrastructure: <a
+						href="https://lab4cybernetics.vercel.app"
+						target="_blank"
+						rel="noopener noreferrer">the website</a
+					>, a practitioner-scholar <a
+						href="https://l4cybernetics.vercel.app/matching"
+						target="_blank"
+						rel="noopener noreferrer">matching platform</a
+					>, and a knowledge graph system organizing <a
+						href="https://publish.obsidian.md/lab4c"
+						target="_blank"
+						rel="noopener noreferrer">cybernetics concepts</a
+					>.
+				</p>
+				<p>
+					🤖 My thesis project, supported by the <a
+						href="https://studioforcreativeinquiry.org/frff-grants-microgrants"
+						target="_blank"
+						rel="noopener noreferrer">Frank-Ratchye Further Fund</a
+					>, explores how physically embodied AI can provide spatial
+					task assistance through laser-pointing, bridging LLM
+					reasoning with physical spatial referencing.
+				</p>
+				<p>
+					💡 I'm learning that the best way to understand a new interaction is by building it. I design through building—moving between research, interaction design, prototyping, and code, using each to sharpen the others without losing the original intent. AI makes this process even more powerful by letting us build and learn in the same loop, while developing the judgment and heuristics to know what to preserve, what to question, and what the interaction should become.
+				</p>
 			</div>
 		</div>
 
@@ -179,8 +178,8 @@ import ImageSlider from "../components/ImageSlider.astro";
 
 	.about-content-grid {
 		display: grid;
-		grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-		gap: 64px;
+		grid-template-columns: minmax(0, 1fr);
+		gap: 0;
 		align-items: center;
 		margin-bottom: 96px;
 	}
@@ -189,21 +188,51 @@ import ImageSlider from "../components/ImageSlider.astro";
 		display: flex;
 		flex-direction: column;
 		gap: 1.5rem;
+		max-width: 860px;
+	}
+
+	.about-image-break {
+		width: 100%;
+		display: flex;
+		justify-content: center;
+		align-items: flex-start;
+		margin: 1.5rem 0;
+	}
+
+	.about-image-break :global(.image-toggle-component) {
+		width: 100%;
+		max-width: 100%;
+		text-align: left;
 	}
 
 	.about-media {
 		width: 100%;
+		max-width: 860px;
+	}
+
+	/* This is the clipping boundary (overflow: hidden on .image-slider) -
+	   widening it just gives the peeking prev/next slides more room to
+	   show before getting cut off. It does NOT change how big the active
+	   image looks; that's fixed separately below. Centered within the
+	   860px text-body width above (.about-media matches .about-body's
+	   max-width) rather than the full page width. */
+	.about-media :global(.image-slider.constrained) {
+		max-width: 600px;
+		margin-left: auto;
+		margin-right: auto;
 	}
 
 	/* No cropping, no fixed frame: each slide sizes itself to its own
 	   image's natural aspect ratio instead of being forced into a
 	   shared box (which would need a letterbox band to avoid cropping).
-	   Different slides can be different heights here. Scoped to this
-	   page only. */
+	   Different slides can be different heights here. Fixed px (not a %
+	   of the clipping box above) so widening that box doesn't scale the
+	   image up - it only adds peek margin. Scoped to this page only. */
 	.about-media :global(.image-slider[data-variant="carousel"] .slider-display) {
 		aspect-ratio: auto;
 		height: auto;
-		width: 85%;
+		width: 380px;
+		max-width: 100%;
 	}
 
 	.about-media :global(.image-slider[data-variant="carousel"] .slider-track) {
@@ -286,8 +315,7 @@ import ImageSlider from "../components/ImageSlider.astro";
 			font-size: 64px;
 		}
 		.about-content-grid {
-			grid-template-columns: 1fr;
-			gap: 40px;
+			gap: 0;
 		}
 	}
 

@@ -30,6 +30,11 @@
         if (canvas && overlay) {
             const ctx = canvas.getContext("2d");
 
+            // High-DPI (Retina) scaling state
+            let dpr = window.devicePixelRatio || 1;
+            let logicalWidth = canvas.clientWidth || 300;
+            let logicalHeight = canvas.clientHeight || 150;
+
             // Assets
             const sprites = {
                 happy: [new Image(), new Image(), new Image()],
@@ -48,6 +53,8 @@
             // Configuration
             const GHOST_SIZE = 60; // Increased from 40
             const SPEED_BASE = 5;
+            const SPEED_MAX = 10; // Speed caps at 2x base
+            const SPEED_RAMP_RATE = 0.02; // gameSpeed gained per unit of `time`
             const BAR_WIDTH_BASE = 60; // Base width
             const BAR_HEIGHT = 12;
 
@@ -81,6 +88,219 @@
             let terrainBack: TerrainPoint[] = [];
             let terrainFront: TerrainPoint[] = [];
             const TERRAIN_STEP = 20; // Distance between points
+
+            // Clouds State (5 Shape Variations & Strict Far vs Near Layering)
+            interface Cloud {
+                x: number;
+                y: number;
+                w: number;
+                h: number;
+                speedMult: number;
+                opacity: number;
+                layer: "far" | "near";
+                puffs: { cxRatio: number; cyRatio: number; rRatio: number }[];
+            }
+            let cloudsFar: Cloud[] = [];
+            let cloudsNear: Cloud[] = [];
+
+            const CLOUD_VARIATIONS = [
+                // 0: Classic 3-Dome (Medium left, tall center, small right)
+                [
+                    { cxRatio: 0.28, cyRatio: 0.40, rRatio: 0.45 },
+                    { cxRatio: 0.52, cyRatio: 0.18, rRatio: 0.62 },
+                    { cxRatio: 0.76, cyRatio: 0.45, rRatio: 0.40 },
+                ],
+                // 1: Wide Dual-Dome (Two prominent balanced domes)
+                [
+                    { cxRatio: 0.35, cyRatio: 0.25, rRatio: 0.58 },
+                    { cxRatio: 0.68, cyRatio: 0.22, rRatio: 0.56 },
+                ],
+                // 2: Extended 4-Ripple Cloud (Wide flat profile with 4 gentle ripples)
+                [
+                    { cxRatio: 0.20, cyRatio: 0.45, rRatio: 0.38 },
+                    { cxRatio: 0.40, cyRatio: 0.25, rRatio: 0.52 },
+                    { cxRatio: 0.62, cyRatio: 0.22, rRatio: 0.55 },
+                    { cxRatio: 0.82, cyRatio: 0.42, rRatio: 0.38 },
+                ],
+                // 3: High-Peak Tower Cloud (Tall central peak with asymmetric shoulder)
+                [
+                    { cxRatio: 0.25, cyRatio: 0.48, rRatio: 0.38 },
+                    { cxRatio: 0.48, cyRatio: 0.12, rRatio: 0.70 },
+                    { cxRatio: 0.78, cyRatio: 0.38, rRatio: 0.48 },
+                ],
+                // 4: Compact Soft Cloud (Rounded 2-puff compact cloud)
+                [
+                    { cxRatio: 0.32, cyRatio: 0.28, rRatio: 0.52 },
+                    { cxRatio: 0.65, cyRatio: 0.35, rRatio: 0.45 },
+                ],
+            ];
+
+            const createCloud = (x: number, layer: "far" | "near"): Cloud => {
+                const isFar = layer === "far";
+
+                // Uniform cloud sizing across all depths
+                const y = 10 + Math.random() * 42;
+                const w = 70 + Math.random() * 45; // 70px to 115px wide
+                const h = 24 + Math.random() * 10; // 24px to 34px tall
+
+                // Synchronized speed per layer so clouds NEVER catch up to or overlap each other within the layer
+                const speedMult = isFar ? 0.14 : 0.32;
+                const opacity = isFar ? 0.70 : 0.95;
+
+                const varIdx = Math.floor(Math.random() * CLOUD_VARIATIONS.length);
+                const puffs = CLOUD_VARIATIONS[varIdx];
+
+                return { x, y, w, h, speedMult, opacity, layer, puffs };
+            };
+
+            const initClouds = (width: number) => {
+                cloudsFar = [];
+                cloudsNear = [];
+
+                // Far layer: spaced at least 320px apart so they NEVER overlap
+                const countFar = Math.max(2, Math.floor(width / 350));
+                let currentFarX = -40 + Math.random() * 60;
+                for (let i = 0; i < countFar; i++) {
+                    cloudsFar.push(createCloud(currentFarX, "far"));
+                    currentFarX += 300 + Math.random() * 120;
+                }
+
+                // Near layer: spaced at least 400px apart
+                const countNear = Math.max(1, Math.floor(width / 450));
+                let currentNearX = 90 + Math.random() * 80;
+                for (let i = 0; i < countNear; i++) {
+                    cloudsNear.push(createCloud(currentNearX, "near"));
+                    currentNearX += 380 + Math.random() * 140;
+                }
+            };
+
+            // Rain & Bounce Splash System (Layered Depth & Terrain Landing)
+            interface RainDrop {
+                x: number;
+                y: number;
+                len: number;
+                speedY: number;
+                opacity: number;
+                layer: "far" | "near";
+            }
+
+            interface RainSplash {
+                x: number;
+                y: number;
+                r: number;
+                maxR: number;
+                opacity: number;
+                layer: "far" | "near";
+            }
+
+            let rainDropsFar: RainDrop[] = [];
+            let rainDropsNear: RainDrop[] = [];
+            let rainSplashesFar: RainSplash[] = [];
+            let rainSplashesNear: RainSplash[] = [];
+
+            // Helper to get exact terrain elevation at coordinate X
+            const getTerrainYAtX = (points: TerrainPoint[], x: number): number => {
+                if (!points || points.length === 0) return groundY;
+                for (let i = 0; i < points.length - 1; i++) {
+                    if (x >= points[i].x && x <= points[i + 1].x) {
+                        const t = (x - points[i].x) / (points[i + 1].x - points[i].x);
+                        return points[i].y + t * (points[i + 1].y - points[i].y);
+                    }
+                }
+                return groundY;
+            };
+
+            const updateRain = () => {
+                if (!isGameOver) {
+                    rainDropsFar = [];
+                    rainDropsNear = [];
+                    rainSplashesFar = [];
+                    rainSplashesNear = [];
+                    return;
+                }
+
+                // 1. Light multi-point parallel spawn from all Far clouds simultaneously
+                cloudsFar.forEach((c) => {
+                    if (Math.random() < 0.08) {
+                        rainDropsFar.push({
+                            x: c.x + 10 + Math.random() * Math.max(10, c.w - 20),
+                            y: c.y + c.h * 0.5,
+                            len: 8 + Math.random() * 5,
+                            speedY: 4.2 + Math.random() * 1.0,
+                            opacity: 0.35 + Math.random() * 0.25,
+                            layer: "far",
+                        });
+                    }
+                });
+
+                // 2. Light multi-point parallel spawn from all Near clouds simultaneously
+                cloudsNear.forEach((c) => {
+                    if (Math.random() < 0.12) {
+                        rainDropsNear.push({
+                            x: c.x + 10 + Math.random() * Math.max(10, c.w - 20),
+                            y: c.y + c.h * 0.5,
+                            len: 10 + Math.random() * 6,
+                            speedY: 5.0 + Math.random() * 1.2,
+                            opacity: 0.55 + Math.random() * 0.3,
+                            layer: "near",
+                        });
+                    }
+                });
+
+                // 3. Update Far drops (Land & Bounce on Back Grassland)
+                for (let i = rainDropsFar.length - 1; i >= 0; i--) {
+                    const r = rainDropsFar[i];
+                    r.y += r.speedY;
+                    const backY = getTerrainYAtX(terrainBack, r.x);
+                    const frontY = getTerrainYAtX(terrainFront, r.x);
+                    // Land on visible ridge of back terrain
+                    const landY = Math.min(backY, frontY - 2);
+
+                    if (r.y >= landY) {
+                        rainSplashesFar.push({
+                            x: r.x,
+                            y: landY,
+                            r: 1,
+                            maxR: 3.5 + Math.random() * 2,
+                            opacity: r.opacity * 0.9,
+                            layer: "far",
+                        });
+                        rainDropsFar.splice(i, 1);
+                    }
+                }
+
+                // 4. Update Near drops (Land & Bounce on Front Grassland)
+                for (let i = rainDropsNear.length - 1; i >= 0; i--) {
+                    const r = rainDropsNear[i];
+                    r.y += r.speedY;
+                    const landY = getTerrainYAtX(terrainFront, r.x);
+                    if (r.y >= landY) {
+                        rainSplashesNear.push({
+                            x: r.x,
+                            y: landY,
+                            r: 1,
+                            maxR: 4 + Math.random() * 2.5,
+                            opacity: r.opacity,
+                            layer: "near",
+                        });
+                        rainDropsNear.splice(i, 1);
+                    }
+                }
+
+                // 5. Update Splash Ripples
+                const updateSplashes = (splashes: RainSplash[]) => {
+                    for (let i = splashes.length - 1; i >= 0; i--) {
+                        const s = splashes[i];
+                        s.r += 0.35;
+                        s.opacity -= 0.07;
+                        if (s.opacity <= 0 || s.r >= s.maxR) {
+                            splashes.splice(i, 1);
+                        }
+                    }
+                };
+                updateSplashes(rainSplashesFar);
+                updateSplashes(rainSplashesNear);
+            };
 
             // Mechanics
             let isHolding = false;
@@ -179,6 +399,26 @@
                 const frontSpeed = gameSpeed;
                 const backSpeed = gameSpeed * 0.5;
 
+                // Update Far Clouds (Background Layer) - Move in sync, respawn behind last far cloud so no overlap occurs
+                for (let i = 0; i < cloudsFar.length; i++) {
+                    cloudsFar[i].x -= gameSpeed * cloudsFar[i].speedMult;
+                    if (cloudsFar[i].x < -140) {
+                        const maxFarX = Math.max(...cloudsFar.map((c) => c.x));
+                        const newX = Math.max(logicalWidth + 60, maxFarX + 280 + Math.random() * 100);
+                        cloudsFar[i] = createCloud(newX, "far");
+                    }
+                }
+
+                // Update Near Clouds (Foreground Layer) - Move in sync, respawn behind last near cloud
+                for (let i = 0; i < cloudsNear.length; i++) {
+                    cloudsNear[i].x -= gameSpeed * cloudsNear[i].speedMult;
+                    if (cloudsNear[i].x < -140) {
+                        const maxNearX = Math.max(...cloudsNear.map((c) => c.x));
+                        const newX = Math.max(logicalWidth + 60, maxNearX + 350 + Math.random() * 120);
+                        cloudsNear[i] = createCloud(newX, "near");
+                    }
+                }
+
                 // Update Front
                 for (let i = 0; i < terrainFront.length; i++) {
                     terrainFront[i].x -= frontSpeed;
@@ -190,7 +430,7 @@
                 ) {
                     terrainFront.shift();
                 }
-                generateTerrain(canvas.width, groundY, terrainFront, true);
+                generateTerrain(logicalWidth, groundY, terrainFront, true);
 
                 // Update Back
                 for (let i = 0; i < terrainBack.length; i++) {
@@ -202,16 +442,35 @@
                 ) {
                     terrainBack.shift();
                 }
-                generateTerrain(canvas.width, groundY, terrainBack, false);
+                generateTerrain(logicalWidth, groundY, terrainBack, false);
             };
 
             const resize = () => {
                 const parent = canvas.parentElement;
                 if (parent) {
-                    canvas.width = parent.clientWidth;
-                    canvas.height = parent.clientHeight;
+                    dpr = window.devicePixelRatio || 1;
+                    const rect = parent.getBoundingClientRect();
+                    const w = rect.width || parent.clientWidth;
+                    const h = rect.height || parent.clientHeight;
+                    if (w <= 0 || h <= 0) return;
 
-                    groundY = canvas.height - 15;
+                    logicalWidth = w;
+                    logicalHeight = h;
+
+                    const newPixelWidth = Math.floor(w * dpr);
+                    const newPixelHeight = Math.floor(h * dpr);
+
+                    if (
+                        canvas.width !== newPixelWidth ||
+                        canvas.height !== newPixelHeight
+                    ) {
+                        canvas.width = newPixelWidth;
+                        canvas.height = newPixelHeight;
+                        canvas.style.width = `${w}px`;
+                        canvas.style.height = `${h}px`;
+                    }
+
+                    groundY = logicalHeight - 15;
                     bottomLaneY = groundY - GHOST_SIZE + 5;
                     topLaneY = bottomLaneY - 100; // Fixed distance from bottom lane
 
@@ -219,17 +478,21 @@
                         player.y = bottomLaneY;
                         player.targetY = bottomLaneY;
 
+                        if (cloudsFar.length === 0) {
+                            initClouds(logicalWidth);
+                        }
+
                         // Reset terrain
                         terrainFront = [];
                         terrainBack = [];
                         generateTerrain(
-                            canvas.width,
+                            logicalWidth,
                             groundY,
                             terrainBack,
                             false,
                         );
                         generateTerrain(
-                            canvas.width,
+                            logicalWidth,
                             groundY,
                             terrainFront,
                             true,
@@ -276,18 +539,25 @@
                 isHolding = false;
             };
 
+            const handleTouchStart = (e: TouchEvent) => {
+                e.preventDefault();
+                startHold(e);
+            };
+
             canvas.addEventListener("mousedown", startHold);
             window.addEventListener("mouseup", endHold);
 
-            canvas.addEventListener(
-                "touchstart",
-                (e) => {
-                    e.preventDefault();
-                    startHold(e);
-                },
-                { passive: false },
-            );
+            canvas.addEventListener("touchstart", handleTouchStart, {
+                passive: false,
+            });
             window.addEventListener("touchend", endHold);
+            // A cancelled touch (e.g. the OS's long-press text-selection/
+            // callout gesture hijacking a "press and hold") never fires
+            // touchend, so isHolding would otherwise get stuck true forever.
+            window.addEventListener("touchcancel", endHold);
+            // Releasing the mouse button outside the browser window, or
+            // switching apps mid-hold, can also skip mouseup entirely.
+            window.addEventListener("blur", endHold);
 
             const handleKeyDown = (e: KeyboardEvent) => {
                 if (e.code === "Space") {
@@ -309,8 +579,12 @@
                 resizeObserverInstance?.disconnect();
                 window.removeEventListener("resize", resize);
                 window.removeEventListener("load", resize);
+                canvas.removeEventListener("mousedown", startHold);
+                canvas.removeEventListener("touchstart", handleTouchStart);
                 window.removeEventListener("mouseup", endHold);
                 window.removeEventListener("touchend", endHold);
+                window.removeEventListener("touchcancel", endHold);
+                window.removeEventListener("blur", endHold);
                 window.removeEventListener("keydown", handleKeyDown);
                 window.removeEventListener("keyup", handleKeyUp);
             };
@@ -326,6 +600,7 @@
                 isPlaying = false;
                 score = 0;
                 lives = 3;
+                time = 0;
                 gameSpeed = SPEED_BASE;
                 bars = [];
                 player.y = bottomLaneY;
@@ -333,20 +608,31 @@
                 isHolding = false;
                 hurtTimer = 0;
                 heartsY = [45, 45, 45];
+                rainDropsFar = [];
+                rainDropsNear = [];
+                rainSplashesFar = [];
+                rainSplashesNear = [];
                 overlay.style.opacity = "0";
                 overlay.innerHTML = ""; // Clean - no instruction text
 
                 // Reset Terrain
                 terrainFront = [];
                 terrainBack = [];
-                generateTerrain(canvas.width, groundY, terrainBack, false);
-                generateTerrain(canvas.width, groundY, terrainFront, true);
+                generateTerrain(logicalWidth, groundY, terrainBack, false);
+                generateTerrain(logicalWidth, groundY, terrainFront, true);
+                initClouds(logicalWidth);
 
                 draw();
             };
 
             const update = () => {
                 time += 0.1;
+
+                // Ramp difficulty up over the run, capped at SPEED_MAX
+                gameSpeed = Math.min(
+                    SPEED_BASE + time * SPEED_RAMP_RATE,
+                    SPEED_MAX,
+                );
 
                 // 1. Player Movement
                 player.targetY = isHolding ? topLaneY : bottomLaneY;
@@ -370,7 +656,7 @@
                     const randomWidth = 40 + Math.random() * 60;
 
                     bars.push({
-                        x: canvas.width,
+                        x: logicalWidth,
                         lane: isTop ? "top" : "bottom",
                         type: isGood ? "good" : "bad",
                         width: randomWidth,
@@ -466,7 +752,7 @@
 
                 ctx.fillStyle = color;
                 ctx.beginPath();
-                ctx.moveTo(points[0].x, canvas.height); // Start bottom left
+                ctx.moveTo(points[0].x, logicalHeight); // Start bottom left
                 ctx.lineTo(points[0].x, points[0].y); // Line to first point
 
                 for (let i = 0; i < points.length - 1; i++) {
@@ -479,7 +765,7 @@
 
                 const last = points[points.length - 1];
                 ctx.lineTo(last.x, last.y);
-                ctx.lineTo(last.x, canvas.height); // Bottom right
+                ctx.lineTo(last.x, logicalHeight); // Bottom right
                 ctx.closePath();
                 ctx.fill();
 
@@ -491,7 +777,7 @@
                         if (
                             p.hasGrass &&
                             p.x > -50 &&
-                            p.x < canvas.width + 50
+                            p.x < logicalWidth + 50
                         ) {
                             const gx = p.x;
                             const gy = p.y;
@@ -529,12 +815,58 @@
                 }
             };
 
+            // Rounded rect whose bottom-right corner grows into a curved
+            // "beak" tail instead of a straight-edged triangle bolted onto
+            // a flat edge segment. The tail has three vertices - where it
+            // leaves the right edge, its tip, and where it rejoins the
+            // bottom edge - and each is rounded with arcTo (the same
+            // technique as the main corners) so nothing along the tail is
+            // a sharp point, including the tip itself.
+            // One continuous path so fill/stroke/shadow render seamlessly.
+            const traceSpeechBubblePath = (
+                x: number,
+                y: number,
+                w: number,
+                h: number,
+                r: number,
+                tailPull: number,
+                tailReach: number,
+                tailDrop: number,
+                tailRadius: number,
+            ) => {
+                const tailStartY = y + h - r - tailPull;
+                const tailEndX = x + w - r - tailPull;
+                const tipX = x + w + tailReach;
+                const tipY = y + h + tailDrop;
+
+                ctx.beginPath();
+                ctx.moveTo(x + r, y);
+                ctx.lineTo(x + w - r, y);
+                ctx.arcTo(x + w, y, x + w, y + r, r);
+                // Each arcTo below rounds the vertex given as its first
+                // point/pair - passing the tail's own points (not the
+                // rectangle's real corner) is what keeps the curve tight
+                // to the tail instead of ballooning out to the old corner
+                // first.
+                ctx.arcTo(x + w, tailStartY, tipX, tipY, tailRadius);
+                ctx.arcTo(tipX, tipY, tailEndX, y + h, tailRadius);
+                ctx.arcTo(tailEndX, y + h, x + r, y + h, tailRadius);
+                ctx.lineTo(x + r, y + h);
+                ctx.arcTo(x, y + h, x, y + h - r, r);
+                ctx.lineTo(x, y + r);
+                ctx.arcTo(x, y, x + r, y, r);
+                ctx.closePath();
+            };
+
             const draw = () => {
                 if (!ctx) return;
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
 
                 ctx.save();
-                ctx.translate(canvas.width, 0);
+                ctx.scale(dpr, dpr);
+
+                ctx.save();
+                ctx.translate(logicalWidth, 0);
                 ctx.scale(-1, 1);
 
                 // Draw Terrain Layers
@@ -550,10 +882,100 @@
                 const cFront = isDark ? "#1A5220" : COLOR_GROUND_FRONT;
                 const cGrass = isDark ? "#0D2E11" : COLOR_GRASS;
 
-                // Back Layer
+                const drawStylizedCloud = (cloud: any, isFar: boolean) => {
+                    const { x, y, w, h, opacity, puffs } = cloud;
+                    const r = Math.min(6, h * 0.3); // Base corner radius
+
+                    ctx.save();
+                    ctx.globalAlpha = opacity;
+
+                    // 1. Trace Cloud Path (flat base + top domes)
+                    ctx.beginPath();
+                    const baseTop = y + h * 0.4;
+                    const baseH = h * 0.6;
+                    if (ctx.roundRect) {
+                        ctx.roundRect(x, baseTop, w, baseH, [0, 0, r, r]);
+                    } else {
+                        ctx.rect(x, baseTop, w, baseH);
+                    }
+                    puffs.forEach((p: any) => {
+                        const cx = x + w * p.cxRatio;
+                        const cy = y + h * p.cyRatio;
+                        const radius = h * p.rRatio;
+                        ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+                    });
+
+                    // Main Fill (Depth lightness variation: Far = softer translucent tint, Near = crisp solid white)
+                    ctx.fillStyle = isDark
+                        ? isFar ? "rgba(220, 240, 255, 0.08)" : "rgba(235, 248, 255, 0.18)"
+                        : isFar ? "rgba(255, 255, 255, 0.60)" : "rgba(255, 255, 255, 0.96)";
+                    ctx.fill();
+
+                    // Bottom Shadow for Depth
+                    ctx.save();
+                    ctx.clip();
+                    ctx.fillStyle = isDark
+                        ? isFar ? "rgba(0, 0, 0, 0.15)" : "rgba(0, 0, 0, 0.28)"
+                        : isFar ? "rgba(195, 205, 220, 0.28)" : "rgba(170, 190, 212, 0.45)";
+                    ctx.fillRect(x, y + h * 0.68, w, h * 0.32);
+                    ctx.restore();
+
+                    ctx.restore();
+                };
+
+                // Draw Far (Lighter / Background) Clouds FIRST - strictly behind
+                cloudsFar.forEach((cloud) => drawStylizedCloud(cloud, true));
+
+                // Draw Near (Crisp / Foreground) Clouds SECOND - strictly in front
+                cloudsNear.forEach((cloud) => drawStylizedCloud(cloud, false));
+
+                // Layer 1: Back Grassland
                 drawTerrainLayer(terrainBack, cBack, false, cGrass);
-                // Front Layer
+
+                // Layer 2: Far Rain & Splashes (Falls ON back grassland, BEHIND front grassland)
+                if (isGameOver) {
+                    const blueFar = isDark ? "rgba(75, 175, 255," : "rgba(13, 140, 233,";
+                    ctx.save();
+                    ctx.lineWidth = 1.4;
+                    rainDropsFar.forEach((r) => {
+                        ctx.strokeStyle = `${blueFar}${r.opacity * 0.75})`;
+                        ctx.beginPath();
+                        ctx.moveTo(r.x, r.y);
+                        ctx.lineTo(r.x, r.y + r.len);
+                        ctx.stroke();
+                    });
+                    rainSplashesFar.forEach((s) => {
+                        ctx.strokeStyle = `${blueFar}${s.opacity * 0.85})`;
+                        ctx.beginPath();
+                        ctx.arc(s.x, s.y, s.r, Math.PI, Math.PI * 2);
+                        ctx.stroke();
+                    });
+                    ctx.restore();
+                }
+
+                // Layer 3: Front Grassland
                 drawTerrainLayer(terrainFront, cFront, true, cGrass);
+
+                // Layer 4: Near Rain & Splashes (Falls ON front grassland, IN FRONT of everything)
+                if (isGameOver) {
+                    const blueNear = isDark ? "rgba(64, 165, 255," : "rgba(13, 140, 233,";
+                    ctx.save();
+                    ctx.lineWidth = 1.5;
+                    rainDropsNear.forEach((r) => {
+                        ctx.strokeStyle = `${blueNear}${r.opacity * 0.95})`;
+                        ctx.beginPath();
+                        ctx.moveTo(r.x, r.y);
+                        ctx.lineTo(r.x, r.y + r.len);
+                        ctx.stroke();
+                    });
+                    rainSplashesNear.forEach((s) => {
+                        ctx.strokeStyle = `${blueNear}${s.opacity})`;
+                        ctx.beginPath();
+                        ctx.arc(s.x, s.y, s.r, Math.PI, Math.PI * 2);
+                        ctx.stroke();
+                    });
+                    ctx.restore();
+                }
 
                 // (Removed Overlay)
 
@@ -781,13 +1203,13 @@
 
                     // 1. Hearts (Top Right) - Mirrored position
                     ctx.textAlign = "left";
-                    ctx.font = "14px serif";
+                    ctx.font = "20px serif";
                     // Ensure specific color/alpha for emoji rendering
                     ctx.fillStyle = isDarkHUD ? "#ffffff" : "#333333";
 
-                    const heartSpacing = 25;
+                    const heartSpacing = 30;
                     let heartsDrawX =
-                        canvas.width - 40 - (MAX_LIVES - 1) * heartSpacing;
+                        logicalWidth - 35 - (MAX_LIVES - 1) * heartSpacing;
 
                     for (let i = 0; i < MAX_LIVES; i++) {
                         let char = "❤️";
@@ -828,7 +1250,7 @@
                     const boxH = 26; // Reduced height (was 32)
                     // Padding from corner
                     const boxX = 20;
-                    const boxY = canvas.height - boxH - 20;
+                    const boxY = logicalHeight - boxH - 20;
 
                     // Bento Box Background
                     ctx.fillStyle = isDarkHUD
@@ -874,11 +1296,37 @@
                         );
                     }
 
-                    // 3. Thought Bubble (Game Over)
+                    // 3. Game Over Speech Bubble - a translucent "glass"
+                    // panel: soft tint + bright rim + top sheen + drop
+                    // shadow. (Not a true backdrop blur - Canvas2D's
+                    // filter/drawImage self-sampling for that turned out to
+                    // be unreliable, so this fakes the material instead.)
                     if (isGameOver) {
-                        // Single Line - Slightly Smaller
-                        const bubbleW = 190;
-                        const bubbleH = 30;
+                        const labelText = "GAME OVER";
+                        const scoreText2 = Math.floor(score)
+                            .toString()
+                            .padStart(4, "0");
+                        const labelFont = "bold 9px 'Space Mono', monospace";
+                        const scoreFont = "bold 14px 'Space Mono', monospace";
+
+                        // Size the bubble to the text instead of a fixed
+                        // width, so it hugs "GAME OVER" / the score number
+                        // rather than leaving empty bands on either side.
+                        ctx.font = labelFont;
+                        const labelWidth = ctx.measureText(labelText).width;
+                        ctx.font = scoreFont;
+                        const scoreWidth = ctx.measureText(scoreText2).width;
+                        const textPaddingX = 22;
+                        const bubbleW =
+                            Math.max(labelWidth, scoreWidth) +
+                            textPaddingX * 2;
+
+                        const bubbleH = 48;
+                        const radius = 12;
+                        const tailPull = 6; // how much of the corner the tail eats into
+                        const tailReach = 5; // how far right the tip extends past the edge
+                        const tailDrop = 5; // how far down the tip extends past the bottom
+                        const tailRadius = 4; // rounds all 3 tail vertices, tip included
 
                         // Determine Lane Position
                         const isTopLane = player.y < 50;
@@ -887,18 +1335,23 @@
 
                         // X Axis: Controls horizontal distance from ghost - Mirrored position
                         // In mirrored view, ghost is at canvas.width - player.x - GHOST_SIZE
+                        // Extra headroom on the right for the tail (tailReach).
                         let bubbleX =
-                            canvas.width - player.x - GHOST_SIZE - bubbleW + 8;
+                            logicalWidth -
+                            player.x -
+                            GHOST_SIZE -
+                            bubbleW -
+                            tailReach +
+                            8;
 
-                        // Y Axis: Controls vertical height
+                        // Y Axis: sits above the ghost's head
                         let bubbleY;
                         if (isTopLane) {
                             // Top Lane: Fixed distance from top of screen
                             bubbleY = 10;
                         } else {
                             // Bottom Lane: Position relative to ghost head
-                            // +20 pushes it DOWN closer to the ghost
-                            bubbleY = player.y - bubbleH + 10;
+                            bubbleY = player.y - bubbleH - 6;
                         }
 
                         // --- END CONTROLS ---
@@ -906,53 +1359,92 @@
                         // Screen Edge Clamping - clamp on both edges
                         const safeX = Math.max(
                             5,
-                            Math.min(bubbleX, canvas.width - bubbleW - 5),
+                            Math.min(
+                                bubbleX,
+                                logicalWidth - bubbleW - tailReach - 5,
+                            ),
                         );
                         const safeY = Math.max(bubbleY, 2);
 
-                        // Bubble BG (Secondary / Surface)
-                        // Dark: #333333, Light: #E6E8E0
-                        ctx.fillStyle = isDarkHUD ? "#333333" : "#E6E8E0";
-
-                        ctx.beginPath();
-                        // Round Rect - sharp corner on bottom-right [topLeft, topRight, bottomRight, bottomLeft]
-                        if (ctx.roundRect)
-                            ctx.roundRect(
+                        const traceBubble = () =>
+                            traceSpeechBubblePath(
                                 safeX,
                                 safeY,
                                 bubbleW,
                                 bubbleH,
-                                [10, 10, 0, 10],
+                                radius,
+                                tailPull,
+                                tailReach,
+                                tailDrop,
+                                tailRadius,
                             );
-                        else ctx.rect(safeX, safeY, bubbleW, bubbleH);
-                        ctx.fill();
 
-                        // Bubble Border (Primary)
-                        // Dark: #DADDD0, Light: #282828
-                        ctx.strokeStyle = isDarkHUD ? "#DADDD0" : "#282828";
-                        ctx.lineWidth = 1.5; // Slightly finer border to match theme
+                        // Shadow, cast from a fill in the bubble's own
+                        // color (not from a separate opaque placeholder -
+                        // that trick isn't needed here since there's no
+                        // clip/blur step afterward to cover it up).
+                        ctx.save();
+                        ctx.shadowColor = "rgba(0,0,0,0.25)";
+                        ctx.shadowBlur = 12;
+                        ctx.shadowOffsetY = 5;
+                        traceBubble();
+                        ctx.fillStyle = isDarkHUD
+                            ? "rgba(55,55,60,0.7)"
+                            : "rgba(255,255,255,0.7)";
+                        ctx.fill();
+                        ctx.restore();
+
+                        // Top sheen - glass catching light from above
+                        ctx.save();
+                        traceBubble();
+                        ctx.clip();
+                        const sheen = ctx.createLinearGradient(
+                            0,
+                            safeY,
+                            0,
+                            safeY + bubbleH,
+                        );
+                        sheen.addColorStop(0, "rgba(255,255,255,0.4)");
+                        sheen.addColorStop(1, "rgba(255,255,255,0)");
+                        ctx.fillStyle = sheen;
+                        ctx.fillRect(safeX, safeY, bubbleW, bubbleH * 0.65);
+                        ctx.restore(); // drops the clip
+
+                        // Glass rim
+                        traceBubble();
+                        ctx.strokeStyle = "rgba(255,255,255,0.6)";
+                        ctx.lineWidth = 1;
                         ctx.stroke();
 
-                        // Text (Primary)
-                        ctx.fillStyle = isDarkHUD ? "#DADDD0" : "#282828";
+                        const cx = safeX + bubbleW / 2;
+
                         ctx.textAlign = "center";
                         ctx.textBaseline = "middle";
+                        ctx.shadowColor = "rgba(0,0,0,0.25)";
+                        ctx.shadowBlur = 3;
+                        ctx.shadowOffsetY = 1;
 
-                        const cx = safeX + bubbleW / 2;
-                        const cy = safeY + bubbleH / 2;
+                        // Label
+                        ctx.font = labelFont;
+                        ctx.fillStyle = isDarkHUD
+                            ? "rgba(255,255,255,0.75)"
+                            : "rgba(40,40,40,0.75)";
+                        ctx.fillText(labelText, cx, safeY + 17);
 
-                        // "GAME OVER! SCORE = 123"
-                        ctx.font = "bold 13px 'Space Mono', monospace";
-                        ctx.fillText(
-                            `GAME OVER! SCORE = ${Math.floor(score)}`,
-                            cx,
-                            cy + 1,
-                        );
+                        // Score
+                        ctx.font = scoreFont;
+                        ctx.fillStyle = isDarkHUD ? "#ffffff" : "#282828";
+                        ctx.fillText(scoreText2, cx, safeY + 35);
+
+                        ctx.shadowColor = "transparent";
+                        ctx.shadowBlur = 0;
+                        ctx.shadowOffsetY = 0;
                     }
 
                     // Reset defaults
                     ctx.textBaseline = "alphabetic";
                 }
+                ctx.restore();
             };
 
             const loop = () => {
@@ -970,6 +1462,8 @@
 
                 if (isPlaying && !isGameOver) {
                     update();
+                } else if (isGameOver) {
+                    updateRain();
                 }
 
                 draw();
@@ -1028,7 +1522,12 @@
     }
     }
 
-    initGhostRunner();
+    // astro:page-load fires both on the initial page load (via the window
+    // "load" event, which on an image-heavy page can land well after this
+    // script runs) and on every subsequent View Transitions navigation, so
+    // this single listener is sufficient, so an additional direct call here
+    // would double-init on first load and silently reset the game once all
+    // images finish loading.
     document.addEventListener("astro:page-load", initGhostRunner);
 </script>
 
@@ -1100,15 +1599,36 @@
     }
 
     .instruction {
-        font-family: var(--font-sans);
+        font-family: "Bricolage Grotesque", var(--font-sans);
         font-weight: 500;
-        font-size: 14px;
+        font-size: 12px;
         color: var(--text-primary);
-        background: var(--bg-surface);
-        padding: 8px 16px;
-        border-radius: 20px;
-        border: 1px solid var(--border-subtle);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        background: rgba(255, 255, 255, 0.08);
+        padding: 4px 12px;
+        height: 24px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 6px;
+        border: 1px solid var(--border-focus, rgba(255, 255, 255, 0.25));
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        box-shadow: 
+            inset 0 1px 0 rgba(255, 255, 255, 0.18),
+            inset 0 -1px 0 rgba(0, 0, 0, 0.3),
+            0 2px 6px rgba(0, 0, 0, 0.18);
         text-align: center;
+        pointer-events: none;
+        user-select: none;
+        box-sizing: border-box;
+    }
+
+    :global([data-theme="light"]) .instruction {
+        background: rgba(0, 0, 0, 0.05);
+        border: 1px solid rgba(0, 0, 0, 0.3);
+        box-shadow: 
+            inset 0 1px 0 rgba(255, 255, 255, 0.7),
+            inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+            0 2px 6px rgba(0, 0, 0, 0.08);
     }
 </style>
