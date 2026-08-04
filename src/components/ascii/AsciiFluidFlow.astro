@@ -174,8 +174,10 @@ const { color = '#42BD49', id = 'ascii-fluid-flow' } = Astro.props;
         
         let bLeft = width - 290, bTop = height - 48, bRight = width - 10, bBottom = height - 28;
         let cLeft = width - 260, cTop = height - 25, cRight = width - 10, cBottom = height - 10;
-        let cbLeft = 0, cbTop = 0, cbRight = 0, cbBottom = 0;
-        let hasContactButtons = false;
+        // One zone per direct child (icons group, phone pill, email pill)
+        // instead of a single box around all of them, so the gaps between
+        // those elements aren't swallowed into one big suppressed region.
+        let contactButtonZones: { left: number; top: number; right: number; bottom: number }[] = [];
 
         if (builtMessageEl) {
           const containerRect = container.getBoundingClientRect();
@@ -197,12 +199,22 @@ const { color = '#42BD49', id = 'ascii-fluid-flow' } = Astro.props;
 
         if (contactButtonsEl) {
           const containerRect = container.getBoundingClientRect();
-          const r = contactButtonsEl.getBoundingClientRect();
-          cbLeft = r.left - containerRect.left;
-          cbTop = r.top - containerRect.top;
-          cbRight = r.right - containerRect.left;
-          cbBottom = r.bottom - containerRect.top;
-          hasContactButtons = true;
+          // Unlike .built-message/.copyright (plain <p> tags that size to
+          // their own text), .contact-buttons is width:100% on mobile for
+          // its flex-column layout, so ITS rect stretches across the full
+          // row - way past the actual left-aligned icons/pills inside it.
+          // Measure each child (icons group, phone pill, email pill)
+          // separately so each gets its own tight zone.
+          const children = Array.from(contactButtonsEl.children) as HTMLElement[];
+          contactButtonZones = children.map((el) => {
+            const r = el.getBoundingClientRect();
+            return {
+              left: r.left - containerRect.left,
+              top: r.top - containerRect.top,
+              right: r.right - containerRect.left,
+              bottom: r.bottom - containerRect.top,
+            };
+          });
         }
 
         for (let r = 0; r < rows; r++) {
@@ -275,12 +287,13 @@ const { color = '#42BD49', id = 'ascii-fluid-flow' } = Astro.props;
               y <= (cBottom + 4 + organicWiggle)
             );
 
-            // Separate Contact Buttons Force Field
-            const inContactButtons = hasContactButtons && (
-              x >= (cbLeft - 8 + organicWiggle) &&
-              x <= (cbRight + 8 + organicWiggle) &&
-              y >= (cbTop - 6 + organicWiggle) &&
-              y <= (cbBottom + 6 + organicWiggle)
+            // Separate Contact Buttons Force Field - each icon group/pill
+            // gets its own zone rather than one box spanning all of them
+            const inContactButtons = contactButtonZones.some((z) =>
+              x >= (z.left - 8 + organicWiggle) &&
+              x <= (z.right + 8 + organicWiggle) &&
+              y >= (z.top - 6 + organicWiggle) &&
+              y <= (z.bottom + 6 + organicWiggle)
             );
 
             const isTextZone = inLine1 || inLine2 || inContactButtons;

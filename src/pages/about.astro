@@ -230,18 +230,21 @@ import ImageToggle from "../components/ImageToggle.astro";
 	   image up - it only adds peek margin. Scoped to this page only. */
 	.about-media :global(.image-slider[data-variant="carousel"] .slider-display) {
 		aspect-ratio: auto;
-		height: auto;
+		height: 380px;
 		width: 380px;
 		max-width: 100%;
 	}
 
 	.about-media :global(.image-slider[data-variant="carousel"] .slider-track) {
-		height: auto;
+		height: 100%;
 		align-items: center;
 	}
 
 	.about-media :global(.image-slider[data-variant="carousel"] .slide) {
-		height: auto;
+		height: 100%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
 
 	/* Visually pull the peeking side slides closer to overlap the
@@ -257,8 +260,10 @@ import ImageToggle from "../components/ImageToggle.astro";
 	}
 
 	.about-media :global(.image-slider[data-variant="carousel"] .optimized-slide-image) {
-		width: 100%;
+		width: auto;
 		height: auto;
+		max-width: 100%;
+		max-height: 100%;
 		object-fit: contain;
 	}
 
