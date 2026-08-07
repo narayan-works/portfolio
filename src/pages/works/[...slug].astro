@@ -6,9 +6,7 @@ export async function getStaticPaths() {
   const HOME_ORDER = [
     "dot-threads",
     "pointo",
-    "hey-clicky",
     "prompt-nodes",
-    "lab4c",
     "detour",
     "serendipidity",
     "piko",
@@ -57,7 +55,6 @@ const { Content } = await entry.render();
     tags: nextEntry.data.tags,
     heroImage: nextEntry.data.heroImage,
     category: nextEntry.data.category,
-    ctaUrl: nextEntry.data.ctaUrl,
   } : undefined}
 >
   <Content />

@@ -221,12 +221,12 @@
 
                 // 1. Light multi-point parallel spawn from all Far clouds simultaneously
                 cloudsFar.forEach((c) => {
-                    if (Math.random() < 0.08) {
+                    if (Math.random() < 0.07) {
                         rainDropsFar.push({
                             x: c.x + 10 + Math.random() * Math.max(10, c.w - 20),
                             y: c.y + c.h * 0.5,
-                            len: 8 + Math.random() * 5,
-                            speedY: 4.2 + Math.random() * 1.0,
+                            len: 6 + Math.random() * 4,
+                            speedY: 1.5 + Math.random() * 0.5,
                             opacity: 0.35 + Math.random() * 0.25,
                             layer: "far",
                         });
@@ -235,12 +235,12 @@
 
                 // 2. Light multi-point parallel spawn from all Near clouds simultaneously
                 cloudsNear.forEach((c) => {
-                    if (Math.random() < 0.12) {
+                    if (Math.random() < 0.10) {
                         rainDropsNear.push({
                             x: c.x + 10 + Math.random() * Math.max(10, c.w - 20),
                             y: c.y + c.h * 0.5,
-                            len: 10 + Math.random() * 6,
-                            speedY: 5.0 + Math.random() * 1.2,
+                            len: 8 + Math.random() * 5,
+                            speedY: 1.8 + Math.random() * 0.6,
                             opacity: 0.55 + Math.random() * 0.3,
                             layer: "near",
                         });
@@ -291,8 +291,8 @@
                 const updateSplashes = (splashes: RainSplash[]) => {
                     for (let i = splashes.length - 1; i >= 0; i--) {
                         const s = splashes[i];
-                        s.r += 0.35;
-                        s.opacity -= 0.07;
+                        s.r += 0.15;
+                        s.opacity -= 0.035;
                         if (s.opacity <= 0 || s.r >= s.maxR) {
                             splashes.splice(i, 1);
                         }

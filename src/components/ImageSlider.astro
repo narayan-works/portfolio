@@ -18,6 +18,10 @@ interface Props {
     indicatorType?: "segmented" | "dots";
     variant?: "standard" | "carousel";
     initialIndex?: number;
+    /** Orientation-handling strategy for mixed portrait/landscape slide sets. Defaults to "cover" (existing behavior, unchanged). */
+    frameStrategy?: "cover" | "adaptive" | "letterbox" | "split";
+    /** Adds hover-revealed prev/next arrow buttons. Defaults to off (existing behavior, unchanged). */
+    showArrows?: boolean;
 }
 
 const {
@@ -30,6 +34,8 @@ const {
     indicatorType = "segmented",
     variant = "standard",
     initialIndex = 0,
+    frameStrategy = "cover",
+    showArrows = false,
 } = Astro.props;
 const sliderId = `slider-${Math.random().toString(36).substr(2, 9)}`;
 ---
@@ -39,7 +45,9 @@ const sliderId = `slider-${Math.random().toString(36).substr(2, 9)}`;
     id={sliderId}
     data-transition={transitionType}
     data-variant={variant}
+    data-frame={frameStrategy}
 >
+    <div class="slider-frame">
     <div class="slider-display">
         <div class="slider-track">
             {
@@ -48,6 +56,18 @@ const sliderId = `slider-${Math.random().toString(36).substr(2, 9)}`;
                         {slide.title && (
                             <div class="slide-title">{slide.title}</div>
                         )}
+                        {frameStrategy === "letterbox" &&
+                            typeof slide.src === "string" &&
+                            !slide.src.endsWith(".mp4") && (
+                                <img
+                                    src={slide.src}
+                                    alt=""
+                                    aria-hidden="true"
+                                    loading="lazy"
+                                    decoding="async"
+                                    class="letterbox-bg"
+                                />
+                            )}
                         {typeof slide.src === "string" ? (
                             slide.src.endsWith(".mp4") ? (
                                 <video
@@ -83,6 +103,28 @@ const sliderId = `slider-${Math.random().toString(36).substr(2, 9)}`;
                 ))
             }
         </div>
+
+        {showArrows && (
+            <>
+                <button
+                    type="button"
+                    class="slider-arrow slider-arrow-prev"
+                    aria-label="Previous slide"
+                    data-arrow="prev"
+                >
+                    ‹
+                </button>
+                <button
+                    type="button"
+                    class="slider-arrow slider-arrow-next"
+                    aria-label="Next slide"
+                    data-arrow="next"
+                >
+                    ›
+                </button>
+            </>
+        )}
+    </div>
     </div>
 
     {showControls && (
@@ -136,6 +178,12 @@ const sliderId = `slider-${Math.random().toString(36).substr(2, 9)}`;
         max-width: min(750px, 100%);
         margin-left: auto;
         margin-right: auto;
+    }
+
+    /* Neutral pass-through wrapper by default (only the "adaptive" frame strategy below
+       gives it a fixed reserved height so indicators after it don't shift as slides change size). */
+    .slider-frame {
+        width: 100%;
     }
 
     .slider-display {
@@ -212,6 +260,130 @@ const sliderId = `slider-${Math.random().toString(36).substr(2, 9)}`;
         background: var(--bg-primary); /* Solid background to block transparency bleed through */
     }
 
+    /* PREV/NEXT ARROWS (opt-in via showArrows) */
+    .slider-arrow {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 5;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        border: none;
+        background: rgba(0, 0, 0, 0.4);
+        color: #fff;
+        font-size: 20px;
+        line-height: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        opacity: 0;
+        transition: opacity 0.2s ease, background-color 0.2s ease, transform 0.15s ease;
+        backdrop-filter: blur(4px);
+    }
+
+    .slider-display:hover .slider-arrow {
+        opacity: 1;
+    }
+
+    .slider-arrow:hover {
+        background: rgba(0, 0, 0, 0.65);
+    }
+
+    .slider-arrow:active {
+        transform: translateY(-50%) scale(0.9);
+    }
+
+    .slider-arrow-prev {
+        left: 12px;
+    }
+
+    .slider-arrow-next {
+        right: 12px;
+    }
+
+    /* Touch devices have no hover state to reveal arrows on, so keep them dimly visible */
+    @media (hover: none) {
+        .slider-arrow {
+            opacity: 0.85;
+        }
+    }
+
+    /* FRAME STRATEGY: ADAPTIVE (each slide's own box matches its real aspect ratio).
+       .slider-frame reserves a CONSTANT height sized to the tallest slide in the set
+       (--reserved-ratio, computed once in JS and only ever grows) so indicators/controls
+       rendered after it never shift position. .slider-display sits centered inside that
+       reserved space and is the one that actually animates per active slide. */
+    .image-slider[data-frame="adaptive"] .slider-frame {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        aspect-ratio: var(--reserved-ratio, 16 / 9);
+    }
+
+    .image-slider[data-frame="adaptive"] .slider-display {
+        width: 100%;
+        aspect-ratio: var(--active-ratio, 16 / 9);
+        transition: aspect-ratio 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    /* Beveled top edge, as if each slide catches light from above, plus a
+       hairline depth outline (pure white/black per theme, never tinted). */
+    .image-slider[data-frame="adaptive"] .slide .optimized-slide-image {
+        outline: 1px solid oklch(1 0 0 / 0.1);
+        outline-offset: -1px;
+        box-shadow:
+            inset 0 1px 0 oklch(1 0 0 / 0.35),
+            inset 0 -1px 0 oklch(0 0 0 / 0.25);
+    }
+
+    :global([data-theme="light"]) .image-slider[data-frame="adaptive"] .slide .optimized-slide-image {
+        outline-color: oklch(0 0 0 / 0.1);
+        box-shadow:
+            inset 0 1px 0 oklch(1 0 0 / 0.6),
+            inset 0 -1px 0 oklch(0 0 0 / 0.12);
+    }
+
+    /* FRAME STRATEGY: LETTERBOX (fixed 16:9 frame, contained image over a blurred cover fill) */
+    .image-slider[data-frame="letterbox"] .slider-display {
+        background: #050505;
+    }
+
+    .image-slider[data-frame="letterbox"] .slide .optimized-slide-image {
+        position: relative;
+        z-index: 1;
+        object-fit: contain;
+    }
+
+    .image-slider[data-frame="letterbox"] .slide .letterbox-bg {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: blur(36px) brightness(0.55) saturate(1.2);
+        transform: scale(1.15);
+        z-index: 0;
+        pointer-events: none;
+    }
+
+    /* FRAME STRATEGY: SPLIT (landscape stays full-bleed; portrait shrinks to a narrow contained column) */
+    .image-slider[data-frame="split"] .slider-display {
+        margin-left: auto;
+        margin-right: auto;
+        transition: max-width 0.5s cubic-bezier(0.22, 1, 0.36, 1), aspect-ratio 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .image-slider[data-frame="split"] .slider-display[data-active-orientation="portrait"] {
+        max-width: calc(min(750px, 100%) * var(--active-ratio, 0.75));
+        aspect-ratio: var(--active-ratio, 3 / 4);
+    }
+
+    .image-slider[data-frame="split"] .slider-display[data-active-orientation="portrait"] .optimized-slide-image {
+        object-fit: contain;
+    }
+
     /* CAROUSEL VARIANT (Cover Flow / Peeking Adjacent Slides) */
     .image-slider[data-variant="carousel"] {
         padding-top: 24px;
@@ -225,6 +397,22 @@ const sliderId = `slider-${Math.random().toString(36).substr(2, 9)}`;
         aspect-ratio: 16/10;
         background: transparent;
         border-radius: 0;
+    }
+
+    /* Restore the dynamic aspect-ratio when the "adaptive" frame strategy is combined
+       with the carousel variant — otherwise the fixed 16/10 above wins at equal
+       specificity via source order and silently defeats the adaptive behavior. Width
+       moves to .slider-frame (below) so it — not .slider-display — carries the 55%
+       carousel sizing, since .slider-frame is now the one with the reserved aspect-ratio. */
+    .image-slider[data-variant="carousel"][data-frame="adaptive"] .slider-display {
+        width: 100%;
+        aspect-ratio: var(--active-ratio, 16 / 10);
+        transition: aspect-ratio 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .image-slider[data-variant="carousel"][data-frame="adaptive"] .slider-frame {
+        width: 55%;
+        margin: 0 auto;
     }
 
     .image-slider[data-variant="carousel"] .slide {
@@ -244,6 +432,7 @@ const sliderId = `slider-${Math.random().toString(36).substr(2, 9)}`;
         visibility: visible;
         pointer-events: auto;
         transform-origin: right center;
+        cursor: pointer;
     }
 
     .image-slider[data-variant="carousel"] .slide.next {
@@ -251,6 +440,7 @@ const sliderId = `slider-${Math.random().toString(36).substr(2, 9)}`;
         visibility: visible;
         pointer-events: auto;
         transform-origin: left center;
+        cursor: pointer;
     }
 
     .image-slider[data-variant="carousel"] .slide.active {
@@ -265,6 +455,23 @@ const sliderId = `slider-${Math.random().toString(36).substr(2, 9)}`;
     .image-slider[data-variant="carousel"] .slide .optimized-slide-image {
         border-radius: var(--radius-md);
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Combine the carousel's ambient lift shadow with the adaptive bevel above —
+       equal specificity + later source order would otherwise let this rule
+       silently win and wipe out the bevel's inset box-shadow. */
+    .image-slider[data-variant="carousel"][data-frame="adaptive"] .slide .optimized-slide-image {
+        box-shadow:
+            inset 0 1px 0 oklch(1 0 0 / 0.35),
+            inset 0 -1px 0 oklch(0 0 0 / 0.25),
+            0 10px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    :global([data-theme="light"]) .image-slider[data-variant="carousel"][data-frame="adaptive"] .slide .optimized-slide-image {
+        box-shadow:
+            inset 0 1px 0 oklch(1 0 0 / 0.6),
+            inset 0 -1px 0 oklch(0 0 0 / 0.12),
+            0 10px 30px rgba(0, 0, 0, 0.15);
     }
 
     /* CONTROLS (Bento Segmented Control) */
@@ -362,6 +569,8 @@ const sliderId = `slider-${Math.random().toString(36).substr(2, 9)}`;
         opacity: 0.35;
         transition:
             width 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+            height 0.2s ease,
+            border-radius 0.2s ease,
             opacity 0.25s ease,
             background-color 0.25s ease;
     }
@@ -372,9 +581,22 @@ const sliderId = `slider-${Math.random().toString(36).substr(2, 9)}`;
         background: var(--project-category-hover-color, var(--accent-secondary, #42bd49));
     }
 
+    .slider-dot-wrap.active:hover .slider-dot-pill {
+        height: 9px;
+        border-radius: 4.5px;
+    }
+
     @media (max-width: 1024px) {
         .image-slider[data-variant="carousel"] .slider-display {
             width: 70%; /* Show larger slide on tablet */
+        }
+
+        .image-slider[data-variant="carousel"][data-frame="adaptive"] .slider-display {
+            width: 100%;
+        }
+
+        .image-slider[data-variant="carousel"][data-frame="adaptive"] .slider-frame {
+            width: 70%;
         }
     }
 
@@ -387,6 +609,14 @@ const sliderId = `slider-${Math.random().toString(36).substr(2, 9)}`;
         .image-slider[data-variant="carousel"] .slider-display {
             width: 85%; /* Show even larger slide on mobile */
         }
+
+        .image-slider[data-variant="carousel"][data-frame="adaptive"] .slider-display {
+            width: 100%;
+        }
+
+        .image-slider[data-variant="carousel"][data-frame="adaptive"] .slider-frame {
+            width: 85%;
+        }
     }
 </style>
 
@@ -396,6 +626,7 @@ const sliderId = `slider-${Math.random().toString(36).substr(2, 9)}`;
         if (!slider) return;
 
         const display = slider.querySelector(".slider-display");
+        const frame = slider.querySelector(".slider-frame");
         const track = slider.querySelector(".slider-track");
         const controls = slider.querySelector(".slider-controls");
         const buttons = slider.querySelectorAll(".control-btn");
@@ -405,6 +636,36 @@ const sliderId = `slider-${Math.random().toString(36).substr(2, 9)}`;
         const originalSlides = Array.from(track.children);
         const totalSlides = originalSlides.length;
         if (totalSlides <= 1) return;
+
+        // --- RESERVED FRAME HEIGHT (frameStrategy="adaptive") ---
+        // .slider-frame's height should be sized to the TALLEST slide in the whole
+        // set, fixed once, so indicators/controls after it never shift as the user
+        // navigates between differently-shaped slides. Only ever grows as each
+        // (possibly lazy-loaded) slide's real dimensions become known.
+        const considerReservedRatio = (mediaEl) => {
+            if (!frame) return;
+            const measure = () => {
+                const w = mediaEl.tagName === "VIDEO" ? mediaEl.videoWidth : mediaEl.naturalWidth;
+                const h = mediaEl.tagName === "VIDEO" ? mediaEl.videoHeight : mediaEl.naturalHeight;
+                if (!w || !h) return;
+                const ratio = Math.min(1.9, Math.max(0.62, w / h));
+                const current = parseFloat(frame.style.getPropertyValue("--reserved-ratio"));
+                if (!current || ratio < current) {
+                    frame.style.setProperty("--reserved-ratio", ratio.toFixed(4));
+                }
+            };
+            if (mediaEl.tagName === "VIDEO") {
+                if (mediaEl.videoWidth) measure();
+                else mediaEl.addEventListener("loadedmetadata", measure, { once: true });
+            } else {
+                if (mediaEl.complete && mediaEl.naturalWidth) measure();
+                else mediaEl.addEventListener("load", measure, { once: true });
+            }
+        };
+        originalSlides.forEach((slideEl) => {
+            const media = slideEl.querySelector(".optimized-slide-image");
+            if (media) considerReservedRatio(media);
+        });
 
         // --- PREVENT DUPLICATE CLONING ---
         // Since initSlider can run multiple times due to view transitions, check if clones already exist.
@@ -477,18 +738,24 @@ const sliderId = `slider-${Math.random().toString(36).substr(2, 9)}`;
 
             const applyOrientation = () => {
                 let isPortrait = false;
+                let ratio = 16 / 9;
                 if (media.tagName === "VIDEO") {
                     const v = media;
                     if (v.videoWidth && v.videoHeight) {
                         isPortrait = v.videoWidth < v.videoHeight;
+                        ratio = v.videoWidth / v.videoHeight;
                     }
                 } else if (media.tagName === "IMG") {
                     const img = media;
                     if (img.naturalWidth && img.naturalHeight) {
                         isPortrait = img.naturalWidth < img.naturalHeight;
+                        ratio = img.naturalWidth / img.naturalHeight;
                     }
                 }
                 display.setAttribute("data-active-orientation", isPortrait ? "portrait" : "landscape");
+                // Clamp so an extreme panorama or extreme portrait can't blow out the layout
+                const clampedRatio = Math.min(1.9, Math.max(0.62, ratio));
+                display.style.setProperty("--active-ratio", clampedRatio.toFixed(4));
             };
 
             applyOrientation();
@@ -663,12 +930,16 @@ const sliderId = `slider-${Math.random().toString(36).substr(2, 9)}`;
         let displayStartX = 0;
         let displayCurrentTranslate = 0;
         let displayPrevTranslate = 0;
+        let startTargetSlide = null;
 
         const handleDisplayStart = (e) => {
             // Let clicks/selection on a slide's title text through instead
             // of hijacking them into a swipe-drag (which calls
             // preventDefault() below and would otherwise block selection).
             if (e.target.closest(".slide-title")) return;
+
+            // Capture which slide was clicked before pointer capture redirects target
+            startTargetSlide = e.target.closest(".slide");
 
             stopAutoplay();
 
@@ -723,11 +994,14 @@ const sliderId = `slider-${Math.random().toString(36).substr(2, 9)}`;
             if (!isDisplayDragging) return;
             isDisplayDragging = false;
             
-            display.releasePointerCapture(e.pointerId);
+            try {
+                display.releasePointerCapture(e.pointerId);
+            } catch (err) {}
             
             // Restore transition style
             track.style.removeProperty('transition');
             
+            const deltaX = e.clientX - displayStartX;
             const percentageDifference = displayCurrentTranslate - displayPrevTranslate;
             const threshold = 15;
             let targetIndex = activeIndex;
@@ -736,9 +1010,19 @@ const sliderId = `slider-${Math.random().toString(36).substr(2, 9)}`;
                 targetIndex = activeIndex + 1;
             } else if (percentageDifference > threshold) {
                 targetIndex = activeIndex - 1;
+            } else if (Math.abs(deltaX) < 10) {
+                // Was a click/tap (drag distance < 10px)
+                if (startTargetSlide) {
+                    if (startTargetSlide.classList.contains("prev")) {
+                        targetIndex = activeIndex - 1;
+                    } else if (startTargetSlide.classList.contains("next")) {
+                        targetIndex = activeIndex + 1;
+                    }
+                }
             }
             
             switchToSlideByIndex(targetIndex);
+            startTargetSlide = null;
         };
 
         if (display) {
@@ -746,6 +1030,22 @@ const sliderId = `slider-${Math.random().toString(36).substr(2, 9)}`;
             display.addEventListener("pointermove", handleDisplayMove);
             display.addEventListener("pointerup", handleDisplayEnd);
             display.addEventListener("pointercancel", handleDisplayEnd);
+        }
+
+        // Handle prev/next arrow clicks
+        const arrowPrev = slider.querySelector(".slider-arrow-prev");
+        const arrowNext = slider.querySelector(".slider-arrow-next");
+        if (arrowPrev) {
+            arrowPrev.addEventListener("click", () => {
+                stopAutoplay();
+                switchToSlideByIndex(activeIndex - 1);
+            });
+        }
+        if (arrowNext) {
+            arrowNext.addEventListener("click", () => {
+                stopAutoplay();
+                switchToSlideByIndex(activeIndex + 1);
+            });
         }
 
         // Handle dot clicks
@@ -759,6 +1059,14 @@ const sliderId = `slider-${Math.random().toString(36).substr(2, 9)}`;
                 }
             });
         }
+
+        // Re-measure the segmented-control pill on resize. This also covers
+        // sliders mounted while their container was display:none (e.g. an
+        // inactive tab panel), where the initial measurement is 0.
+        window.addEventListener("resize", () => {
+            const activeBtn = slider.querySelector(".control-btn.active");
+            if (activeBtn) movePillTo(activeBtn);
+        });
     };
 
     // Run immediately if DOM is ready, otherwise wait

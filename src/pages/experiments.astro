@@ -6,17 +6,45 @@ import AsciiFluidFlow from "../components/ascii/AsciiFluidFlow.astro";
 import AsciiTerrain3D from "../components/ascii/AsciiTerrain3D.astro";
 import AsciiConstellation from "../components/ascii/AsciiConstellation.astro";
 import AsciiThermalLens from "../components/ascii/AsciiThermalLens.astro";
+import ImageSlider from "../components/ImageSlider.astro";
 import { FaLinkedin, FaGithub, FaInstagram } from "react-icons/fa6";
+
+// The exact carousel from about.astro (.about-media) — same 5 slides, same mixed
+// portrait/landscape/video/gif orientations that its page-scoped CSS hack
+// (fixed 400px height, hardcoded 300px/580px width swap) currently handles unevenly.
+const sliderTestSlides = [
+  { src: "/assets/projects/about/1.jpeg", alt: "Narayan — photo 1", label: "01" },
+  { src: "/assets/projects/about/2.jpeg", alt: "Narayan — photo 2", label: "02" },
+  { src: "/assets/projects/about/3.jpg", alt: "Narayan — photo 3", label: "03" },
+  { src: "/assets/projects/about/4-compressed.mp4", alt: "Narayan — video 4", label: "04" },
+  { src: "/assets/projects/about/5-compressed.gif", alt: "Narayan — photo 5", label: "05" },
+];
 ---
 
 <Layout
-  title="ASCII Background Experiments | Narayan Ashanahalli"
-  description="5 interactive ASCII background panels designed to replace the footer green expanding ripple effect."
+  title="Design Experiments | Narayan Ashanahalli"
+  description="Interactive design experiments: 5 ASCII footer background panels, and 3 image slider orientation-handling strategies."
   fullWidth={true}
 >
   <HomeNavigation />
 
-  <main class="experiments-container">
+  <div class="experiments-shell">
+    <aside class="experiments-sidebar">
+      <span class="sidebar-kicker">Experiments</span>
+      <nav class="sidebar-nav">
+        <button class="sidebar-tab active" data-tab="ascii" type="button">
+          <span class="sidebar-tab-label">ASCII Footer</span>
+          <span class="sidebar-tab-hint">5 background panels</span>
+        </button>
+        <button class="sidebar-tab" data-tab="slider" type="button">
+          <span class="sidebar-tab-label">Image Slider</span>
+          <span class="sidebar-tab-hint">3 orientation strategies</span>
+        </button>
+      </nav>
+    </aside>
+
+    <main class="experiments-main">
+    <section class="tab-panel active" data-tab-panel="ascii">
     <header class="experiments-header">
       <div class="badge-tag">Interactive Design Experiments</div>
       <h1 class="experiments-title">5 Interactive ASCII Footer Panels</h1>
@@ -331,7 +359,84 @@ import { FaLinkedin, FaGithub, FaInstagram } from "react-icons/fa6";
         </div>
       </section>
     </div>
-  </main>
+    </section>
+
+    <section class="tab-panel" data-tab-panel="slider">
+      <header class="experiments-header">
+        <div class="badge-tag">Interactive Design Experiments</div>
+        <h1 class="experiments-title">3 Takes on the About Page Carousel</h1>
+        <p class="experiments-subtitle">
+          <code>about.astro</code>'s <code>.about-media</code> carousel currently fixes mixed orientations with a page-scoped CSS hack: a fixed 400px height and a hardcoded width swap (580px landscape / 300px portrait). It works, but the peeking prev/next neighbors end up uneven widths depending on what's next to what, and there's no visible affordance for the click-to-navigate on those peeking slides. These 3 iterations replace that hack with a general <code>frameStrategy</code> built into <code>ImageSlider</code> itself, using the exact same 5 slides (3 photos, 1 video, 1 gif — 3 landscape, 2 portrait). Drag, swipe, click a peeking slide, or use the hover arrows to compare.
+        </p>
+      </header>
+
+      <div class="experiments-list">
+        <section class="experiment-card" id="slider-opt-1">
+          <div class="card-header">
+            <div class="header-info">
+              <span class="option-badge">Iteration 01</span>
+              <h2>Adaptive Frame</h2>
+              <p>The container's aspect ratio animates to match each slide's real dimensions. Nothing is cropped or padded — but the frame's height changes as you navigate.</p>
+            </div>
+            <div class="tags">
+              <span class="tag">No Cropping</span>
+              <span class="tag">Animated Aspect Ratio</span>
+            </div>
+          </div>
+          <ImageSlider
+            slides={sliderTestSlides}
+            variant="carousel"
+            indicatorType="dots"
+            frameStrategy="adaptive"
+            constrain={false}
+          />
+        </section>
+
+        <section class="experiment-card" id="slider-opt-2">
+          <div class="card-header">
+            <div class="header-info">
+              <span class="option-badge">Iteration 02</span>
+              <h2>Blurred Letterbox</h2>
+              <p>Frame height stays fixed at 16:9 always. Portrait slides sit centered and fully visible over a blurred, scaled copy of themselves filling the rest of the frame.</p>
+            </div>
+            <div class="tags">
+              <span class="tag">Fixed Frame</span>
+              <span class="tag">Blurred Fill</span>
+            </div>
+          </div>
+          <ImageSlider
+            slides={sliderTestSlides}
+            variant="carousel"
+            indicatorType="dots"
+            frameStrategy="letterbox"
+            constrain={false}
+          />
+        </section>
+
+        <section class="experiment-card" id="slider-opt-3">
+          <div class="card-header">
+            <div class="header-info">
+              <span class="option-badge">Iteration 03 ★ Recommended</span>
+              <h2>Orientation-Aware Split</h2>
+              <p>Landscape slides stay full-bleed cover, matching how the component is used across the rest of the site today. Portrait slides shrink the frame itself into a narrow centered column sized to their own ratio, so nothing gets cropped or blown up.</p>
+            </div>
+            <div class="tags">
+              <span class="tag">Full-Bleed Landscape</span>
+              <span class="tag">Contained Portrait</span>
+            </div>
+          </div>
+          <ImageSlider
+            slides={sliderTestSlides}
+            variant="carousel"
+            indicatorType="dots"
+            frameStrategy="split"
+            constrain={false}
+          />
+        </section>
+      </div>
+    </section>
+    </main>
+  </div>
 </Layout>
 
 <script>
@@ -370,17 +475,139 @@ import { FaLinkedin, FaGithub, FaInstagram } from "react-icons/fa6";
     });
   }
 
+  function setupExperimentTabs() {
+    const tabButtons = document.querySelectorAll('.sidebar-tab');
+    const panels = document.querySelectorAll('.tab-panel');
+    if (!tabButtons.length) return;
+
+    tabButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const target = btn.getAttribute('data-tab');
+        tabButtons.forEach((b) => b.classList.remove('active'));
+        btn.classList.add('active');
+        panels.forEach((panel) => {
+          panel.classList.toggle('active', panel.getAttribute('data-tab-panel') === target);
+        });
+        // Sliders mounted inside a display:none panel measure their
+        // segmented-control pill at 0 width on init; re-dispatch resize
+        // once the panel is actually visible so it re-measures correctly.
+        window.dispatchEvent(new Event('resize'));
+      });
+    });
+  }
+
   document.addEventListener('DOMContentLoaded', setupThemePicker);
   document.addEventListener('astro:page-load', setupThemePicker);
+  document.addEventListener('DOMContentLoaded', setupExperimentTabs);
+  document.addEventListener('astro:page-load', setupExperimentTabs);
 </script>
 
 <style>
-  .experiments-container {
-    max-width: 1200px;
+  .experiments-shell {
+    display: flex;
+    align-items: flex-start;
+    gap: 48px;
+    max-width: 1400px;
     margin: 0 auto;
     padding: 120px 24px 80px;
     font-family: var(--font-sans);
     color: var(--text-primary);
+  }
+
+  .experiments-sidebar {
+    position: sticky;
+    top: 120px;
+    flex: 0 0 220px;
+    width: 220px;
+  }
+
+  .sidebar-kicker {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin-bottom: 14px;
+  }
+
+  .sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .sidebar-tab {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    padding: 10px 14px;
+    border-radius: var(--radius-md);
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--text-secondary);
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .sidebar-tab:hover {
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text-primary);
+  }
+
+  .sidebar-tab.active {
+    background: rgba(66, 189, 73, 0.1);
+    border-color: rgba(66, 189, 73, 0.25);
+    color: var(--text-highlight);
+  }
+
+  .sidebar-tab-label {
+    font-size: 14px;
+    font-weight: 500;
+    font-family: var(--font-sans);
+  }
+
+  .sidebar-tab-hint {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+  }
+
+  .sidebar-tab.active .sidebar-tab-hint {
+    color: var(--accent-secondary);
+  }
+
+  .experiments-main {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .tab-panel {
+    display: none;
+  }
+
+  .tab-panel.active {
+    display: block;
+  }
+
+  @media (max-width: 900px) {
+    .experiments-shell {
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .experiments-sidebar {
+      position: static;
+      width: 100%;
+      flex: none;
+    }
+
+    .sidebar-nav {
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
   }
 
   .badge-tag {
@@ -411,6 +638,14 @@ import { FaLinkedin, FaGithub, FaInstagram } from "react-icons/fa6";
     max-width: 760px;
     line-height: 1.5;
     margin: 0 0 32px 0;
+  }
+
+  .experiments-subtitle code {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    background: rgba(255, 255, 255, 0.06);
+    padding: 1px 6px;
+    border-radius: 4px;
   }
 
   .theme-bar {

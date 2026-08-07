@@ -18,7 +18,7 @@ const {
     category = "",
     ctaUrl,
 } = Astro.props;
-const href = ctaUrl || `/works/${slug}`;
+const href = ctaUrl || (slug ? `/works/${slug}` : "#");
 
 // Normalize category for data attribute (matches HomeProjectCard categories)
 const categoryMap: Record<string, string> = {

@@ -42,6 +42,7 @@ import ImageToggle from "../components/ImageToggle.astro";
 					variant="carousel"
 					autoplay={true}
 					indicatorType="dots"
+					frameStrategy="adaptive"
 					slides={[
 						{
 							src: "/assets/projects/about/1.jpeg",
@@ -213,30 +214,23 @@ import ImageToggle from "../components/ImageToggle.astro";
 	/* This is the clipping boundary (overflow: hidden on .image-slider) -
 	   widening it just gives the peeking prev/next slides more room to
 	   show before getting cut off. It does NOT change how big the active
-	   image looks; that's fixed separately below. Centered within the
-	   860px text-body width above (.about-media matches .about-body's
-	   max-width) rather than the full page width. */
+	   image looks; that's governed by frameStrategy="adaptive" below.
+	   Centered within the 860px text-body width above (.about-media
+	   matches .about-body's max-width) rather than the full page width. */
 	.about-media :global(.image-slider.constrained) {
 		max-width: 860px;
 		margin-left: auto;
 		margin-right: auto;
 	}
 
-	/* Dynamic width for portrait vs landscape slides to eliminate dead whitespace around portrait photos */
-	.about-media :global(.image-slider[data-variant="carousel"] .slider-display) {
-		aspect-ratio: auto;
-		height: 400px;
-		width: 580px;
+	/* Orientation handling (portrait vs. landscape width/height) now lives in
+	   ImageSlider.astro itself via frameStrategy="adaptive" — the frame's
+	   aspect-ratio animates to match each slide's real dimensions instead of
+	   this page hardcoding a 300px/580px width swap. .slider-frame (not
+	   .slider-display) carries the width now, since it's the element with the
+	   fixed reserved height that keeps the dots from bouncing as slides change. */
+	.about-media :global(.image-slider[data-variant="carousel"] .slider-frame) {
 		max-width: 85%;
-		transition: width 0.45s cubic-bezier(0.25, 1, 0.35, 1);
-	}
-
-	.about-media :global(.image-slider[data-variant="carousel"] .slider-display[data-active-orientation="portrait"]) {
-		width: 300px;
-	}
-
-	.about-media :global(.image-slider[data-variant="carousel"] .slider-display[data-active-orientation="landscape"]) {
-		width: 580px;
 	}
 
 	.about-media :global(.image-slider[data-variant="carousel"] .slider-track) {
@@ -261,19 +255,6 @@ import ImageToggle from "../components/ImageToggle.astro";
 
 	.about-media :global(.image-slider[data-variant="carousel"] .slide.next) {
 		transform: scale(0.85) translateX(-40px);
-	}
-
-	.about-media :global(.image-slider[data-variant="carousel"] .optimized-slide-image) {
-		width: auto;
-		height: auto;
-		max-width: 100%;
-		max-height: 100%;
-		object-fit: contain;
-	}
-
-	.about-media :global(.image-slider[data-variant="carousel"] .slide .optimized-slide-image) {
-		border: 1px solid var(--border-subtle);
-		border-radius: var(--radius-md);
 	}
 
 	.about-body p {

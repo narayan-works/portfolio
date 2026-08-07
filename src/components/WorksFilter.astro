@@ -5,8 +5,7 @@
 <div class="works-filter-container">
     <div class="segmented-control" id="works-segmented-control">
         <button class="filter-btn active" data-filter="all">All</button>
-        <button class="filter-btn" data-filter="hardware-ux">Hardware UX</button
-        >
+        <button class="filter-btn" data-filter="hardware-ux">Hardware UX</button>
         <button class="filter-btn" data-filter="web-ux">Web UX</button>
         <button class="filter-btn" data-filter="mobile-ux">Mobile UX</button>
     </div>
@@ -47,27 +46,38 @@
     .segmented-control {
         display: inline-flex;
         align-items: center;
-        background: var(--bg-surface);
-        height: 34px;
+        background: #e6e6e1;
+        height: 36px;
         padding: 4px;
         border-radius: var(--radius-md);
-        border: 1px solid var(--border-subtle);
+        border: 1px solid rgba(0, 0, 0, 0.12);
         box-shadow:
-            inset 0 1px 0 rgba(255, 255, 255, 0.05),
-            0 2px 4px rgba(0, 0, 0, 0.1),
-            0 4px 12px rgba(0, 0, 0, 0.05);
+            inset 0 1px 0 rgba(255, 255, 255, 0.6),
+            2px 3px 8px rgba(0, 0, 0, 0.1),
+            1px 1.5px 3px rgba(0, 0, 0, 0.06);
         position: relative;
-        overflow: visible;
+        overflow: hidden;
         max-width: 100%;
         box-sizing: border-box;
         gap: 4px;
+        transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    :global([data-theme="dark"]) .segmented-control,
+    :root:not([data-theme="light"]) .segmented-control {
+        background: var(--bg-surface);
+        border: 1px solid var(--border-subtle);
+        box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.05),
+            2px 3px 8px rgba(0, 0, 0, 0.3),
+            1px 1.5px 4px rgba(0, 0, 0, 0.2);
     }
 
     /* Each button owns its own background via animatable CSS custom properties */
     .filter-btn {
-        border: none;
+        border: 1px solid transparent;
         color: var(--text-secondary);
-        height: 24px;
+        height: 28px;
         padding: 0 14px;
         border-radius: var(--radius-sm);
         cursor: pointer;
@@ -77,6 +87,7 @@
         text-transform: none;
         letter-spacing: 0;
         line-height: 1;
+        flex: 0 0 auto;
 
         /* Default: transparent background */
         --c1: transparent;
@@ -91,16 +102,16 @@
             var(--c4)
         );
 
-        /*
-           * No stagger on exit — all stops fade simultaneously for a clean vanish.
-           * Stagger is applied only on hover-enter (:hover rule) and JS selectButton().
-           */
+        transform: translateY(0px);
         transition:
-            --c1 0.8s cubic-bezier(0.4, 0, 0.2, 1),
-            --c2 0.8s cubic-bezier(0.4, 0, 0.2, 1),
-            --c3 0.8s cubic-bezier(0.4, 0, 0.2, 1),
-            --c4 0.8s cubic-bezier(0.4, 0, 0.2, 1),
-            color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            --c1 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+            --c2 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+            --c3 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+            --c4 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+            color 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+            box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+            border-color 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+            transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 
         position: relative;
         z-index: 2;
@@ -112,14 +123,23 @@
         box-sizing: border-box;
     }
 
-    /* Simple flat fill on hover-enter — no stagger, all stops at once */
-    .filter-btn:hover {
+    /* Bevel UP (raised key) effect on hover with short delay */
+    .filter-btn:hover:not(.active) {
+        box-shadow:
+            inset 1px 1px 1px rgba(255, 255, 255, 0.45),
+            1px 2px 4px rgba(0, 0, 0, 0.12);
+        border-color: rgba(255, 255, 255, 0.3);
+        transform: translateY(-0.5px);
         transition:
-            --c1 0.18s ease,
-            --c2 0.18s ease,
-            --c3 0.18s ease,
-            --c4 0.18s ease,
-            color 0.18s ease;
+            --c1 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+            --c2 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+            --c3 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+            --c4 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+            color 0.25s ease,
+            box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+            border-color 0.35s ease,
+            transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+        transition-delay: 60ms;
     }
 
     /* ── Hover states (each button has its own brand color) ── */
@@ -128,60 +148,71 @@
         --c2: #000000;
         --c3: #000000;
         --c4: #000000;
-        color: #ffffff !important;
+        color: #ffffff;
     }
     .filter-btn[data-filter="hardware-ux"]:hover {
         --c1: #0d8ce9;
         --c2: #0d8ce9;
         --c3: #0d8ce9;
         --c4: #0d8ce9;
-        color: #000000 !important;
+        color: #000000;
     }
     .filter-btn[data-filter="web-ux"]:hover {
         --c1: #f1614c;
         --c2: #f1614c;
         --c3: #f1614c;
         --c4: #f1614c;
-        color: #000000 !important;
+        color: #000000;
     }
     .filter-btn[data-filter="mobile-ux"]:hover {
         --c1: #f4f537;
         --c2: #f4f537;
         --c3: #f4f537;
         --c4: #f4f537;
-        color: #000000 !important;
+        color: #000000;
     }
     .filter-btn[data-filter="spatial-xd"]:hover {
         --c1: #41b748;
         --c2: #41b748;
         --c3: #41b748;
         --c4: #41b748;
-        color: #000000 !important;
+        color: #000000;
     }
     .filter-btn[data-filter="experiments"]:hover {
         --c1: #a855f7;
         --c2: #a855f7;
         --c3: #a855f7;
         --c4: #a855f7;
-        color: #ffffff !important;
+        color: #ffffff;
     }
 
     /*
-     * ── Active (selected) states ──
-     * JS sets --c1..--c4 directly via style.setProperty() immediately on click,
-     * triggering the slow 0.8s gradient flow from current hover color → selected color.
-     * These rules just set the text color for the non-hovered active state.
+     * ── Active (selected) state with TRUE BEVELED DOWN (pressed inset) depth ──
+     * Top-left inner overhang shadow + bottom-right inner catch-light
      */
     .filter-btn.active {
         color: #000000 !important;
+        border-color: rgba(0, 0, 0, 0.12);
+        transform: translateY(0px);
+        box-shadow:
+            inset 1px 1.5px 3px rgba(0, 0, 0, 0.16),
+            inset -1px -1px 1.5px rgba(255, 255, 255, 0.4);
+        transition:
+            color 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+            box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+            border-color 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+            transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
     }
     .filter-btn.active[data-filter="all"] {
         color: #ffffff !important;
+        border-color: rgba(0, 0, 0, 0.2);
+        box-shadow:
+            inset 1px 1.5px 3px rgba(0, 0, 0, 0.3),
+            inset -1px -1px 1.5px rgba(255, 255, 255, 0.2);
     }
 
     /*
      * When an active button is hovered, it shows its hover state color
-     * (fast 0.2s transition in, slow 0.8s transition out when mouse leaves)
      */
     .filter-btn.active[data-filter="all"]:hover {
         --c1: #000000;
@@ -230,41 +261,33 @@
         box-shadow: 0 0 0 2px var(--accent-secondary);
     }
 
-    /* ── Responsive Mobile ── */
-    @media (max-width: 600px) {
+    /* ── Responsive Mobile & Tablet Adjustments (Height & outer padding stay constant 36px / 4px) ── */
+    @media (max-width: 768px) {
         .works-filter-container {
             justify-content: center;
             width: 100%;
+            padding: 0 4px;
+            box-sizing: border-box;
         }
 
         .segmented-control {
-            display: flex;
-            max-width: 100%;
-            width: auto;
-            gap: 4px;
-            padding: 4px;
-            overflow: visible;
-        }
-
-        .segmented-control::-webkit-scrollbar {
-            display: none;
-        }
-
-        /* Hide spacer since scroll is no longer needed */
-        .segmented-control::after {
-            display: none;
+            gap: 3px;
         }
 
         .filter-btn {
-            flex: 1 1 auto;
-            height: 25px;
-            padding: 0 10px;
+            padding: 0 9px;
+            font-size: 13px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .segmented-control {
+            gap: 2px;
+        }
+
+        .filter-btn {
+            padding: 0 7px;
             font-size: 12px;
-            line-height: 1;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            white-space: nowrap;
         }
     }
 </style>
@@ -300,7 +323,6 @@
             const filter = btn.getAttribute("data-filter") || "all";
             const { c, text } =
                 SELECTED_COLORS[filter] || SELECTED_COLORS["all"];
-            // Stagger each stop 60ms apart — matches the CSS transition-delay
             btn.style.setProperty("--c1", c);
             setTimeout(() => btn.style.setProperty("--c2", c), 60);
             setTimeout(() => btn.style.setProperty("--c3", c), 120);
