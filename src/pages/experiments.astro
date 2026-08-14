@@ -7,11 +7,10 @@ import AsciiTerrain3D from "../components/ascii/AsciiTerrain3D.astro";
 import AsciiConstellation from "../components/ascii/AsciiConstellation.astro";
 import AsciiThermalLens from "../components/ascii/AsciiThermalLens.astro";
 import ImageSlider from "../components/ImageSlider.astro";
+import FloatingCanvas from "../components/FloatingCanvas.astro";
+import ThemeToggle from "../components/ThemeToggle.astro";
 import { FaLinkedin, FaGithub, FaInstagram } from "react-icons/fa6";
 
-// The exact carousel from about.astro (.about-media) — same 5 slides, same mixed
-// portrait/landscape/video/gif orientations that its page-scoped CSS hack
-// (fixed 400px height, hardcoded 300px/580px width swap) currently handles unevenly.
 const sliderTestSlides = [
   { src: "/assets/projects/about/1.jpeg", alt: "Narayan — photo 1", label: "01" },
   { src: "/assets/projects/about/2.jpeg", alt: "Narayan — photo 2", label: "02" },
@@ -19,11 +18,30 @@ const sliderTestSlides = [
   { src: "/assets/projects/about/4-compressed.mp4", alt: "Narayan — video 4", label: "04" },
   { src: "/assets/projects/about/5-compressed.gif", alt: "Narayan — photo 5", label: "05" },
 ];
+
+const canvasTestImages = [
+  { src: "/assets/projects/dot-threads/sketches.png", alt: "Dot Threads — early sketches" },
+  { src: "/assets/projects/pointo/pointo exploded axo.png", alt: "Pointo — exploded axonometric" },
+  { src: "/assets/projects/dot-threads/architecture.png", alt: "Dot Threads — architecture diagram" },
+  { src: "/assets/projects/dot-threads/approach - 1.png", alt: "Dot Threads — approach sketch 1" },
+  { src: "/assets/projects/dot-threads/approach-2.png", alt: "Dot Threads — approach sketch 2" },
+  { src: "/assets/projects/dot-threads/web of info.png", alt: "Dot Threads — web of info diagram" },
+  { src: "/assets/projects/dot-threads/catalouging.png", alt: "Dot Threads — cataloguing sketch" },
+  { src: "/assets/projects/dot-threads/entering.png", alt: "Dot Threads — entering sketch" },
+  { src: "/assets/projects/santuary/santuary 1.png", alt: "Sanctuary — study 1" },
+  { src: "/assets/projects/santuary/santuary 2.png", alt: "Sanctuary — study 2" },
+  { src: "/assets/projects/santuary/evolution.png", alt: "Sanctuary — evolution diagram" },
+  { src: "/assets/projects/santuary/precedents.png", alt: "Sanctuary — precedents" },
+  { src: "/assets/projects/piko/xray.png", alt: "Piko — x-ray diagram" },
+  { src: "/assets/projects/piko/bts.png", alt: "Piko — behind the scenes" },
+  { src: "/assets/projects/pointo/pointing-3.png", alt: "Pointo — pointing study 3" },
+  { src: "/assets/projects/pointo/pointing-4.png", alt: "Pointo — pointing study 4" },
+];
 ---
 
 <Layout
   title="Design Experiments | Narayan Ashanahalli"
-  description="Interactive design experiments: 5 ASCII footer background panels, and 3 image slider orientation-handling strategies."
+  description="Interactive design experiments: Floating Canvas photo wall, ASCII footer background panels, and image slider strategies."
   fullWidth={true}
 >
   <HomeNavigation />
@@ -32,123 +50,77 @@ const sliderTestSlides = [
     <aside class="experiments-sidebar">
       <span class="sidebar-kicker">Experiments</span>
       <nav class="sidebar-nav">
-        <button class="sidebar-tab active" data-tab="ascii" type="button">
+        <button class="sidebar-tab active" data-tab="deck" type="button">
+          <span class="sidebar-tab-label">Card Deck Stack</span>
+        </button>
+        <button class="sidebar-tab" data-tab="canvas" type="button">
+          <span class="sidebar-tab-label">Floating Canvas</span>
+        </button>
+        <button class="sidebar-tab" data-tab="ascii" type="button">
           <span class="sidebar-tab-label">ASCII Footer</span>
-          <span class="sidebar-tab-hint">5 background panels</span>
         </button>
         <button class="sidebar-tab" data-tab="slider" type="button">
           <span class="sidebar-tab-label">Image Slider</span>
-          <span class="sidebar-tab-hint">3 orientation strategies</span>
         </button>
       </nav>
     </aside>
 
     <main class="experiments-main">
-    <section class="tab-panel active" data-tab-panel="ascii">
-    <header class="experiments-header">
-      <div class="badge-tag">Interactive Design Experiments</div>
-      <h1 class="experiments-title">5 Interactive ASCII Footer Panels</h1>
-      <p class="experiments-subtitle">
-        Explore 5 distinct interactive ASCII art background options designed to replace the current footer expanding green radial effect. Hover and move your cursor over each panel to test its reactivity, and try changing the color themes below.
-      </p>
+      <!-- Tab Panel 1: Floating Canvas -->
+      <section class="tab-panel" data-tab-panel="canvas">
+        <header class="experiments-header">
+          <h1 class="experiments-title">Floating Canvas</h1>
+          <p class="experiments-subtitle">3 motion profiles for an expansive, frameless photo wall canvas — an organic staggered grid with uniform gutters, bleeding off all four viewport edges, keeping true natural aspect ratios. The whole wall drifts together as one single rigid block. Drag to pan around, click a tile to focus & expand to the center of the page, or click the top-right expand icon to open full-screen canvas.</p>
+        </header>
 
-      <div class="theme-bar">
-        <span class="theme-label">Global Preset Palette:</span>
-        <button class="theme-chip active" data-color="#42BD49" data-bg="#0a0a0a" data-highlight="#FFFFFF">
-          <span class="dot" style="background: #42BD49;"></span> Dark Green
-        </button>
-        <button class="theme-chip" data-color="#FFB000" data-bg="#0c0a04" data-highlight="#FFFFFF">
-          <span class="dot" style="background: #FFB000;"></span> Dark Amber
-        </button>
-        <button class="theme-chip" data-color="#00F0FF" data-bg="#040b0e" data-highlight="#FFFFFF">
-          <span class="dot" style="background: #00F0FF;"></span> Dark Cyan
-        </button>
-        <button class="theme-chip" data-color="#FFFFFF" data-bg="#0a0a0a" data-highlight="#42BD49">
-          <span class="dot" style="background: #FFFFFF;"></span> Dark Mono
-        </button>
-        <span class="theme-divider">|</span>
-        <button class="theme-chip" data-color="#2E7D32" data-bg="#F4F0EA" data-highlight="#000000" data-mode="light">
-          <span class="dot" style="background: #2E7D32; border: 1px solid #ccc;"></span> Light Green
-        </button>
-        <button class="theme-chip" data-color="#111111" data-bg="#F4F0EA" data-highlight="#42BD49" data-mode="light">
-          <span class="dot" style="background: #111111;"></span> Light Charcoal
-        </button>
-        <button class="theme-chip" data-color="#111111" data-bg="#FFFFFF" data-highlight="#000000" data-mode="light">
-          <span class="dot" style="background: #FFFFFF; border: 1px solid #111;"></span> Light Mono
-        </button>
-      </div>
-    </header>
-
-    <div class="experiments-list">
-      <!-- Option 1: Matrix Digital Rain -->
-      <section class="experiment-card" id="opt-1">
-        <div class="card-header">
-          <div class="header-info">
-            <span class="option-badge">Option 01</span>
-            <h2>ASCII Matrix Rain & Cursor Shockwave</h2>
-            <p>Downward streaming ASCII characters with interactive cursor shockwaves and density bursts.</p>
-          </div>
-          <div class="tags">
-            <span class="tag">Digital Cascade</span>
-            <span class="tag">Interactive Shockwave</span>
-          </div>
-        </div>
-
-        <div class="footer-preview-wrapper" data-preset="#42BD49">
-          <AsciiMatrixRain id="option-1-canvas" />
-
-          <!-- Overlaid Footer Content Replica with Icons -->
-          <div class="footer-overlay">
-            <div class="footer-divider"></div>
-            <div class="footer-content">
-              <div class="footer-left">
-                <p class="contact-message">Let's build something worth caring about. Say hi! 👀</p>
-                <div class="contact-buttons">
-                  <button class="demo-btn">hello@narayan.works</button>
-                  <button class="demo-btn">412-626-2332</button>
-                  <a href="https://linkedin.com/in/narayan-ashanahalli/" target="_blank" class="icon-link" title="LinkedIn">
-                    <FaLinkedin size={24} />
-                  </a>
-                  <a href="https://github.com/narayan-works" target="_blank" class="icon-link" title="GitHub">
-                    <FaGithub size={24} />
-                  </a>
-                  <a href="https://www.instagram.com/narayan.3dm/" target="_blank" class="icon-link" title="Instagram">
-                    <FaInstagram size={24} />
-                  </a>
-                </div>
-              </div>
-              <div class="footer-right">
-                <p class="built-message">Designed in Figma. Built in <a href="https://astro.build" target="_blank" rel="noopener noreferrer" class="built-link">Astro</a> with <a href="https://antigravity.google" target="_blank" rel="noopener noreferrer" class="built-link">Antigravity</a>.</p>
-                <p class="copyright">
-                  <a href="/documentation.html" target="_blank" rel="noopener noreferrer" class="doc-link">Documentation</a> &nbsp;|&nbsp; © {new Date().getFullYear()} Narayan Ashanahalli
-                </p>
-              </div>
+        <div class="experiments-list">
+          <section class="experiment-card" id="canvas-opt-1">
+            <div class="card-header">
+              <span class="option-badge">01</span>
+              <h2>Linear Drift</h2>
+              <p>The entire wall sways slowly along a soft diagonal axis as one rigid plane. Calm, architectural feel.</p>
             </div>
-          </div>
+            <FloatingCanvas id="fc-linear" pan="linear" images={canvasTestImages} />
+          </section>
+
+          <section class="experiment-card" id="canvas-opt-2">
+            <div class="card-header">
+              <span class="option-badge">02 &middot; Recommended</span>
+              <h2>Orbit Drift</h2>
+              <p>The entire wall drifts in a slow, continuous circular orbit. Brings continuous subtle life without breaking into floating bubbles.</p>
+            </div>
+            <FloatingCanvas id="fc-orbit" pan="orbit" images={canvasTestImages} />
+          </section>
+
+          <section class="experiment-card" id="canvas-opt-3">
+            <div class="card-header">
+              <span class="option-badge">03</span>
+              <h2>Scan Loop</h2>
+              <p>The wall sweeps on a wider, deliberate diagonal scan path. Great for panning across large sprawling illustration sets.</p>
+            </div>
+            <FloatingCanvas id="fc-loop" pan="loop" images={canvasTestImages} />
+          </section>
         </div>
       </section>
 
-      <!-- Option 2: Fluid Flow Field -->
-      <section class="experiment-card" id="opt-2">
-        <div class="card-header">
-          <div class="header-info">
-            <span class="option-badge">Option 02 ★ Recommended</span>
-            <h2>Vector Field & ASCII Fluid Turbulence (Click Ripple Enabled)</h2>
-            <p>Grid of directional ASCII glyphs acting as a fluid field. Hover to stir the field, click anywhere to trigger expanding shockwave ripples. Displayed below in both Dark Mode and Light Mode.</p>
-          </div>
-          <div class="tags">
-            <span class="tag">Vector Field</span>
-            <span class="tag">Click Shockwave</span>
-            <span class="tag">Dark & Light Mode</span>
-          </div>
-        </div>
+      <!-- Tab Panel 2: ASCII Footer -->
+      <section class="tab-panel" data-tab-panel="ascii">
+        <header class="experiments-header">
+          <h1 class="experiments-title">ASCII Footer</h1>
+          <p class="experiments-subtitle">5 background options for the footer. Hover a panel to test it — toggle the theme (bottom-right) to see both modes.</p>
+        </header>
 
-        <div class="mode-grid">
-          <!-- Dark Mode Preview -->
-          <div class="mode-block">
-            <div class="mode-title">🌙 Dark Mode Preview</div>
-            <div class="footer-preview-wrapper dark-mode-wrapper">
-              <AsciiFluidFlow id="option-2-dark-canvas" />
+        <div class="experiments-list">
+          <!-- Option 1: Matrix Digital Rain -->
+          <section class="experiment-card" id="opt-1">
+            <div class="card-header">
+              <span class="option-badge">01</span>
+              <h2>Matrix Rain</h2>
+              <p>Streaming characters with a cursor shockwave.</p>
+            </div>
+
+            <div class="footer-preview-wrapper">
+              <AsciiMatrixRain id="option-1-canvas" />
 
               <div class="footer-overlay">
                 <div class="footer-divider"></div>
@@ -172,21 +144,26 @@ const sliderTestSlides = [
                   <div class="footer-right">
                     <p class="built-message">Designed in Figma. Built in <a href="https://astro.build" target="_blank" rel="noopener noreferrer" class="built-link">Astro</a> with <a href="https://antigravity.google" target="_blank" rel="noopener noreferrer" class="built-link">Antigravity</a>.</p>
                     <p class="copyright">
-                  <a href="/documentation.html" target="_blank" rel="noopener noreferrer" class="doc-link">Documentation</a> &nbsp;|&nbsp; © {new Date().getFullYear()} Narayan Ashanahalli
-                </p>
+                      <a href="/documentation.html" target="_blank" rel="noopener noreferrer" class="doc-link">Documentation</a> &nbsp;|&nbsp; © {new Date().getFullYear()} Narayan Ashanahalli
+                    </p>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+          </section>
 
-          <!-- Light Mode Preview -->
-          <div class="mode-block">
-            <div class="mode-title">☀️ Light Mode Preview</div>
-            <div class="footer-preview-wrapper light-mode-wrapper">
-              <AsciiFluidFlow id="option-2-light-canvas" />
+          <!-- Option 2: Fluid Flow Field -->
+          <section class="experiment-card" id="opt-2">
+            <div class="card-header">
+              <span class="option-badge">02 · Recommended</span>
+              <h2>Fluid Field</h2>
+              <p>Hover to stir it, click to ripple. Toggle the theme (bottom-right) to compare.</p>
+            </div>
 
-              <div class="footer-overlay light-overlay">
+            <div class="footer-preview-wrapper" id="option-2-wrapper">
+              <AsciiFluidFlow id="option-2-canvas" />
+
+              <div class="footer-overlay" id="option-2-overlay">
                 <div class="footer-divider"></div>
                 <div class="footer-content">
                   <div class="footer-left">
@@ -208,327 +185,658 @@ const sliderTestSlides = [
                   <div class="footer-right">
                     <p class="built-message">Designed in Figma. Built in <a href="https://astro.build" target="_blank" rel="noopener noreferrer" class="built-link">Astro</a> with <a href="https://antigravity.google" target="_blank" rel="noopener noreferrer" class="built-link">Antigravity</a>.</p>
                     <p class="copyright">
-                  <a href="/documentation.html" target="_blank" rel="noopener noreferrer" class="doc-link">Documentation</a> &nbsp;|&nbsp; © {new Date().getFullYear()} Narayan Ashanahalli
-                </p>
+                      <a href="/documentation.html" target="_blank" rel="noopener noreferrer" class="doc-link">Documentation</a> &nbsp;|&nbsp; © {new Date().getFullYear()} Narayan Ashanahalli
+                    </p>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
+          </section>
 
-      <!-- Option 3: 3D Terrain Topography -->
-      <section class="experiment-card" id="opt-3">
-        <div class="card-header">
-          <div class="header-info">
-            <span class="option-badge">Option 03</span>
-            <h2>3D ASCII Topographic Mesh & Lighting</h2>
-            <p>Real-time 3D terrain rendered with ASCII shade characters (`. : - = + * # % @`). Cursor controls 3D light angle and height elevation waves.</p>
-          </div>
-          <div class="tags">
-            <span class="tag">3D Topography</span>
-            <span class="tag">Shade Ramp</span>
-          </div>
-        </div>
+          <!-- Option 3: 3D Terrain Topography -->
+          <section class="experiment-card" id="opt-3">
+            <div class="card-header">
+              <span class="option-badge">03</span>
+              <h2>3D Terrain</h2>
+              <p>Cursor controls the light angle and elevation.</p>
+            </div>
 
-        <div class="footer-preview-wrapper" data-preset="#42BD49">
-          <AsciiTerrain3D id="option-3-canvas" />
+            <div class="footer-preview-wrapper">
+              <AsciiTerrain3D id="option-3-canvas" />
 
-          <div class="footer-overlay">
-            <div class="footer-divider"></div>
-            <div class="footer-content">
-              <div class="footer-left">
-                <p class="contact-message">Let's build something worth caring about. Say hi! 👀</p>
-                <div class="contact-buttons">
-                  <button class="demo-btn">hello@narayan.works</button>
-                  <button class="demo-btn">412-626-2332</button>
-                  <a href="https://linkedin.com/in/narayan-ashanahalli/" target="_blank" class="icon-link" title="LinkedIn">
-                    <FaLinkedin size={24} />
-                  </a>
-                  <a href="https://github.com/narayan-works" target="_blank" class="icon-link" title="GitHub">
-                    <FaGithub size={24} />
-                  </a>
-                  <a href="https://www.instagram.com/narayan.3dm/" target="_blank" class="icon-link" title="Instagram">
-                    <FaInstagram size={24} />
-                  </a>
+              <div class="footer-overlay">
+                <div class="footer-divider"></div>
+                <div class="footer-content">
+                  <div class="footer-left">
+                    <p class="contact-message">Let's build something worth caring about. Say hi! 👀</p>
+                    <div class="contact-buttons">
+                      <button class="demo-btn">hello@narayan.works</button>
+                      <button class="demo-btn">412-626-2332</button>
+                      <a href="https://linkedin.com/in/narayan-ashanahalli/" target="_blank" class="icon-link" title="LinkedIn">
+                        <FaLinkedin size={24} />
+                      </a>
+                      <a href="https://github.com/narayan-works" target="_blank" class="icon-link" title="GitHub">
+                        <FaGithub size={24} />
+                      </a>
+                      <a href="https://www.instagram.com/narayan.3dm/" target="_blank" class="icon-link" title="Instagram">
+                        <FaInstagram size={24} />
+                      </a>
+                    </div>
+                  </div>
+                  <div class="footer-right">
+                    <p class="built-message">Designed in Figma. Built in <a href="https://astro.build" target="_blank" rel="noopener noreferrer" class="built-link">Astro</a> with <a href="https://antigravity.google" target="_blank" rel="noopener noreferrer" class="built-link">Antigravity</a>.</p>
+                    <p class="copyright">
+                      <a href="/documentation.html" target="_blank" rel="noopener noreferrer" class="doc-link">Documentation</a> &nbsp;|&nbsp; © {new Date().getFullYear()} Narayan Ashanahalli
+                    </p>
+                  </div>
                 </div>
               </div>
-              <div class="footer-right">
-                <p class="built-message">Designed in Figma. Built in <a href="https://astro.build" target="_blank" rel="noopener noreferrer" class="built-link">Astro</a> with <a href="https://antigravity.google" target="_blank" rel="noopener noreferrer" class="built-link">Antigravity</a>.</p>
-                <p class="copyright">
-                  <a href="/documentation.html" target="_blank" rel="noopener noreferrer" class="doc-link">Documentation</a> &nbsp;|&nbsp; © {new Date().getFullYear()} Narayan Ashanahalli
-                </p>
-              </div>
             </div>
-          </div>
-        </div>
-      </section>
+          </section>
 
-      <!-- Option 4: Gravitational Constellation Particle Swarm -->
-      <section class="experiment-card" id="opt-4">
-        <div class="card-header">
-          <div class="header-info">
-            <span class="option-badge">Option 04</span>
-            <h2>Gravitational ASCII Swarm & Constellation</h2>
-            <p>Zero-gravity floating ASCII particles drawn toward the cursor into orbiting swarms, linking with dashed constellation lines.</p>
-          </div>
-          <div class="tags">
-            <span class="tag">Particle Physics</span>
-            <span class="tag">Constellation Links</span>
-          </div>
-        </div>
+          <!-- Option 4: Gravitational Constellation Particle Swarm -->
+          <section class="experiment-card" id="opt-4">
+            <div class="card-header">
+              <span class="option-badge">04</span>
+              <h2>Constellation</h2>
+              <p>Particles orbit the cursor and link into swarms.</p>
+            </div>
 
-        <div class="footer-preview-wrapper" data-preset="#42BD49">
-          <AsciiConstellation id="option-4-canvas" />
+            <div class="footer-preview-wrapper">
+              <AsciiConstellation id="option-4-canvas" />
 
-          <div class="footer-overlay">
-            <div class="footer-divider"></div>
-            <div class="footer-content">
-              <div class="footer-left">
-                <p class="contact-message">Let's build something worth caring about. Say hi! 👀</p>
-                <div class="contact-buttons">
-                  <button class="demo-btn">hello@narayan.works</button>
-                  <button class="demo-btn">412-626-2332</button>
-                  <a href="https://linkedin.com/in/narayan-ashanahalli/" target="_blank" class="icon-link" title="LinkedIn">
-                    <FaLinkedin size={24} />
-                  </a>
-                  <a href="https://github.com/narayan-works" target="_blank" class="icon-link" title="GitHub">
-                    <FaGithub size={24} />
-                  </a>
-                  <a href="https://www.instagram.com/narayan.3dm/" target="_blank" class="icon-link" title="Instagram">
-                    <FaInstagram size={24} />
-                  </a>
+              <div class="footer-overlay">
+                <div class="footer-divider"></div>
+                <div class="footer-content">
+                  <div class="footer-left">
+                    <p class="contact-message">Let's build something worth caring about. Say hi! 👀</p>
+                    <div class="contact-buttons">
+                      <button class="demo-btn">hello@narayan.works</button>
+                      <button class="demo-btn">412-626-2332</button>
+                      <a href="https://linkedin.com/in/narayan-ashanahalli/" target="_blank" class="icon-link" title="LinkedIn">
+                        <FaLinkedin size={24} />
+                      </a>
+                      <a href="https://github.com/narayan-works" target="_blank" class="icon-link" title="GitHub">
+                        <FaGithub size={24} />
+                      </a>
+                      <a href="https://www.instagram.com/narayan.3dm/" target="_blank" class="icon-link" title="Instagram">
+                        <FaInstagram size={24} />
+                      </a>
+                    </div>
+                  </div>
+                  <div class="footer-right">
+                    <p class="built-message">Designed in Figma. Built in <a href="https://astro.build" target="_blank" rel="noopener noreferrer" class="built-link">Astro</a> with <a href="https://antigravity.google" target="_blank" rel="noopener noreferrer" class="built-link">Antigravity</a>.</p>
+                    <p class="copyright">
+                      <a href="/documentation.html" target="_blank" rel="noopener noreferrer" class="doc-link">Documentation</a> &nbsp;|&nbsp; © {new Date().getFullYear()} Narayan Ashanahalli
+                    </p>
+                  </div>
                 </div>
               </div>
-              <div class="footer-right">
-                <p class="built-message">Designed in Figma. Built in <a href="https://astro.build" target="_blank" rel="noopener noreferrer" class="built-link">Astro</a> with <a href="https://antigravity.google" target="_blank" rel="noopener noreferrer" class="built-link">Antigravity</a>.</p>
-                <p class="copyright">
-                  <a href="/documentation.html" target="_blank" rel="noopener noreferrer" class="doc-link">Documentation</a> &nbsp;|&nbsp; © {new Date().getFullYear()} Narayan Ashanahalli
-                </p>
-              </div>
             </div>
-          </div>
-        </div>
-      </section>
+          </section>
 
-      <!-- Option 5: Thermal Sonar Focus Lens -->
-      <section class="experiment-card" id="opt-5">
-        <div class="card-header">
-          <div class="header-info">
-            <span class="option-badge">Option 05</span>
-            <h2>Typographic Heatmap & Thermal Focus Lens</h2>
-            <p>Full-density background grid. Moving the cursor reveals a circular thermal lens that illuminates high-impact ASCII glyphs (`@ # % W M █`).</p>
-          </div>
-          <div class="tags">
-            <span class="tag">Thermal Lens</span>
-            <span class="tag">Heatmap Reveal</span>
-          </div>
-        </div>
+          <!-- Option 5: Thermal Sonar Focus Lens -->
+          <section class="experiment-card" id="opt-5">
+            <div class="card-header">
+              <span class="option-badge">05</span>
+              <h2>Thermal Lens</h2>
+              <p>The cursor reveals a heatmap of dense glyphs.</p>
+            </div>
 
-        <div class="footer-preview-wrapper" data-preset="#42BD49">
-          <AsciiThermalLens id="option-5-canvas" />
+            <div class="footer-preview-wrapper">
+              <AsciiThermalLens id="option-5-canvas" />
 
-          <div class="footer-overlay">
-            <div class="footer-divider"></div>
-            <div class="footer-content">
-              <div class="footer-left">
-                <p class="contact-message">Let's build something worth caring about. Say hi! 👀</p>
-                <div class="contact-buttons">
-                  <button class="demo-btn">hello@narayan.works</button>
-                  <button class="demo-btn">412-626-2332</button>
-                  <a href="https://linkedin.com/in/narayan-ashanahalli/" target="_blank" class="icon-link" title="LinkedIn">
-                    <FaLinkedin size={24} />
-                  </a>
-                  <a href="https://github.com/narayan-works" target="_blank" class="icon-link" title="GitHub">
-                    <FaGithub size={24} />
-                  </a>
-                  <a href="https://www.instagram.com/narayan.3dm/" target="_blank" class="icon-link" title="Instagram">
-                    <FaInstagram size={24} />
-                  </a>
+              <div class="footer-overlay">
+                <div class="footer-divider"></div>
+                <div class="footer-content">
+                  <div class="footer-left">
+                    <p class="contact-message">Let's build something worth caring about. Say hi! 👀</p>
+                    <div class="contact-buttons">
+                      <button class="demo-btn">hello@narayan.works</button>
+                      <button class="demo-btn">412-626-2332</button>
+                      <a href="https://linkedin.com/in/narayan-ashanahalli/" target="_blank" class="icon-link" title="LinkedIn">
+                        <FaLinkedin size={24} />
+                      </a>
+                      <a href="https://github.com/narayan-works" target="_blank" class="icon-link" title="GitHub">
+                        <FaGithub size={24} />
+                      </a>
+                      <a href="https://www.instagram.com/narayan.3dm/" target="_blank" class="icon-link" title="Instagram">
+                        <FaInstagram size={24} />
+                      </a>
+                    </div>
+                  </div>
+                  <div class="footer-right">
+                    <p class="built-message">Designed in Figma. Built with Astro in Antigravity.</p>
+                    <p class="copyright">
+                      <a href="/documentation.html" target="_blank" rel="noopener noreferrer" class="doc-link">Documentation</a> &nbsp;|&nbsp; © {new Date().getFullYear()} Narayan Ashanahalli
+                    </p>
+                  </div>
                 </div>
               </div>
-              <div class="footer-right">
-                <p class="built-message">Designed in Figma. Built with Astro in Antigravity.</p>
-                <p class="copyright">
-                  <a href="/documentation.html" target="_blank" rel="noopener noreferrer" class="doc-link">Documentation</a> &nbsp;|&nbsp; © {new Date().getFullYear()} Narayan Ashanahalli
-                </p>
-              </div>
             </div>
-          </div>
+          </section>
         </div>
       </section>
-    </div>
-    </section>
 
-    <section class="tab-panel" data-tab-panel="slider">
-      <header class="experiments-header">
-        <div class="badge-tag">Interactive Design Experiments</div>
-        <h1 class="experiments-title">3 Takes on the About Page Carousel</h1>
-        <p class="experiments-subtitle">
-          <code>about.astro</code>'s <code>.about-media</code> carousel currently fixes mixed orientations with a page-scoped CSS hack: a fixed 400px height and a hardcoded width swap (580px landscape / 300px portrait). It works, but the peeking prev/next neighbors end up uneven widths depending on what's next to what, and there's no visible affordance for the click-to-navigate on those peeking slides. These 3 iterations replace that hack with a general <code>frameStrategy</code> built into <code>ImageSlider</code> itself, using the exact same 5 slides (3 photos, 1 video, 1 gif — 3 landscape, 2 portrait). Drag, swipe, click a peeking slide, or use the hover arrows to compare.
-        </p>
-      </header>
+      <!-- Tab Panel 3: Image Slider -->
+      <section class="tab-panel" data-tab-panel="slider">
+        <header class="experiments-header">
+          <h1 class="experiments-title">Image Slider</h1>
+          <p class="experiments-subtitle">3 ways to handle mixed portrait/landscape slides in the About page carousel. Same 5 photos in each.</p>
+        </header>
 
-      <div class="experiments-list">
-        <section class="experiment-card" id="slider-opt-1">
-          <div class="card-header">
-            <div class="header-info">
-              <span class="option-badge">Iteration 01</span>
+        <div class="experiments-list slider-list">
+          <section class="experiment-card" id="slider-opt-1">
+            <div class="card-header">
+              <span class="option-badge">01</span>
               <h2>Adaptive Frame</h2>
-              <p>The container's aspect ratio animates to match each slide's real dimensions. Nothing is cropped or padded — but the frame's height changes as you navigate.</p>
+              <p>The frame matches each slide's own shape.</p>
             </div>
-            <div class="tags">
-              <span class="tag">No Cropping</span>
-              <span class="tag">Animated Aspect Ratio</span>
+            <div class="slider-stage">
+              <ImageSlider
+                slides={sliderTestSlides}
+                variant="carousel"
+                indicatorType="dots"
+                frameStrategy="adaptive"
+                constrain={false}
+              />
             </div>
-          </div>
-          <ImageSlider
-            slides={sliderTestSlides}
-            variant="carousel"
-            indicatorType="dots"
-            frameStrategy="adaptive"
-            constrain={false}
-          />
-        </section>
+          </section>
 
-        <section class="experiment-card" id="slider-opt-2">
-          <div class="card-header">
-            <div class="header-info">
-              <span class="option-badge">Iteration 02</span>
+          <section class="experiment-card" id="slider-opt-2">
+            <div class="card-header">
+              <span class="option-badge">02</span>
               <h2>Blurred Letterbox</h2>
-              <p>Frame height stays fixed at 16:9 always. Portrait slides sit centered and fully visible over a blurred, scaled copy of themselves filling the rest of the frame.</p>
+              <p>Fixed frame, blurred fill behind portrait slides.</p>
             </div>
-            <div class="tags">
-              <span class="tag">Fixed Frame</span>
-              <span class="tag">Blurred Fill</span>
+            <div class="slider-stage">
+              <ImageSlider
+                slides={sliderTestSlides}
+                variant="carousel"
+                indicatorType="dots"
+                frameStrategy="letterbox"
+                constrain={false}
+              />
             </div>
-          </div>
-          <ImageSlider
-            slides={sliderTestSlides}
-            variant="carousel"
-            indicatorType="dots"
-            frameStrategy="letterbox"
-            constrain={false}
-          />
-        </section>
+          </section>
 
-        <section class="experiment-card" id="slider-opt-3">
-          <div class="card-header">
-            <div class="header-info">
-              <span class="option-badge">Iteration 03 ★ Recommended</span>
+          <section class="experiment-card" id="slider-opt-3">
+            <div class="card-header">
+              <span class="option-badge">03 · Recommended</span>
               <h2>Orientation-Aware Split</h2>
-              <p>Landscape slides stay full-bleed cover, matching how the component is used across the rest of the site today. Portrait slides shrink the frame itself into a narrow centered column sized to their own ratio, so nothing gets cropped or blown up.</p>
+              <p>Landscape stays full-bleed, portrait shrinks to fit.</p>
             </div>
-            <div class="tags">
-              <span class="tag">Full-Bleed Landscape</span>
-              <span class="tag">Contained Portrait</span>
+            <div class="slider-stage">
+              <ImageSlider
+                slides={sliderTestSlides}
+                variant="carousel"
+                indicatorType="dots"
+                frameStrategy="split"
+                constrain={false}
+              />
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <!-- Tab Panel 4: Card Deck Stack Sandbox (DEFAULT ACTIVE) -->
+      <section class="tab-panel active" data-tab-panel="deck">
+        <header class="experiments-header">
+          <h1 class="experiments-title">Card Deck Stack Sandbox</h1>
+          <p class="experiments-subtitle">
+            Only the Works header pins. Each flat list row converts to a vibrant card and opens to 30% of its body as it crosses the trigger line below the header, then holds there and scrolls away with the page &mdash; cards sit edge to edge with their whole 30% visible, and the upward shadow from each card onto the one before it is what reads as a deck. Sequencing is self-correcting: opening a card pushes the next one down, which is exactly what delays its own turn. The last card runs on past 30% to fully open. Hover any card to open it without disturbing the ones below.
+          </p>
+        </header>
+
+        <div class="deck-exp-container">
+          <div class="deck-exp-stage">
+          <div class="deck-exp-header-wrapper">
+            <div class="deck-exp-header">
+              <h2>Works</h2>
+              <div class="deck-exp-filters">
+                <button class="deck-filter-btn active" data-filter="all" type="button">All</button>
+                <button class="deck-filter-btn" data-filter="hardware-ux" type="button">Hardware</button>
+                <button class="deck-filter-btn" data-filter="web-ux" type="button">Web</button>
+                <button class="deck-filter-btn" data-filter="mobile-ux" type="button">Mobile</button>
+              </div>
             </div>
           </div>
-          <ImageSlider
-            slides={sliderTestSlides}
-            variant="carousel"
-            indicatorType="dots"
-            frameStrategy="split"
-            constrain={false}
-          />
-        </section>
-      </div>
-    </section>
+
+          <div class="deck-exp-rows" id="deck-exp-rows">
+            <!-- 6 Dummy Card Rows -->
+            <div class="deck-exp-row" data-category="web-ux">
+              <div class="deck-exp-row__card">
+                <div class="deck-exp-row__header">
+                  <div class="deck-exp-row__title-group">
+                    <span class="deck-exp-row__num">01</span>
+                    <h3>Project Alpha</h3>
+                  </div>
+                  <p class="deck-exp-row__desc">A shipped Chrome extension turning saved web links into a spatial graph.</p>
+                  <span class="deck-exp-row__tag tag-web">Web UX</span>
+                </div>
+                <div class="deck-exp-row__reveal">
+                  <div class="deck-exp-placeholder-grid">
+                    <div class="deck-exp-box box-meta">
+                      <div class="box-line"></div>
+                      <div class="box-line short"></div>
+                      <div class="box-line"></div>
+                    </div>
+                    <div class="deck-exp-box box-image">
+                      <span>Image Preview Placeholder</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="deck-exp-row" data-category="mobile-ux">
+              <div class="deck-exp-row__card">
+                <div class="deck-exp-row__header">
+                  <div class="deck-exp-row__title-group">
+                    <span class="deck-exp-row__num">02</span>
+                    <h3>Project Beta</h3>
+                  </div>
+                  <p class="deck-exp-row__desc">Ambient correction and embodiment for AI teaching assistants.</p>
+                  <span class="deck-exp-row__tag tag-mobile">Mobile UX</span>
+                </div>
+                <div class="deck-exp-row__reveal">
+                  <div class="deck-exp-placeholder-grid">
+                    <div class="deck-exp-box box-meta">
+                      <div class="box-line"></div>
+                      <div class="box-line short"></div>
+                      <div class="box-line"></div>
+                    </div>
+                    <div class="deck-exp-box box-image">
+                      <span>Image Preview Placeholder</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="deck-exp-row" data-category="hardware-ux">
+              <div class="deck-exp-row__card">
+                <div class="deck-exp-row__header">
+                  <div class="deck-exp-row__title-group">
+                    <span class="deck-exp-row__num">03</span>
+                    <h3>Project Gamma</h3>
+                  </div>
+                  <p class="deck-exp-row__desc">A generative text-to-node product architecture editor on spatial canvas.</p>
+                  <span class="deck-exp-row__tag tag-hardware">Hardware UX</span>
+                </div>
+                <div class="deck-exp-row__reveal">
+                  <div class="deck-exp-placeholder-grid">
+                    <div class="deck-exp-box box-meta">
+                      <div class="box-line"></div>
+                      <div class="box-line short"></div>
+                      <div class="box-line"></div>
+                    </div>
+                    <div class="deck-exp-box box-image">
+                      <span>Image Preview Placeholder</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="deck-exp-row" data-category="mobile-ux">
+              <div class="deck-exp-row__card">
+                <div class="deck-exp-row__header">
+                  <div class="deck-exp-row__title-group">
+                    <span class="deck-exp-row__num">04</span>
+                    <h3>Project Delta</h3>
+                  </div>
+                  <p class="deck-exp-row__desc">A gamified mobile app that nudges people into taking spontaneous detours.</p>
+                  <span class="deck-exp-row__tag tag-mobile">Mobile UX</span>
+                </div>
+                <div class="deck-exp-row__reveal">
+                  <div class="deck-exp-placeholder-grid">
+                    <div class="deck-exp-box box-meta">
+                      <div class="box-line"></div>
+                      <div class="box-line short"></div>
+                      <div class="box-line"></div>
+                    </div>
+                    <div class="deck-exp-box box-image">
+                      <span>Image Preview Placeholder</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="deck-exp-row" data-category="hardware-ux">
+              <div class="deck-exp-row__card">
+                <div class="deck-exp-row__header">
+                  <div class="deck-exp-row__title-group">
+                    <span class="deck-exp-row__num">05</span>
+                    <h3>Project Epsilon</h3>
+                  </div>
+                  <p class="deck-exp-row__desc">A soft robotic companion that detects doom-scrolling through computer vision.</p>
+                  <span class="deck-exp-row__tag tag-hardware">Hardware UX</span>
+                </div>
+                <div class="deck-exp-row__reveal">
+                  <div class="deck-exp-placeholder-grid">
+                    <div class="deck-exp-box box-meta">
+                      <div class="box-line"></div>
+                      <div class="box-line short"></div>
+                      <div class="box-line"></div>
+                    </div>
+                    <div class="deck-exp-box box-image">
+                      <span>Image Preview Placeholder</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="deck-exp-row" data-category="web-ux">
+              <div class="deck-exp-row__card">
+                <div class="deck-exp-row__header">
+                  <div class="deck-exp-row__title-group">
+                    <span class="deck-exp-row__num">06</span>
+                    <h3>Project Zeta (Last Card)</h3>
+                  </div>
+                  <p class="deck-exp-row__desc">A live digital platform for CMU's Lab for Cybernetics connecting practitioner network.</p>
+                  <span class="deck-exp-row__tag tag-web">Web UX</span>
+                </div>
+                <div class="deck-exp-row__reveal">
+                  <div class="deck-exp-placeholder-grid">
+                    <div class="deck-exp-box box-meta">
+                      <div class="box-line"></div>
+                      <div class="box-line short"></div>
+                      <div class="box-line"></div>
+                    </div>
+                    <div class="deck-exp-box box-image">
+                      <span>Image Preview Placeholder</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          </div>
+        </div>
+
+        <div class="deck-exp-after">
+          <p>Footer strip &mdash; the deck above exits as one rigid unit to reveal this.</p>
+        </div>
+      </section>
     </main>
+  </div>
+
+  <div class="global-theme-toggle">
+    <ThemeToggle />
   </div>
 </Layout>
 
 <script>
-  function setupThemePicker() {
-    const chips = document.querySelectorAll('.theme-chip');
-    const wrappers = document.querySelectorAll('.footer-preview-wrapper:not(.light-mode-wrapper)');
-    const containers = document.querySelectorAll('.ascii-canvas-container:not(#option-2-light-canvas-container)');
+  function setupTabs() {
+    const tabs = document.querySelectorAll<HTMLButtonElement>(".sidebar-tab");
+    const panels = document.querySelectorAll<HTMLElement>(".tab-panel");
 
-    const lightContainer = document.querySelector('#option-2-light-canvas-container');
-    if (lightContainer) {
-      lightContainer.setAttribute('data-color', '#2E7D32');
-      lightContainer.setAttribute('data-bg', '#F4F0EA');
-      lightContainer.setAttribute('data-highlight', '#000000');
-      lightContainer.setAttribute('data-mode', 'light');
+    tabs.forEach((tab) => {
+      if (tab.dataset.bound) return;
+      tab.dataset.bound = "1";
+
+      tab.addEventListener("click", () => {
+        const targetTab = tab.getAttribute("data-tab");
+        if (!targetTab) return;
+
+        tabs.forEach((t) => t.classList.remove("active"));
+        panels.forEach((p) => p.classList.remove("active"));
+
+        tab.classList.add("active");
+
+        const targetPanel = document.querySelector<HTMLElement>(
+          `.tab-panel[data-tab-panel="${targetTab}"]`
+        );
+        if (targetPanel) {
+          targetPanel.classList.add("active");
+        }
+
+        window.dispatchEvent(
+          new CustomEvent("experiments-tab-change", { detail: { tab: targetTab } })
+        );
+      });
+    });
+  }
+
+  // ---------------------------------------------------------------------
+  // Card Deck Stack
+  //
+  // The header and cards pin together as one block (.deck-exp-stage) inside a
+  // tall runway container. So a card that has converted HOLDS its position
+  // while later cards convert, and only when the runway is spent does the
+  // whole block release and leave as a unit.
+  //
+  // Rows are absolutely slotted at i * step instead of sitting in flow. That
+  // kills the feedback loop that caused every earlier bug: an opening card
+  // cannot push the cards below it, so nothing it does can perturb the scroll
+  // progress that drives it. Overlap becomes exact rather than emergent.
+  //
+  // `step` is fitted to the viewport, not hardcoded. Six cards at their full
+  // 30% height need ~1300px; a laptop has ~720px. Rather than pick a constant
+  // that only works on one screen, the step is whatever lets the last card
+  // open fully with the rest still stacked above it, capped at the card's own
+  // 30% height (past that they would separate and leave gaps). The surplus of
+  // step over a card's header is how much of each body stays visible — so the
+  // real lever on that is the height of the card content, not this number.
+  //
+  // Progress is one scalar: how far we have scrolled into the pinned runway.
+  // Card i converts across [i * CONVERT, (i+1) * CONVERT]; the last card then
+  // runs on across RUNWAY to open fully.
+  // ---------------------------------------------------------------------
+  let deckTeardown: (() => void) | null = null;
+
+  function setupDeckExperiment() {
+    deckTeardown?.();
+    deckTeardown = null;
+
+    const container = document.querySelector<HTMLElement>(".deck-exp-container");
+    const list = document.getElementById("deck-exp-rows");
+    const headerWrapper = document.querySelector<HTMLElement>(".deck-exp-header-wrapper");
+    if (!container || !list || !headerWrapper) return;
+
+    const NAV_TOP = 64; // fixed site nav top bar offset
+    const PEEK_RATIO = 0.30; // 30% reveal expansion
+    const HOVER_EASE = 0.22;
+
+    interface Model {
+      el: HTMLElement;
+      reveal: HTMLElement;
+      revealH: number;
+      chromeH: number;
+      hover: number;
+      hoverTarget: number;
+      progress: number;
     }
 
-    chips.forEach((chip) => {
-      chip.addEventListener('click', () => {
-        chips.forEach((c) => c.classList.remove('active'));
-        chip.classList.add('active');
+    let models: Model[] = [];
+    let isAnimating = false;
+    let rafId = 0;
 
-        const color = chip.getAttribute('data-color') || '#42BD49';
-        const bg = chip.getAttribute('data-bg') || '#0a0a0a';
-        const highlight = chip.getAttribute('data-highlight') || '#FFFFFF';
+    function visibleRows() {
+      return Array.from(list!.querySelectorAll<HTMLElement>(".deck-exp-row")).filter(
+        (r) => r.style.display !== "none"
+      );
+    }
 
-        containers.forEach((container) => {
-          container.setAttribute('data-color', color);
-          container.setAttribute('data-bg', bg);
-          container.setAttribute('data-highlight', highlight);
-        });
+    function measure() {
+      const rowEls = visibleRows();
+      const headerH = headerWrapper!.offsetHeight || 57;
 
-        wrappers.forEach((wrapper) => {
-          (wrapper as HTMLElement).style.backgroundColor = bg;
-        });
+      let accumulatedStickyTop = NAV_TOP + headerH;
+
+      models = rowEls.map((rowEl, i) => {
+        rowEl.style.setProperty("--stack-index", `${i + 1}`);
+
+        const reveal = rowEl.querySelector<HTMLElement>(".deck-exp-row__reveal")!;
+        reveal.style.maxHeight = "none";
+        const revealH = reveal.scrollHeight;
+        const chromeH = rowEl.offsetHeight - reveal.offsetHeight;
+        const expandedH = chromeH + PEEK_RATIO * revealH;
+
+        // Position each card stickily below the preceding cards' expanded headers
+        rowEl.style.position = "sticky";
+        rowEl.style.top = `${Math.round(accumulatedStickyTop)}px`;
+
+        accumulatedStickyTop += expandedH;
+
+        const prevHover = models[i]?.hover ?? 0;
+        const prevProgress = models[i]?.progress ?? 0;
+
+        return {
+          el: rowEl,
+          reveal,
+          revealH,
+          chromeH,
+          hover: prevHover,
+          hoverTarget: prevHover,
+          progress: prevProgress
+        };
       });
+
+      if (models.length > 0) {
+        // Set total container scroll length so sticky release happens after the stack completes
+        const totalDeckH = accumulatedStickyTop - NAV_TOP;
+        container!.style.minHeight = `${Math.round(totalDeckH + 240)}px`;
+      }
+
+      updateTargets();
+      renderReveals();
+    }
+
+    function updateTargets() {
+      models.forEach((m) => {
+        const rect = m.el.getBoundingClientRect();
+        const stickyTop = parseFloat(m.el.style.top || "0");
+        
+        // Distance from card to its assigned sticky top line
+        const dist = stickyTop - rect.top;
+        // Card smoothly unfolds to 30% preview as it reaches its sticky top line
+        const p = Math.min(1, Math.max(0, (dist + 60) / 120));
+        m.progress = p;
+
+        m.hoverTarget = m.el.matches(":hover") ? 1 : 0;
+      });
+    }
+
+    function renderReveals() {
+      models.forEach((m) => {
+        const targetRatio = m.progress * PEEK_RATIO;
+        const effectiveRatio = targetRatio + m.hover * (1 - targetRatio);
+        
+        m.reveal.style.maxHeight = `${Math.round(effectiveRatio * m.revealH)}px`;
+        m.el.classList.toggle("deck-exp-row--carded", effectiveRatio > 0.05);
+      });
+    }
+
+    function step() {
+      updateTargets();
+      
+      let needsNextFrame = false;
+      models.forEach((m) => {
+        const diff = m.hoverTarget - m.hover;
+        if (Math.abs(diff) > 0.001) {
+          m.hover += diff * HOVER_EASE;
+          if (Math.abs(m.hoverTarget - m.hover) < 0.002) m.hover = m.hoverTarget;
+          else needsNextFrame = true;
+        }
+      });
+
+      renderReveals();
+
+      if (needsNextFrame) {
+        rafId = requestAnimationFrame(step);
+      } else {
+        isAnimating = false;
+      }
+    }
+
+    function requestUpdate() {
+      if (!isAnimating) {
+        isAnimating = true;
+        rafId = requestAnimationFrame(step);
+      }
+    }
+
+    function onFilterClick(this: HTMLElement) {
+      const cat = this.getAttribute("data-filter");
+      filterBtns.forEach((b) => b.classList.toggle("active", b === this));
+
+      list!.querySelectorAll<HTMLElement>(".deck-exp-row").forEach((r) => {
+        r.style.display = cat === "all" || r.getAttribute("data-category") === cat ? "" : "none";
+      });
+
+      measure();
+    }
+
+    const filterBtns = Array.from(document.querySelectorAll<HTMLElement>(".deck-filter-btn"));
+    filterBtns.forEach((btn) => btn.addEventListener("click", onFilterClick));
+
+    list.querySelectorAll(".deck-exp-row").forEach((row) => {
+      row.addEventListener("mouseenter", requestUpdate, { passive: true });
+      row.addEventListener("mouseleave", requestUpdate, { passive: true });
     });
+
+    window.addEventListener("scroll", requestUpdate, { passive: true });
+    window.addEventListener("resize", measure);
+    window.addEventListener("experiments-tab-change", measure);
+
+    measure();
+
+    deckTeardown = () => {
+      cancelAnimationFrame(rafId);
+      isAnimating = false;
+      filterBtns.forEach((btn) => btn.removeEventListener("click", onFilterClick));
+      window.removeEventListener("scroll", requestUpdate);
+      window.removeEventListener("resize", measure);
+      window.removeEventListener("experiments-tab-change", measure);
+    };
   }
 
-  function setupExperimentTabs() {
-    const tabButtons = document.querySelectorAll('.sidebar-tab');
-    const panels = document.querySelectorAll('.tab-panel');
-    if (!tabButtons.length) return;
-
-    tabButtons.forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const target = btn.getAttribute('data-tab');
-        tabButtons.forEach((b) => b.classList.remove('active'));
-        btn.classList.add('active');
-        panels.forEach((panel) => {
-          panel.classList.toggle('active', panel.getAttribute('data-tab-panel') === target);
-        });
-        // Sliders mounted inside a display:none panel measure their
-        // segmented-control pill at 0 width on init; re-dispatch resize
-        // once the panel is actually visible so it re-measures correctly.
-        window.dispatchEvent(new Event('resize'));
-      });
-    });
+  function init() {
+    setupTabs();
+    setupDeckExperiment();
   }
 
-  document.addEventListener('DOMContentLoaded', setupThemePicker);
-  document.addEventListener('astro:page-load', setupThemePicker);
-  document.addEventListener('DOMContentLoaded', setupExperimentTabs);
-  document.addEventListener('astro:page-load', setupExperimentTabs);
+  document.addEventListener("DOMContentLoaded", init);
+  document.addEventListener("astro:page-load", init);
 </script>
 
 <style>
   .experiments-shell {
     display: flex;
-    align-items: flex-start;
-    gap: 48px;
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 120px 24px 80px;
-    font-family: var(--font-sans);
+    min-height: calc(100vh - 64px);
+    width: 100%;
+    margin-top: 64px;
+    background-color: var(--bg-primary);
     color: var(--text-primary);
   }
 
   .experiments-sidebar {
+    width: 240px;
+    flex-shrink: 0;
+    padding: 32px 24px;
+    border-right: 1px solid var(--border-subtle);
     position: sticky;
-    top: 120px;
-    flex: 0 0 220px;
-    width: 220px;
+    top: 64px;
+    height: calc(100vh - 64px);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    box-sizing: border-box;
+    background: var(--bg-primary);
+    z-index: 20;
   }
 
   .sidebar-kicker {
-    display: block;
     font-family: var(--font-mono);
-    font-size: 12px;
-    text-transform: uppercase;
+    font-size: 11px;
     letter-spacing: 0.08em;
+    text-transform: uppercase;
     color: var(--text-muted);
-    margin-bottom: 14px;
   }
 
   .sidebar-nav {
@@ -539,49 +847,38 @@ const sliderTestSlides = [
 
   .sidebar-tab {
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 2px;
-    padding: 10px 14px;
-    border-radius: var(--radius-md);
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: var(--radius-sm);
     border: 1px solid transparent;
     background: transparent;
     color: var(--text-secondary);
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 500;
     text-align: left;
     cursor: pointer;
     transition: all 0.2s ease;
   }
 
   .sidebar-tab:hover {
-    background: rgba(255, 255, 255, 0.04);
     color: var(--text-primary);
+    background: var(--bg-glass);
   }
 
   .sidebar-tab.active {
-    background: rgba(66, 189, 73, 0.1);
-    border-color: rgba(66, 189, 73, 0.25);
-    color: var(--text-highlight);
-  }
-
-  .sidebar-tab-label {
-    font-size: 14px;
-    font-weight: 500;
-    font-family: var(--font-sans);
-  }
-
-  .sidebar-tab-hint {
-    font-size: 12px;
-    color: var(--text-muted);
-    font-family: var(--font-mono);
-  }
-
-  .sidebar-tab.active .sidebar-tab-hint {
-    color: var(--accent-secondary);
+    color: var(--text-primary);
+    background: var(--bg-glass);
+    border-color: var(--border-subtle);
   }
 
   .experiments-main {
     flex: 1;
     min-width: 0;
+    padding: 40px 48px 80px 48px;
+    box-sizing: border-box;
   }
 
   .tab-panel {
@@ -592,310 +889,167 @@ const sliderTestSlides = [
     display: block;
   }
 
-  @media (max-width: 900px) {
-    .experiments-shell {
-      flex-direction: column;
-      gap: 24px;
-    }
-
-    .experiments-sidebar {
-      position: static;
-      width: 100%;
-      flex: none;
-    }
-
-    .sidebar-nav {
-      flex-direction: row;
-      flex-wrap: wrap;
-    }
-  }
-
-  .badge-tag {
-    display: inline-block;
-    padding: 4px 12px;
-    border-radius: var(--radius-full);
-    background: rgba(66, 189, 73, 0.12);
-    color: var(--accent-secondary);
-    font-family: var(--font-mono);
-    font-size: 13px;
-    font-weight: 500;
-    margin-bottom: 16px;
-    border: 1px solid rgba(66, 189, 73, 0.25);
+  .experiments-header {
+    margin-bottom: 36px;
+    max-width: 720px;
   }
 
   .experiments-title {
-    font-family: "Bricolage Grotesque", sans-serif;
-    font-size: 48px;
+    font-family: var(--font-display, var(--font-sans));
+    font-size: 32px;
     font-weight: 600;
-    line-height: 1.1;
-    letter-spacing: -0.04em;
-    margin: 0 0 16px 0;
+    letter-spacing: -0.02em;
+    margin: 0 0 12px 0;
   }
 
   .experiments-subtitle {
-    font-size: 16px;
-    color: var(--text-secondary);
-    max-width: 760px;
-    line-height: 1.5;
-    margin: 0 0 32px 0;
-  }
-
-  .experiments-subtitle code {
-    font-family: var(--font-mono);
-    font-size: 0.9em;
-    background: rgba(255, 255, 255, 0.06);
-    padding: 1px 6px;
-    border-radius: 4px;
-  }
-
-  .theme-bar {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    flex-wrap: wrap;
-    padding: 14px 20px;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-md);
-    margin-bottom: 48px;
-  }
-
-  .theme-label {
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--text-muted);
-    font-family: var(--font-mono);
-  }
-
-  .theme-divider {
-    color: rgba(255, 255, 255, 0.2);
-    margin: 0 4px;
-  }
-
-  .theme-chip {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 6px 14px;
-    border-radius: var(--radius-sm);
-    background: transparent;
-    border: 1px solid var(--border-subtle);
-    color: var(--text-secondary);
-    font-size: 13px;
     font-family: var(--font-sans);
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
-
-  .theme-chip:hover {
-    border-color: var(--text-primary);
-    color: var(--text-primary);
-  }
-
-  .theme-chip.active {
-    background: rgba(255, 255, 255, 0.08);
-    border-color: var(--text-primary);
-    color: var(--text-highlight);
-    font-weight: 500;
-  }
-
-  .theme-chip .dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text-muted);
+    margin: 0;
   }
 
   .experiments-list {
     display: flex;
     flex-direction: column;
-    gap: 64px;
+    gap: 48px;
   }
 
   .experiment-card {
-    background: rgba(255, 255, 255, 0.015);
-    border: 1px solid var(--border-subtle);
-    border-radius: 16px;
-    padding: 32px;
-    transition: border-color 0.2s ease;
-  }
-
-  .experiment-card:hover {
-    border-color: var(--border-focus);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
   }
 
   .card-header {
     display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 24px;
-    gap: 20px;
-    flex-wrap: wrap;
+    flex-direction: column;
+    gap: 4px;
   }
 
   .option-badge {
-    display: inline-block;
     font-family: var(--font-mono);
-    font-size: 12px;
+    font-size: 11px;
+    letter-spacing: 0.06em;
     color: var(--accent-secondary);
-    margin-bottom: 6px;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
   }
 
-  .header-info h2 {
-    font-family: "Bricolage Grotesque", sans-serif;
-    font-size: 26px;
-    font-weight: 500;
-    margin: 0 0 6px 0;
-  }
-
-  .header-info p {
-    font-size: 14px;
-    color: var(--text-secondary);
+  .card-header h2 {
+    font-family: var(--font-sans);
+    font-size: 20px;
+    font-weight: 600;
     margin: 0;
-    max-width: 600px;
   }
 
-  .tags {
-    display: flex;
-    gap: 8px;
-  }
-
-  .tag {
-    padding: 4px 10px;
-    border-radius: 4px;
-    background: rgba(255, 255, 255, 0.05);
-    color: var(--text-secondary);
-    font-size: 12px;
-    font-family: var(--font-mono);
-  }
-
-  /* Mode Grid for Option 2 Dual Preview */
-  .mode-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 24px;
-  }
-
-  .mode-block {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .mode-title {
-    font-family: var(--font-mono);
+  .card-header p {
+    font-family: var(--font-sans);
     font-size: 13px;
-    font-weight: 500;
-    color: var(--text-secondary);
-    letter-spacing: 0.03em;
+    color: var(--text-muted);
+    margin: 0;
   }
 
   .footer-preview-wrapper {
     position: relative;
     width: 100%;
-    min-height: 380px;
-    border-radius: 12px;
+    height: 480px;
+    border-radius: var(--radius-md, 12px);
     overflow: hidden;
-    background: #0a0a0a;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    display: flex;
-    align-items: flex-end;
+    border: 1px solid var(--border-subtle);
+    background: #050505;
   }
 
-  .footer-preview-wrapper.light-mode-wrapper {
-    background: #F4F0EA !important;
-    border-color: rgba(0, 0, 0, 0.12);
+  .slider-stage {
+    width: 100%;
+    border-radius: var(--radius-md, 12px);
+    border: 1px solid var(--border-subtle);
+    padding: 24px;
+    background: var(--bg-glass);
+    box-sizing: border-box;
+  }
+
+  .global-theme-toggle {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 100;
   }
 
   .footer-overlay {
-    position: relative;
-    z-index: 2;
-    width: 100%;
-    padding: 32px 32px 28px;
-    background: linear-gradient(to top, rgba(10, 10, 10, 0.85) 0%, rgba(10, 10, 10, 0.4) 70%, transparent 100%);
-    pointer-events: none;
-  }
-
-  .footer-overlay.light-overlay {
-    background: linear-gradient(to top, rgba(244, 240, 234, 0.92) 0%, rgba(244, 240, 234, 0.5) 70%, transparent 100%);
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 40px;
+    pointer-events: auto;
   }
 
   .footer-divider {
     height: 1px;
-    background: rgba(255, 255, 255, 0.15);
-    margin-bottom: 24px;
     width: 100%;
+    background: rgba(255, 255, 255, 0.12);
+    margin-bottom: 32px;
   }
 
   .footer-overlay.light-overlay .footer-divider {
-    background: rgba(0, 0, 0, 0.15);
+    background: rgba(0, 0, 0, 0.12);
   }
 
   .footer-content {
     display: flex;
-    justify-content: space-between;
     align-items: flex-end;
-    gap: 40px;
-    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 32px;
+    width: 100%;
   }
 
-  .footer-right {
+  .footer-left {
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
-    align-items: flex-end;
-    gap: 4px;
-    text-align: right;
+    gap: 20px;
+    max-width: 520px;
   }
 
   .contact-message {
-    font-family: "Bricolage Grotesque", sans-serif;
-    font-size: 42px;
+    font-family: var(--font-display, var(--font-sans));
+    font-size: 36px;
     font-weight: 500;
-    line-height: 1;
-    letter-spacing: -0.05em;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
     color: #FFFFFF;
-    margin: 0 0 16px 0;
-    max-width: 550px;
-    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
+    margin: 0;
   }
 
   .footer-overlay.light-overlay .contact-message {
     color: #111111;
-    text-shadow: none;
   }
 
   .contact-buttons {
     display: flex;
-    align-items: center;
-    gap: 12px;
     flex-wrap: wrap;
-    pointer-events: auto;
+    align-items: center;
+    gap: 10px;
   }
 
   .demo-btn {
-    display: inline-flex;
-    align-items: center;
-    height: 24px;
-    padding: 0 10px;
-    border-radius: 5px;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: #FFFFFF;
-    font-family: "Bricolage Grotesque", sans-serif;
-    font-size: 12px;
+    font-family: var(--font-sans);
+    font-size: 13px;
     font-weight: 500;
-    line-height: 1;
+    padding: 8px 14px;
+    border-radius: var(--radius-sm);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: rgba(255, 255, 255, 0.08);
+    color: #FFFFFF;
     cursor: pointer;
-    backdrop-filter: blur(8px);
     transition: all 0.2s ease;
-    box-sizing: border-box;
   }
 
   .demo-btn:hover {
-    background: rgba(255, 255, 255, 0.2);
-    border-color: rgba(255, 255, 255, 0.4);
+    background: rgba(255, 255, 255, 0.16);
+    border-color: rgba(255, 255, 255, 0.35);
   }
 
   .footer-overlay.light-overlay .demo-btn {
@@ -984,12 +1138,6 @@ const sliderTestSlides = [
     color: rgba(17, 17, 17, 0.45);
   }
 
-  @media (max-width: 1024px) {
-    .mode-grid {
-      grid-template-columns: 1fr;
-    }
-  }
-
   @media (max-width: 768px) {
     .contact-message {
       font-size: 28px;
@@ -1000,6 +1148,266 @@ const sliderTestSlides = [
     }
     .built-message, .copyright {
       text-align: left;
+    }
+  }
+
+  /* ── Card Deck Stack Sandbox ──────────────────────────────────────────
+     Only the Works header is sticky. The rows stay in normal flow and simply
+     open as they pass the trigger line, so each card's full 30% height stays
+     visible — they sit edge to edge rather than clipping one another, and the
+     upward shadow from the card below is what reads as a stacked deck. */
+  /* The container is pure scroll runway; its height (set in JS) is how much
+     scrolling the deck consumes while it assembles. */
+  .deck-exp-container {
+    position: relative;
+    width: 100%;
+    max-width: 880px;
+    margin: 0 auto;
+    overflow-anchor: none;
+  }
+
+  /* Header and cards pin together as one block, so a converted card holds its
+     position instead of scrolling away while later cards convert. When the
+     container's runway runs out the whole block releases and leaves as a unit. */
+  .deck-exp-stage {
+    position: relative;
+    width: 100%;
+  }
+
+  .deck-exp-header-wrapper {
+    position: sticky;
+    top: 64px;
+    z-index: 200;
+    background: var(--bg-primary);
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .deck-exp-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .deck-exp-header h2 {
+    font-family: var(--font-display, var(--font-sans));
+    font-size: 24px;
+    font-weight: 600;
+    margin: 0;
+  }
+
+  .deck-exp-filters {
+    display: flex;
+    gap: 8px;
+  }
+
+  .deck-filter-btn {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 500;
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid var(--border-subtle);
+    background: transparent;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .deck-filter-btn.active, .deck-filter-btn:hover {
+    background: var(--text-primary);
+    color: var(--bg-primary);
+    border-color: var(--text-primary);
+  }
+
+  .deck-exp-rows {
+    position: relative;
+    width: 100%;
+  }
+
+  .deck-exp-row {
+    position: sticky;
+    top: 128px;
+    z-index: var(--stack-index, 1);
+  }
+
+  /* Hovered card floats clear of the rest of the deck, but stays under the
+     header so it never covers the filters. */
+  .deck-exp-row:hover {
+    z-index: 150;
+  }
+
+  .deck-exp-row__card {
+    display: flex;
+    flex-direction: column;
+    padding: 0 20px;
+    background: var(--bg-primary);
+    border-top: 1px solid transparent;
+    border-bottom: 1px solid var(--border-subtle);
+    color: var(--text-primary);
+    transition:
+      background-color 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+      background-image 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+      border-color 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+      box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+      color 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* Top-cast shadow is the whole trick: it lands on the card behind, which
+     is what reads as one card physically resting on another. */
+  .deck-exp-row--carded .deck-exp-row__card {
+    border-bottom-color: transparent;
+    box-shadow:
+      0 -12px 30px rgba(0, 0, 0, 0.25),
+      0 14px 28px rgba(0, 0, 0, 0.14),
+      inset 0 1px 0 rgba(255, 255, 255, 0.28);
+  }
+
+  .deck-exp-row[data-category="web-ux"].deck-exp-row--carded .deck-exp-row__card {
+    background-image: linear-gradient(135deg, #ff7e36 0%, #cc4700 100%);
+    border-top-color: #e05105;
+    color: #1a0a00;
+  }
+
+  .deck-exp-row[data-category="mobile-ux"].deck-exp-row--carded .deck-exp-row__card {
+    background-image: linear-gradient(135deg, #ffdf4c 0%, #ccab00 100%);
+    border-top-color: #dfbc05;
+    color: #191400;
+  }
+
+  .deck-exp-row[data-category="hardware-ux"].deck-exp-row--carded .deck-exp-row__card {
+    background-image: linear-gradient(135deg, #82c6f6 0%, #4696d3 100%);
+    border-top-color: #559ed5;
+    color: #04182a;
+  }
+
+  .deck-exp-row__header {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 2fr) auto;
+    column-gap: 16px;
+    align-items: center;
+    /* Fixed: nothing pins, so the header never has to compress into a tab. */
+    height: 64px;
+  }
+
+  .deck-exp-row__title-group {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    min-width: 0;
+  }
+
+  .deck-exp-row__num {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    opacity: 0.55;
+    flex-shrink: 0;
+  }
+
+  .deck-exp-row__header h3 {
+    font-family: var(--font-sans);
+    font-size: 17px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .deck-exp-row__desc {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    margin: 0;
+    opacity: 0.75;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .deck-exp-row__tag {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    white-space: nowrap;
+    padding: 3px 10px;
+    border-radius: 11px;
+    border: 1px solid var(--border-subtle);
+    opacity: 0.8;
+    transition:
+      background-color 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+      border-color 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .deck-exp-row--carded .deck-exp-row__tag {
+    background: rgba(0, 0, 0, 0.14);
+    border-color: rgba(255, 255, 255, 0.28);
+    opacity: 1;
+  }
+
+  .deck-exp-row__reveal {
+    overflow: hidden;
+    max-height: 0;
+  }
+
+  .deck-exp-placeholder-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 16px;
+    padding: 4px 0 20px;
+  }
+
+  .deck-exp-box {
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.14);
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    padding: 16px;
+    box-sizing: border-box;
+  }
+
+  .box-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .box-line {
+    height: 10px;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.34);
+    width: 100%;
+  }
+
+  .box-line.short {
+    width: 60%;
+  }
+
+  .box-image {
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    opacity: 0.7;
+  }
+
+  .deck-exp-after {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 48px 20px 120px;
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  .deck-exp-after p {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-muted);
+    margin: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .deck-exp-row__card {
+      transition-duration: 0.01ms;
     }
   }
 </style>

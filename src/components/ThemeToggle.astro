@@ -8,8 +8,6 @@
         <svg
             class="sun-icon"
             xmlns="http://www.w3.org/2000/svg"
-            width="20"
-            height="20"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
@@ -40,8 +38,6 @@
         <svg
             class="moon-icon"
             xmlns="http://www.w3.org/2000/svg"
-            width="20"
-            height="20"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
@@ -56,8 +52,8 @@
 
 <style>
     #theme-toggle {
-        width: 36px;
-        height: 36px;
+        width: 32px;
+        height: 32px;
         padding: 0;
         background: rgba(128, 128, 128, 0.12);
         backdrop-filter: blur(12px) saturate(150%);
@@ -90,17 +86,21 @@
 
     .icon-wrap {
         position: relative;
-        width: 20px;
-        height: 20px;
-        /* global.css sets `span { cursor: text }` for prose; this span is
-           an icon wrapper, not text, so restore the button's own cursor */
+        width: 15px;
+        height: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         cursor: inherit;
     }
 
     .sun-icon,
     .moon-icon {
         position: absolute;
-        inset: 0;
+        top: 0;
+        left: 0;
+        width: 15px;
+        height: 15px;
         transition:
             opacity 0.35s ease,
             transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);

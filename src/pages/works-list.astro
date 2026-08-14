@@ -1,4 +1,6 @@
 ---
+// PROTOTYPE: alternate editorial-list variant of the homepage works grid.
+// Lives at /works-list, standalone from index.astro — not wired into it yet.
 import Layout from "../layouts/Layout.astro";
 import HomeNavigation from "../components/HomeNavigation.astro";
 import ThemeToggle from "../components/ThemeToggle.astro";
@@ -21,6 +23,8 @@ import musibuddyHero from "../assets/projects/musibuddy/hero-musibuddy.gif";
 import lab4cHero from "../assets/projects/lab4c/hero.jpeg";
 import clickyHero from "../assets/projects/clicky/clicky.gif";
 
+// Same categorization used for the bento grid's filter on index.astro,
+// kept 1:1 so filtering behaves identically here.
 const CATEGORIES: Record<string, string[]> = {
 	"dot-threads": ["web-ux"],
 	pointo: ["hardware-ux"],
@@ -66,14 +70,14 @@ const allProjects = (await getCollection("projects"))
 ---
 
 <Layout
-	title="Narayan Ashanahalli"
-	description="👋 I'm Narayan, a Product Designer & Prototyper building 0-to-1 experiences across AI, hardware, and digital infrastructure."
+	title="Works (list prototype) | Narayan Ashanahalli"
+	description="Prototype: an alternate list-style layout for the works section."
 	fullWidth={true}
 >
 	<HomeNavigation />
 
 	<div class="works-list-layout">
-		<section class="hero-bio" id="about">
+		<section class="hero-bio">
 			<div class="bio-content">
 				<div class="hero-headline bio-short">
 					<div class="bio-line-1">
@@ -126,7 +130,7 @@ const allProjects = (await getCollection("projects"))
 			</div>
 		</section>
 
-		<section id="works" class="works-deck-section">
+		<div class="works-deck-section">
 			<div class="works-list-header-wrapper">
 				<header class="works-list-header">
 					<h1 class="works-list-title">Works</h1>
@@ -182,7 +186,7 @@ const allProjects = (await getCollection("projects"))
 					))
 				}
 			</div>
-		</section>
+		</div>
 
 		<Footer />
 		<div class="game-bottom-wrapper">
@@ -199,6 +203,8 @@ const allProjects = (await getCollection("projects"))
 
 <style>
 	.works-list-layout {
+		/* Single source of truth for the centered content column shared by the
+		   hero bio, the works header, and the rows strip. */
 		--content-col: 750px;
 		width: 100%;
 		max-width: 100%;
@@ -259,6 +265,7 @@ const allProjects = (await getCollection("projects"))
 
 	.hero-actions-row {
 		display: flex;
+		/* Only one child here, so space-between would pin it left. */
 		justify-content: flex-end;
 		align-items: flex-start;
 		flex-wrap: wrap;
@@ -275,6 +282,9 @@ const allProjects = (await getCollection("projects"))
 		gap: 0.25rem;
 	}
 
+	/* Mirrors index.astro's computed .hero-actions: its later rule overrides
+	   display/justify-content/gap but not flex-direction, so the homepage
+	   stacks CV above Contact. */
 	.hero-actions {
 		display: flex;
 		flex-direction: column;
@@ -333,6 +343,7 @@ const allProjects = (await getCollection("projects"))
 		.hero-actions {
 			align-items: flex-start !important;
 		}
+		.bio-greeting,
 		.bio-line-1,
 		.bio-line-2,
 		.dynamic-color-text {
@@ -345,6 +356,11 @@ const allProjects = (await getCollection("projects"))
 			font-size: 12px !important;
 		}
 
+		/* Mirrors index.astro's .works-header-sticky at this breakpoint: the
+		   filter detaches from the header and floats above the bottom edge
+		   instead of scrolling away with it. pointer-events are off on the
+		   full-width box so it doesn't swallow taps on the rows beneath, and
+		   back on for the control itself. */
 		.works-list-filter {
 			position: fixed;
 			bottom: 24px;
@@ -364,6 +380,8 @@ const allProjects = (await getCollection("projects"))
 		}
 	}
 
+	/* Scrolls away with the page like the hero bio — no sticky positioning and
+	   no stacking context, so hovered row cards are never overlapped by it. */
 	.works-list-header-wrapper {
 		padding: 0 0 10px;
 		margin-bottom: 0;
@@ -379,6 +397,15 @@ const allProjects = (await getCollection("projects"))
 		margin: 0 auto;
 	}
 
+	/* .segmented-control insets its last tab by 4px padding + 1px border, so its
+	   box edge sits 5px past the visible tab. Shift it out by that much and the
+	   tab's right edge lands on the content column — level with the description
+	   text and the row rules below.
+
+	   transform, not a negative margin: the control is max-width: 100% inside a
+	   width: 100% wrapper, so shrinking its margin box shrinks the wrapper too,
+	   squeezing the control below its natural width and clipping "Mobile"
+	   against its own overflow: hidden. A transform doesn't affect layout. */
 	.works-list-filter :global(.segmented-control) {
 		transform: translateX(5px);
 	}
@@ -397,6 +424,12 @@ const allProjects = (await getCollection("projects"))
 	}
 
 	.works-list-rows {
+		/* The --content-col column (same as .works-list-header) plus a
+		   --row-bleed gutter on each side. WorksListRow's own 20px inner padding
+		   cancels the bleed back out, so titles/descriptions sit flush with the
+		   header's "Works" label and filter pills while the hover card + rules
+		   run wider. min()/max() keep the bleed from running off-screen once the
+		   viewport is narrower than the content column. */
 		--row-bleed: 10px;
 		width: min(
 			calc(var(--content-col) + var(--row-bleed) * 2),
@@ -411,6 +444,9 @@ const allProjects = (await getCollection("projects"))
 		z-index: 1;
 	}
 
+	/* Top rule lives on the first row (WorksListRow's :first-child::before) so it
+	   paints above that row's opaque background instead of behind it. */
+
 	.toggle-floater {
 		position: fixed !important;
 		bottom: 24px !important;
@@ -423,7 +459,6 @@ const allProjects = (await getCollection("projects"))
 		display: flex;
 		justify-content: flex-end;
 	}
-
 	.sidebar-controls {
 		display: flex;
 		gap: 1rem;
@@ -524,6 +559,7 @@ const allProjects = (await getCollection("projects"))
 			border: none !important;
 		}
 
+		/* DEFAULT (Dark Mode Canvas Background): Dark Charcoal Card with White Text & Bevel Highlight */
 		.works-mobile-cards :global(.home-project-card) {
 			background: #141417 !important;
 			border: 2px solid rgba(255, 255, 255, 0.2) !important;
@@ -569,6 +605,7 @@ const allProjects = (await getCollection("projects"))
 			margin-bottom: 8px !important;
 		}
 
+		/* Light Mode Canvas ([data-theme="light"]): White Card with Dark Text & Subtle Grey Border */
 		:global([data-theme="light"])
 			.works-mobile-cards
 			:global(.home-project-card) {
@@ -615,6 +652,10 @@ const allProjects = (await getCollection("projects"))
 			align-items: flex-start;
 			gap: var(--space-sm);
 		}
+		/* Width comes from the fixed left/right pair set at 768px — setting it
+		   here too would over-constrain the box and blow past the right inset. */
+		/* The 5px nudge exists only to line the last tab up with the content
+		   column's right edge; once centred it just throws the control off. */
 		.works-list-filter :global(.segmented-control) {
 			transform: none;
 		}
@@ -639,6 +680,7 @@ const allProjects = (await getCollection("projects"))
 </style>
 
 <script>
+	// Lightweight filter: show/hide rows and mobile cards by category only
 	function setupWorksListFilter() {
 		const rows = Array.from(
 			document.querySelectorAll("[data-categories]"),
@@ -667,18 +709,30 @@ const allProjects = (await getCollection("projects"))
 	setupWorksListFilter();
 	document.addEventListener("astro:page-load", setupWorksListFilter);
 
+	// Line the rows' description column up with the filter control's left edge.
+	// The control is content-sized, so its width has to be measured rather than
+	// assumed — it shifts with the label text and with the loaded font.
 	function syncDescColumn() {
 		const rows = document.getElementById("works-list-rows");
+		// The first tab, not the control itself — the control's own 4px padding
+		// and 1px border sit outside the visible pill, and it's the pill edge
+		// the description should line up with.
 		const firstTab = document.querySelector(
 			".segmented-control .filter-btn",
 		);
 		if (!rows || !firstTab) return;
 
+		// Under 641px the header stacks, so the filter no longer defines an edge
+		// for the rows to align to — drop back to the even split.
 		if (window.innerWidth <= 640) {
 			rows.style.removeProperty("--desc-col");
 			return;
 		}
 
+		// Measure edge-to-edge rather than rebuilding the number from the
+		// control's width plus its padding/border/transform offsets — the rect
+		// already accounts for all of them, and the strip's right edge doesn't
+		// move when --desc-col changes, so there's no feedback loop.
 		const width =
 			rows.getBoundingClientRect().right -
 			firstTab.getBoundingClientRect().left;
@@ -692,10 +746,16 @@ const allProjects = (await getCollection("projects"))
 	window.addEventListener("resize", syncDescColumn);
 	if (document.fonts) document.fonts.ready.then(syncDescColumn);
 
+	// Opening a card grows the list, which would push the footer — and the gap
+	// above it — further down the page. Pin the container to its collapsed
+	// height so an expanded card overflows into that gap (the strip is already
+	// overflow: visible) rather than displacing anything below it.
 	function lockRowsHeight() {
 		const rows = document.getElementById("works-list-rows");
 		if (!rows) return;
 
+		// Never measure while a card is open, or the expanded height gets
+		// baked in as the resting one.
 		if (
 			rows.querySelector(
 				".works-list-row:hover, .works-list-row--expanded",
@@ -709,6 +769,8 @@ const allProjects = (await getCollection("projects"))
 		if (height > 0) rows.style.height = `${height}px`;
 	}
 
+	// Mirrors index.astro's updateWorksFilterPosition: the floating mobile
+	// filter stops above the footer instead of sliding underneath it.
 	function updateFloatingElements() {
 		const filter = document.querySelector(
 			".works-list-filter",
@@ -756,11 +818,15 @@ const allProjects = (await getCollection("projects"))
 	lockRowsHeight();
 	document.addEventListener("astro:page-load", lockRowsHeight);
 	window.addEventListener("resize", lockRowsHeight);
+	// Filtering hides rows, so the collapsed height changes — re-measure after
+	// the display changes have been applied.
 	window.addEventListener("works-filter-change", () => {
 		requestAnimationFrame(lockRowsHeight);
 	});
+	// Wrapping depends on the loaded font, so the first measurement can be off.
 	if (document.fonts) document.fonts.ready.then(lockRowsHeight);
 
+	// Bio text color follows the active filter, same as the homepage hero.
 	function setupDynamicBioColor() {
 		const FILTER_COLORS: Record<string, string> = {
 			all: "#42BE4A",
@@ -790,6 +856,7 @@ const allProjects = (await getCollection("projects"))
 	setupDynamicBioColor();
 	document.addEventListener("astro:page-load", setupDynamicBioColor);
 
+	// Smooth continuous scroll-driven card unstacking animation for mobile view
 	function setupMobileCardScrollAnimation() {
 		if (window.innerWidth > 768) return;
 		const cardWrappers = document.querySelectorAll(
@@ -799,16 +866,18 @@ const allProjects = (await getCollection("projects"))
 
 		function updateGradualCardScroll() {
 			const vh = window.innerHeight;
+			// Smooth interpolation range: unstacking starts at 95% screen height and finishes at 80% screen height
 			const startY = vh * 0.95;
 			const endY = vh * 0.80;
 			const distance = startY - endY;
 
 			cardWrappers.forEach((card, index) => {
-				if (index === 0) return;
+				if (index === 0) return; // First card stays at rest
 				const rect = card.getBoundingClientRect();
 				const rawProgress = (startY - rect.top) / distance;
 				const progress = Math.max(0, Math.min(1, rawProgress));
 
+				// Smooth mathematical linear interpolation: -160px when stacked, 24px when unstacked
 				const marginTop = -160 + progress * 184;
 				(card as HTMLElement).style.setProperty(
 					"--card-margin-top",

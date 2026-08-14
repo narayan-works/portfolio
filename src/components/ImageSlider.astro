@@ -384,62 +384,64 @@ const sliderId = `slider-${Math.random().toString(36).substr(2, 9)}`;
         object-fit: contain;
     }
 
-    /* CAROUSEL VARIANT (Cover Flow / Peeking Adjacent Slides) */
+    /* CAROUSEL VARIANT (Clean, Infinite Carousel with Equal Spacing) */
     .image-slider[data-variant="carousel"] {
         padding-top: 24px;
         padding-bottom: 24px;
     }
 
-    .image-slider[data-variant="carousel"] .slider-display {
-        width: 55%; /* Slightly wider center slide */
-        overflow: visible;
+    .image-slider[data-variant="carousel"] .slider-frame {
+        width: 42%;
         margin: 0 auto;
         aspect-ratio: 16/10;
+    }
+
+    .image-slider[data-variant="carousel"] .slider-display {
+        width: 100%;
+        height: 100%;
+        overflow: visible;
         background: transparent;
         border-radius: 0;
     }
 
-    /* Restore the dynamic aspect-ratio when the "adaptive" frame strategy is combined
-       with the carousel variant — otherwise the fixed 16/10 above wins at equal
-       specificity via source order and silently defeats the adaptive behavior. Width
-       moves to .slider-frame (below) so it — not .slider-display — carries the 55%
-       carousel sizing, since .slider-frame is now the one with the reserved aspect-ratio. */
     .image-slider[data-variant="carousel"][data-frame="adaptive"] .slider-display {
         width: 100%;
-        aspect-ratio: var(--active-ratio, 16 / 10);
-        transition: aspect-ratio 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+        height: 100%;
     }
 
     .image-slider[data-variant="carousel"][data-frame="adaptive"] .slider-frame {
-        width: 55%;
+        width: 42%;
         margin: 0 auto;
+        aspect-ratio: 16/10;
+    }
+
+    .image-slider[data-variant="carousel"] .slider-track {
+        display: flex;
+        width: 100%;
+        height: 100%;
+        transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+        will-change: transform;
     }
 
     .image-slider[data-variant="carousel"] .slide {
         min-width: 100%;
-        padding: 0 4px; /* Reduced gap from 12px to 4px to pull slides closer */
+        height: 100%;
+        padding: 0 12px; /* Constant 24px equal gap between images */
         box-sizing: border-box;
         opacity: 0;
         visibility: hidden;
         pointer-events: none;
-        transform: scale(0.85);
+        transform: scale(0.88);
         transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.5s cubic-bezier(0.25, 1, 0.5, 1), visibility 0.5s;
     }
 
-    /* Align scaling towards center image to minimize perceived spacing gaps */
-    .image-slider[data-variant="carousel"] .slide.prev {
-        opacity: 0.35;
-        visibility: visible;
-        pointer-events: auto;
-        transform-origin: right center;
-        cursor: pointer;
-    }
-
+    .image-slider[data-variant="carousel"] .slide.prev,
     .image-slider[data-variant="carousel"] .slide.next {
-        opacity: 0.35;
+        opacity: 0.40;
         visibility: visible;
         pointer-events: auto;
-        transform-origin: left center;
+        transform: scale(0.88);
+        transform-origin: center center;
         cursor: pointer;
     }
 
@@ -447,14 +449,19 @@ const sliderId = `slider-${Math.random().toString(36).substr(2, 9)}`;
         opacity: 1;
         visibility: visible;
         pointer-events: auto;
-        transform: scale(1.05);
+        transform: scale(1.0);
         transform-origin: center center;
         z-index: 10;
     }
 
-    .image-slider[data-variant="carousel"] .slide .optimized-slide-image {
+    .image-slider[data-variant="carousel"] .slide .optimized-slide-image,
+    .image-slider[data-variant="carousel"] .slide video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
         border-radius: var(--radius-md);
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        background: var(--bg-surface);
     }
 
     /* Combine the carousel's ambient lift shadow with the adaptive bevel above —

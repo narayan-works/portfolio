@@ -1,6 +1,6 @@
 ---
 import AsciiFluidFlow from "./ascii/AsciiFluidFlow.astro";
-import { FaLinkedin, FaGithub, FaInstagram } from "react-icons/fa6";
+import { FaLinkedin, FaGithub, FaInstagram, FaXTwitter } from "react-icons/fa6";
 ---
 
 <footer class="site-footer" id="footer">
@@ -41,6 +41,15 @@ import { FaLinkedin, FaGithub, FaInstagram } from "react-icons/fa6";
                         title="Instagram"
                     >
                         <FaInstagram size={24} />
+                    </a>
+                    <a
+                        href="https://x.com/narayan3dm"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="icon-link"
+                        title="X (Twitter)"
+                    >
+                        <FaXTwitter size={24} />
                     </a>
                 </div>
                 <button
@@ -188,11 +197,12 @@ import { FaLinkedin, FaGithub, FaInstagram } from "react-icons/fa6";
         width: calc(100% + 40px) !important;
         margin-left: -20px !important;
         margin-right: -20px !important;
-        padding-top: 0px !important;
+        padding-top: 24px !important;
         padding-left: 20px !important;
         padding-right: 20px !important;
         padding-bottom: 20px !important;
         background: var(--bg-surface);
+        border-top: 1px solid var(--border-focus);
         box-sizing: border-box;
         overflow: hidden;
     }
@@ -201,7 +211,7 @@ import { FaLinkedin, FaGithub, FaInstagram } from "react-icons/fa6";
         width: calc(100% + 2 * var(--total-side-padding)) !important;
         margin-left: calc(-1 * var(--total-side-padding)) !important;
         margin-right: calc(-1 * var(--total-side-padding)) !important;
-        padding-top: 0px !important;
+        padding-top: 24px !important;
         padding-left: 20px !important;
         padding-right: 20px !important;
         padding-bottom: 20px !important;
@@ -228,14 +238,13 @@ import { FaLinkedin, FaGithub, FaInstagram } from "react-icons/fa6";
     .doc-link,
     a,
     button {
+        /* cursor is intentionally left alone here — these are real <a>/<button>
+           elements, so Layout.astro's global cursor:none + CustomCursor's hand
+           icon already handle them. This used to also force cursor:pointer
+           !important, which — at equal specificity and later in the cascade
+           than Layout.astro's (previously-broken) rule — was winning the tie
+           and showing the native pointer cursor here instead of the custom one. */
         pointer-events: auto !important;
-        cursor: pointer !important;
-    }
-
-    .icon-link svg,
-    .icon-link path,
-    .demo-btn * {
-        cursor: pointer !important;
     }
 
     .footer-content {
@@ -299,12 +308,7 @@ import { FaLinkedin, FaGithub, FaInstagram } from "react-icons/fa6";
     }
 
     .footer-divider {
-        height: 1px;
-        background: var(--border-focus);
-        margin-left: -20px !important;
-        margin-right: -20px !important;
-        width: calc(100% + 40px) !important;
-        margin-bottom: 20px;
+        display: none !important;
     }
 
     .contact-buttons {
@@ -419,9 +423,14 @@ import { FaLinkedin, FaGithub, FaInstagram } from "react-icons/fa6";
         background: transparent;
         border: none;
         color: var(--text-secondary);
-        text-decoration: none;
+        cursor: pointer;
         transition: all 0.2s ease;
         box-sizing: border-box;
+    }
+
+    .icon-link svg {
+        pointer-events: none;
+        cursor: pointer;
     }
 
     .icon-link:hover {
@@ -458,11 +467,6 @@ import { FaLinkedin, FaGithub, FaInstagram } from "react-icons/fa6";
             padding-left: 48px !important;
             padding-right: 48px !important;
         }
-        .footer-divider {
-            margin-left: -48px !important;
-            margin-right: -48px !important;
-            width: calc(100% + 96px) !important;
-        }
     }
 
     @media (max-width: 768px) {
@@ -472,11 +476,6 @@ import { FaLinkedin, FaGithub, FaInstagram } from "react-icons/fa6";
             margin-right: -24px !important;
             padding-left: 24px !important;
             padding-right: 24px !important;
-        }
-        .footer-divider {
-            margin-left: -24px !important;
-            margin-right: -24px !important;
-            width: calc(100% + 48px) !important;
         }
     }
 

@@ -239,27 +239,21 @@ li {
   }
 }
 
-/* Global Cursor Override for Text Selection */
-p,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-span,
-li,
-blockquote,
-dt,
-dd,
-figcaption {
-  cursor: text;
-}
-
-/* Media never inherits the text cursor from a wrapping heading/paragraph/span */
+/* Default browser cursor handling: standalone media is default, but inside links/buttons inherits pointer */
 img,
 svg {
   cursor: default;
+}
+
+a img,
+a svg,
+button img,
+button svg,
+[role="button"] img,
+[role="button"] svg,
+.icon-link,
+.icon-link svg {
+  cursor: pointer !important;
 }
 
 /* Arrow Utility Styles */

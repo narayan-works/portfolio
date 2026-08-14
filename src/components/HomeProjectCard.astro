@@ -57,6 +57,7 @@ const isGif =
         <div class="meta-inner">
             <div class="meta-top-group">
                 <h3 class="meta-project-title">{title}</h3>
+                {description && <div class="meta-divider" />}
                 {
                     tags.length > 0 && (
                         <div class="meta-tags">
@@ -66,7 +67,6 @@ const isGif =
                         </div>
                     )
                 }
-                {description && <div class="meta-divider" />}
                 {description && <p class="meta-description">{description}</p>}
             </div>
             {
@@ -170,7 +170,7 @@ const isGif =
         height: auto;
         aspect-ratio: var(--image-aspect-ratio, 1200 / 700);
         background: var(--bg-surface);
-        border: 1px solid var(--bg-primary);
+        border: 1px solid transparent;
         border-radius: var(--media-radius);
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
         transition:
@@ -249,7 +249,7 @@ const isGif =
 
     .meta-divider {
         border-top: 1px solid var(--border-subtle);
-        margin: 10px 0;
+        margin: 6px 0;
         max-height: 10px;
         transition: border-top-color 0.3s ease;
     }
@@ -261,37 +261,36 @@ const isGif =
     .meta-tags {
         display: flex;
         flex-wrap: wrap;
-        column-gap: 0.5rem;
-        row-gap: 0.15rem;
-        margin-top: 8px;
-        margin-bottom: 8px;
-        margin-left: 5px;
+        gap: 6px;
+        margin-top: 6px;
+        margin-bottom: 6px;
     }
 
     .meta-tag {
         font-family: "Google Sans", sans-serif;
-        font-size: 10px;
-        color: var(--text-secondary);
+        font-size: 11px;
+        font-weight: 400;
         text-transform: uppercase;
-        letter-spacing: 0.06em;
-        font-weight: 500;
-        display: flex;
-        align-items: center;
-        line-height: 1.1;
-        transition: color 0.3s ease;
+        letter-spacing: 0.04em;
+        color: var(--text-secondary);
+        padding: 4.5px 10px 4px 10px;
+        border: 1px solid var(--border-subtle);
+        border-radius: var(--radius-sm);
+        background: var(--bg-surface);
+        white-space: nowrap;
+        line-height: 1.25;
+        transition:
+            color 0.3s ease,
+            background-color 0.3s ease,
+            border-color 0.3s ease,
+            box-shadow 0.3s ease;
     }
 
     .home-project-card:hover .meta-tag {
         color: #000000;
-    }
-
-    .meta-tag:not(:last-child)::after {
-        content: "•";
-        margin-left: 0.5rem;
-        opacity: 0.3;
-        font-size: 1.2em;
-        display: inline-flex;
-        transform: translateY(-1px);
+        background: rgba(0, 0, 0, 0.04);
+        border-color: rgba(0, 0, 0, 0.05);
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.06);
     }
 
     .meta-description {
@@ -303,15 +302,15 @@ const isGif =
         color: var(--text-secondary);
         opacity: 0.8;
         visibility: visible;
-        margin-top: 8px;
+        margin-top: 6px;
         transition:
             color 0.3s ease,
             opacity 0.3s ease;
     }
 
     .home-project-card:hover .meta-description {
-        color: #000000;
-        opacity: 0.9;
+        color: #222222;
+        opacity: 1;
     }
 
     .meta-list {
@@ -492,6 +491,10 @@ const isGif =
         .meta-project-title,
         :global(.project-card-wrapper.is-centered) .meta-project-title {
             font-size: 36px !important;
+        }
+
+        .meta-tag:nth-child(n+3) {
+            display: none !important;
         }
     }
 </style>

@@ -5,9 +5,9 @@
 <div class="works-filter-container">
     <div class="segmented-control" id="works-segmented-control">
         <button class="filter-btn active" data-filter="all">All</button>
-        <button class="filter-btn" data-filter="hardware-ux">Hardware UX</button>
-        <button class="filter-btn" data-filter="web-ux">Web UX</button>
-        <button class="filter-btn" data-filter="mobile-ux">Mobile UX</button>
+        <button class="filter-btn" data-filter="hardware-ux">Hardware</button>
+        <button class="filter-btn" data-filter="web-ux">Web</button>
+        <button class="filter-btn" data-filter="mobile-ux">Mobile</button>
     </div>
 </div>
 
@@ -47,8 +47,8 @@
         display: inline-flex;
         align-items: center;
         background: #e6e6e1;
-        height: 36px;
-        padding: 4px;
+        height: 30px;
+        padding: 3px;
         border-radius: var(--radius-md);
         border: 1px solid rgba(0, 0, 0, 0.12);
         box-shadow:
@@ -59,7 +59,7 @@
         overflow: hidden;
         max-width: 100%;
         box-sizing: border-box;
-        gap: 4px;
+        gap: 3px;
         transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
     }
 
@@ -77,12 +77,12 @@
     .filter-btn {
         border: 1px solid transparent;
         color: var(--text-secondary);
-        height: 28px;
-        padding: 0 14px;
+        height: 22px;
+        padding: 0 12px;
         border-radius: var(--radius-sm);
         cursor: pointer;
         font-family: var(--font-sans);
-        font-size: 14px;
+        font-size: 13px;
         font-weight: 500;
         text-transform: none;
         letter-spacing: 0;
@@ -129,7 +129,10 @@
             inset 1px 1px 1px rgba(255, 255, 255, 0.45),
             1px 2px 4px rgba(0, 0, 0, 0.12);
         border-color: rgba(255, 255, 255, 0.3);
-        transform: translateY(-0.5px);
+        /* No vertical lift: inside a 4px-padded track any offset shows up as
+           uneven top/bottom padding. The inset highlight + drop shadow above
+           carry the raised-key read on their own. */
+        transform: translateY(0);
         transition:
             --c1 0.25s cubic-bezier(0.22, 1, 0.36, 1),
             --c2 0.25s cubic-bezier(0.22, 1, 0.36, 1),
@@ -272,22 +275,21 @@
 
         .segmented-control {
             gap: 3px;
+            max-width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+
+        .segmented-control::-webkit-scrollbar {
+            display: none;
         }
 
         .filter-btn {
-            padding: 0 9px;
+            padding: 0 8px;
             font-size: 13px;
-        }
-    }
-
-    @media (max-width: 480px) {
-        .segmented-control {
-            gap: 2px;
-        }
-
-        .filter-btn {
-            padding: 0 7px;
-            font-size: 12px;
+            flex: 0 0 auto;
+            white-space: nowrap;
         }
     }
 </style>

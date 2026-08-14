@@ -5,7 +5,54 @@ import ThemeToggle from "../components/ThemeToggle.astro";
 import Footer from "../components/Footer.astro";
 import GhostRunner from "../components/GhostRunner.astro";
 import ImageSlider from "../components/ImageSlider.astro";
-import ImageToggle from "../components/ImageToggle.astro";
+import FloatingCanvas from "../components/FloatingCanvas.astro";
+
+const canvasImages = [
+	{ src: "/assets/projects/dot-threads/sketches.png", alt: "Dot Threads — early sketches" },
+	{ src: "/assets/projects/pointo/pointo exploded axo.png", alt: "Pointo — exploded axonometric" },
+	{ src: "/assets/projects/dot-threads/architecture.png", alt: "Dot Threads — architecture diagram" },
+	{ src: "/assets/projects/dot-threads/approach - 1.png", alt: "Dot Threads — approach sketch 1" },
+	{ src: "/assets/projects/dot-threads/approach-2.png", alt: "Dot Threads — approach sketch 2" },
+	{ src: "/assets/projects/dot-threads/web of info.png", alt: "Dot Threads — web of info diagram" },
+	{ src: "/assets/projects/dot-threads/catalouging.png", alt: "Dot Threads — cataloguing sketch" },
+	{ src: "/assets/projects/dot-threads/entering.png", alt: "Dot Threads — entering sketch" },
+	{ src: "/assets/projects/santuary/santuary 1.png", alt: "Sanctuary — study 1" },
+	{ src: "/assets/projects/santuary/santuary 2.png", alt: "Sanctuary — study 2" },
+	{ src: "/assets/projects/santuary/evolution.png", alt: "Sanctuary — evolution diagram" },
+	{ src: "/assets/projects/santuary/precedents.png", alt: "Sanctuary — precedents" },
+	{ src: "/assets/projects/piko/xray.png", alt: "Piko — x-ray diagram" },
+	{ src: "/assets/projects/piko/bts.png", alt: "Piko — behind the scenes" },
+	{ src: "/assets/projects/pointo/pointing-3.png", alt: "Pointo — pointing study 3" },
+	{ src: "/assets/projects/pointo/pointing-4.png", alt: "Pointo — pointing study 4" },
+];
+
+const sliderSlides = [
+	{
+		src: "/assets/projects/about/1.jpeg",
+		alt: "Narayan — photo 1",
+		label: "01",
+	},
+	{
+		src: "/assets/projects/about/2.jpeg",
+		alt: "Narayan — photo 2",
+		label: "02",
+	},
+	{
+		src: "/assets/projects/about/3.jpg",
+		alt: "Narayan — photo 3",
+		label: "03",
+	},
+	{
+		src: "/assets/projects/about/4-compressed.mp4",
+		alt: "Narayan — video 4",
+		label: "04",
+	},
+	{
+		src: "/assets/projects/about/5-compressed.gif",
+		alt: "Narayan — photo 5",
+		label: "05",
+	},
+];
 ---
 
 <Layout
@@ -22,94 +69,80 @@ import ImageToggle from "../components/ImageToggle.astro";
 
 		<div class="about-divider"></div>
 
-		<div class="about-content-grid">
-			<div class="about-body">
-				<p>
-					👋 I'm Narayan Ashanahalli, a Product Designer &
-					Prototyper building [0-to-1]&nbsp;experiences across AI,
-					hardware, and digital infrastructure. With a foundation in
-					architecture, I apply systems thinking and rapid
-					prototyping to create digital products that feel responsive
-					and grounded in existing ecosystems.
-				</p>
-				<p>
-					🎯 I'm looking to work with people and teams shaping a new era of human–AI interaction—across physical AI, intelligent tools, and products that augment how people think, build, and live. People who are genuinely excited about this future and care as much about how these systems feel in use as what they can technically do.
-				</p>
+		<!-- 2-Column Hero Grid: Left = Bio Text, Right = Floating Canvas (Height matched to Bio Text!) -->
+		<div class="about-hero-grid">
+			<div class="about-left-col">
+				<div class="about-body">
+					<p>
+						👋 I'm Narayan Ashanahalli, a Product Designer &
+						Prototyper building [0-to-1]&nbsp;experiences across AI,
+						hardware, and digital infrastructure. With a foundation in
+						architecture, I apply systems thinking and rapid
+						prototyping to create digital products that feel responsive
+						and grounded in existing ecosystems.
+					</p>
+					<p>
+						🎯 I'm looking to work with people and teams shaping a new era of human–AI interaction—across physical AI, intelligent tools, and products that augment how people think, build, and live. People who are genuinely excited about this future and care as much about how these systems feel in use as what they can technically do.
+					</p>
+					<p>
+						❓The question I keep coming back to: how do we design AI that understands the context around what people are doing and becomes part of how they think and act, rather than another system they have to manage? And at the core how to build for the technology can work alongside people while the interaction stays grounded in the task, the environment, and what they are actually trying to do.
+					</p>
+					<p>
+						🔧 I'm currently working as a Design Researcher at Lab 4
+						Cybernetics with <a
+							href="https://pangaro.com/"
+							target="_blank"
+							rel="noopener noreferrer">Paul Pangaro</a
+						>, building the lab's digital infrastructure: <a
+							href="https://lab4cybernetics.vercel.app"
+							target="_blank"
+							rel="noopener noreferrer">the website</a
+						>, a practitioner-scholar <a
+							href="https://l4cybernetics.vercel.app/matching"
+							target="_blank"
+							rel="noopener noreferrer">matching platform</a
+						>, and a knowledge graph system organizing <a
+							href="https://publish.obsidian.md/lab4c"
+							target="_blank"
+							rel="noopener noreferrer">cybernetics concepts</a
+						>.
+					</p>
+					<p>
+						🤖 My thesis project, supported by the <a
+							href="https://studioforcreativeinquiry.org/frff-grants-microgrants"
+							target="_blank"
+							rel="noopener noreferrer">Frank-Ratchye Further Fund</a
+						>, explores how physically embodied AI can provide spatial
+						task assistance through laser-pointing, bridging LLM
+						reasoning with physical spatial referencing.
+					</p>
+					<p>
+						💡 I'm learning that the best way to understand a new interaction is by building it. I design through building—moving between research, interaction design, prototyping, and code, using each to sharpen the others without losing the original intent. AI makes this process even more powerful by letting us build and learn in the same loop, while developing the judgment and heuristics to know what to preserve, what to question, and what the interaction should become.
+					</p>
+				</div>
 			</div>
 
-			<div class="about-media">
-				<ImageSlider
-					variant="carousel"
-					autoplay={true}
-					indicatorType="dots"
-					frameStrategy="adaptive"
-					slides={[
-						{
-							src: "/assets/projects/about/1.jpeg",
-							alt: "Narayan — photo 1",
-							label: "01",
-						},
-						{
-							src: "/assets/projects/about/2.jpeg",
-							alt: "Narayan — photo 2",
-							label: "02",
-						},
-						{
-							src: "/assets/projects/about/3.jpg",
-							alt: "Narayan — photo 3",
-							label: "03",
-						},
-						{
-							src: "/assets/projects/about/4-compressed.mp4",
-							alt: "Narayan — video 4",
-							label: "04",
-						},
-						{
-							src: "/assets/projects/about/5-compressed.gif",
-							alt: "Narayan — photo 5",
-							label: "05",
-						},
-					]}
-				/>
+			<div class="about-right-col">
+				<div class="about-canvas-container">
+					<FloatingCanvas
+						id="about-fc"
+						pan="orbit"
+						images={canvasImages}
+						height="100%"
+					/>
+				</div>
 			</div>
+		</div>
 
-			<div class="about-body">
-				<p>
-					❓The question I keep coming back to: how do we design AI that understands the context around what people are doing and becomes part of how they think and act, rather than another system they have to manage? And at the core how to build for the technology can work alongside people while the interaction stays grounded in the task, the environment, and what they are actually trying to do.
-				</p>
-				<p>
-					🔧 I'm currently working as a Design Researcher at Lab 4
-					Cybernetics with <a
-						href="https://pangaro.com/"
-						target="_blank"
-						rel="noopener noreferrer">Paul Pangaro</a
-					>, building the lab's digital infrastructure: <a
-						href="https://lab4cybernetics.vercel.app"
-						target="_blank"
-						rel="noopener noreferrer">the website</a
-					>, a practitioner-scholar <a
-						href="https://l4cybernetics.vercel.app/matching"
-						target="_blank"
-						rel="noopener noreferrer">matching platform</a
-					>, and a knowledge graph system organizing <a
-						href="https://publish.obsidian.md/lab4c"
-						target="_blank"
-						rel="noopener noreferrer">cybernetics concepts</a
-					>.
-				</p>
-				<p>
-					🤖 My thesis project, supported by the <a
-						href="https://studioforcreativeinquiry.org/frff-grants-microgrants"
-						target="_blank"
-						rel="noopener noreferrer">Frank-Ratchye Further Fund</a
-					>, explores how physically embodied AI can provide spatial
-					task assistance through laser-pointing, bridging LLM
-					reasoning with physical spatial referencing.
-				</p>
-				<p>
-					💡 I'm learning that the best way to understand a new interaction is by building it. I design through building—moving between research, interaction design, prototyping, and code, using each to sharpen the others without losing the original intent. AI makes this process even more powerful by letting us build and learn in the same loop, while developing the judgment and heuristics to know what to preserve, what to question, and what the interaction should become.
-				</p>
-			</div>
+		<!-- Full Width Bottom Section: Image Slider Carousel -->
+		<div class="about-slider-section">
+			<ImageSlider
+				variant="carousel"
+				autoplay={true}
+				indicatorType="dots"
+				frameStrategy="adaptive"
+				slides={sliderSlides}
+			/>
 		</div>
 
 		<Footer />
@@ -156,7 +189,7 @@ import ImageToggle from "../components/ImageToggle.astro";
 	}
 
 	.about-header {
-		max-width: 860px;
+		max-width: 100%;
 		margin-bottom: 48px;
 		text-align: left;
 	}
@@ -177,90 +210,60 @@ import ImageToggle from "../components/ImageToggle.astro";
 		margin-bottom: 48px;
 	}
 
-	.about-content-grid {
-		display: grid;
-		grid-template-columns: minmax(0, 1fr);
-		gap: 0;
-		align-items: center;
+	/* Hero Grid Layout: 2 Columns on Desktop */
+	.about-hero-grid {
+		display: flex;
+		flex-direction: column;
+		gap: 48px;
 		margin-bottom: 96px;
+	}
+
+	@media (min-width: 1024px) {
+		.about-hero-grid {
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			gap: 64px;
+			align-items: stretch;
+		}
+	}
+
+	.about-left-col {
+		width: 100%;
+	}
+
+	.about-right-col {
+		width: 100%;
+		height: 100%;
+		display: flex;
+		flex-direction: column;
+	}
+
+	.about-canvas-container {
+		width: 100%;
+		height: 100%;
+		min-height: 520px;
+		border-radius: var(--radius-md, 8px);
+		overflow: hidden;
+		border: 1px solid var(--border-subtle);
+		position: relative;
+	}
+
+	.about-canvas-container :global(.floating-canvas) {
+		height: 100% !important;
+		min-height: 100% !important;
 	}
 
 	.about-body {
 		display: flex;
 		flex-direction: column;
 		gap: 1.5rem;
-		max-width: 860px;
-	}
-
-	.about-image-break {
 		width: 100%;
-		display: flex;
-		justify-content: center;
-		align-items: flex-start;
-		margin: 1.5rem 0;
-	}
-
-	.about-image-break :global(.image-toggle-component) {
-		width: 100%;
-		max-width: 100%;
-		text-align: left;
-	}
-
-	.about-media {
-		width: 100%;
-		max-width: 860px;
-	}
-
-	/* This is the clipping boundary (overflow: hidden on .image-slider) -
-	   widening it just gives the peeking prev/next slides more room to
-	   show before getting cut off. It does NOT change how big the active
-	   image looks; that's governed by frameStrategy="adaptive" below.
-	   Centered within the 860px text-body width above (.about-media
-	   matches .about-body's max-width) rather than the full page width. */
-	.about-media :global(.image-slider.constrained) {
-		max-width: 860px;
-		margin-left: auto;
-		margin-right: auto;
-	}
-
-	/* Orientation handling (portrait vs. landscape width/height) now lives in
-	   ImageSlider.astro itself via frameStrategy="adaptive" — the frame's
-	   aspect-ratio animates to match each slide's real dimensions instead of
-	   this page hardcoding a 300px/580px width swap. .slider-frame (not
-	   .slider-display) carries the width now, since it's the element with the
-	   fixed reserved height that keeps the dots from bouncing as slides change. */
-	.about-media :global(.image-slider[data-variant="carousel"] .slider-frame) {
-		max-width: 85%;
-	}
-
-	.about-media :global(.image-slider[data-variant="carousel"] .slider-track) {
-		height: 100%;
-		align-items: center;
-	}
-
-	.about-media :global(.image-slider[data-variant="carousel"] .slide) {
-		height: 100%;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-	}
-
-	/* Visually pull the peeking side slides closer to overlap the
-	   active one, using transform (not margin) so the flex layout
-	   itself is untouched and the active slide's centered position
-	   (driven by the track's own translateX) can't be thrown off. */
-	.about-media :global(.image-slider[data-variant="carousel"] .slide.prev) {
-		transform: scale(0.85) translateX(40px);
-	}
-
-	.about-media :global(.image-slider[data-variant="carousel"] .slide.next) {
-		transform: scale(0.85) translateX(-40px);
 	}
 
 	.about-body p {
 		font-family: var(--font-sans);
-		font-size: 1.5rem;
-		line-height: 1.4;
+		font-size: 1.125rem;
+		line-height: 1.5;
 		color: var(--text-secondary);
 		font-weight: 300;
 		text-align: left;
@@ -276,6 +279,48 @@ import ImageToggle from "../components/ImageToggle.astro";
 
 	.about-body a:hover {
 		color: var(--accent-secondary);
+	}
+
+	/* Full Width 100vw Bottom Image Slider Carousel Section (Zero Margins) */
+	.about-slider-section {
+		width: 100vw;
+		position: relative;
+		left: 50%;
+		right: 50%;
+		margin-left: -50vw;
+		margin-right: -50vw;
+		margin-bottom: 96px;
+		overflow: hidden;
+	}
+
+	.about-slider-section :global(.image-slider) {
+		margin-top: 0 !important;
+		margin-bottom: 0 !important;
+		max-width: 100% !important;
+		width: 100% !important;
+	}
+
+	.about-slider-section :global(.image-slider[data-variant="carousel"] .slider-frame) {
+		max-width: 42%;
+		width: 42%;
+		margin: 0 auto;
+	}
+
+	.about-slider-section :global(.image-slider[data-variant="carousel"] .slider-track) {
+		height: 100%;
+		align-items: center;
+	}
+
+	.about-slider-section :global(.image-slider[data-variant="carousel"] .slide) {
+		height: 100%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.about-slider-section :global(.image-slider[data-variant="carousel"] .slide.prev),
+	.about-slider-section :global(.image-slider[data-variant="carousel"] .slide.next) {
+		transform: scale(0.88);
 	}
 
 	:global(.about-layout) :global(.site-footer) {
@@ -299,72 +344,4 @@ import ImageToggle from "../components/ImageToggle.astro";
 		border-top: 1px solid var(--border-subtle);
 		width: 100%;
 	}
-
-	@media (max-width: 1024px) {
-		.about-title {
-			font-size: 64px;
-		}
-		.about-content-grid {
-			gap: 0;
-		}
-	}
-
-	@media (max-width: 640px) {
-		.about-layout {
-			padding: 100px 16px 0;
-		}
-		:global(.about-layout) :global(.site-footer) {
-			width: calc(100% + 32px) !important;
-			margin-left: -16px !important;
-			margin-right: -16px !important;
-		}
-		.game-bottom-wrapper {
-			width: calc(100% + 32px);
-			margin-left: -16px;
-		}
-		.about-title {
-			font-size: 40px;
-		}
-		.about-body p {
-			font-size: 1.1rem;
-		}
-	}
 </style>
-
-<script>
-	document.addEventListener("astro:page-load", () => {
-		// Floating Theme Toggle Footer Collision Logic
-		const toggleFloater = document.querySelector(
-			".toggle-floater",
-		) as HTMLElement;
-		const footer = document.querySelector(".site-footer") as HTMLElement;
-		if (toggleFloater && footer) {
-			const updateTogglePosition = () => {
-				const footerRect = footer.getBoundingClientRect();
-				const windowHeight = window.innerHeight;
-				const margin = 20;
-
-				if (footerRect.top < windowHeight) {
-					const offset = windowHeight - footerRect.top + margin;
-					toggleFloater.style.setProperty(
-						"bottom",
-						`${offset}px`,
-						"important",
-					);
-				} else {
-					toggleFloater.style.setProperty(
-						"bottom",
-						"20px",
-						"important",
-					);
-				}
-			};
-
-			window.addEventListener("scroll", updateTogglePosition, {
-				passive: true,
-			});
-			window.addEventListener("resize", updateTogglePosition);
-			updateTogglePosition();
-		}
-	});
-</script>

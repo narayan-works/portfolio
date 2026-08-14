@@ -21,31 +21,13 @@
             stroke-linecap="round"></path>
     </svg>
 
-    <!-- Hand SVG for Interactive State -->
-    <svg
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        class="cursor-icon hand-icon"
-        style="display: none;"
-    >
-        <path
-            fill="var(--accent-primary)"
-            stroke="white"
-            stroke-width="2"
-            stroke-linejoin="round"
-            d="M10 24.5C10 24.5 14.053 25 15.5 22C16.947 19 22 13 22 12C22 11 21 10.5 20.5 10.5C20 10.5 16.5 12 16.5 12L17.5 7.5C17.5 7.5 17.5 6 16 6C14.5 6 13.5 8 13 9L12 6.5C12 6.5 11.5 4.5 10 4.5C8.5 4.5 8 6.5 8 7V5.5C8 5.5 7.5 3.5 6 3.5C4.5 3.5 4 5.5 4 6V11L1.5 13.5C1.5 13.5 0 15 1.5 17C3 19 6 20.5 6 20.5L6.5 24.5H10Z"
-            transform="scale(0.8) translate(3, 3)"></path>
-    </svg>
-
     <!-- Label -->
     <div class="cursor-label">You</div>
 </div>
 
 <style>
     .cursor-wrapper {
+        display: none !important; /* Custom cursor disabled by user request — default OS cursors active */
         position: fixed;
         top: 0;
         left: 0;
@@ -66,11 +48,6 @@
         transform: rotate(-15deg); /* Match arrow rotation */
     }
 
-    .hand-icon {
-        transform: rotate(0deg) scale(1.1); /* Hand usually upright */
-        margin-top: -2px;
-    }
-
     .cursor-label {
         position: absolute;
         /* Tighter spacing implementation */
@@ -88,33 +65,11 @@
         transition: transform 0.2s ease;
     }
 
-    /* Interactive State */
-    .cursor-wrapper.interactive .arrow-icon {
-        display: none;
-    }
     /* Mobile Override */
     @media (max-width: 768px) {
         .cursor-wrapper {
             display: none !important;
         }
-    }
-    .cursor-wrapper.interactive .hand-icon {
-        display: block;
-    }
-
-    /* Green Hand Icon */
-    .cursor-wrapper.interactive .hand-icon path {
-        fill: var(--accent-secondary); /* Green Fill */
-        /* Stick with white stroke for consistency or switch? 
-           User asked to "use green", implying the main color. 
-           Keeping white stroke ensures it stands out on dark backgrounds too. */
-    }
-
-    .cursor-wrapper.interactive .cursor-label {
-        /* Adjust label for hand position */
-        top: 22px;
-        left: 10px;
-        background: var(--accent-secondary); /* Green Background */
     }
 
     /* Click Animation (Scale Children) */
@@ -126,12 +81,23 @@
     .cursor-wrapper.clicking .arrow-icon {
         transform: rotate(-15deg) scale(0.9);
     }
-    .cursor-wrapper.clicking .hand-icon {
-        transform: rotate(0deg) scale(0.9);
+
+    /* Over links/buttons/text, the native cursor shows instead of our arrow —
+       but the "You" label stays, in green, at the exact same position/offset
+       as the default blue label (no top/left override here on purpose). */
+    .cursor-wrapper.native-cursor .arrow-icon {
+        display: none;
+    }
+
+    .cursor-wrapper.native-cursor .cursor-label {
+        background: var(--accent-secondary);
     }
 </style>
 
 <script>
+    // Custom cursor disabled by user request — default OS cursors active
+    const CUSTOM_CURSOR_ENABLED = false;
+    if (CUSTOM_CURSOR_ENABLED) {
     let cursor = document.getElementById("custom-cursor");
     let cursorWrapper = document.querySelector(".cursor-wrapper");
     const isCoarsePointer =
@@ -145,15 +111,13 @@
         });
 
         let isVisible = false;
-        let isTextHover = false;
-        let isGameHover = false; // New flag for game area
+        let isFullyHidden = false; // game/pdf areas — opacity 0, no label either
 
-        // Interactive Elements
-        const interactiveSelectors =
-            'a, button, [role="button"], input, select, textarea, .folder-trigger, .bio-ghost-walker';
-        // Text Elements that should show I-beam
-        const textSelectors =
-            "p, h1, h2, h3, h4, h5, h6, span, li, blockquote, dt, dd, figcaption";
+        // Elements where the native cursor (pointer/I-beam) shows instead of our
+        // arrow icon. The "You" label stays visible over these (in green via
+        // .native-cursor), just without the arrow competing with the native cursor.
+        const nativeCursorSelectors =
+            'a, button, [role="button"], input, select, textarea, .folder-trigger, .bio-ghost-walker, p, h1, h2, h3, h4, h5, h6, li, blockquote, dt, dd, figcaption';
         // Game Container Selector
         const gameSelector = ".ghost-game-container";
 
@@ -161,66 +125,42 @@
             if (!cursor || !cursorWrapper) return;
             const target = e.target as HTMLElement;
 
-            // Priority -1: Inside Typography Inspector Widget
-            const inspector = target.closest(".typo-inspector-widget");
-            if (inspector) {
-                const interactive = target.closest(interactiveSelectors);
-                if (interactive) {
-                    cursorWrapper.classList.add("interactive");
-                } else {
-                    cursorWrapper.classList.remove("interactive");
-                }
-                isTextHover = false;
-                isGameHover = false;
+            // Inside Typography Inspector Widget: always show the default cursor
+            if (target.closest(".typo-inspector-widget")) {
+                cursorWrapper.classList.remove("native-cursor");
+                isFullyHidden = false;
                 if (isVisible) cursor.style.opacity = "1";
                 return;
             }
 
-            const interactive = target.closest(interactiveSelectors);
             const media = target.closest("img, svg");
-            const text = media ? null : target.closest(textSelectors);
+            const native = media ? null : target.closest(nativeCursorSelectors);
             const game = target.closest(gameSelector);
             const pdf = target.closest(".pdf-viewer-wrapper");
 
-            // Priority 0: Game or PDF (Always hide global cursor)
+            // Game or PDF: always fully hide (they manage their own cursor)
             if (game || pdf) {
-                isGameHover = true;
+                isFullyHidden = true;
                 cursor.style.opacity = "0";
-                cursorWrapper.classList.remove("interactive"); // Ensure hand doesn't stick
+                cursorWrapper.classList.remove("native-cursor");
                 return;
-            } else {
-                isGameHover = false;
             }
 
-            // Priority: Interactive > Text > Default
-            if (interactive) {
-                cursorWrapper.classList.add("interactive");
-                isTextHover = false;
-                // Ensure opacity is 1 if it was hidden by text
-                if (isVisible) cursor.style.opacity = "1";
-            } else {
-                cursorWrapper.classList.remove("interactive");
-                if (text) {
-                    isTextHover = true;
-                    cursor.style.opacity = "0"; // Hide custom cursor
-                } else {
-                    isTextHover = false;
-                    if (isVisible) cursor.style.opacity = "1"; // Show custom cursor
-                }
-            }
+            isFullyHidden = false;
+            cursorWrapper.classList.toggle("native-cursor", !!native);
+            if (isVisible) cursor.style.opacity = "1";
         };
 
         document.addEventListener("mousemove", (e: MouseEvent) => {
             if (!cursor) return;
 
             // If we haven't set visibility yet
-            if (!isVisible && !isTextHover && !isGameHover) {
+            if (!isVisible && !isFullyHidden) {
                 cursor.style.opacity = "1";
                 isVisible = true;
             }
 
-            // If hovering text or game, keep it hidden
-            if (isTextHover || isGameHover) {
+            if (isFullyHidden) {
                 cursor.style.opacity = "0";
             }
 
@@ -231,14 +171,13 @@
             if (!cursor || !cursorWrapper) return;
             cursor.style.opacity = "0";
             isVisible = false;
-            isTextHover = false; // Reset text hover state on mouseout of document
-            isGameHover = false; // Reset game hover
-            cursorWrapper.classList.remove("interactive"); // Also remove interactive state
+            isFullyHidden = false; // Reset on mouseout of document
+            cursorWrapper.classList.remove("native-cursor");
         });
 
         document.addEventListener("mouseover", (e: MouseEvent) => {
             if (!cursor) return;
-            if (!isVisible && !isTextHover && !isGameHover) {
+            if (!isVisible && !isFullyHidden) {
                 cursor.style.opacity = "1";
                 isVisible = true;
             }
@@ -255,5 +194,6 @@
             if (!cursorWrapper) return;
             cursorWrapper.classList.remove("clicking");
         });
+    }
     }
 </script>

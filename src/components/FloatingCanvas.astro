@@ -1,0 +1,1002 @@
+---
+interface FCImage {
+  src: string;
+  alt: string;
+}
+
+interface Props {
+  id: string;
+  pan: "linear" | "orbit" | "loop";
+  images: FCImage[];
+  height?: string;
+}
+
+const { id, pan, images, height = "560px" } = Astro.props;
+---
+
+<div class="floating-canvas" data-pan={pan} id={id} style={`--fc-height: ${height}`}>
+  <div class="fc-stage">
+    <div class="fc-backdrop-screen"></div>
+    <div class="fc-world"></div>
+  </div>
+  <button class="fc-expand-btn" type="button" aria-label="Open full-screen canvas" title="Open full-screen canvas">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+    </svg>
+  </button>
+  <div class="fc-bento-tag">
+    <span class="fc-tag-desc">a lost world of my visual thinking</span>
+    <span class="fc-tag-instructions">
+      <span class="fc-tag-dash">&nbsp;—&nbsp;</span><span class="fc-tag-drag">drag around</span><span class="fc-tag-sep">,&nbsp;</span><span class="fc-tag-click">click to zoom in</span>
+    </span>
+  </div>
+  <script type="application/json" class="fc-data" is:inline set:html={JSON.stringify(images)} />
+</div>
+
+<div class="fc-fullscreen" data-fullscreen-for={id} aria-hidden="true">
+  <div class="fc-fs-backdrop"></div>
+  <div class="fc-fs-panel">
+    <button class="fc-fs-close" type="button" aria-label="Exit full screen" title="Exit full screen (Esc)">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+    <div class="fc-fs-stage">
+      <div class="fc-backdrop-screen"></div>
+      <div class="fc-fs-world"></div>
+    </div>
+    <div class="fc-bento-tag">
+      <span class="fc-tag-desc">a lost world of my visual thinking</span>
+      <span class="fc-tag-instructions">
+        <span class="fc-tag-dash">&nbsp;—&nbsp;</span><span class="fc-tag-drag">drag around</span><span class="fc-tag-sep">,&nbsp;</span><span class="fc-tag-click">click to zoom in</span>
+      </span>
+    </div>
+  </div>
+</div>
+
+<script>
+  interface FCImage {
+    src: string;
+    alt: string;
+  }
+
+  interface ImageMeta {
+    src: string;
+    alt: string;
+    aspectRatio: number;
+    naturalWidth: number;
+    naturalHeight: number;
+  }
+
+  function loadImageMeta(imgData: FCImage): Promise<ImageMeta> {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => {
+        const natW = img.naturalWidth || 380;
+        const natH = img.naturalHeight || 280;
+        const ar = natW && natH ? natW / natH : 1.33;
+        resolve({
+          src: imgData.src,
+          alt: imgData.alt || "",
+          aspectRatio: ar,
+          naturalWidth: natW,
+          naturalHeight: natH,
+        });
+      };
+      img.onerror = () => {
+        resolve({
+          src: imgData.src,
+          alt: imgData.alt || "",
+          aspectRatio: 1.33,
+          naturalWidth: 380,
+          naturalHeight: 280,
+        });
+      };
+      img.src = imgData.src;
+    });
+  }
+
+  const COL_OFFSETS = [0, 140, -70, 180, 50, -110, 150, -50, 110, -80];
+
+  function getColYOffset(col: number): number {
+    const idx = Math.abs(col) % COL_OFFSETS.length;
+    const sign = col < 0 ? -1 : 1;
+    return COL_OFFSETS[idx] * sign;
+  }
+
+  function getSpatialImageIndex(col: number, row: number, poolSize: number): number {
+    if (poolSize <= 0) return 0;
+    const hash = Math.abs(col * 7 + row * 11);
+    return hash % poolSize;
+  }
+
+  // 4-State Explicit Onboarding State Machine
+  // INITIAL -> DRAGGED ('drag around' light) -> CLICKED ('click to zoom in' light, 'drag around' normal) -> COLLAPSED (hidden)
+  type OnboardingState = "INITIAL" | "DRAGGED" | "CLICKED" | "COLLAPSED";
+
+  interface OnboardingTracker {
+    getState: () => OnboardingState;
+    notifyUserDrag: () => void;
+    notifyClick: () => void;
+  }
+
+  function createOnboardingTracker(root: HTMLElement, fsEl: HTMLElement | null): OnboardingTracker {
+    let state: OnboardingState = "INITIAL";
+
+    function updateBentoUI() {
+      const tags = [
+        root.querySelector(".fc-bento-tag"),
+        fsEl?.querySelector(".fc-bento-tag")
+      ].filter(Boolean) as HTMLElement[];
+
+      tags.forEach((tag) => {
+        tag.classList.toggle("is-drag-done", state === "DRAGGED");
+        tag.classList.toggle("is-click-done", state === "CLICKED");
+        tag.classList.toggle("is-collapsed", state === "COLLAPSED");
+      });
+    }
+
+    return {
+      getState() { return state; },
+      notifyUserDrag() {
+        if (state === "CLICKED") {
+          state = "COLLAPSED";
+          updateBentoUI();
+        } else if (state === "INITIAL") {
+          state = "DRAGGED";
+          updateBentoUI();
+        }
+      },
+      notifyClick() {
+        if (state === "INITIAL" || state === "DRAGGED") {
+          state = "CLICKED";
+          updateBentoUI();
+        }
+      }
+    };
+  }
+
+  // Virtualized Infinite Canvas Engine
+  function createVirtualEngine(
+    stage: HTMLElement,
+    world: HTMLElement,
+    imagesMeta: ImageMeta[],
+    pan: string,
+    onboarding: OnboardingTracker
+  ) {
+    let camX = -500;
+    let camY = -300;
+    let targetCamX = -500;
+    let targetCamY = -300;
+
+    let isDown = false;
+    let isDragging = false;
+    let frozen = false;
+    let startX = 0;
+    let startY = 0;
+    let startCamX = 0;
+    let startCamY = 0;
+    let idleTimer: number | undefined;
+    let autoT = 0;
+    let lastFrame = performance.now();
+
+    // In-canvas Focus State & Interactive Pan Resizing Distance
+    let focusedKey: string | null = null;
+    let focusedCol: number | null = null;
+    let focusedRow: number | null = null;
+    let currentPanDist = 0;
+
+    const DEFAULT_COL_WIDTH = 380;
+    const GAP_X = 64;
+    const GAP_Y = 64;
+    const STRIDE_X_DEFAULT = DEFAULT_COL_WIDTH + GAP_X; // 444px
+
+    const activeTiles = new Map<string, HTMLElement>();
+
+    function getStageDimensions() {
+      const sRect = stage.getBoundingClientRect();
+      const w = sRect.width > 0 ? sRect.width : window.innerWidth;
+      const h = sRect.height > 0 ? sRect.height : window.innerHeight;
+      return { w, h };
+    }
+
+    function getFocusParams(panDist: number = 0) {
+      if (focusedKey === null || focusedCol === null || focusedRow === null) {
+        return null;
+      }
+
+      const { w: stageW, h: stageH } = getStageDimensions();
+      const targetH = Math.max(200, Math.round(stageH * 0.60)); // Exactly 60% of panel/stage height!
+
+      const idx = getSpatialImageIndex(focusedCol, focusedRow, imagesMeta.length);
+      const meta = imagesMeta[idx];
+      const ar = meta?.aspectRatio || 1.33;
+      const expandedColW = Math.round(targetH * ar);
+
+      const panProgress = Math.min(1, Math.max(0, panDist / 120));
+
+      return {
+        col: focusedCol,
+        row: focusedRow,
+        targetH,
+        expandedColW,
+        ar,
+        panProgress,
+      };
+    }
+
+    function getColWidth(col: number): number {
+      const fp = getFocusParams(currentPanDist);
+      if (fp && col === fp.col) {
+        return fp.expandedColW;
+      }
+      return DEFAULT_COL_WIDTH;
+    }
+
+    function getColX(col: number): number {
+      return col * STRIDE_X_DEFAULT;
+    }
+
+    function getItemNormalHeight(col: number, row: number): number {
+      if (!imagesMeta.length) return 280;
+      const idx = getSpatialImageIndex(col, row, imagesMeta.length);
+      const ar = imagesMeta[idx].aspectRatio || 1.33;
+      return Math.round(DEFAULT_COL_WIDTH / ar);
+    }
+
+    function getItemHeight(col: number, row: number): number {
+      const fp = getFocusParams(currentPanDist);
+      if (fp && col === fp.col && row === fp.row) {
+        return fp.targetH;
+      }
+      return getItemNormalHeight(col, row);
+    }
+
+    function getItemY(col: number, row: number): number {
+      const colOffset = getColYOffset(col);
+      if (row === 0) return colOffset;
+
+      if (row > 0) {
+        let y = colOffset;
+        for (let r = 0; r < row; r++) {
+          y += getItemNormalHeight(col, r) + GAP_Y;
+        }
+        return y;
+      }
+
+      let y = colOffset;
+      for (let r = -1; r >= row; r--) {
+        y -= getItemNormalHeight(col, r) + GAP_Y;
+      }
+      return y;
+    }
+
+    function applyTransform() {
+      world.style.transform = `translate3d(${camX}px, ${camY}px, 0px)`;
+    }
+
+    function reconcileTiles() {
+      if (!imagesMeta || imagesMeta.length === 0) return;
+
+      const { w: stageW, h: stageH } = getStageDimensions();
+
+      const minCol = Math.floor((-camX - 500) / STRIDE_X_DEFAULT) - 2;
+      const maxCol = Math.ceil((-camX + stageW + 700) / STRIDE_X_DEFAULT) + 2;
+
+      const neededKeys = new Set<string>();
+      const isCanvasFocused = focusedKey !== null;
+      const fp = getFocusParams(currentPanDist);
+      const isDark = document.documentElement.classList.contains("dark");
+
+      for (let col = minCol; col <= maxCol; col++) {
+        const approxRowMin = Math.floor((-camY - 800) / 400) - 3;
+        const approxRowMax = Math.ceil((-camY + stageH + 800) / 400) + 3;
+
+        for (let row = approxRowMin; row <= approxRowMax; row++) {
+          const posY = getItemY(col, row);
+          const itemH = getItemHeight(col, row);
+          const itemW = getColWidth(col);
+          const posX = getColX(col);
+
+          const screenXLeft = posX + camX;
+          const screenXRight = screenXLeft + itemW;
+          const screenYTop = posY + camY;
+          const screenYBottom = screenYTop + itemH;
+
+          if (
+            screenXRight >= -450 &&
+            screenXLeft <= stageW + 450 &&
+            screenYBottom >= -450 &&
+            screenYTop <= stageH + 450
+          ) {
+            const key = `${col},${row}`;
+            neededKeys.add(key);
+
+            let el = activeTiles.get(key);
+
+            if (!el) {
+              const imgIdx = getSpatialImageIndex(col, row, imagesMeta.length);
+              const meta = imagesMeta[imgIdx];
+
+              el = document.createElement("button");
+              el.type = "button";
+              el.className = "fc-item";
+              el.setAttribute("data-src", meta.src);
+              el.setAttribute("data-col", String(col));
+              el.setAttribute("data-row", String(row));
+              el.setAttribute("aria-label", meta.alt || "Illustration");
+
+              const imageEl = document.createElement("img");
+              imageEl.src = meta.src;
+              imageEl.alt = meta.alt || "";
+              imageEl.draggable = false;
+              el.appendChild(imageEl);
+
+              world.appendChild(el);
+              activeTiles.set(key, el);
+            }
+
+            el.style.left = `${posX}px`;
+            el.style.top = `${posY}px`;
+            el.style.width = `${itemW}px`;
+            el.style.height = `${itemH}px`;
+
+            const isItemFocused = key === focusedKey;
+            el.classList.toggle("is-focused", isItemFocused);
+
+            if (isItemFocused) {
+              el.style.zIndex = "200";
+              const opacityVal = fp ? (1 - fp.panProgress * 0.4) : 1;
+              el.style.opacity = String(opacityVal);
+              el.style.filter = "none";
+            } else if (isCanvasFocused) {
+              el.style.zIndex = "1";
+              const nonHeroOpacity = fp ? (0.12 + fp.panProgress * 0.88) : 0.12;
+              el.style.opacity = String(nonHeroOpacity);
+              el.style.filter = isDark ? "brightness(0.6) contrast(0.85)" : "brightness(1.02) contrast(0.85)";
+            } else {
+              el.style.zIndex = "1";
+              el.style.opacity = "1";
+              el.style.filter = "none";
+            }
+          }
+        }
+      }
+
+      for (const [key, el] of activeTiles.entries()) {
+        if (!neededKeys.has(key)) {
+          el.remove();
+          activeTiles.delete(key);
+        }
+      }
+    }
+
+    function setCam(x: number, y: number) {
+      camX = x;
+      camY = y;
+      targetCamX = x;
+      targetCamY = y;
+      applyTransform();
+      reconcileTiles();
+    }
+
+    function getCam() {
+      return { x: camX, y: camY };
+    }
+
+    function focusTile(col: number, row: number) {
+      focusedCol = col;
+      focusedRow = row;
+      focusedKey = `${col},${row}`;
+      currentPanDist = 0;
+
+      stage.classList.add("has-focus");
+
+      // Notify onboarding tracker that user clicked an image to zoom in!
+      onboarding.notifyClick();
+
+      reconcileTiles();
+
+      const { w: stageW, h: stageH } = getStageDimensions();
+
+      const posX = getColX(col);
+      const posY = getItemY(col, row);
+      const itemW = getColWidth(col);
+      const itemH = getItemHeight(col, row);
+
+      targetCamX = (stageW - itemW) / 2 - posX;
+      targetCamY = (stageH - itemH) / 2 - posY;
+
+      reconcileTiles();
+    }
+
+    function unfocus() {
+      if (focusedKey === null) return;
+      focusedKey = null;
+      focusedCol = null;
+      focusedRow = null;
+      currentPanDist = 0;
+
+      stage.classList.remove("has-focus");
+      reconcileTiles();
+    }
+
+    stage.addEventListener("pointerdown", (e: PointerEvent) => {
+      if (e.button !== 0 && e.pointerType === "mouse") return;
+      isDown = true;
+      isDragging = false;
+      startX = e.clientX;
+      startY = e.clientY;
+      startCamX = camX;
+      startCamY = camY;
+      currentPanDist = 0;
+      clearTimeout(idleTimer);
+      try {
+        stage.setPointerCapture(e.pointerId);
+      } catch (_) {}
+    });
+
+    stage.addEventListener("pointermove", (e: PointerEvent) => {
+      if (!isDown) return;
+      const dx = e.clientX - startX;
+      const dy = e.clientY - startY;
+      const dist = Math.hypot(dx, dy);
+
+      if (focusedKey !== null) {
+        currentPanDist = dist;
+
+        if (dist > 120) {
+          unfocus();
+          isDragging = true;
+          stage.classList.add("is-panning");
+        } else {
+          reconcileTiles();
+        }
+      } else {
+        if (!isDragging && dist > 20) {
+          isDragging = true;
+          frozen = true;
+          stage.classList.add("is-panning");
+        }
+
+        if (isDragging) {
+          camX = startCamX + dx;
+          camY = startCamY + dy;
+          targetCamX = camX;
+          targetCamY = camY;
+          applyTransform();
+          reconcileTiles();
+        }
+      }
+    });
+
+    function handlePointerUp(e: PointerEvent) {
+      if (!isDown) return;
+      const wasDragging = isDragging;
+      isDown = false;
+      stage.classList.remove("is-panning");
+
+      try {
+        stage.releasePointerCapture(e.pointerId);
+      } catch (_) {}
+
+      const dx = e.clientX - startX;
+      const dy = e.clientY - startY;
+      const dist = Math.hypot(dx, dy);
+
+      if (focusedKey !== null && currentPanDist > 40) {
+        unfocus();
+        onboarding.notifyUserDrag(); // Dragged away from focused hero
+      }
+
+      currentPanDist = 0;
+
+      if (wasDragging || dist > 20) {
+        // Real user manual drag panning!
+        onboarding.notifyUserDrag();
+        frozen = true; // Permanently stop auto-motion once user pans!
+      } else {
+        // Pure click gesture!
+        const hitEl = document.elementFromPoint(e.clientX, e.clientY) as HTMLElement | null;
+        const target = hitEl ? (hitEl.closest(".fc-item") as HTMLElement | null) : null;
+
+        if (target) {
+          const colStr = target.getAttribute("data-col");
+          const rowStr = target.getAttribute("data-row");
+          if (colStr !== null && rowStr !== null) {
+            const col = parseInt(colStr, 10);
+            const row = parseInt(rowStr, 10);
+            const key = `${col},${row}`;
+
+            if (focusedKey === key) {
+              unfocus();
+            } else {
+              focusTile(col, row);
+            }
+          }
+        } else {
+          if (focusedKey !== null) {
+            unfocus();
+          }
+        }
+      }
+    }
+
+    stage.addEventListener("pointerup", handlePointerUp);
+    stage.addEventListener("pointercancel", handlePointerUp);
+
+    function tick(now: number) {
+      const dt = Math.min(0.05, (now - lastFrame) / 1000);
+      lastFrame = now;
+
+      if (!isDown) {
+        if (focusedKey !== null) {
+          const diffX = targetCamX - camX;
+          const diffY = targetCamY - camY;
+          if (Math.hypot(diffX, diffY) > 0.15) {
+            camX += diffX * 0.055;
+            camY += diffY * 0.055;
+            applyTransform();
+            reconcileTiles();
+          } else {
+            camX = targetCamX;
+            camY = targetCamY;
+            applyTransform();
+            reconcileTiles();
+          }
+        } else if (!frozen) {
+          autoT += dt;
+
+          // Constant linear diagonal motion from bottom-left to top-right (no scan/orbit reversals)
+          const speedX = 3.5;
+          const speedY = -2.5;
+
+          camX += speedX * dt;
+          camY += speedY * dt;
+          targetCamX = camX;
+          targetCamY = camY;
+
+          applyTransform();
+          reconcileTiles();
+        }
+      }
+      requestAnimationFrame(tick);
+    }
+
+    applyTransform();
+    reconcileTiles();
+    requestAnimationFrame(tick);
+
+    return { getCam, setCam, reconcileTiles, unfocus };
+  }
+
+  async function initEngine(root: HTMLElement) {
+    if (root.dataset.fcInitialized) return;
+    root.dataset.fcInitialized = "true";
+
+    const pan = root.getAttribute("data-pan") || "linear";
+    const id = root.id;
+    const dataScript = root.querySelector(".fc-data") as HTMLScriptElement | null;
+    const images: FCImage[] = dataScript ? JSON.parse(dataScript.textContent || "[]") : [];
+
+    const stageEl = root.querySelector(".fc-stage") as HTMLElement;
+    const worldEl = root.querySelector(".fc-world") as HTMLElement;
+    const expandBtn = root.querySelector(".fc-expand-btn") as HTMLElement | null;
+
+    const fsEl = document.querySelector(`.fc-fullscreen[data-fullscreen-for="${id}"]`) as HTMLElement | null;
+    const fsBackdrop = fsEl?.querySelector(".fc-fs-backdrop") as HTMLElement | null;
+    const fsStage = fsEl?.querySelector(".fc-fs-stage") as HTMLElement | null;
+    const fsWorld = fsEl?.querySelector(".fc-fs-world") as HTMLElement | null;
+    const fsCloseBtn = fsEl?.querySelector(".fc-fs-close") as HTMLElement | null;
+
+    const imagesMeta = await Promise.all(images.map(loadImageMeta));
+    const onboarding = createOnboardingTracker(root, fsEl);
+
+    let panelEngine: ReturnType<typeof createVirtualEngine> | null = null;
+    let fsEngine: ReturnType<typeof createVirtualEngine> | null = null;
+
+    panelEngine = createVirtualEngine(stageEl, worldEl, imagesMeta, pan, onboarding);
+
+    if (fsStage && fsWorld && fsEl) {
+      fsEngine = createVirtualEngine(fsStage, fsWorld, imagesMeta, pan, onboarding);
+    }
+
+    function openFullscreen() {
+      if (!fsEl) return;
+
+      if (panelEngine && fsEngine && stageEl) {
+        const panelRect = stageEl.getBoundingClientRect();
+        const currentCam = panelEngine.getCam();
+        const targetFsX = panelRect.left + currentCam.x;
+        const targetFsY = panelRect.top + currentCam.y;
+        fsEngine.setCam(targetFsX, targetFsY);
+      }
+
+      fsEl.classList.add("open");
+      fsEl.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+      fsEngine?.reconcileTiles();
+    }
+
+    function closeFullscreen() {
+      if (!fsEl) return;
+
+      if (panelEngine && fsEngine && stageEl) {
+        const panelRect = stageEl.getBoundingClientRect();
+        const fsCam = fsEngine.getCam();
+        const targetPanelX = fsCam.x - panelRect.left;
+        const targetPanelY = fsCam.y - panelRect.top;
+        panelEngine.setCam(targetPanelX, targetPanelY);
+      }
+
+      fsEl.classList.remove("open");
+      fsEl.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+      panelEngine?.reconcileTiles();
+    }
+
+    expandBtn?.addEventListener("click", (e) => {
+      e.stopPropagation();
+      openFullscreen();
+    });
+    fsCloseBtn?.addEventListener("click", closeFullscreen);
+    fsBackdrop?.addEventListener("click", closeFullscreen);
+
+    window.addEventListener("keydown", (e) => {
+      if (e.key !== "Escape") return;
+      panelEngine?.unfocus();
+      fsEngine?.unfocus();
+      if (fsEl?.classList.contains("open")) closeFullscreen();
+    });
+  }
+
+  function initFloatingCanvases() {
+    document.querySelectorAll(".floating-canvas").forEach((el) => initEngine(el as HTMLElement));
+  }
+
+  document.addEventListener("DOMContentLoaded", initFloatingCanvases);
+  document.addEventListener("astro:page-load", initFloatingCanvases);
+</script>
+
+<style is:global>
+  .floating-canvas {
+    position: relative;
+    width: 100%;
+    height: var(--fc-height, 560px);
+    border: none;
+    background: transparent;
+    overflow: hidden;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  /* Light Grey (#F4F3EF) in Light Mode, Dark Charcoal Grey (#121214) in Dark Mode */
+  .fc-stage,
+  .fc-fs-stage {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    cursor: grab;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+    background-color: #F4F3EF;
+  }
+
+  :global(.dark) .fc-stage,
+  :global(.dark) .fc-fs-stage {
+    background-color: #121214;
+  }
+
+  .fc-stage.is-panning,
+  .floating-canvas.is-panning .fc-stage,
+  .fc-fs-stage.is-panning {
+    cursor: grabbing;
+  }
+
+  /* Light/Dark Grey Translucent Backdrop Screen behind world plane */
+  .fc-backdrop-screen {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    background-color: #F4F3EF;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  :global(.dark) .fc-backdrop-screen {
+    background-color: #121214;
+  }
+
+  .fc-stage.has-focus .fc-backdrop-screen {
+    opacity: 0.90;
+  }
+
+  .fc-world,
+  .fc-fs-world {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    z-index: 20;
+    will-change: transform;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .fc-expand-btn {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    border-radius: var(--radius-md, 8px);
+    border: 1px solid var(--border-subtle);
+    background: var(--bg-glass);
+    color: var(--text-primary);
+    backdrop-filter: blur(8px);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .fc-expand-btn:hover {
+    border-color: var(--accent-secondary);
+    color: var(--accent-secondary);
+    transform: scale(1.05);
+  }
+
+  /* Tactile Bento Button Capsule Container */
+  .fc-bento-tag {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    z-index: 50;
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 14px;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.16);
+    background: #E5E4DF;
+    color: #1A1A1E;
+    font-family: var(--font-sans, system-ui, sans-serif);
+    font-size: 11.5px;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    line-height: 1.3;
+    pointer-events: none;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  :global(.dark) .fc-bento-tag {
+    border-color: rgba(255, 255, 255, 0.18);
+    background: #222228;
+    color: rgba(255, 255, 255, 0.90);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+
+  /* Sub-spans for dynamic text state morphing */
+  .fc-tag-instructions {
+    display: inline-flex;
+    align-items: center;
+    max-width: 250px;
+    opacity: 1;
+    overflow: hidden;
+    transition: max-width 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease;
+    white-space: nowrap;
+  }
+
+  .fc-tag-drag,
+  .fc-tag-click,
+  .fc-tag-sep,
+  .fc-tag-dash,
+  .fc-tag-desc {
+    display: inline-block;
+    transition: opacity 0.4s ease, color 0.4s ease;
+    white-space: nowrap;
+  }
+
+  .fc-tag-drag,
+  .fc-tag-click {
+    opacity: 1;
+  }
+
+  .fc-tag-desc {
+    opacity: 0.90;
+    font-weight: 500;
+  }
+
+  /* State 1: User Manual Cursor Drag -> 'drag around' becomes light */
+  .fc-bento-tag.is-drag-done .fc-tag-drag {
+    opacity: 0.35;
+  }
+  .fc-bento-tag.is-drag-done .fc-tag-click {
+    opacity: 1;
+  }
+
+  /* State 2: User Clicks Image -> 'click to zoom in' becomes light, 'drag around' normal */
+  .fc-bento-tag.is-click-done .fc-tag-click {
+    opacity: 0.35;
+  }
+  .fc-bento-tag.is-click-done .fc-tag-drag {
+    opacity: 1;
+  }
+
+  /* State 3: ONLY when BOTH User Manual Drag & Click are accomplished -> Instructions collapse & disappear! */
+  .fc-bento-tag.is-collapsed .fc-tag-instructions {
+    max-width: 0px;
+    opacity: 0;
+  }
+
+  .fc-item {
+    position: absolute;
+    display: block;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+    overflow: visible;
+    user-select: none;
+    -webkit-user-select: none;
+    will-change: transform, left, top, width, height, z-index, opacity, filter;
+    z-index: 1;
+    opacity: 1;
+    transition: left 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                top 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                width 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                height 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                opacity 0.6s ease,
+                filter 0.6s ease,
+                z-index 0s 0.2s;
+  }
+
+  .fc-item:hover,
+  .fc-item:focus-visible {
+    z-index: 90;
+  }
+
+  /* Crisp Solid White Background Mat for Image Frame */
+  .fc-item img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 0;
+    border: 1px solid rgba(0, 0, 0, 0.10);
+    background-color: #FFFFFF;
+    filter: brightness(1);
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+    pointer-events: none;
+    -webkit-user-drag: none;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  :global(.dark) .fc-item img {
+    background-color: #1A1A1E;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+  }
+
+  .fc-item:hover img,
+  .fc-item:focus-visible img {
+    filter: brightness(1.04);
+    transform: scale(1.02);
+    border-color: rgba(0, 0, 0, 0.22);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+  }
+
+  :global(.dark) .fc-item:hover img,
+  :global(.dark) .fc-item:focus-visible img {
+    border-color: rgba(255, 255, 255, 0.35);
+  }
+
+  /* Focused HERO Image: Crisp 1px Border, White Mat & Full Natural Color */
+  .fc-item.is-focused img {
+    filter: none !important;
+    transform: scale(1);
+    background-color: #FFFFFF !important;
+    border: 1px solid rgba(0, 0, 0, 0.14) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  }
+
+  :global(.dark) .fc-item.is-focused img {
+    background-color: #1A1A1E !important;
+    border: 1px solid rgba(255, 255, 255, 0.22) !important;
+  }
+
+  /* Full-screen Overlay Container */
+  .fc-fullscreen {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .fc-fullscreen.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Dim Backdrop Screen behind floating panel */
+  .fc-fs-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(4px);
+  }
+
+  /* Floating Full-screen Panel with Unified Corner Radius (8px / --radius-md) */
+  .fc-fs-panel {
+    position: absolute;
+    inset: 20px;
+    background-color: #F4F3EF;
+    border-radius: var(--radius-md, 8px);
+    border: 1px solid rgba(0, 0, 0, 0.10);
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.25);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  :global(.dark) .fc-fs-panel {
+    background-color: #121214;
+    border-color: rgba(255, 255, 255, 0.15);
+  }
+
+  /* Minimalist High-Contrast 'X' Exit Button */
+  .fc-fs-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    background: #FFFFFF;
+    color: #121214;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+    transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  }
+
+  :global(.dark) .fc-fs-close {
+    background: #222226;
+    color: #FFFFFF;
+    border-color: rgba(255, 255, 255, 0.25);
+  }
+
+  .fc-fs-close:hover {
+    transform: scale(1.08);
+    background: #000000;
+    color: #FFFFFF;
+    border-color: transparent;
+  }
+
+  :global(.dark) .fc-fs-close:hover {
+    background: #FFFFFF;
+    color: #000000;
+  }
+</style>

@@ -40,20 +40,20 @@ const isWorksPage = Astro.url.pathname.startsWith("/works");
                 Home
             </a>
             <a
-                href="/about"
-                id="nav-about-link"
-                class={`home-nav-link ${isAboutPage ? "active-scroll" : ""}`}
-                data-section="about"
-            >
-                About
-            </a>
-            <a
                 href={isHomePage ? "#works" : "/#works"}
                 id="nav-works-link"
                 class="home-nav-link"
                 data-section="works"
             >
                 Work
+            </a>
+            <a
+                href="/about"
+                id="nav-about-link"
+                class={`home-nav-link ${isAboutPage ? "active-scroll" : ""}`}
+                data-section="about"
+            >
+                About
             </a>
             <a
                 href="/archive"
@@ -235,7 +235,7 @@ const isWorksPage = Astro.url.pathname.startsWith("/works");
     }
 
     .home-nav-logo:hover .logo-name {
-        font-weight: 600;
+        color: var(--accent-secondary);
     }
 
     .logo-img-wrapper {
@@ -246,15 +246,6 @@ const isWorksPage = Astro.url.pathname.startsWith("/works");
         justify-content: center;
         margin-left: -16px; /* Pull to the absolute left edge of the navigation bar */
     }
-
-    /* .logo-circle {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 0px;
-        border-radius: 50%;
-        background-color: var(--accent-secondary);
-    } */
 
     .logo-img {
         display: block;
@@ -272,7 +263,7 @@ const isWorksPage = Astro.url.pathname.startsWith("/works");
         line-height: 1;
         cursor: pointer;
         transition:
-            font-weight 0.2s ease,
+            text-shadow 0.2s ease,
             color 0.2s ease;
     }
 
@@ -291,14 +282,14 @@ const isWorksPage = Astro.url.pathname.startsWith("/works");
         line-height: 1;
         color: var(--text-secondary);
         text-decoration: none;
+        cursor: pointer;
         transition:
-            font-weight 0.2s ease,
+            text-shadow 0.2s ease,
             color 0.2s ease;
     }
 
     .home-nav-link:hover {
         color: var(--accent-secondary);
-        font-weight: 600;
         text-decoration: underline;
         text-decoration-color: var(--accent-secondary);
         text-decoration-thickness: 2px;
@@ -307,7 +298,6 @@ const isWorksPage = Astro.url.pathname.startsWith("/works");
 
     .home-nav-link.active-scroll {
         color: var(--accent-secondary);
-        font-weight: 600;
         text-decoration: underline;
         text-decoration-color: var(--accent-secondary);
         text-decoration-thickness: 2px;

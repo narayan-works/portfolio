@@ -1,0 +1,543 @@
+---
+interface Props {
+	title: string;
+	description?: string;
+	tags?: string[];
+	href: string;
+	categories?: string[];
+	image?: string;
+	meta?: Record<string, string>;
+}
+
+const {
+	title,
+	description,
+	tags = [],
+	href,
+	categories = [],
+	image,
+	meta = {},
+} = Astro.props;
+
+const metaEntries = Object.entries(meta).slice(0, 6);
+const isGif = image?.endsWith(".gif");
+---
+
+<div class="works-list-row" data-categories={categories.join(" ")}>
+	<a href={href} class="works-list-row__link">
+		<div class="works-list-row__left">
+			<div class="works-list-row__left-top">
+				<h3 class="works-list-row__title">{title}</h3>
+			</div>
+
+			<div class="works-list-row__image-reveal">
+				<div class="works-list-row__image-reveal-inner">
+					{
+						image && (
+							<img
+								src={image}
+								alt={title}
+								loading="lazy"
+								decoding="async"
+								class="works-list-row__image"
+								data-gif={isGif}
+							/>
+						)
+					}
+				</div>
+			</div>
+		</div>
+
+		<div class="works-list-row__right">
+			{
+				description && (
+					<p class="works-list-row__description">{description}</p>
+				)
+			}
+
+			<div class="works-list-row__tags-reveal">
+				<div class="works-list-row__tags-reveal-inner">
+					{
+						tags.length > 0 && (
+							<div class="works-list-row__tags">
+								{tags.map((tag) => (
+									<span class="works-list-row__tag">
+										{tag}
+									</span>
+								))}
+							</div>
+						)
+					}
+				</div>
+			</div>
+
+			<div class="works-list-row__meta-reveal">
+				<div class="works-list-row__meta-reveal-inner">
+					{
+						metaEntries.length > 0 && (
+							<dl class="works-list-row__meta-list">
+								{metaEntries.map(([key, value]) => (
+									<div class="works-list-row__meta-row">
+										<dt class="works-list-row__meta-key">
+											{key}
+										</dt>
+										<dd class="works-list-row__meta-value">
+											{value}
+										</dd>
+									</div>
+								))}
+							</dl>
+						)
+					}
+				</div>
+			</div>
+		</div>
+	</a>
+</div>
+
+<style>
+	.works-list-row {
+		position: relative;
+		background: var(--bg-primary);
+		transition: background-color 0.3s ease;
+	}
+
+	/* Lift the active row above its siblings. They're positioned with opaque
+	   backgrounds, so at z-index: auto the following row paints over the
+	   expanded card and clips its drop shadow. */
+	.works-list-row:hover,
+	.works-list-row.works-list-row--expanded {
+		z-index: 2;
+	}
+
+	/* Rules are inset by the strip's bleed so they line up with the 860px content
+	   column at rest; only the tinted hover card uses the full bleed width.
+	   Both sit inside the row's own box so they paint above its background. */
+	.works-list-row:not(:last-child)::after,
+	.works-list-row:first-child::before {
+		content: "";
+		position: absolute;
+		left: var(--row-bleed, 20px);
+		right: var(--row-bleed, 20px);
+		height: 1px;
+		background: var(--border-subtle);
+		pointer-events: none;
+		transition: opacity 0.3s ease;
+	}
+
+	.works-list-row:not(:last-child)::after {
+		bottom: 0;
+	}
+
+	.works-list-row:first-child::before {
+		top: 0;
+	}
+
+	.works-list-row:hover::after,
+	.works-list-row:hover::before,
+	.works-list-row.works-list-row--expanded::after,
+	.works-list-row.works-list-row--expanded::before {
+		opacity: 0;
+	}
+
+	/* Card surface + hover bevel */
+	.works-list-row__link {
+		display: grid;
+		/* --desc-col is the filter control's measured width + the strip bleed, set
+		   by works-list.astro, so the description column's left edge lands on the
+		   filter's. Falls back to an even split before/without that measurement. */
+		grid-template-columns: minmax(0, 1fr) minmax(0, var(--desc-col, 1fr));
+		column-gap: 10px;
+		align-items: stretch;
+		padding: 0;
+		text-decoration: none;
+		color: inherit;
+		border: 1px solid transparent;
+		border-radius: 0;
+		background: transparent;
+		box-shadow: none;
+		backdrop-filter: blur(0px);
+		-webkit-backdrop-filter: blur(0px);
+		transition:
+			background-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+			border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+			box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+			transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+			backdrop-filter 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+			-webkit-backdrop-filter 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+	}
+
+	.works-list-row:hover .works-list-row__link,
+	.works-list-row.works-list-row--expanded .works-list-row__link {
+		border-radius: 0;
+		box-shadow:
+			0 -10px 25px rgba(0, 0, 0, 0.25),
+			0 20px 40px rgba(0, 0, 0, 0.25),
+			inset 0 1px 0 rgba(255, 255, 255, 0.25);
+		backdrop-filter: blur(16px);
+		-webkit-backdrop-filter: blur(16px);
+	}
+
+	.works-list-row[data-categories~="hardware-ux"]:hover .works-list-row__link,
+	.works-list-row[data-categories~="hardware-ux"].works-list-row--expanded
+		.works-list-row__link {
+		border-color: #559ed5;
+		background: linear-gradient(
+			135deg,
+			rgba(130, 198, 246, 0.85) 0%,
+			rgba(70, 150, 211, 0.85) 100%
+		);
+	}
+
+	.works-list-row[data-categories~="web-ux"]:hover .works-list-row__link,
+	.works-list-row[data-categories~="web-ux"].works-list-row--expanded
+		.works-list-row__link {
+		border-color: #e05105;
+		background: linear-gradient(
+			135deg,
+			rgba(255, 126, 54, 0.85) 0%,
+			rgba(204, 71, 0, 0.85) 100%
+		);
+	}
+
+	.works-list-row[data-categories~="mobile-ux"]:hover .works-list-row__link,
+	.works-list-row[data-categories~="mobile-ux"].works-list-row--expanded
+		.works-list-row__link {
+		border-color: #dfbc05;
+		background: linear-gradient(
+			135deg,
+			rgba(255, 223, 76, 0.85) 0%,
+			rgba(204, 171, 0, 0.85) 100%
+		);
+	}
+
+	.works-list-row[data-categories~="spatial-xd"]:hover .works-list-row__link,
+	.works-list-row[data-categories~="spatial-xd"].works-list-row--expanded
+		.works-list-row__link {
+		border-color: #258835;
+		background: linear-gradient(
+			135deg,
+			rgba(61, 184, 83, 0.85) 0%,
+			rgba(24, 110, 37, 0.85) 100%
+		);
+	}
+
+	.works-list-row__left {
+		display: flex;
+		flex-direction: column;
+		/* Centres the title between the row's rules. Matters on rows whose
+		   description wraps to a third line: the right column then drives the
+		   row height and flex-start would strand the title at the top. */
+		justify-content: center;
+		min-width: 0;
+		padding: 14px 0 14px 10px;
+		transition: padding 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+	}
+
+	.works-list-row:hover .works-list-row__left,
+	.works-list-row.works-list-row--expanded .works-list-row__left {
+		justify-content: flex-start;
+		padding: 10px 0 10px 10px;
+	}
+
+	.works-list-row__left-top {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.works-list-row__right {
+		display: flex;
+		flex-direction: column;
+		/* Top-aligned in both states. justify-content can't be transitioned, so
+		   switching it collapsed→expanded made the description snap while the
+		   row height and padding eased — the jump on hover-out. Only padding
+		   changes now, and that animates. The +2px over .__left keeps the 12px
+		   text optically level with the 36px title's cap height. */
+		justify-content: flex-start;
+		min-width: 0;
+		padding: 16px 10px 14px 0;
+		transition: padding 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+	}
+
+	.works-list-row:hover .works-list-row__right,
+	.works-list-row.works-list-row--expanded .works-list-row__right {
+		padding: 12px 10px 10px 0;
+	}
+
+	.works-list-row__title {
+		/* Matches the hero bio's family/size/tracking. NOTE: @fontsource/google-sans
+		   only ships 400/500/600/700 — anything below 400 renders as 400. */
+		font-family: "Google Sans", sans-serif;
+		font-size: 36px;
+		font-weight: 200;
+		letter-spacing: -0.02em;
+		line-height: 1.15;
+		color: var(--text-secondary);
+		margin: 0;
+		transition: color 0.4s ease;
+	}
+
+	.works-list-row:hover .works-list-row__title,
+	.works-list-row.works-list-row--expanded .works-list-row__title {
+		color: #000000;
+		text-shadow: 0.4px 0 0 #000000;
+	}
+
+	.works-list-row__tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 6px;
+	}
+
+	/* Chips share the meta bento's surface treatment so the two read as one
+	   material — same border, fill, and hover inset. */
+	.works-list-row__tag {
+		font-family: var(--font-sans);
+		font-size: 11px;
+		font-weight: 400;
+		/* Authored casing from frontmatter — keeps acronyms like "Embodied AI"
+		   intact, which a lowercase + ::first-letter rule would flatten. */
+		text-transform: none;
+		letter-spacing: 0;
+		color: var(--text-secondary);
+		padding: 3px 8px;
+		border: 1px solid var(--border-subtle);
+		border-radius: var(--radius-sm);
+		background: var(--bg-surface);
+		white-space: nowrap;
+		transition:
+			color 0.4s ease,
+			opacity 0.4s ease,
+			background-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+			border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+			box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+	}
+
+	.works-list-row:hover .works-list-row__tag,
+	.works-list-row.works-list-row--expanded .works-list-row__tag {
+		color: #000000;
+		/* Same step as the meta values, so the two bentos read at one level. */
+		opacity: 0.75;
+		background: rgba(0, 0, 0, 0.04);
+		border-color: rgba(0, 0, 0, 0.05);
+		box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.06);
+	}
+
+	.works-list-row__description {
+		font-family: var(--font-sans);
+		font-size: 12px;
+		/* 400, not 300 — Google Sans ships no face below 400, so 300 was
+		   silently rendering as 400 anyway. */
+		font-weight: 400;
+		line-height: 1.25;
+		color: var(--text-secondary);
+		opacity: 0.8;
+		margin: 0;
+		transition:
+			color 0.4s ease,
+			opacity 0.4s ease;
+	}
+
+	.works-list-row:hover .works-list-row__description,
+	.works-list-row.works-list-row--expanded .works-list-row__description {
+		color: #000000;
+		opacity: 0.9;
+	}
+
+	/* CSS Grid 0fr -> 1fr intrinsic height unfold */
+	.works-list-row__image-reveal,
+	.works-list-row__meta-reveal,
+	.works-list-row__tags-reveal {
+		display: grid;
+		grid-template-rows: 0fr;
+		opacity: 0;
+		overflow: hidden;
+		min-width: 0;
+		width: 100%;
+		transition:
+			grid-template-rows 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+			opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+	}
+
+	.works-list-row:hover .works-list-row__image-reveal,
+	.works-list-row:hover .works-list-row__meta-reveal,
+	.works-list-row:hover .works-list-row__tags-reveal,
+	.works-list-row.works-list-row--expanded .works-list-row__image-reveal,
+	.works-list-row.works-list-row--expanded .works-list-row__meta-reveal,
+	.works-list-row.works-list-row--expanded .works-list-row__tags-reveal {
+		grid-template-rows: 1fr;
+		opacity: 1;
+	}
+
+	.works-list-row__image-reveal-inner,
+	.works-list-row__meta-reveal-inner,
+	.works-list-row__tags-reveal-inner {
+		min-height: 0;
+		min-width: 0;
+		width: 100%;
+		overflow: hidden;
+		transform: translateY(-8px);
+		/* Padding must be 0 while collapsed: a 0fr track is floored by the grid
+		   item's minimum contribution, which includes its own padding — so any
+		   padding here would keep each "hidden" reveal 10px tall. */
+		padding-top: 0;
+		transition:
+			transform 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+			padding-top 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+	}
+
+	.works-list-row:hover .works-list-row__image-reveal-inner,
+	.works-list-row:hover .works-list-row__meta-reveal-inner,
+	.works-list-row:hover .works-list-row__tags-reveal-inner,
+	.works-list-row.works-list-row--expanded .works-list-row__image-reveal-inner,
+	.works-list-row.works-list-row--expanded .works-list-row__meta-reveal-inner,
+	.works-list-row.works-list-row--expanded .works-list-row__tags-reveal-inner {
+		transform: translateY(0);
+		padding-top: 10px;
+	}
+
+	/* Bleeds left to the card's outer edge: 10px cancels .__left's padding and
+	   the extra 1px covers .__link's border, which is transparent at rest but
+	   picks up the category colour on hover. The column's top/bottom padding is
+	   left intact. Applied in both states since the reveal is zero-height while
+	   collapsed. */
+	.works-list-row__image-reveal {
+		width: calc(100% + 11px);
+		margin-left: -11px;
+	}
+
+	.works-list-row__image {
+		display: block;
+		width: 100%;
+		max-width: 100%;
+		/* Natural aspect ratio — the old forced 16/9 + object-fit: cover was
+		   cropping into the hero and reading as a zoom. */
+		height: auto;
+		/* Square on the left where it meets the card edge; the right corners match
+		   .__meta-list's --radius-md so the two bentos share a corner language. */
+		border-radius: 0 var(--radius-md) var(--radius-md) 0;
+		background: var(--bg-surface);
+	}
+
+	/* Tags and the meta table travel together at the bottom of the right column:
+	   the auto margin on the first of the pair absorbs all the slack above both,
+	   so the tags sit directly on top of the table rather than under the
+	   description. The meta reveal's own 10px top padding is the gap between.
+	   The image is bottom-anchored the same way, so its lower edge lands level
+	   with the table's. Expanded-only: at rest these auto margins would swallow
+	   the column's free space and defeat the collapsed state's centring. */
+	.works-list-row:hover .works-list-row__tags-reveal,
+	.works-list-row.works-list-row--expanded .works-list-row__tags-reveal,
+	.works-list-row:hover .works-list-row__image-reveal,
+	.works-list-row.works-list-row--expanded .works-list-row__image-reveal {
+		margin-top: auto;
+	}
+
+	.works-list-row__meta-list {
+		display: grid;
+		grid-template-columns: auto 1fr;
+		row-gap: 4px;
+		column-gap: 10px;
+		margin: 0;
+		padding: 10px;
+		border: 1px solid var(--border-subtle);
+		border-radius: var(--radius-md);
+		background: var(--bg-surface);
+		opacity: 1;
+		visibility: visible;
+		transition:
+			background-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+			border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+			box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+	}
+
+	.works-list-row:hover .works-list-row__meta-list,
+	.works-list-row.works-list-row--expanded .works-list-row__meta-list {
+		background: rgba(0, 0, 0, 0.04);
+		border-color: rgba(0, 0, 0, 0.05);
+		box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.06);
+	}
+
+	.works-list-row__meta-row {
+		display: contents;
+	}
+
+	.works-list-row__meta-key {
+		font-family: var(--font-sans);
+		font-size: 12px;
+		font-weight: 400;
+		color: var(--text-secondary);
+		text-transform: capitalize;
+		opacity: 0.8;
+		line-height: 1.25;
+		grid-column: 1;
+		transition:
+			color 0.3s ease,
+			opacity 0.3s ease;
+	}
+
+	.works-list-row:hover .works-list-row__meta-key,
+	.works-list-row.works-list-row--expanded .works-list-row__meta-key {
+		color: #000000;
+		opacity: 0.55;
+	}
+
+	.works-list-row__meta-value {
+		font-family: var(--font-sans);
+		font-size: 12px;
+		font-weight: 400;
+		color: var(--text-primary);
+		line-height: 1.25;
+		margin: 0;
+		grid-column: 2;
+		word-break: break-word;
+		transition:
+			color 0.3s ease,
+			opacity 0.3s ease;
+	}
+
+	/* Matches the hero bio's mobile step in works-list.astro, so the row titles
+	   and the bio stay the same size at every breakpoint. */
+	@media (max-width: 768px) {
+		.works-list-row__title {
+			font-size: 24px;
+			letter-spacing: -0.01em;
+		}
+	}
+
+	/* Stacked: side-by-side columns leave roughly 165px each at 375px wide,
+	   which a 24px title and a description can't share. Both columns get
+	   symmetric horizontal padding once they're no longer a left/right pair. */
+	@media (max-width: 640px) {
+		.works-list-row__link {
+			grid-template-columns: minmax(0, 1fr);
+			row-gap: 8px;
+		}
+
+		.works-list-row__left,
+		.works-list-row:hover .works-list-row__left,
+		.works-list-row.works-list-row--expanded .works-list-row__left {
+			padding: 14px 10px 0;
+		}
+
+		.works-list-row__right,
+		.works-list-row:hover .works-list-row__right,
+		.works-list-row.works-list-row--expanded .works-list-row__right {
+			padding: 0 10px 14px;
+		}
+	}
+
+	.works-list-row:hover .works-list-row__meta-value,
+	.works-list-row.works-list-row--expanded .works-list-row__meta-value {
+		color: #000000;
+		/* Third step in the card's text hierarchy: lighter than the description
+		   (0.9), darker than the meta keys (0.55). */
+		opacity: 0.75;
+	}
+</style>
+
+<!-- No script here by design: on /works-list the unfold/fold of every row
+     is driven by that page's scroll-reveal loop (works-list.astro), which
+     owns the reveals' inline max-height. Elsewhere / without it, rows stay
+     collapsed and act as plain links; the CSS :hover rules above still
+     provide the tint. -->
