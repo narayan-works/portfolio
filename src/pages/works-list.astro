@@ -859,22 +859,28 @@ const allProjects = (await getCollection("projects"))
 	// Smooth continuous scroll-driven card unstacking animation for mobile view
 	function setupMobileCardScrollAnimation() {
 		if (window.innerWidth > 768) return;
-		const cardWrappers = document.querySelectorAll(
-			".works-mobile-cards .project-card-wrapper"
+		const container = document.querySelector(".works-mobile-cards");
+		if (!container) return;
+
+		const cardWrappers = Array.from(
+			container.querySelectorAll(".project-card-wrapper")
 		);
 		if (!cardWrappers.length) return;
 
 		function updateGradualCardScroll() {
 			const vh = window.innerHeight;
-			// Smooth interpolation range: unstacking starts at 95% screen height and finishes at 80% screen height
-			const startY = vh * 0.95;
-			const endY = vh * 0.80;
-			const distance = startY - endY;
+			const containerRect = container.getBoundingClientRect();
+
+			// Distance container top has scrolled past 90% screen height
+			const startThreshold = vh * 0.90;
+			const scrolledDistance = startThreshold - containerRect.top;
+			const cardInterval = 100;
 
 			cardWrappers.forEach((card, index) => {
 				if (index === 0) return; // First card stays at rest
-				const rect = card.getBoundingClientRect();
-				const rawProgress = (startY - rect.top) / distance;
+
+				const cardStart = (index - 1) * 70;
+				const rawProgress = (scrolledDistance - cardStart) / cardInterval;
 				const progress = Math.max(0, Math.min(1, rawProgress));
 
 				// Smooth mathematical linear interpolation: -160px when stacked, 24px when unstacked

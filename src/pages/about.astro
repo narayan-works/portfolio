@@ -5,26 +5,27 @@ import ThemeToggle from "../components/ThemeToggle.astro";
 import Footer from "../components/Footer.astro";
 import GhostRunner from "../components/GhostRunner.astro";
 import ImageSlider from "../components/ImageSlider.astro";
-import FloatingCanvas from "../components/FloatingCanvas.astro";
+// DISABLED INFINITE CANVAS (Commented out):
+// import FloatingCanvas from "../components/FloatingCanvas.astro";
 
-const canvasImages = [
-	{ src: "/assets/projects/dot-threads/sketches.png", alt: "Dot Threads — early sketches" },
-	{ src: "/assets/projects/pointo/pointo exploded axo.png", alt: "Pointo — exploded axonometric" },
-	{ src: "/assets/projects/dot-threads/architecture.png", alt: "Dot Threads — architecture diagram" },
-	{ src: "/assets/projects/dot-threads/approach - 1.png", alt: "Dot Threads — approach sketch 1" },
-	{ src: "/assets/projects/dot-threads/approach-2.png", alt: "Dot Threads — approach sketch 2" },
-	{ src: "/assets/projects/dot-threads/web of info.png", alt: "Dot Threads — web of info diagram" },
-	{ src: "/assets/projects/dot-threads/catalouging.png", alt: "Dot Threads — cataloguing sketch" },
-	{ src: "/assets/projects/dot-threads/entering.png", alt: "Dot Threads — entering sketch" },
-	{ src: "/assets/projects/santuary/santuary 1.png", alt: "Sanctuary — study 1" },
-	{ src: "/assets/projects/santuary/santuary 2.png", alt: "Sanctuary — study 2" },
-	{ src: "/assets/projects/santuary/evolution.png", alt: "Sanctuary — evolution diagram" },
-	{ src: "/assets/projects/santuary/precedents.png", alt: "Sanctuary — precedents" },
-	{ src: "/assets/projects/piko/xray.png", alt: "Piko — x-ray diagram" },
-	{ src: "/assets/projects/piko/bts.png", alt: "Piko — behind the scenes" },
-	{ src: "/assets/projects/pointo/pointing-3.png", alt: "Pointo — pointing study 3" },
-	{ src: "/assets/projects/pointo/pointing-4.png", alt: "Pointo — pointing study 4" },
-];
+// const canvasImages = [
+// 	{ src: "/assets/projects/dot-threads/sketches.png", alt: "Dot Threads — early sketches" },
+// 	{ src: "/assets/projects/pointo/pointo exploded axo.png", alt: "Pointo — exploded axonometric" },
+// 	{ src: "/assets/projects/dot-threads/architecture.png", alt: "Dot Threads — architecture diagram" },
+// 	{ src: "/assets/projects/dot-threads/approach - 1.png", alt: "Dot Threads — approach sketch 1" },
+// 	{ src: "/assets/projects/dot-threads/approach-2.png", alt: "Dot Threads — approach sketch 2" },
+// 	{ src: "/assets/projects/dot-threads/web of info.png", alt: "Dot Threads — web of info diagram" },
+// 	{ src: "/assets/projects/dot-threads/catalouging.png", alt: "Dot Threads — cataloguing sketch" },
+// 	{ src: "/assets/projects/dot-threads/entering.png", alt: "Dot Threads — entering sketch" },
+// 	{ src: "/assets/projects/santuary/santuary 1.png", alt: "Sanctuary — study 1" },
+// 	{ src: "/assets/projects/santuary/santuary 2.png", alt: "Sanctuary — study 2" },
+// 	{ src: "/assets/projects/santuary/evolution.png", alt: "Sanctuary — evolution diagram" },
+// 	{ src: "/assets/projects/santuary/precedents.png", alt: "Sanctuary — precedents" },
+// 	{ src: "/assets/projects/piko/xray.png", alt: "Piko — x-ray diagram" },
+// 	{ src: "/assets/projects/piko/bts.png", alt: "Piko — behind the scenes" },
+// 	{ src: "/assets/projects/pointo/pointing-3.png", alt: "Pointo — pointing study 3" },
+// 	{ src: "/assets/projects/pointo/pointing-4.png", alt: "Pointo — pointing study 4" },
+// ];
 
 const sliderSlides = [
 	{
@@ -69,7 +70,7 @@ const sliderSlides = [
 
 		<div class="about-divider"></div>
 
-		<!-- 2-Column Hero Grid: Left = Bio Text, Right = Floating Canvas (Height matched to Bio Text!) -->
+		<!-- Bio Section -->
 		<div class="about-hero-grid">
 			<div class="about-left-col">
 				<div class="about-body">
@@ -122,6 +123,7 @@ const sliderSlides = [
 				</div>
 			</div>
 
+			{/* DISABLED INFINITE CANVAS PANEL:
 			<div class="about-right-col">
 				<div class="about-canvas-container">
 					<FloatingCanvas
@@ -132,6 +134,7 @@ const sliderSlides = [
 					/>
 				</div>
 			</div>
+			*/}
 		</div>
 
 		<!-- Full Width Bottom Section: Image Slider Carousel -->
@@ -210,47 +213,16 @@ const sliderSlides = [
 		margin-bottom: 48px;
 	}
 
-	/* Hero Grid Layout: 2 Columns on Desktop */
+	/* Bio Layout */
 	.about-hero-grid {
 		display: flex;
 		flex-direction: column;
-		gap: 48px;
+		max-width: var(--content-col, 750px);
 		margin-bottom: 96px;
-	}
-
-	@media (min-width: 1024px) {
-		.about-hero-grid {
-			display: grid;
-			grid-template-columns: 1fr 1fr;
-			gap: 64px;
-			align-items: stretch;
-		}
 	}
 
 	.about-left-col {
 		width: 100%;
-	}
-
-	.about-right-col {
-		width: 100%;
-		height: 100%;
-		display: flex;
-		flex-direction: column;
-	}
-
-	.about-canvas-container {
-		width: 100%;
-		height: 100%;
-		min-height: 520px;
-		border-radius: var(--radius-md, 8px);
-		overflow: hidden;
-		border: 1px solid var(--border-subtle);
-		position: relative;
-	}
-
-	.about-canvas-container :global(.floating-canvas) {
-		height: 100% !important;
-		min-height: 100% !important;
 	}
 
 	.about-body {
