@@ -110,11 +110,23 @@ const hoverColor =
 
 <Layout title={`${title} | Narayan Ashanahalli`} preloadImageHref={heroImage}>
     <HomeNavigation />
-    <div class="case-study-controls">
-        <button id="text-mode-toggle" class="text-mode-toggle" aria-label="Toggle text mode" type="button">
-            <span class="mode-option mode-text active" data-mode="text">text</span>
+    <div
+        class="case-study-controls"
+        style={`--project-category-color: ${activeColor}; --project-category-hover-color: ${hoverColor};`}
+    >
+        <button
+            id="text-mode-toggle"
+            class="text-mode-toggle"
+            aria-label="Toggle text mode"
+            type="button"
+        >
+            <span class="mode-option mode-text active" data-mode="text"
+                >text</span
+            >
             <span class="mode-divider">/</span>
-            <span class="mode-option mode-notext" data-mode="notext">no text</span>
+            <span class="mode-option mode-notext" data-mode="notext"
+                >no text</span
+            >
         </button>
     </div>
     <!-- LEFT SIDEBAR SLOT -->
@@ -355,33 +367,44 @@ const hoverColor =
             cleanupThemeToggle = null;
         }
 
-        const themeToggleWrapper = document.querySelector(
-            ".theme-toggle-wrapper",
-        ) as HTMLElement;
-        const footer = document.querySelector(".site-footer");
-        if (!themeToggleWrapper || !footer) return;
+        const floaters = [
+            document.querySelector(".theme-toggle-wrapper"),
+            document.querySelector(".case-study-controls"),
+        ].filter(Boolean) as HTMLElement[];
+
+        // They stop with the case study: above the next-project card when there
+        // is one, otherwise above the footer.
+        const boundary =
+            document.querySelector(".next-project-section") ||
+            document.querySelector(".site-footer");
+        if (floaters.length === 0 || !boundary) return;
 
         function updateThemeTogglePosition() {
-            if (!footer || !themeToggleWrapper) return;
+            if (!boundary) return;
 
-            const footerRect = footer.getBoundingClientRect();
+            const boundaryRect = boundary.getBoundingClientRect();
             const windowHeight = window.innerHeight;
             const margin = 20;
 
-            if (footerRect.top < windowHeight) {
-                const offset = windowHeight - footerRect.top + margin;
-                themeToggleWrapper.style.setProperty(
-                    "bottom",
-                    `${offset}px`,
-                    "important",
-                );
-            } else {
-                themeToggleWrapper.style.setProperty(
-                    "bottom",
-                    "20px",
-                    "important",
-                );
-            }
+            floaters.forEach((el) => {
+                const style = getComputedStyle(el);
+
+                // Which edge this element is pinned to at the current
+                // breakpoint. Can't be read from `style.top`: for a positioned
+                // element that resolves to a used px value, never "auto".
+                if (style.getPropertyValue("--anchor").trim() !== "bottom") {
+                    return;
+                }
+
+                // Resting offset differs per breakpoint; --rest-bottom carries it.
+                const rest =
+                    parseFloat(style.getPropertyValue("--rest-bottom")) || 20;
+                const bottom =
+                    boundaryRect.top < windowHeight
+                        ? windowHeight - boundaryRect.top + margin
+                        : rest;
+                el.style.setProperty("bottom", `${bottom}px`, "important");
+            });
         }
 
         const handleScroll = () => {
@@ -418,13 +441,20 @@ const hoverColor =
             e.stopPropagation();
 
             const target = e.target as HTMLElement;
-            const clickedOption = target.closest(".mode-option") as HTMLElement | null;
+            const clickedOption = target.closest(
+                ".mode-option",
+            ) as HTMLElement | null;
 
             let newMode: string;
             if (clickedOption) {
-                newMode = clickedOption.getAttribute("data-mode") === "notext" ? "notext" : "text";
+                newMode =
+                    clickedOption.getAttribute("data-mode") === "notext"
+                        ? "notext"
+                        : "text";
             } else {
-                newMode = article.classList.contains("mode-no-text") ? "text" : "notext";
+                newMode = article.classList.contains("mode-no-text")
+                    ? "text"
+                    : "notext";
             }
 
             applyMode(newMode);
@@ -711,20 +741,32 @@ const hoverColor =
         line-height: 1.15;
     }
 
+    /* Bottom-right of the project section (the content column), 10px in from
+       the bottom edge. 340px = 320px sidebar + 20px content padding, matching
+       the text/no-text toggle's right edge. JS lifts it above the
+       next-project card on scroll. */
     .theme-toggle-wrapper {
+        --anchor: bottom;
+        --rest-bottom: 10px;
         position: fixed !important;
-        bottom: 20px !important;
-        right: 20px !important;
+        bottom: 10px !important;
+        right: 340px !important;
+        left: auto !important;
         z-index: 100;
         margin: 0 !important;
         padding: 0 !important;
     }
 
     /* Case Study Text/No-Text Toggle Controls (Positioned at top right of main content area) */
+    /* Top-right of the project section: sits on the content column's right
+       edge (320px sidebar + 20px pad). Vertically it sits in the nav band,
+       which is empty on this side since works-page nav links are confined to
+       the 280px sidebar column. */
     .case-study-controls {
+        --anchor: top;
         position: fixed;
         top: 14px;
-        right: 340px; /* 320px sidebar width + 20px padding = top right of main content area */
+        right: 340px;
         z-index: 30000;
         display: flex;
         align-items: center;
@@ -733,8 +775,14 @@ const hoverColor =
     }
 
     @media (max-width: 1024px) {
+        /* Floats bottom-left; JS lifts it above the next-project card */
         .case-study-controls {
-            right: 20px;
+            --anchor: bottom;
+            --rest-bottom: 20px;
+            top: auto;
+            bottom: 20px;
+            left: 20px;
+            right: auto;
         }
     }
 
@@ -757,13 +805,19 @@ const hoverColor =
     }
 
     .text-mode-toggle:hover {
-        border-color: var(--project-category-hover-color, var(--accent-secondary));
+        border-color: var(
+            --project-category-hover-color,
+            var(--accent-secondary)
+        );
         color: var(--text-primary);
     }
 
     .text-mode-toggle .mode-option {
         opacity: 0.4;
-        transition: opacity 0.2s ease, color 0.2s ease, font-weight 0.2s ease;
+        transition:
+            opacity 0.2s ease,
+            color 0.2s ease,
+            font-weight 0.2s ease;
     }
 
     .text-mode-toggle .mode-option.active {
@@ -811,6 +865,11 @@ const hoverColor =
     @media (max-width: 1024px) {
         .right-content {
             padding: 20px;
+            padding-top: 0 !important;
+        }
+
+        .project-meta-table {
+            margin-bottom: 20px !important;
         }
 
         /* Hide TOC on mobile */
@@ -818,9 +877,11 @@ const hoverColor =
             display: none;
         }
 
-        /* Fixed Theme Toggle on Mobile */
+        /* Fixed Theme Toggle on Mobile — stays bottom-right, 20px inset */
         .theme-toggle-wrapper {
+            --rest-bottom: 20px;
             position: fixed !important;
+            bottom: 20px !important;
             right: 48px !important;
             left: auto !important;
             z-index: 90;
@@ -831,6 +892,39 @@ const hoverColor =
         .project-sidebar-content {
             height: auto;
             display: block;
+        }
+
+        /* Reduce body text size on mobile */
+        .right-content :global(p) {
+            font-size: 12px !important;
+        }
+
+        .sidebar-project-title {
+            font-size: 32px;
+        }
+
+        /* TOC is hidden and the theme toggle is fixed, so .sidebar-bottom is an
+           empty 36px band on mobile — collapse it */
+        .sidebar-bottom {
+            padding-top: 0;
+        }
+
+        /* Step every 14px sidebar type down to 12px on mobile */
+        .sidebar-tags span,
+        .sidebar-project-desc,
+        .meta-row,
+        .meta-label,
+        .meta-value {
+            font-size: 12px;
+        }
+
+        /* Reduce gap headings on mobile */
+        .right-content :global(h4.gap-heading) {
+            font-size: 24px !important;
+        }
+
+        .right-content :global(.gaps-title) {
+            font-size: 24px !important;
         }
     }
 
@@ -859,7 +953,9 @@ const hoverColor =
         box-sizing: border-box !important;
     }
 
-    :global([data-theme="light"]) .right-content > :global(.full-width-image:first-child .image-wrapper) {
+    :global([data-theme="light"])
+        .right-content
+        > :global(.full-width-image:first-child .image-wrapper) {
         border: 1px solid rgba(0, 0, 0, 0.12) !important;
         box-shadow:
             inset 0 1px 0 rgba(255, 255, 255, 0.9),
@@ -886,7 +982,8 @@ const hoverColor =
         margin-top: 0 !important;
     }
 
-    .right-content :global(.project-section:has(+ .interaction-media-container)),
+    .right-content
+        :global(.project-section:has(+ .interaction-media-container)),
     .right-content :global(.project-section:has(+ figure)) {
         margin-bottom: 0 !important;
     }
@@ -951,7 +1048,8 @@ const hoverColor =
         margin-top: 0 !important;
     }
 
-    .right-content :global(.project-section:has(+ .interaction-media-container) p),
+    .right-content
+        :global(.project-section:has(+ .interaction-media-container) p),
     .right-content :global(.project-section:has(+ figure) p) {
         margin-bottom: 0 !important;
     }
@@ -971,6 +1069,12 @@ const hoverColor =
         font-size: 14px !important;
         line-height: 1.4 !important;
         font-weight: 300 !important;
+    }
+
+    @media (max-width: 1024px) {
+        .right-content :global(p) {
+            font-size: 12px !important;
+        }
     }
 
     /* Feedback Section Spacing - Remove residual gap between h4 and paragraph */
@@ -1107,5 +1211,71 @@ const hoverColor =
     }
     .right-content :global(.next-title) {
         font-size: 36px !important;
+    }
+
+    /* MOBILE SECTION SPACING — must come after the 40px/0px rules above,
+       since a media query adds no specificity of its own. */
+    @media (max-width: 1024px) {
+        /* Section divider gets 20px of clearance above it.
+           Case 1: sections carrying their own top margin. */
+        .right-content :global(.project-section) {
+            margin-top: 20px !important;
+        }
+
+        /* Case 2: sections whose top margin is zeroed because they follow media —
+           there the gap is the preceding element's 4rem bottom margin. */
+        .right-content :global(.full-width-image:has(+ .project-section)),
+        .right-content
+            :global(.interaction-media-container:has(+ .project-section)),
+        .right-content :global(figure:has(+ .project-section)),
+        .right-content :global([slot="intro"]:has(+ .project-section)),
+        .right-content :global(iframe:has(+ .project-section)),
+        .right-content :global(.figma-container:has(+ .project-section)),
+        .right-content :global(.pdf-viewer-wrapper:has(+ .project-section)) {
+            margin-bottom: 20px !important;
+        }
+
+        /* Continuation sections stay flush */
+        .right-content :global(.project-section.continuation) {
+            margin-top: 0 !important;
+        }
+
+        /* Next-project banner headings step 36px -> 24px */
+        .right-content :global(.next-eyebrow-bento),
+        .right-content :global(.next-title) {
+            font-size: 24px !important;
+        }
+
+        /* Matches the ProjectSection eyebrow (h3), which steps 12px -> 10px */
+        .right-content :global(.inline-section-title) {
+            font-size: 10px !important;
+        }
+
+        /* Image/video captions are dropped on mobile */
+        .right-content :global(figcaption) {
+            display: none !important;
+        }
+
+        /* Case-study media rounds down from --radius-md (8px) to 4px.
+           Targets image surfaces only — segmented controls, buttons and the
+           PDF toolbar keep the 8px token. */
+        .right-content :global(.full-width-image .image-wrapper),
+        .right-content :global(.full-width-image .optimized-image),
+        .right-content :global(.image-slider .slider-display),
+        .right-content :global(.image-slider .optimized-slide-image),
+        .right-content :global(.image-slider .slide video),
+        .right-content :global(.toggle-wrapper),
+        .right-content :global(.image-stack),
+        .right-content :global(.video-container),
+        .right-content :global(.video-display) {
+            border-radius: 4px !important;
+        }
+
+        /* The floating text/theme toggles park in the 20-72px band just above
+           the next-project card. Reserve that space so the last section's copy
+           doesn't end up underneath them. */
+        .right-content :global(.project-section:has(+ .next-project-section)) {
+            padding-bottom: 72px !important;
+        }
     }
 </style>

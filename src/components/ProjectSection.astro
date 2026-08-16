@@ -443,7 +443,6 @@ const {
         .section-title h3 {
             position: static;
             margin-bottom: 0.5rem;
-            font-size: 14px;
         }
 
         .section-content {
@@ -463,6 +462,16 @@ const {
     @media (max-width: 1024px) {
         .hero-text-container {
             width: 100%;
+        }
+
+        /* Body copy steps 14px -> 12px for the whole tablet/mobile range */
+        .section-content :global(p) {
+            font-size: 12px !important;
+        }
+
+        /* Section eyebrow steps 12px -> 10px */
+        .section-title h3 {
+            font-size: 10px;
         }
     }
 
@@ -530,7 +539,7 @@ const {
 
     @media (max-width: 768px) {
         .section-content :global(.centered-tagline) {
-            font-size: 14px;
+            font-size: 12px;
         }
 
         .section-content :global(.list-tagline) {
@@ -538,7 +547,7 @@ const {
         }
 
         .section-content :global(p) {
-            font-size: 0.875rem; /* 14px on mobile */
+            font-size: 12px !important; /* 12px on mobile */
         }
     }
 

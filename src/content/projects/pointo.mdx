@@ -244,6 +244,13 @@ import ImageSlider from '../../components/ImageSlider.astro';
         text-align: center;
     }
 
+    @media (max-width: 1024px) {
+        .findings-section-title,
+        .findings-section-title p {
+            font-size: 24px !important;
+        }
+    }
+
     .findings-section-title .accent-text {
         color: #68B5ED;
     }
@@ -372,6 +379,16 @@ import ImageSlider from '../../components/ImageSlider.astro';
         object-fit: contain;
     }
 
+    /* Black backdrop for the pointing-argument slides only. Their sources are
+       transparent PNG/GIFs, so the page surface was showing through instead of
+       the intended dark field. Matched on filename rather than a wrapper div:
+       ProjectSection styles .section-content > .image-slider as a direct child,
+       and wrapping it would break that width treatment. */
+    .image-slider[data-variant="carousel"]:has(img[src*="/pointing"])
+        .optimized-slide-image {
+        background: #000 !important;
+    }
+
     /* Flush against the layout's left edge (matching the full-width
        sliders below) while staying capped to normal body-copy width,
        instead of ProjectSection's default centered-column position. */
@@ -381,6 +398,16 @@ import ImageSlider from '../../components/ImageSlider.astro';
         margin-left: 0 !important;
         max-width: 750px !important;
         text-align: left !important;
+
+        /* Match the h2.left-align treatment used across the other case
+           studies (see .right-content h2 in ProjectLayout.astro). */
+        font-family: var(--font-sans) !important;
+        font-size: 24px !important;
+        font-weight: 500 !important;
+        line-height: 1.25 !important;
+        letter-spacing: var(--title-spacing) !important;
+        margin-top: 0 !important;
+        margin-bottom: 8px !important;
     }
 `}</style>
 

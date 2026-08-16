@@ -224,7 +224,11 @@
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    min-width: 60px;
+    /* Fixed, not min-width: "WORKFLOW" overflows 60px and was pushing that
+       row's chips right of the "PRODUCT" row's. Both columns now start at
+       the same x on desktop and mobile. */
+    width: 84px;
+    flex-shrink: 0;
     padding-top: 6px;
 }
 
@@ -247,16 +251,16 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 88px;
-    width: 88px;
+    height: 36px;
+    width: 36px;
     border-radius: 50%;
     background: var(--project-category-color, #2b00ff);
     box-shadow: 0 2px 8px rgba(246, 99, 26, 0.2);
 }
 
 .chip-img {
-    height: 58px;
-    width: 58px;
+    height: 24px;
+    width: 24px;
     filter: brightness(0) invert(1);
 }
 
@@ -271,7 +275,7 @@
     font-size: 14px;
     color: var(--border-subtle, #3f3f46);
     font-weight: bold;
-    line-height: 88px;
+    line-height: 36px; /* matches .chip-circle height so the + stays centred */
 }
 
 .opp-footer {
@@ -460,14 +464,14 @@
     }
 
     .chip-circle {
-        height: 44px;
-        width: 44px;
+        height: 28px;
+        width: 28px;
         flex-shrink: 0;
     }
 
     .chip-img {
-        height: 28px;
-        width: 28px;
+        height: 16px;
+        width: 16px;
         flex-shrink: 0;
         object-fit: contain;
     }
@@ -492,7 +496,7 @@
     }
 
     .opp-desc {
-        font-size: 13px;
+        font-size: 12px;
     }
 }
 

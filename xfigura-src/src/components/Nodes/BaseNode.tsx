@@ -795,9 +795,9 @@ export const BaseNode: React.FC<NodeProps> = ({ node }) => {
                   <img src="/xfigura_logo.jpeg" className="w-5.5 h-5.5 object-contain" alt="xfigura logo" />
                 </button>
                 {showGenerateHint && (
-                  <div className="pointer-events-none absolute top-full left-1/2 -translate-x-1/2 mt-3 z-30 flex flex-col items-center gap-2">
-                    <img src="/assets/logos/click.png" className="w-[148px] h-[148px] object-contain animate-pulse" alt="" />
-                    <span className="text-[24px] font-sans font-bold text-zinc-200 whitespace-nowrap">Click here !</span>
+                  <div className="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 -mb-[90px] z-30 flex flex-col-reverse items-center gap-1">
+                    <img src="/assets/logos/click.png" className="w-[72px] h-[72px] object-contain animate-pulse" alt="" />
+                    <span className="text-[14px] font-sans font-bold text-zinc-200 whitespace-nowrap">Click here !</span>
                   </div>
                 )}
               </div>

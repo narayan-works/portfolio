@@ -365,6 +365,7 @@ const dataCategory = categoryMap[cleanCat] || "web-ux";
             order: 1; /* Pill on top */
             margin: 0 !important; /* Reset bottom margin */
             width: 100%;
+            border-radius: 4px;
         }
 
         .next-project-image-panel {
@@ -375,14 +376,18 @@ const dataCategory = categoryMap[cleanCat] || "web-ux";
         .meta-bottom-group {
             order: 3; /* Title, tags, description at the bottom */
         }
+
+        .next-description {
+            font-size: 12px;
+        }
     }
 
     @media (max-width: 768px) {
         .next-eyebrow-bento {
-            font-size: 36px !important;
+            font-size: 24px !important;
         }
         .next-title {
-            font-size: 36px !important;
+            font-size: 24px !important;
         }
     }
 </style>
