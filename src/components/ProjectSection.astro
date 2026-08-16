@@ -52,18 +52,19 @@ const {
     .project-section {
         --title-width: 200px; /* Width of the title column */
         --column-gap: 32px; /* Gap between title and content */
-        --section-margin: 6rem; /* Increased space between sections */
-        --continuation-margin: 2rem; /* Reduced space for continuation sections */
-        --image-spacing: 4rem; /* Space above images */
+        --section-margin: 40px; /* Space between sections: 40px */
+        --continuation-margin: 20px; /* Reduced space for continuation sections */
+        --image-spacing: 20px; /* Space above images */
 
         display: flex;
         flex-direction: column;
-        margin-top: var(--section-margin);
+        margin-top: 40px;
         margin-bottom: 0;
     }
 
     .project-section.continuation {
-        margin-top: var(--continuation-margin);
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
     }
 
     /* Full Width Divider */
@@ -95,6 +96,9 @@ const {
     /* Hide divider for continuation sections */
     .header-group.continuation {
         padding-top: 0;
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+        gap: 0 !important;
     }
 
     /* --- TITLE STYLING (Section Subheadings) --- */
@@ -138,9 +142,9 @@ const {
     }
 
     .section-content :global(p) {
-        font-size: 1rem;
-        line-height: 1.2;
-        font-weight: 200;
+        font-size: 14px !important;
+        line-height: 1.4;
+        font-weight: 300;
         color: var(--text-secondary);
         font-family: var(--font-sans);
     }
@@ -151,6 +155,23 @@ const {
         box-sizing: border-box;
     }
 
+    /* Style nested h2 headings within content */
+    .section-content :global(h2),
+    .section-content :global(h2.left-align) {
+        font-size: 24px !important;
+        font-weight: 500 !important;
+        color: var(--text-primary);
+        line-height: 1.25 !important;
+        margin-top: 0 !important;
+        margin-bottom: 8px !important;
+        font-family: var(--font-sans) !important;
+    }
+
+    .section-content :global(h2 + p),
+    .section-content :global(h2.left-align + p) {
+        margin-top: 0 !important;
+    }
+
     /* Style nested h3 headings within content */
     .section-content :global(h3) {
         font-size: 1.125rem; /* 18px - same as taglines */
@@ -159,6 +180,100 @@ const {
         margin-top: 2rem;
         margin-bottom: 1rem;
         font-family: var(--font-sans);
+    }
+
+    /* Style nested h4 headings within content */
+    .section-content :global(h4) {
+        font-size: 18px !important;
+        font-weight: 500 !important;
+        color: var(--text-primary);
+        line-height: 1.3 !important;
+        margin-top: 1rem !important;
+        margin-bottom: 2px !important;
+        font-family: var(--font-sans) !important;
+    }
+
+    /* Feedback Section Spacing - Remove residual gap between h4 and paragraph */
+    .section-content :global(.feedback-content) {
+        display: flex;
+        flex-direction: column;
+        gap: 2px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .section-content :global(.feedback-content h4) {
+        margin-top: 0 !important;
+        margin-bottom: 2px !important;
+    }
+
+    .section-content :global(.feedback-content p) {
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+    }
+
+    /* Reduce padding on div.centered-tagline.orange-bar.gaps-container to 20px */
+    .section-content :global(div.centered-tagline.orange-bar.gaps-container),
+    .section-content :global(.gaps-container),
+    .section-content :global(.orange-bar) {
+        padding: 20px !important;
+        padding-block: 20px !important;
+        padding-inline: 20px !important;
+        margin-bottom: 20px !important;
+    }
+
+    /* Tighten top margin for orange bar following paragraphs to 20px */
+    .section-content :global(p + .orange-bar),
+    .section-content :global(p + .gaps-container) {
+        margin-top: 1.25rem !important; /* 20px clean gap */
+    }
+
+    .section-content :global(.gaps-title),
+    .section-content :global(.gap-heading) {
+        font-family: "Google Sans", sans-serif !important;
+        font-size: 36px !important;
+        font-weight: 500 !important;
+        line-height: 1.15 !important;
+        letter-spacing: -0.02em !important;
+        color: inherit !important;
+    }
+
+    .section-content :global(.gaps-title) {
+        margin-top: 0 !important;
+        margin-bottom: 6px !important;
+    }
+
+    .section-content :global(.gaps-divider) {
+        margin-top: 0 !important;
+        margin-bottom: 10px !important;
+    }
+
+    .section-content :global(.gaps-list) {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 6px !important;
+        margin: 0 !important;
+    }
+
+    .section-content :global(.gap-item) {
+        margin: 0 !important;
+    }
+
+    .section-content :global(.gap-heading) {
+        margin-top: 0 !important;
+        margin-bottom: 2px !important;
+    }
+
+    .section-content :global(.gap-description) {
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+    }
+
+    /* Ensure left-align h3 elements match body width & left alignment */
+    .section-content :global(h3.left-align) {
+        text-align: left !important;
+        margin-left: 0 !important;
+        margin-right: auto !important;
     }
 
     .section-content :global(h3.prominent-title) {
@@ -204,28 +319,46 @@ const {
         margin-bottom: 2rem !important;
     }
 
-    /* Tighten top margin for visual/media elements that immediately follow headings */
+    /* Tighten top margin for visual/media elements that immediately follow headings or paragraphs */
+    .section-content :global(p + .full-width-image),
+    .section-content :global(p + .theme-image-wrapper),
+    .section-content :global(p + .light-image),
+    .section-content :global(p + .dark-image),
     .section-content :global(h2 + .full-width-image),
     .section-content :global(h3 + .full-width-image),
     .section-content :global(h4 + .full-width-image),
+    .section-content :global(p + .pdf-viewer-wrapper),
     .section-content :global(h2 + .pdf-viewer-wrapper),
     .section-content :global(h3 + .pdf-viewer-wrapper),
     .section-content :global(h4 + .pdf-viewer-wrapper),
+    .section-content :global(p + .image-slider),
     .section-content :global(h2 + .image-slider),
     .section-content :global(h3 + .image-slider),
     .section-content :global(h4 + .image-slider),
+    .section-content :global(p + .video-embed),
     .section-content :global(h2 + .video-embed),
     .section-content :global(h3 + .video-embed),
     .section-content :global(h4 + .video-embed),
+    .section-content :global(p + img),
     .section-content :global(h2 + img),
     .section-content :global(h3 + img),
     .section-content :global(h4 + img),
+    .section-content :global(p + video),
     .section-content :global(h2 + video),
     .section-content :global(h3 + video),
     .section-content :global(h4 + video),
+    .section-content :global(p + .figma-container),
     .section-content :global(h2 + .figma-container),
     .section-content :global(h3 + .figma-container),
-    .section-content :global(h4 + .figma-container),
+    .section-content :global(h4 + .figma-container) {
+        margin-top: 1.25rem !important; /* 20px gap */
+    }
+
+    .section-content :global(.theme-image-wrapper .full-width-image) {
+        margin-top: 0 !important;
+    }
+
+    /* Tighten top margin for visual/media elements that immediately follow headings */
     .section-content :global(h2 + .xfigura-container),
     .section-content :global(h3 + .xfigura-container),
     .section-content :global(h4 + .xfigura-container) {
@@ -245,6 +378,14 @@ const {
     .section-content > :global(.left-align) {
         padding-inline: 0 !important;
         max-width: 100%;
+    }
+
+    .section-content > :global(.feedback-grid) {
+        padding-inline: 0 !important;
+        max-width: 750px !important;
+        width: 100% !important;
+        margin-left: 0 !important;
+        margin-right: auto !important;
     }
 
     /* PDFs removed from above list - they handle their own fullWidth prop */
@@ -360,7 +501,7 @@ const {
     .section-content :global(.attribute-label) {
         font-weight: 600;
         font-size: 1rem;
-        margin-bottom: 0.5rem;
+        margin-bottom: 20px !important;
         margin-top: 1.5rem;
         color: var(--text-primary);
     }
@@ -375,14 +516,15 @@ const {
 
     /* Attribute Pill (button-like, no hover) */
     .section-content :global(.attribute-pill) {
-        display: inline-block;
+        display: inline-flex;
+        align-items: flex-end;
+        vertical-align: bottom !important;
         background: var(--bg-secondary);
         border: 1px solid var(--border-subtle, rgba(0, 0, 0, 0.1));
-        padding: 6px 12px 4px 12px; /* Adjusted: +2px on top, -2px on bottom to move text down */
-        border-radius: var(--radius-md);
+        padding: 4px 6px !important;
+        border-radius: 4px !important; /* 4px radius */
         font-size: 0.875rem;
         color: var(--text-secondary);
-        text-align: center;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Added blurred shadow */
     }
 
@@ -406,7 +548,7 @@ const {
         align-items: center;
         background: var(--bg-secondary);
         border: 1px solid var(--border-subtle, rgba(0, 0, 0, 0.1));
-        padding: 4px 12px;
+        padding: 4px 6px !important;
         border-radius: 8px;
         color: var(
             --accent-secondary

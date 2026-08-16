@@ -11,7 +11,8 @@ import { FaLinkedin, FaGithub, FaInstagram, FaXTwitter } from "react-icons/fa6";
     <div class="footer-content">
         <div class="footer-left">
             <p class="contact-message">
-                Let's build something worth caring about. Say hi! 👀
+                Let's build something <br />
+                worth caring about. Say hi! 👀
             </p>
             <div class="contact-buttons">
                 <div class="social-icons-group">
@@ -22,7 +23,7 @@ import { FaLinkedin, FaGithub, FaInstagram, FaXTwitter } from "react-icons/fa6";
                         class="icon-link"
                         title="LinkedIn"
                     >
-                        <FaLinkedin size={24} />
+                        <FaLinkedin size={16} />
                     </a>
                     <a
                         href="https://github.com/narayan-works"
@@ -31,7 +32,7 @@ import { FaLinkedin, FaGithub, FaInstagram, FaXTwitter } from "react-icons/fa6";
                         class="icon-link"
                         title="GitHub"
                     >
-                        <FaGithub size={24} />
+                        <FaGithub size={16} />
                     </a>
                     <a
                         href="https://www.instagram.com/narayan.3dm/"
@@ -40,7 +41,7 @@ import { FaLinkedin, FaGithub, FaInstagram, FaXTwitter } from "react-icons/fa6";
                         class="icon-link"
                         title="Instagram"
                     >
-                        <FaInstagram size={24} />
+                        <FaInstagram size={16} />
                     </a>
                     <a
                         href="https://x.com/narayan3dm"
@@ -49,7 +50,7 @@ import { FaLinkedin, FaGithub, FaInstagram, FaXTwitter } from "react-icons/fa6";
                         class="icon-link"
                         title="X (Twitter)"
                     >
-                        <FaXTwitter size={24} />
+                        <FaXTwitter size={16} />
                     </a>
                 </div>
                 <button
@@ -274,22 +275,22 @@ import { FaLinkedin, FaGithub, FaInstagram, FaXTwitter } from "react-icons/fa6";
     /* Preserve 100% original tag line font size */
     .contact-message {
         font-family: "Bricolage Grotesque", sans-serif;
-        font-size: 72px;
+        font-size: 36px !important;
         font-weight: 500;
-        letter-spacing: -0.065em;
+        letter-spacing: -0.04em;
         color: var(--text-primary);
         margin: 0;
-        line-height: 0.9;
+        line-height: 1.1;
         text-align: left;
         max-width: 850px;
     }
 
     .built-message {
-        font-size: 14px;
+        font-size: 12px;
         font-family: "Bricolage Grotesque", sans-serif;
         color: var(--text-secondary);
         margin: 0;
-        line-height: 1.3;
+        line-height: 1.15;
         text-align: right;
     }
 
@@ -315,7 +316,7 @@ import { FaLinkedin, FaGithub, FaInstagram, FaXTwitter } from "react-icons/fa6";
         display: flex;
         flex-direction: row;
         align-items: center;
-        gap: 12px;
+        gap: 10px !important;
         flex-wrap: wrap;
     }
 
@@ -334,14 +335,14 @@ import { FaLinkedin, FaGithub, FaInstagram, FaXTwitter } from "react-icons/fa6";
         display: flex;
         flex-direction: row;
         align-items: center;
-        gap: 12px;
+        gap: 10px !important;
     }
 
     .social-icons-group {
         display: flex;
         flex-direction: row;
         align-items: center;
-        gap: 12px;
+        gap: 10px !important;
     }
 
     .demo-btn {
@@ -418,7 +419,7 @@ import { FaLinkedin, FaGithub, FaInstagram, FaXTwitter } from "react-icons/fa6";
         align-items: center;
         justify-content: center;
         height: 24px;
-        width: 24px;
+        width: 16px;
         padding: 0;
         background: transparent;
         border: none;
@@ -439,11 +440,11 @@ import { FaLinkedin, FaGithub, FaInstagram, FaXTwitter } from "react-icons/fa6";
     }
 
     .copyright {
-        font-size: 14px;
+        font-size: 12px;
         font-family: "Bricolage Grotesque", sans-serif;
         color: var(--text-secondary);
         margin: 0;
-        line-height: 1.3;
+        line-height: 1.15;
     }
 
     .doc-link {
@@ -507,8 +508,8 @@ import { FaLinkedin, FaGithub, FaInstagram, FaXTwitter } from "react-icons/fa6";
         }
 
         .contact-message {
-            font-size: 44px !important;
-            line-height: 0.88 !important;
+            font-size: 36px !important;
+            line-height: 1.1 !important;
             margin: 0 !important;
             text-align: left !important;
             width: 100% !important;
@@ -537,7 +538,7 @@ import { FaLinkedin, FaGithub, FaInstagram, FaXTwitter } from "react-icons/fa6";
             display: flex !important;
             flex-direction: row !important;
             align-items: center !important;
-            gap: 8px !important;
+            gap: 10px !important;
             margin-top: 0 !important;
         }
 
@@ -554,12 +555,14 @@ import { FaLinkedin, FaGithub, FaInstagram, FaXTwitter } from "react-icons/fa6";
 
         .built-message {
             text-align: left !important;
-            font-size: 14px !important;
+            font-size: 12px !important;
+            line-height: 1.15 !important;
         }
 
         .copyright {
             text-align: left !important;
-            font-size: 14px !important;
+            font-size: 12px !important;
+            line-height: 1.15 !important;
         }
     }
 </style>

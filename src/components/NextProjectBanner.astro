@@ -183,14 +183,15 @@ const dataCategory = categoryMap[cleanCat] || "web-ux";
         flex-direction: column;
     }
 
-    /* Bento-style eyebrow tag with SVG arrow - resized to 56px */
+    /* Bento-style eyebrow tag with SVG arrow - full width with space-between */
     .next-eyebrow-bento {
         display: flex;
         justify-content: space-between;
         align-items: center;
+        width: 100%;
         gap: 0.25em;
         font-family: "Google Sans", sans-serif !important;
-        font-size: 52px !important;
+        font-size: 36px !important;
         font-weight: 500;
         line-height: 1.1;
         letter-spacing: -0.03em;
@@ -200,6 +201,7 @@ const dataCategory = categoryMap[cleanCat] || "web-ux";
         padding: 0.15em 0.4em;
         border-radius: 12px;
         margin: 0 0 1.5rem 0 !important;
+        box-sizing: border-box;
         transition:
             background-color 0.3s ease,
             border-color 0.3s ease,
@@ -229,7 +231,7 @@ const dataCategory = categoryMap[cleanCat] || "web-ux";
     /* Reduced size of the title */
     .next-title {
         font-family: "Bricolage Grotesque", sans-serif;
-        font-size: 44px;
+        font-size: 36px !important;
         font-weight: 400;
         line-height: 1.2;
         color: var(--text-primary);
@@ -250,14 +252,14 @@ const dataCategory = categoryMap[cleanCat] || "web-ux";
         flex-wrap: wrap;
         column-gap: 0.5rem;
         row-gap: 0.15rem;
-        margin: 0 0 1rem 0 !important;
+        margin: 0 0 0.35rem 0 !important;
     }
 
     .next-tag {
         font-family: var(--font-mono);
         font-size: var(--text-xs);
         color: var(--text-secondary);
-        text-transform: uppercase;
+        text-transform: lowercase;
         letter-spacing: 0.06em;
         font-weight: 500;
         display: flex;
@@ -377,7 +379,7 @@ const dataCategory = categoryMap[cleanCat] || "web-ux";
 
     @media (max-width: 768px) {
         .next-eyebrow-bento {
-            font-size: 32px !important;
+            font-size: 36px !important;
         }
         .next-title {
             font-size: 36px !important;

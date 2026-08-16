@@ -133,7 +133,7 @@ const allProjects = (await getCollection("projects"))
 		<div class="works-deck-section">
 			<div class="works-list-header-wrapper">
 				<header class="works-list-header">
-					<h1 class="works-list-title">Works</h1>
+					<h1 class="works-list-title">Work</h1>
 					<div class="works-list-filter">
 						<WorksFilter />
 					</div>
@@ -412,7 +412,7 @@ const allProjects = (await getCollection("projects"))
 
 	.works-list-title {
 		font-family: "Google Sans", sans-serif;
-		font-size: 12px;
+		font-size: 14px;
 		font-weight: 500;
 		color: var(--text-secondary);
 		margin: 0;
@@ -548,24 +548,33 @@ const allProjects = (await getCollection("projects"))
 			margin-top: var(--card-margin-top, -160px);
 		}
 
+		/* Mobile Unstacking Cards: Top Rounded, Sharp Bottom Corners with Clean 10px Flex Gap */
 		.works-mobile-cards :global(.home-project-card) {
+			display: flex !important;
+			flex-direction: column !important;
+			gap: 10px !important;
 			border-radius: var(--radius-md) var(--radius-md) 0 0 !important;
-			padding: 16px !important;
+			padding: 10px !important;
 			backdrop-filter: blur(16px) !important;
 			-webkit-backdrop-filter: blur(16px) !important;
+			transition: background 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease !important;
+		}
+
+		.works-mobile-cards :global(.card-meta-panel) {
+			overflow: visible !important;
 		}
 
 		.works-mobile-cards :global(.card-image-panel) {
 			border: none !important;
 		}
 
-		/* DEFAULT (Dark Mode Canvas Background): Dark Charcoal Card with White Text & Bevel Highlight */
+		/* DEFAULT (Dark Mode): Surface Fill with Subtle 1px Border */
 		.works-mobile-cards :global(.home-project-card) {
 			background: #141417 !important;
-			border: 2px solid rgba(255, 255, 255, 0.2) !important;
+			border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.15)) !important;
 			box-shadow:
-				inset 0 0px 0px 0 rgba(255, 255, 255, 0.25),
-				0 20px 40px -10px rgba(0, 0, 0, 0.35) !important;
+				inset 0 1px 0 rgba(255, 255, 255, 0.1),
+				0 12px 28px -6px rgba(0, 0, 0, 0.3) !important;
 		}
 
 		.works-mobile-cards :global(.meta-project-title) {
@@ -579,20 +588,42 @@ const allProjects = (await getCollection("projects"))
 			color: #e2e4dc !important;
 			opacity: 0.95 !important;
 			font-weight: 400 !important;
-			margin-top: 8px !important;
+			margin: 0 !important;
 		}
 
 		.works-mobile-cards :global(.meta-tags) {
-			margin-top: 8px !important;
-			margin-bottom: 8px !important;
+			margin: 0 !important;
 		}
 
+		/* Tag Bento Chips: Category Text & Background Tint with Original Subtle Border */
 		.works-mobile-cards :global(.meta-tag) {
-			color: #f0f2eb !important;
-			background: rgba(255, 255, 255, 0.12) !important;
-			border-color: rgba(255, 255, 255, 0.18) !important;
-			box-shadow: none !important;
-			padding: 4.5px 10px 4px 10px !important;
+			font-weight: 500 !important;
+			text-transform: lowercase !important;
+			border-radius: var(--radius-sm) !important;
+			border: 1px solid rgba(255, 255, 255, 0.18) !important;
+			display: inline-flex !important;
+			align-items: center !important;
+			justify-content: center !important;
+			line-height: 1 !important;
+			padding: 6px !important;
+			box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
+		}
+
+		.works-mobile-cards :global(.home-project-card[data-categories~="hardware-ux"] .meta-tag) {
+			color: #82c6f6 !important;
+			background: rgba(85, 158, 213, 0.18) !important;
+		}
+		.works-mobile-cards :global(.home-project-card[data-categories~="web-ux"] .meta-tag) {
+			color: #ff7e36 !important;
+			background: rgba(224, 81, 5, 0.18) !important;
+		}
+		.works-mobile-cards :global(.home-project-card[data-categories~="mobile-ux"] .meta-tag) {
+			color: #ffe53b !important;
+			background: rgba(255, 229, 59, 0.22) !important;
+		}
+		.works-mobile-cards :global(.home-project-card[data-categories~="spatial-xd"] .meta-tag) {
+			color: #61d56e !important;
+			background: rgba(37, 136, 53, 0.18) !important;
 		}
 
 		.works-mobile-cards :global(.meta-tag:nth-child(n + 3)) {
@@ -601,25 +632,54 @@ const allProjects = (await getCollection("projects"))
 
 		.works-mobile-cards :global(.meta-divider) {
 			border-top-color: rgba(255, 255, 255, 0.16) !important;
-			margin-top: 16px !important;
-			margin-bottom: 8px !important;
+			margin: 0 !important;
 		}
 
-		/* Light Mode Canvas ([data-theme="light"]): White Card with Dark Text & Subtle Grey Border */
+		/* LIGHT MODE: Light Surface (#ffffff / #e9ebe4) & Subtle 1px Grey Border */
 		:global([data-theme="light"])
 			.works-mobile-cards
 			:global(.home-project-card) {
-			background: #f4f7f058 !important;
-			border: 2px solid rgba(103, 103, 103, 0.2) !important;
+			background: var(--bg-surface, #ffffff) !important;
+			border: 1px solid var(--border-subtle, rgba(0, 0, 0, 0.15)) !important;
 			box-shadow:
-				inset 0 1px 1px 0 rgba(255, 255, 255, 0.9),
-				0 20px 40px -10px rgba(0, 0, 0, 0.08) !important;
+				inset 0 1px 0 rgba(255, 255, 255, 0.9),
+				0 2px 8px rgba(0, 0, 0, 0.05) !important;
+		}
+
+		:global([data-theme="light"]) .works-mobile-cards :global(.meta-tag) {
+			border: 1px solid rgba(0, 0, 0, 0.08) !important;
+			box-shadow: none !important;
+		}
+
+		:global([data-theme="light"])
+			.works-mobile-cards
+			:global(.home-project-card[data-categories~="hardware-ux"] .meta-tag) {
+			color: #0066b3 !important;
+			background: rgba(85, 158, 213, 0.12) !important;
+		}
+		:global([data-theme="light"])
+			.works-mobile-cards
+			:global(.home-project-card[data-categories~="web-ux"] .meta-tag) {
+			color: #c43e00 !important;
+			background: rgba(224, 81, 5, 0.12) !important;
+		}
+		:global([data-theme="light"])
+			.works-mobile-cards
+			:global(.home-project-card[data-categories~="mobile-ux"] .meta-tag) {
+			color: #8c7200 !important;
+			background: rgba(230, 185, 0, 0.16) !important;
+		}
+		:global([data-theme="light"])
+			.works-mobile-cards
+			:global(.home-project-card[data-categories~="spatial-xd"] .meta-tag) {
+			color: #176020 !important;
+			background: rgba(37, 136, 53, 0.12) !important;
 		}
 
 		:global([data-theme="light"])
 			.works-mobile-cards
 			:global(.meta-project-title) {
-			color: #0a0a0a !important;
+			color: #000000 !important;
 		}
 
 		:global([data-theme="light"])

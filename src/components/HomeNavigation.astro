@@ -5,12 +5,12 @@ const isArchivePage = Astro.url.pathname.startsWith("/archive");
 const isWorksPage = Astro.url.pathname.startsWith("/works");
 ---
 
-<nav class="home-navigation">
+<nav class={`home-navigation ${isWorksPage ? "is-works-page" : ""}`}>
     <div class="home-nav-container">
         <!-- Left: Logo & Name -->
         <a
             href="/"
-            class={`home-nav-logo ${isHomePage || isWorksPage ? "home-nav-logo--hidden" : ""}`}
+            class={`home-nav-logo ${isHomePage ? "home-nav-logo--hidden" : ""}`}
         >
             <div class="logo-img-wrapper">
                 <span class="logo-circle">
@@ -42,7 +42,7 @@ const isWorksPage = Astro.url.pathname.startsWith("/works");
             <a
                 href={isHomePage ? "#works" : "/#works"}
                 id="nav-works-link"
-                class="home-nav-link"
+                class={`home-nav-link ${isWorksPage ? "active-scroll" : ""}`}
                 data-section="works"
             >
                 Work
@@ -143,7 +143,7 @@ const isWorksPage = Astro.url.pathname.startsWith("/works");
         top: 0;
         left: 0;
         width: 100%;
-        z-index: 200;
+        z-index: 20000;
         padding: 0 16px; /* No vertical padding, 16px horizontal */
         height: 52.5px; /* 1.5 times the 35px filter bar height */
         box-sizing: border-box;
@@ -239,18 +239,18 @@ const isWorksPage = Astro.url.pathname.startsWith("/works");
     }
 
     .logo-img-wrapper {
-        width: 52.5px; /* Perfect square matching container height */
-        height: 100%;
+        width: 42px;
+        height: 42px;
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-left: -16px; /* Pull to the absolute left edge of the navigation bar */
+        margin-left: -15.75px;
     }
 
     .logo-img {
         display: block;
-        width: 42px;
-        height: 42px;
+        width: 36px;
+        height: 36px;
         object-fit: contain;
     }
 
@@ -271,6 +271,34 @@ const isWorksPage = Astro.url.pathname.startsWith("/works");
         display: flex;
         align-items: center;
         gap: 16px;
+    }
+
+    /* Precision alignment for Case Study / Works Pages: 280px width (320px sidebar - 40px padding) */
+    .home-navigation.is-works-page {
+        padding: 0 20px;
+    }
+
+    @media (min-width: 1025px) {
+        .home-navigation.is-works-page .home-nav-links {
+            width: calc(320px - 40px);
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0;
+            align-items: center;
+        }
+
+        .home-navigation.is-works-page .home-nav-link:nth-child(1) {
+            text-align: left;
+        }
+
+        .home-navigation.is-works-page .home-nav-link:nth-child(2),
+        .home-navigation.is-works-page .home-nav-link:nth-child(3) {
+            text-align: center;
+        }
+
+        .home-navigation.is-works-page .home-nav-link:nth-child(4) {
+            text-align: right;
+        }
     }
 
     .home-nav-link {

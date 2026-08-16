@@ -1,7 +1,7 @@
 ---
 import Layout from "./Layout.astro";
 import ThemeToggle from "../components/ThemeToggle.astro";
-import SidebarNavigation from "../components/SidebarNavigation.astro";
+import HomeNavigation from "../components/HomeNavigation.astro";
 import Footer from "../components/Footer.astro";
 import NextProjectBanner from "../components/NextProjectBanner.astro";
 import { Image } from "astro:assets";
@@ -109,13 +109,26 @@ const hoverColor =
 ---
 
 <Layout title={`${title} | Narayan Ashanahalli`} preloadImageHref={heroImage}>
+    <HomeNavigation />
+    <div class="case-study-controls">
+        <button id="text-mode-toggle" class="text-mode-toggle" aria-label="Toggle text mode" type="button">
+            <span class="mode-option mode-text active" data-mode="text">text</span>
+            <span class="mode-divider">/</span>
+            <span class="mode-option mode-notext" data-mode="notext">no text</span>
+        </button>
+    </div>
     <!-- LEFT SIDEBAR SLOT -->
     <div slot="sidebar" class="project-sidebar-content">
         <div class="sidebar-scroll-container">
             <div class="sidebar-top">
-                <SidebarNavigation title={title} />
-
+                <div class="sidebar-header-divider"></div>
                 <h1 class="sidebar-project-title">{title}</h1>
+
+                {
+                    description && (
+                        <p class="sidebar-project-desc">{description}</p>
+                    )
+                }
 
                 {
                     tags.length > 0 && (
@@ -124,12 +137,6 @@ const hoverColor =
                                 <span>{tag}</span>
                             ))}
                         </div>
-                    )
-                }
-
-                {
-                    description && (
-                        <p class="sidebar-project-desc">{description}</p>
                     )
                 }
 
@@ -170,7 +177,7 @@ const hoverColor =
                                     stroke-width="2.5"
                                     stroke-linecap="round"
                                     stroke-linejoin="round"
-                                ></path>
+                                />
                             </svg>
                         </a>
                     )
@@ -211,17 +218,19 @@ const hoverColor =
         style={`--project-category-color: ${activeColor}; --project-category-hover-color: ${hoverColor};`}
     >
         <slot />
-        {nextProject && (
-            <NextProjectBanner
-                slug={nextProject.slug}
-                title={nextProject.title}
-                description={nextProject.description}
-                tags={nextProject.tags}
-                heroImage={nextProject.heroImage}
-                category={nextProject.category}
-                ctaUrl={nextProject.ctaUrl}
-            />
-        )}
+        {
+            nextProject && (
+                <NextProjectBanner
+                    slug={nextProject.slug}
+                    title={nextProject.title}
+                    description={nextProject.description}
+                    tags={nextProject.tags}
+                    heroImage={nextProject.heroImage}
+                    category={nextProject.category}
+                    ctaUrl={nextProject.ctaUrl}
+                />
+            )
+        }
         <Footer />
     </article>
 </Layout>
@@ -393,9 +402,54 @@ const hoverColor =
         updateThemeTogglePosition();
     }
 
+    function setupTextModeToggle() {
+        const btn = document.getElementById("text-mode-toggle");
+        const article = document.querySelector(".right-content");
+        if (!btn || !article) return;
+
+        const textOpt = btn.querySelector('.mode-option[data-mode="text"]');
+        const noTextOpt = btn.querySelector('.mode-option[data-mode="notext"]');
+
+        const savedMode = localStorage.getItem("caseStudyTextMode") || "text";
+        applyMode(savedMode);
+
+        const handleToggle = (e: Event) => {
+            e.preventDefault();
+            e.stopPropagation();
+
+            const target = e.target as HTMLElement;
+            const clickedOption = target.closest(".mode-option") as HTMLElement | null;
+
+            let newMode: string;
+            if (clickedOption) {
+                newMode = clickedOption.getAttribute("data-mode") === "notext" ? "notext" : "text";
+            } else {
+                newMode = article.classList.contains("mode-no-text") ? "text" : "notext";
+            }
+
+            applyMode(newMode);
+            localStorage.setItem("caseStudyTextMode", newMode);
+        };
+
+        btn.addEventListener("click", handleToggle);
+
+        function applyMode(mode: string) {
+            if (mode === "notext") {
+                article?.classList.add("mode-no-text");
+                textOpt?.classList.remove("active");
+                noTextOpt?.classList.add("active");
+            } else {
+                article?.classList.remove("mode-no-text");
+                textOpt?.classList.add("active");
+                noTextOpt?.classList.remove("active");
+            }
+        }
+    }
+
     function init() {
         setupTOCScroll();
         setupThemeTogglePosition();
+        setupTextModeToggle();
     }
 
     // Run initial setup and listen for page loads (Astro view transitions support)
@@ -424,6 +478,17 @@ const hoverColor =
         display: flex;
         flex-direction: column;
         gap: 0;
+        padding-top: 34px;
+    }
+
+    .sidebar-header-divider {
+        width: calc(100% + 40px);
+        height: 1px;
+        background: var(--border-subtle, rgba(255, 255, 255, 0.15));
+        margin-left: -20px;
+        margin-right: -20px;
+        margin-top: 0;
+        margin-bottom: 20px;
     }
 
     .sidebar-project-title {
@@ -431,7 +496,7 @@ const hoverColor =
         font-size: 54px;
         line-height: 0.9;
         font-weight: 400;
-        margin-top: 9px;
+        margin-top: 0;
         margin-bottom: 9px;
         letter-spacing: -0.05em;
     }
@@ -439,25 +504,24 @@ const hoverColor =
     .sidebar-tags {
         display: flex;
         flex-wrap: wrap;
-        gap: 0.5rem;
-        margin-bottom: 1.5rem;
+        gap: 2px 4px;
+        margin-bottom: 0.75rem;
     }
 
     .sidebar-tags span {
-        font-family: "Geist", sans-serif;
-        font-size: 12px;
+        font-family: "Google Sans", sans-serif;
+        font-size: 14px;
         color: var(--text-muted);
-        text-transform: uppercase;
-        letter-spacing: 0.035em;
+        text-transform: lowercase;
         font-weight: 400;
-        line-height: 1.2;
+        line-height: 1.1;
         display: inline-flex;
         align-items: center;
     }
 
     .sidebar-tags span:not(:last-child)::after {
         content: "•";
-        margin-left: 0.5rem;
+        margin-left: 4px;
         opacity: 0.3;
     }
 
@@ -466,9 +530,8 @@ const hoverColor =
         font-size: 14px;
         font-weight: 300;
         color: var(--text-secondary);
-        line-height: 1.2;
-        letter-spacing: -0.01em;
-        margin-bottom: 2rem;
+        line-height: 1.4;
+        margin-bottom: 1rem;
     }
 
     .sidebar-cta-button {
@@ -491,7 +554,10 @@ const hoverColor =
         margin-bottom: 1rem;
         width: 100%;
         box-sizing: border-box;
-        transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+        transition:
+            background-color 0.3s ease,
+            border-color 0.3s ease,
+            color 0.3s ease;
         box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
         cursor: pointer;
     }
@@ -631,7 +697,7 @@ const hoverColor =
         font-family: "Google Sans", sans-serif;
         font-size: 14px;
         font-weight: 400;
-        color: var(--text-primary);
+        color: var(--text-muted);
         letter-spacing: 0.015em;
         line-height: 1.5;
     }
@@ -654,10 +720,78 @@ const hoverColor =
         padding: 0 !important;
     }
 
+    /* Case Study Text/No-Text Toggle Controls (Positioned at top right of main content area) */
+    .case-study-controls {
+        position: fixed;
+        top: 14px;
+        right: 340px; /* 320px sidebar width + 20px padding = top right of main content area */
+        z-index: 30000;
+        display: flex;
+        align-items: center;
+        margin: 0;
+        padding: 0;
+    }
+
+    @media (max-width: 1024px) {
+        .case-study-controls {
+            right: 20px;
+        }
+    }
+
+    .text-mode-toggle {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: var(--bg-surface, #ffffff);
+        border: 1px solid var(--border-subtle, rgba(0, 0, 0, 0.15));
+        padding: 4px 10px;
+        border-radius: var(--radius-md);
+        font-family: "Google Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        color: var(--text-secondary);
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        transition: all 0.25s ease;
+        user-select: none;
+    }
+
+    .text-mode-toggle:hover {
+        border-color: var(--project-category-hover-color, var(--accent-secondary));
+        color: var(--text-primary);
+    }
+
+    .text-mode-toggle .mode-option {
+        opacity: 0.4;
+        transition: opacity 0.2s ease, color 0.2s ease, font-weight 0.2s ease;
+    }
+
+    .text-mode-toggle .mode-option.active {
+        opacity: 1;
+        font-weight: 600;
+        color: var(--project-category-hover-color, var(--accent-secondary));
+    }
+
+    .text-mode-toggle .mode-divider {
+        opacity: 0.3;
+    }
+
+    /* When "no text" mode is active: hide ONLY body narrative text & lists. KEEP headings (h1-h6), section titles, subheadings & visual assets */
+    .right-content.mode-no-text :global(.section-content p),
+    .right-content.mode-no-text :global(.section-content ul),
+    .right-content.mode-no-text :global(.section-content ol),
+    .right-content.mode-no-text :global(.story-time),
+    .right-content.mode-no-text :global([slot="intro"]),
+    .right-content.mode-no-text :global(.comparison-description),
+    .right-content.mode-no-text :global(.comparison-question),
+    .right-content.mode-no-text :global(figcaption) {
+        display: none !important;
+    }
+
     /* RIGHT CONTENT STYLES (Hero Section) */
     /* Note: Content is positioned on the right side on desktop */
     .right-content {
-        padding: 20px 20px 0px 20px; /* 20px top/left/right, bottom 0px */
+        padding: 52.5px 20px 0px 20px; /* 52.5px top to clear fixed HomeNavigation, 20px left/right, 0px bottom */
         max-width: none; /* Use full available width */
         margin: 0;
         font-family: var(--font-sans);
@@ -715,19 +849,73 @@ const hoverColor =
         margin-top: 0 !important;
     }
 
-    /* Smart Spacing: If section follows a visual, keep tight margin (new topic separation handled by image's bottom margin) */
+    /* Bevel Effect ONLY for the top Hero Image in Case Study */
+    .right-content > :global(.full-width-image:first-child .image-wrapper) {
+        border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.15)) !important;
+        box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.2),
+            0 4px 12px rgba(0, 0, 0, 0.15),
+            0 12px 28px -6px rgba(0, 0, 0, 0.25) !important;
+        box-sizing: border-box !important;
+    }
+
+    :global([data-theme="light"]) .right-content > :global(.full-width-image:first-child .image-wrapper) {
+        border: 1px solid rgba(0, 0, 0, 0.12) !important;
+        box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.9),
+            0 4px 12px rgba(0, 0, 0, 0.06),
+            0 12px 24px -4px rgba(0, 0, 0, 0.05) !important;
+    }
+
+    .right-content > :global([slot="intro"] p) {
+        margin-bottom: 0 !important;
+    }
+
+    /* Section divider top spacing: 40px */
+    .right-content :global(.project-section) {
+        margin-top: 40px !important;
+    }
+
     .right-content :global(.full-width-image + .project-section),
+    .right-content :global(.interaction-media-container + .project-section),
+    .right-content :global(figure + .project-section),
+    .right-content :global([slot="intro"] + .project-section),
     .right-content :global(iframe + .project-section),
     .right-content :global(.figma-container + .project-section),
     .right-content :global(.pdf-viewer-wrapper + .project-section) {
-        margin-top: 0.5rem !important; /* Tight - image's large bottom margin provides separation */
+        margin-top: 0 !important;
     }
 
-    /* Images/PDFs after sections get REDUCED top margin (text above describes the image) */
+    .right-content :global(.project-section:has(+ .interaction-media-container)),
+    .right-content :global(.project-section:has(+ figure)) {
+        margin-bottom: 0 !important;
+    }
+
+    /* Images/PDFs/Media containers after sections or body text get 20px top margin */
+    .right-content :global(p + .full-width-image),
+    .right-content :global(p + .theme-image-wrapper),
+    .right-content :global(p + .light-image),
+    .right-content :global(p + .dark-image),
+    .right-content :global(p + .interaction-media-container),
+    .right-content :global(p + figure),
     .right-content :global(.project-section + .full-width-image),
+    .right-content :global(.project-section + .interaction-media-container),
+    .right-content :global(.project-section + figure),
     .right-content :global(.project-section + .figma-container),
     .right-content :global(.project-section + .pdf-viewer-wrapper) {
-        margin-top: 1rem !important; /* Tight - text above describes this image */
+        margin-top: 1.25rem !important; /* 20px clean gap - text above describes this image */
+    }
+
+    .right-content :global(.theme-image-wrapper .full-width-image) {
+        margin-top: 0 !important;
+    }
+
+    .right-content :global(.theme-image-wrapper),
+    .right-content :global(div.header-group.continuation),
+    .right-content :global(.project-section.continuation) {
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+        gap: 0 !important;
     }
 
     /* Style inline section headings to match ProjectSection title styling */
@@ -735,12 +923,189 @@ const hoverColor =
         font-family: "Google Sans", sans-serif !important;
         font-size: 12px !important;
         font-weight: 800 !important;
-        color: var(--project-category-hover-color, var(--accent-secondary, #42bd49)) !important;
+        color: var(
+            --project-category-hover-color,
+            var(--accent-secondary, #42bd49)
+        ) !important;
         line-height: 1.2 !important;
         letter-spacing: 0.05em !important;
         text-transform: uppercase !important;
         margin-top: 3.5rem !important;
         margin-bottom: 1.5rem !important;
         display: block !important;
+    }
+
+    /* Force 24px font size and zero top margin for content h2 and h2.left-align headings inside case study */
+    .right-content :global(h2),
+    .right-content :global(h2.left-align) {
+        font-family: var(--font-sans) !important;
+        font-size: 24px !important;
+        font-weight: 500 !important;
+        line-height: 1.25 !important;
+        margin-top: 0 !important;
+        margin-bottom: 8px !important;
+    }
+
+    .right-content :global(h2 + p),
+    .right-content :global(h2.left-align + p) {
+        margin-top: 0 !important;
+    }
+
+    .right-content :global(.project-section:has(+ .interaction-media-container) p),
+    .right-content :global(.project-section:has(+ figure) p) {
+        margin-bottom: 0 !important;
+    }
+
+    /* Force 18px font size and tight bottom margin for content h4 headings inside case study */
+    .right-content :global(h4) {
+        font-family: var(--font-sans) !important;
+        font-size: 18px !important;
+        font-weight: 500 !important;
+        line-height: 1.3 !important;
+        margin-bottom: 4px !important;
+        margin-top: 0 !important;
+    }
+
+    /* Force 14px font size for body paragraphs inside case study */
+    .right-content :global(p) {
+        font-size: 14px !important;
+        line-height: 1.4 !important;
+        font-weight: 300 !important;
+    }
+
+    /* Feedback Section Spacing - Remove residual gap between h4 and paragraph */
+    .right-content :global(.feedback-content) {
+        display: flex;
+        flex-direction: column;
+        gap: 2px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .right-content :global(.feedback-content h4) {
+        margin-top: 0 !important;
+        margin-bottom: 2px !important;
+    }
+
+    .right-content :global(.feedback-content p) {
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+    }
+
+    /* Force 12px font size for figure captions inside case study */
+    .right-content :global(figcaption) {
+        font-size: 12px !important;
+    }
+
+    /* Reduce padding on div.centered-tagline.orange-bar.gaps-container to 20px */
+    .right-content :global(div.centered-tagline.orange-bar.gaps-container),
+    .right-content :global(.gaps-container),
+    .right-content :global(.orange-bar) {
+        padding: 20px !important;
+        padding-block: 20px !important;
+        padding-inline: 20px !important;
+        margin-bottom: 20px !important;
+    }
+
+    /* Tighten top margin for orange bar following paragraphs to 20px */
+    .right-content :global(p + .orange-bar),
+    .right-content :global(p + .gaps-container) {
+        margin-top: 1.25rem !important; /* 20px clean gap */
+    }
+
+    .right-content :global(.project-section:has(.orange-bar)),
+    .right-content :global(.project-section:has(.gaps-container)) {
+        margin-bottom: 0 !important;
+    }
+
+    .right-content :global(.gaps-title),
+    .right-content :global(.gap-heading) {
+        font-family: "Google Sans", sans-serif !important;
+        font-size: 36px !important;
+        font-weight: 500 !important;
+        line-height: 1.15 !important;
+        letter-spacing: -0.02em !important;
+        color: inherit !important;
+    }
+
+    .right-content :global(.gaps-title) {
+        margin-top: 0 !important;
+        margin-bottom: 6px !important;
+    }
+
+    .right-content :global(.gaps-divider) {
+        margin-top: 0 !important;
+        margin-bottom: 10px !important;
+    }
+
+    .right-content :global(.gaps-list) {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 6px !important;
+        margin: 0 !important;
+    }
+
+    .right-content :global(.gap-item) {
+        margin: 0 !important;
+    }
+
+    .right-content :global(.gap-heading) {
+        margin-top: 0 !important;
+        margin-bottom: 2px !important;
+    }
+
+    .right-content :global(.gap-description) {
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+    }
+
+    .right-content :global(.bento-button) {
+        padding: 4px 4px !important;
+    }
+
+    .right-content :global(.attribute-pill) {
+        border-radius: 4px !important;
+        vertical-align: bottom !important;
+    }
+
+    .right-content :global(.feedback-item) {
+        padding: 10px !important;
+    }
+
+    @media (min-width: 1025px) {
+        .right-content :global(p.half-width),
+        .right-content :global(p.half-width-left) {
+            padding-right: 50% !important;
+            padding-left: 0 !important;
+            margin-left: 0 !important;
+            margin-right: auto !important;
+            box-sizing: border-box !important;
+        }
+
+        .right-content :global(.full-width-image.left-align),
+        .right-content :global(.video-embed.left-align),
+        .right-content :global(.theme-image-wrapper.left-align) {
+            margin-left: 0 !important;
+            margin-right: auto !important;
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+            max-width: 750px !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+        }
+    }
+
+    /* Ensure left-align h3 elements match body width & left alignment */
+    .right-content :global(h3.left-align) {
+        text-align: left !important;
+        margin-left: 0 !important;
+        margin-right: auto !important;
+    }
+
+    .right-content :global(.next-eyebrow-bento) {
+        font-size: 36px !important;
+    }
+    .right-content :global(.next-title) {
+        font-size: 36px !important;
     }
 </style>

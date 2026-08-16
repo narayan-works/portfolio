@@ -58,6 +58,7 @@ const isGif =
             <div class="meta-top-group">
                 <h3 class="meta-project-title">{title}</h3>
                 {description && <div class="meta-divider" />}
+                {description && <p class="meta-description">{description}</p>}
                 {
                     tags.length > 0 && (
                         <div class="meta-tags">
@@ -67,7 +68,6 @@ const isGif =
                         </div>
                     )
                 }
-                {description && <p class="meta-description">{description}</p>}
             </div>
             {
                 metaEntries.length > 0 && (
@@ -127,7 +127,7 @@ const isGif =
 
 <style>
     .home-project-card {
-        --card-padding: 16px;
+        --card-padding: 10px;
         --media-radius: 0px;
         display: grid;
         grid-template-columns: 1fr 2fr;
@@ -245,11 +245,12 @@ const isGif =
     .meta-top-group {
         display: flex;
         flex-direction: column;
+        gap: 10px;
     }
 
     .meta-divider {
         border-top: 1px solid var(--border-subtle);
-        margin: 6px 0;
+        margin: 0;
         max-height: 10px;
         transition: border-top-color 0.3s ease;
     }
@@ -262,23 +263,25 @@ const isGif =
         display: flex;
         flex-wrap: wrap;
         gap: 6px;
-        margin-top: 6px;
-        margin-bottom: 6px;
+        margin: 0;
     }
 
     .meta-tag {
         font-family: "Google Sans", sans-serif;
         font-size: 11px;
         font-weight: 400;
-        text-transform: uppercase;
+        text-transform: lowercase;
         letter-spacing: 0.04em;
         color: var(--text-secondary);
-        padding: 4.5px 10px 4px 10px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 1;
+        padding: 6px;
         border: 1px solid var(--border-subtle);
         border-radius: var(--radius-sm);
         background: var(--bg-surface);
         white-space: nowrap;
-        line-height: 1.25;
         transition:
             color 0.3s ease,
             background-color 0.3s ease,
@@ -302,7 +305,7 @@ const isGif =
         color: var(--text-secondary);
         opacity: 0.8;
         visibility: visible;
-        margin-top: 6px;
+        margin: 0;
         transition:
             color 0.3s ease,
             opacity 0.3s ease;
@@ -318,7 +321,7 @@ const isGif =
         grid-template-columns: auto 1fr;
         row-gap: 2px;
         column-gap: 16px;
-        margin-top: 12px;
+        margin-top: 10px;
         padding: 10px;
         border: 1px solid var(--border-subtle);
         border-radius: 8px;

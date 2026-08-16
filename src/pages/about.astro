@@ -70,6 +70,17 @@ const sliderSlides = [
 
 		<div class="about-divider"></div>
 
+		<!-- Top Section: Image Slider Carousel -->
+		<div class="about-slider-section">
+			<ImageSlider
+				variant="carousel"
+				autoplay={true}
+				indicatorType="dots"
+				frameStrategy="adaptive"
+				slides={sliderSlides}
+			/>
+		</div>
+
 		<!-- Bio Section -->
 		<div class="about-hero-grid">
 			<div class="about-left-col">
@@ -137,17 +148,6 @@ const sliderSlides = [
 			*/}
 		</div>
 
-		<!-- Full Width Bottom Section: Image Slider Carousel -->
-		<div class="about-slider-section">
-			<ImageSlider
-				variant="carousel"
-				autoplay={true}
-				indicatorType="dots"
-				frameStrategy="adaptive"
-				slides={sliderSlides}
-			/>
-		</div>
-
 		<Footer />
 		<div class="game-bottom-wrapper">
 			<GhostRunner />
@@ -166,7 +166,7 @@ const sliderSlides = [
 		width: 100%;
 		max-width: 100%;
 		box-sizing: border-box;
-		padding: 140px 48px 0;
+		padding: 80px 16px 0;
 		margin: 0;
 		background: var(--bg-primary);
 		min-height: 100vh;
@@ -193,13 +193,13 @@ const sliderSlides = [
 
 	.about-header {
 		max-width: 100%;
-		margin-bottom: 48px;
+		margin-bottom: 16px;
 		text-align: left;
 	}
 
 	.about-title {
 		font-family: "Google Sans", sans-serif;
-		font-size: 48px;
+		font-size: 32px;
 		font-weight: 450;
 		line-height: 1.05;
 		color: var(--text-primary);
@@ -210,7 +210,14 @@ const sliderSlides = [
 		width: 100%;
 		height: 1px;
 		background: var(--border-subtle);
-		margin-bottom: 48px;
+		margin-bottom: 24px;
+	}
+
+	@media (max-width: 768px) {
+		.about-header,
+		.about-divider {
+			display: none !important;
+		}
 	}
 
 	/* Bio Layout */
@@ -218,7 +225,7 @@ const sliderSlides = [
 		display: flex;
 		flex-direction: column;
 		max-width: var(--content-col, 750px);
-		margin-bottom: 96px;
+		margin-bottom: 40px;
 	}
 
 	.about-left-col {
@@ -234,8 +241,8 @@ const sliderSlides = [
 
 	.about-body p {
 		font-family: var(--font-sans);
-		font-size: 1.125rem;
-		line-height: 1.5;
+		font-size: 16px;
+		line-height: 1.35;
 		color: var(--text-secondary);
 		font-weight: 300;
 		text-align: left;
@@ -261,21 +268,41 @@ const sliderSlides = [
 		right: 50%;
 		margin-left: -50vw;
 		margin-right: -50vw;
-		margin-bottom: 96px;
+		margin-bottom: 40px;
 		overflow: hidden;
 	}
 
 	.about-slider-section :global(.image-slider) {
 		margin-top: 0 !important;
 		margin-bottom: 0 !important;
+		padding-top: 0 !important;
+		padding-bottom: 0 !important;
 		max-width: 100% !important;
 		width: 100% !important;
 	}
 
 	.about-slider-section :global(.image-slider[data-variant="carousel"] .slider-frame) {
-		max-width: 42%;
-		width: 42%;
+		max-width: 68%;
+		width: 68%;
 		margin: 0 auto;
+		aspect-ratio: 4 / 3 !important;
+	}
+
+	.about-slider-section :global(.image-slider[data-variant="carousel"] .slider-display) {
+		aspect-ratio: unset !important;
+		height: 100% !important;
+		transition: none !important;
+	}
+
+	@media (max-width: 768px) {
+		.about-slider-section :global(.image-slider[data-variant="carousel"] .slider-frame) {
+			max-width: 72% !important;
+			width: 72% !important;
+		}
+
+		.about-slider-section :global(.image-slider[data-variant="carousel"] .slide) {
+			padding: 0 4px !important;
+		}
 	}
 
 	.about-slider-section :global(.image-slider[data-variant="carousel"] .slider-track) {
@@ -296,15 +323,16 @@ const sliderSlides = [
 	}
 
 	:global(.about-layout) :global(.site-footer) {
-		width: calc(100% + 96px) !important;
-		margin-left: -48px !important;
-		margin-right: -48px !important;
+		width: calc(100% + 32px) !important;
+		margin-left: -16px !important;
+		margin-right: -16px !important;
+		margin-top: 40px !important;
 	}
 
 	.game-bottom-wrapper {
 		position: relative;
-		width: calc(100% + 96px);
-		margin-left: -48px;
+		width: calc(100% + 32px);
+		margin-left: -16px;
 		margin-top: 0px;
 		margin-bottom: 0px;
 		z-index: 0;

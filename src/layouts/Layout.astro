@@ -248,7 +248,7 @@ const canonicalImageURL = new URL(image, Astro.site || "https://narayan.works").
 
 	.universal-layout {
 		display: grid;
-		grid-template-columns: 320px minmax(0, 1fr); /* Fixed Sidebar (Left), Fluid Content (Right) */
+		grid-template-columns: minmax(0, 1fr) 320px; /* Fluid Content (Left), Fixed Sidebar (Right) */
 		min-height: 100vh;
 	}
 
@@ -258,8 +258,8 @@ const canonicalImageURL = new URL(image, Astro.site || "https://narayan.works").
 
 	.layout-sidebar {
 		background: #000000; /* Dark mode: pure black */
-		border-right: 1px solid var(--border-subtle);
-		border-left: none;
+		border-left: 1px solid var(--border-subtle);
+		border-right: none;
 		padding: 20px;
 		position: sticky;
 		top: 0;
@@ -269,9 +269,9 @@ const canonicalImageURL = new URL(image, Astro.site || "https://narayan.works").
 		flex-direction: column;
 		width: 320px;
 		box-sizing: border-box;
-		grid-column: 1 / 2;
+		grid-column: 2 / 3;
 		grid-row: 1;
-		z-index: 10000; /* High z-index to elevate child stacking contexts (theme toggle) above right content */
+		z-index: 10000; /* High z-index to elevate child stacking contexts (theme toggle) above content */
 	}
 
 	[data-theme="light"] .layout-sidebar {
@@ -280,8 +280,8 @@ const canonicalImageURL = new URL(image, Astro.site || "https://narayan.works").
 
 	.layout-content {
 		min-width: 0; /* Prevent grid blowout */
-		/* Ensure it sits in the second column */
-		grid-column: 2 / 3;
+		/* Ensure it sits in the first column */
+		grid-column: 1 / 2;
 		grid-row: 1;
 	}
 

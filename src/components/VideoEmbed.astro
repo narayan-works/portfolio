@@ -5,6 +5,7 @@ interface Props {
     title?: string;
     description?: string;
     constrain?: boolean;
+    class?: string;
 }
 
 const {
@@ -13,6 +14,7 @@ const {
     title = "Video",
     description,
     constrain = true,
+    class: className,
 } = Astro.props;
 
 let embedUrl = "";
@@ -44,7 +46,7 @@ if (type === "vimeo") {
 }
 ---
 
-<figure class:list={["video-embed", { constrained: constrain }]}>
+<figure class:list={["video-embed", { constrained: constrain }, className]}>
     <div
         class="video-container"
         style={`aspect-ratio: ${videoWidth} / ${videoHeight};`}
@@ -86,7 +88,7 @@ if (type === "vimeo") {
 
     figcaption {
         text-align: center;
-        font-size: 0.875rem;
+        font-size: 12px;
         color: var(--text-tertiary);
         margin-top: 0.75rem;
     }

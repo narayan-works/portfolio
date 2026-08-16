@@ -19,6 +19,7 @@ interface Props {
     overflow?: "hidden" | "visible";
     lockHeight?: boolean;
     borderRadius?: string;
+    class?: string;
 }
 const {
     src,
@@ -37,6 +38,7 @@ const {
     overflow = "hidden",
     lockHeight = false,
     borderRadius,
+    class: className,
 } = Astro.props;
 
 const resolvedFetchPriority =
@@ -46,7 +48,7 @@ const resolvedFetchPriority =
 ---
 
 <figure
-    class:list={["full-width-image", { constrained: constrain }]}
+    class:list={["full-width-image", { constrained: constrain }, className]}
     style={marginTop ? { marginTop } : {}}
 >
     {
@@ -122,6 +124,12 @@ const resolvedFetchPriority =
         box-sizing: border-box;
     }
 
+    .full-width-image.left-align,
+    .full-width-image.constrained.left-align {
+        margin-left: 0 !important;
+        margin-right: auto !important;
+    }
+
     .image-wrapper {
         width: 100%;
         overflow: hidden;
@@ -149,7 +157,7 @@ const resolvedFetchPriority =
     }
     figcaption {
         text-align: center;
-        font-size: 0.875rem;
+        font-size: 12px;
         color: var(--text-tertiary);
         margin-top: 0.5rem;
     }
