@@ -872,8 +872,25 @@ const allProjects = (await getCollection("projects"))
 			const scrolledDistance = startThreshold - containerRect.top;
 			const cardInterval = 100;
 
-			cardWrappers.forEach((card, index) => {
-				if (index === 0) return; // First card stays at rest
+			// Index by VISIBLE position, not DOM position. The filter hides
+			// cards with display:none, so under e.g. "Mobile" the first card
+			// still on screen can sit at DOM index 5 — by DOM index it would
+			// keep the -160px stack offset and ride up over the filter bar.
+			const visibleCards = cardWrappers.filter(
+				(card) => (card as HTMLElement).offsetParent !== null
+			);
+
+			visibleCards.forEach((card, index) => {
+				if (index === 0) {
+					// First visible card sits at rest. Set it explicitly: the
+					// CSS :not(:first-child) rule still applies whenever it
+					// isn't also the first DOM child.
+					(card as HTMLElement).style.setProperty(
+						"--card-margin-top",
+						"0px"
+					);
+					return;
+				}
 
 				const cardStart = (index - 1) * 70;
 				const rawProgress = (scrolledDistance - cardStart) / cardInterval;
@@ -892,6 +909,10 @@ const allProjects = (await getCollection("projects"))
 			passive: true,
 		});
 		window.addEventListener("resize", updateGradualCardScroll);
+		// Which cards are visible changes with the filter, so re-index then too
+		window.addEventListener("works-filter-change", () =>
+			requestAnimationFrame(updateGradualCardScroll)
+		);
 		updateGradualCardScroll();
 	}
 

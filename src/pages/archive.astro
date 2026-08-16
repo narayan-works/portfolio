@@ -314,7 +314,15 @@ const imageScales: Record<string, number> = {
 			margin-left: -16px;
 		}
 		.archive-title {
-			font-size: 40px;
+			display: none;
+		}
+		/* 20px above and below the divider. The space above came from the
+		   header's own 48px bottom margin, not the divider. */
+		.archive-header {
+			margin-bottom: 20px;
+		}
+		.archive-divider {
+			margin-bottom: 20px;
 		}
 		.archive-grid {
 			grid-template-columns: 1fr;
