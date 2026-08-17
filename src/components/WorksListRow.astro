@@ -113,7 +113,7 @@ const isGif = image?.endsWith(".gif");
 	/* Rules are inset by the strip's bleed so they line up with the 860px content
 	   column at rest; only the tinted hover card uses the full bleed width.
 	   Both sit inside the row's own box so they paint above its background. */
-	.works-list-row:not(:last-child)::after,
+	.works-list-row::after,
 	.works-list-row:first-child::before {
 		content: "";
 		position: absolute;
@@ -125,7 +125,7 @@ const isGif = image?.endsWith(".gif");
 		transition: opacity 0.3s ease;
 	}
 
-	.works-list-row:not(:last-child)::after {
+	.works-list-row::after {
 		bottom: 0;
 	}
 

@@ -1,10 +1,12 @@
 /* Custom Case Study Layout Styles for xFigura */
 :root {
-    --theme-icon-filter: invert(1); /* Invert to white in dark mode */
+    --theme-icon-filter: invert(1);
+    /* Invert to white in dark mode */
 }
 
 [data-theme="light"] {
-    --theme-icon-filter: none; /* No inversion (black outline) in light mode */
+    --theme-icon-filter: none;
+    /* No inversion (black outline) in light mode */
     --bg-secondary: var(--bg-surface);
     --border-subtle: rgba(40, 40, 40, 0.08);
 }
@@ -12,6 +14,7 @@
 [data-theme="light"] .active-glow {
     background: rgba(34, 197, 94, 0.08) !important;
 }
+
 .section-intro-wrapper {
     width: 100%;
     margin-bottom: 2.5rem;
@@ -78,13 +81,17 @@
     flex-direction: column;
     align-items: flex-start;
     text-align: left;
+    position: relative;
 }
 
+/* Own row at the top of the card: id left, icon right, text flows below */
 .card-header {
     display: flex;
     justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
     width: 100%;
-    margin-bottom: 24px;
+    margin-bottom: 40px;
 }
 
 .card-id {
@@ -92,6 +99,7 @@
     font-size: 11px;
     color: var(--text-muted, #71717a);
     font-weight: bold;
+    white-space: nowrap;
 }
 
 .card-label {
@@ -127,20 +135,13 @@
     color: var(--text-muted, #71717a) !important;
 }
 
-.card-icon-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 96px;
-    width: 96px;
-    margin-bottom: 24px;
-}
-
 .card-icon {
-    height: 80px;
-    width: 80px;
+    height: 56px;
+    width: 56px;
+    flex: 0 0 auto;
     object-fit: contain;
-    filter: var(--theme-icon-filter, none); /* support filters if needed */
+    object-position: top right;
+    filter: var(--theme-icon-filter, none);
 }
 
 .card-title {
@@ -149,7 +150,7 @@
     font-weight: 600;
     line-height: 1.25;
     color: var(--text-primary, #ffffff);
-    margin: 0 0 12px 0 !important;
+    margin: 0 0 6px 0 !important;
 }
 
 .card-desc {
@@ -159,15 +160,14 @@
     line-height: 1.5;
     color: var(--text-secondary, #a1a1aa);
     margin: 0;
-    margin-top: auto;
 }
 
 /* Opportunities Cards */
 .opp-card {
     border-radius: 24px;
     border: 1px solid var(--border-subtle, #1f1f23);
-    padding: 32px;
-    min-height: 580px;
+    padding: 20px;
+    min-height: 540px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -191,7 +191,7 @@
 
 .opp-title {
     font-family: var(--font-sans), sans-serif;
-    font-size: 28px;
+    font-size: 32px;
     font-weight: 700;
     line-height: 1.1;
     letter-spacing: -0.02em;
@@ -200,6 +200,7 @@
 }
 
 .active-title {
+    font-size: 32px;
     color: var(--text-primary, #ffffff);
 }
 
@@ -212,8 +213,9 @@
 
 .opp-row {
     display: flex;
+    flex-direction: column;
     align-items: flex-start;
-    gap: 16px;
+    gap: 10px;
     width: 100%;
 }
 
@@ -224,12 +226,8 @@
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    /* Fixed, not min-width: "WORKFLOW" overflows 60px and was pushing that
-       row's chips right of the "PRODUCT" row's. Both columns now start at
-       the same x on desktop and mobile. */
-    width: 84px;
-    flex-shrink: 0;
-    padding-top: 6px;
+    width: auto;
+    padding-top: 0;
 }
 
 .opp-chips {
@@ -237,7 +235,7 @@
     align-items: flex-start;
     gap: 8px;
     flex-wrap: wrap;
-    flex: 1;
+    width: 100%;
 }
 
 .opp-chip {
@@ -253,7 +251,7 @@
     justify-content: center;
     height: 36px;
     width: 36px;
-    border-radius: 50%;
+    border-radius: var(--radius-md, 8px);
     background: var(--project-category-color, #2b00ff);
     box-shadow: 0 2px 8px rgba(246, 99, 26, 0.2);
 }
@@ -272,10 +270,14 @@
 }
 
 .chip-plus {
-    font-size: 14px;
-    color: var(--border-subtle, #3f3f46);
-    font-weight: bold;
-    line-height: 36px; /* matches .chip-circle height so the + stays centred */
+    font-size: 16px;
+    color: var(--text-secondary, #A0A0A0);
+    font-weight: 500;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
 }
 
 .opp-footer {
@@ -304,6 +306,17 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+}
+
+.opp-status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-mono), monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 600;
 }
 
 .opp-badge {
@@ -388,6 +401,18 @@
     box-sizing: border-box;
 }
 
+.ui-image-wrapper.mobile-full-bleed,
+.ui-image-wrapper.full-bleed-mobile {
+    border-radius: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.ui-image-wrapper.mobile-full-bleed .ui-image,
+.ui-image-wrapper.full-bleed-mobile .ui-image {
+    border-radius: 0 !important;
+}
+
 .ui-image {
     width: 100%;
     height: auto;
@@ -403,37 +428,43 @@
     line-height: 1.6 !important;
 }
 
-/* Thesis statement full-width orange bar */
-.section-content .centered-tagline.orange-bar {
-    background: #F6631A !important;
-    color: #111111 !important;
-    padding-block: 3rem !important;
-    padding-inline: 3rem !important;
-    margin-left: -20px !important;
-    margin-right: -20px !important;
-    width: calc(100% + 40px) !important;
-    max-width: none !important;
-    box-sizing: border-box !important;
-    margin-top: 2rem !important;
-    margin-bottom: 2rem !important;
-    text-align: left !important;
-}
 
-.centered-tagline.orange-bar h2 {
-    color: #111111 !important;
-    margin: 0 !important;
-}
-
-.centered-tagline.orange-bar .accent-text {
-    color: inherit !important;
-}
 
 /* ── Mobile optimisations for Opportunity cards ── */
 @media (max-width: 768px) {
+
     /* Force single column regardless of wide container */
     .xf-grid.grid-3 {
         grid-template-columns: 1fr !important;
         gap: 12px;
+    }
+
+    .xf-card {
+        padding: 20px;
+        border-radius: 16px;
+    }
+
+    /* On mobile the header is a real row of its own — icon left, id right —
+       and the title/description flow underneath it. */
+    .xf-card .card-header {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: space-between;
+        align-items: flex-start;
+        width: 100%;
+        margin-bottom: 40px;
+    }
+
+    /* ProjectSection's mobile `img { width: 100% }` rule outranks .card-icon
+       and stretches the icon across the whole card, so lock its box here. */
+    .xf-card .card-icon {
+        width: 64px !important;
+        height: 64px !important;
+        max-width: 64px;
+        flex: 0 0 auto;
+        margin: 0;
+        object-fit: contain;
+        object-position: left top;
     }
 
     .opp-card {
@@ -498,5 +529,16 @@
     .opp-desc {
         font-size: 12px;
     }
-}
 
+    .ui-image-wrapper.mobile-full-bleed,
+    .ui-image-wrapper.full-bleed-mobile {
+        margin-left: -20px !important;
+        margin-right: -20px !important;
+        width: calc(100% + 40px) !important;
+        max-width: none !important;
+        border-radius: 0 !important;
+        border: none !important;
+        box-shadow: none !important;
+        outline: none !important;
+    }
+}

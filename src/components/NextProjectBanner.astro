@@ -256,7 +256,7 @@ const dataCategory = categoryMap[cleanCat] || "web-ux";
     }
 
     .next-tag {
-        font-family: var(--font-mono);
+        font-family: "Google Sans", sans-serif !important;
         font-size: var(--text-xs);
         color: var(--text-secondary);
         text-transform: lowercase;
@@ -371,6 +371,14 @@ const dataCategory = categoryMap[cleanCat] || "web-ux";
         .next-project-image-panel {
             order: 2; /* Hero image in the middle */
             min-width: 0;
+            border-radius: 0 !important;
+            border: none !important;
+            box-shadow: none !important;
+            outline: none !important;
+        }
+
+        .next-project-image {
+            border-radius: 0 !important;
         }
 
         .meta-bottom-group {

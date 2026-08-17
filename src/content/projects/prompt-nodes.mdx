@@ -24,12 +24,12 @@ import FullWidthImage from '../../components/FullWidthImage.astro';
 import XFiguraEmbed from '../../components/XFiguraEmbed.astro';
 import '../../styles/xfigura-layouts.css';
 
-<FullWidthImage src="/assets/projects/xfigura/hero-xfigura.png" constrain={false} />
+<FullWidthImage src="/assets/projects/xfigura/hero-xfigura.png" constrain={false} fullBleedMobile={true} />
 
 <ProjectSection title="Why build it?" id="problem" wide={true}>
-    <p>I built this as a quick product probe for <a href="https://xfigura.ai/" target="_blank" rel="noopener noreferrer">xFigura</a>. <em>(Self-initiated concept prototype. Not affiliated with or endorsed by <a href="https://xfigura.ai/" target="_blank" rel="noopener noreferrer">xFigura</a>.)</em> It explores one idea:</p>
-    <div class="centered-tagline orange-bar breakout-text">
-        <h2 class="left-align">turning prompts on the canvas into editable nodes, instead of leaving them as one-off text inputs.</h2>
+    <p class="left-align half-width">I built this as a quick product probe for <a href="https://xfigura.ai/" target="_blank" rel="noopener noreferrer">xFigura</a>. <em>(Self-initiated concept prototype. Not affiliated with or endorsed by <a href="https://xfigura.ai/" target="_blank" rel="noopener noreferrer">xFigura</a>.)</em> It explores one idea:</p>
+    <div class="centered-tagline orange-bar">
+        <h2>turning prompts on the canvas into editable nodes, instead of leaving them as one-off text inputs.</h2>
     </div>
 </ProjectSection>
 
@@ -48,49 +48,45 @@ import '../../styles/xfigura-layouts.css';
         <article class="xf-card">
             <div class="card-header">
                 <span class="card-id">L1</span>
-                <span class="card-label">Layer</span>
-            </div>
-            <div class="card-icon-container">
                 <img src="/canvas.png" alt="Canvas" class="card-icon" />
             </div>
-            <h3 class="card-title">Canvas-Based Interaction</h3>
-            <p class="card-desc">The spatial workspace where users drop, arrange, and wire text, image, video, and 3D preview nodes.</p>
+            <div class="card-content">
+                <h3 class="card-title">Canvas-Based<br />Interaction</h3>
+                <p class="card-desc">The spatial workspace where users drop, arrange, and wire text, image, video, and 3D preview nodes.</p>
+            </div>
         </article>
 
         <article class="xf-card">
             <div class="card-header">
                 <span class="card-id">L2</span>
-                <span class="card-label">Layer</span>
-            </div>
-            <div class="card-icon-container">
                 <img src="/infrastructure.png" alt="Infrastructure" class="card-icon" />
             </div>
-            <h3 class="card-title">Infrastructure Layer</h3>
-            <p class="card-desc">The desktop-to-cloud data pipeline managing the Rhino plugin, parameter inputs, Speckle integration, and the Revit connection.</p>
+            <div class="card-content">
+                <h3 class="card-title">Infrastructure<br />Layer</h3>
+                <p class="card-desc">The desktop-to-cloud data pipeline managing the Rhino plugin, parameter inputs, Speckle integration, and the Revit connection.</p>
+            </div>
         </article>
 
         <article class="xf-card">
             <div class="card-header">
                 <span class="card-id">L3</span>
-                <span class="card-label">Layer</span>
-            </div>
-            <div class="card-icon-container">
                 <img src="/model.png" alt="Model Marketplace" class="card-icon" />
             </div>
-            <h3 class="card-title">Model Marketplace</h3>
-            <p class="card-desc">The backend aggregator engine that routes and processes third-party and proprietary models, including Flux, upscalers, and the Nano Banana suite.</p>
+            <div class="card-content">
+                <h3 class="card-title">Model<br />Marketplace</h3>
+                <p class="card-desc">The backend aggregator engine that routes and processes third-party and proprietary models, including Flux, upscalers, and the Nano Banana suite.</p>
+            </div>
         </article>
 
         <article class="xf-card">
             <div class="card-header">
                 <span class="card-id">L4</span>
-                <span class="card-label">Layer</span>
-            </div>
-            <div class="card-icon-container">
                 <img src="/human.png" alt="Human Connection" class="card-icon" />
             </div>
-            <h3 class="card-title">Human Connection Layer</h3>
-            <p class="card-desc">The multiplayer environment hosting markup tools, team collaboration features, and text annotations for design redlines.</p>
+            <div class="card-content">
+                <h3 class="card-title">Human Connection<br />Layer</h3>
+                <p class="card-desc">The multiplayer environment hosting markup tools, team collaboration features, and text annotations for design redlines.</p>
+            </div>
         </article>
     </div>
 
@@ -101,46 +97,45 @@ import '../../styles/xfigura-layouts.css';
         <article class="xf-card">
             <div class="card-header">
                 <span class="card-id font-emerald">P-01</span>
-                
-            </div>
-            <div class="card-icon-container">
                 <img src="/massing.png" alt="Massing" class="card-icon" />
             </div>
-            <h3 class="card-title">Massing &amp; Adjacencies</h3>
-            <p class="card-desc">The geometry block handling spatial logic, bubble diagrams, volumetric configurations, and programmatic layouts.</p>
+            <div class="card-content">
+                <h3 class="card-title">Massing &amp;<br />Adjacencies</h3>
+                <p class="card-desc">The geometry block handling spatial logic, bubble diagrams, volumetric configurations, and programmatic layouts.</p>
+            </div>
         </article>
 
         <article class="xf-card">
             <div class="card-header">
                 <span class="card-id font-emerald">P-02</span>
-            </div>
-            <div class="card-icon-container">
                 <img src="/materiality.png" alt="Materiality" class="card-icon" />
             </div>
-            <h3 class="card-title">Surface &amp; Materiality</h3>
-            <p class="card-desc">The tactical block handling tectonic properties, surface textures, roughness, porosity, and material specifications.</p>
+            <div class="card-content">
+                <h3 class="card-title">Surface &amp;<br />Materiality</h3>
+                <p class="card-desc">The tactical block handling tectonic properties, surface textures, roughness, porosity, and material specifications.</p>
+            </div>
         </article>
 
         <article class="xf-card">
             <div class="card-header">
                 <span class="card-id font-emerald">P-03</span>
-            </div>
-            <div class="card-icon-container">
                 <img src="/environmental.png" alt="Environmental" class="card-icon" />
             </div>
-            <h3 class="card-title">Environmental Values</h3>
-            <p class="card-desc">The contextual data block tracking solar orientation, azimuth angles, time of day, and microclimate conditions.</p>
+            <div class="card-content">
+                <h3 class="card-title">Environmental<br />Values</h3>
+                <p class="card-desc">The contextual data block tracking solar orientation, azimuth angles, time of day, and microclimate conditions.</p>
+            </div>
         </article>
 
         <article class="xf-card">
             <div class="card-header">
                 <span class="card-id font-emerald">P-04</span>
-            </div>
-            <div class="card-icon-container">
                 <img src="/discourse.png" alt="Discourse" class="card-icon" />
             </div>
-            <h3 class="card-title">Markup &amp; Discourse</h3>
-            <p class="card-desc">The feedback block capturing sketch overlays, live review comments, annotations, and designer-to-principal team alignment.</p>
+            <div class="card-content">
+                <h3 class="card-title">Markup &amp;<br />Discourse</h3>
+                <p class="card-desc">The feedback block capturing sketch overlays, live review comments, annotations, and designer-to-principal team alignment.</p>
+            </div>
         </article>
     </div>
 </ProjectSection>
@@ -306,7 +301,7 @@ import '../../styles/xfigura-layouts.css';
         </article>
     </div>
 
-    <div class="ui-image-wrapper left-align">
+    <div class="ui-image-wrapper left-align mobile-full-bleed">
         <img src="/UI components.png" alt="The Core UI Elements &amp; Interactions Diagram" class="ui-image" />
     </div>
 </ProjectSection>

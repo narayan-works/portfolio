@@ -212,35 +212,61 @@ const {
         margin-bottom: 0 !important;
     }
 
-    /* Reduce padding on div.centered-tagline.orange-bar.gaps-container to 20px */
-    .section-content :global(div.centered-tagline.orange-bar.gaps-container),
-    .section-content :global(.gaps-container),
+    /* Unified Orange Bar Component */
     .section-content :global(.orange-bar) {
+        background: #F6631A !important;
+        color: #111111 !important;
         padding: 20px !important;
         padding-block: 20px !important;
         padding-inline: 20px !important;
+        margin-left: -20px !important;
+        margin-right: -20px !important;
+        width: calc(100% + 40px) !important;
+        max-width: none !important;
+        box-sizing: border-box !important;
+        margin-top: 1.25rem !important;
         margin-bottom: 20px !important;
+        text-align: left !important;
+        border: none !important;
+        border-radius: 0 !important;
     }
 
-    /* Tighten top margin for orange bar following paragraphs to 20px */
-    .section-content :global(p + .orange-bar),
-    .section-content :global(p + .gaps-container) {
-        margin-top: 1.25rem !important; /* 20px clean gap */
-    }
-
+    .section-content :global(.orange-bar *),
+    .section-content :global(.orange-bar h1),
+    .section-content :global(.orange-bar h2),
+    .section-content :global(.orange-bar h3),
+    .section-content :global(.orange-bar h4),
+    .section-content :global(.orange-bar p),
     .section-content :global(.gaps-title),
     .section-content :global(.gap-heading) {
+        text-align: left !important;
         font-family: "Google Sans", sans-serif !important;
+        color: #111111 !important;
+    }
+
+    .section-content :global(.orange-bar h2),
+    .section-content :global(.orange-bar h4),
+    .section-content :global(.gaps-title),
+    .section-content :global(.gap-heading) {
         font-size: 36px !important;
         font-weight: 500 !important;
         line-height: 1.15 !important;
         letter-spacing: -0.02em !important;
-        color: inherit !important;
+        margin: 0 !important;
     }
 
     .section-content :global(.gaps-title) {
         margin-top: 0 !important;
         margin-bottom: 6px !important;
+    }
+
+    @media (max-width: 768px) {
+        .section-content :global(.orange-bar h2),
+        .section-content :global(.orange-bar h4),
+        .section-content :global(.gaps-title),
+        .section-content :global(.gap-heading) {
+            font-size: 24px !important;
+        }
     }
 
     .section-content :global(.gaps-divider) {
@@ -532,7 +558,7 @@ const {
         border: 1px solid var(--border-subtle, rgba(0, 0, 0, 0.1));
         padding: 4px 6px !important;
         border-radius: 4px !important; /* 4px radius */
-        font-size: 0.875rem;
+        font-size: 14px;
         color: var(--text-secondary);
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Added blurred shadow */
     }

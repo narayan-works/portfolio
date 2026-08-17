@@ -4,6 +4,7 @@ import ThemeToggle from "../components/ThemeToggle.astro";
 import HomeNavigation from "../components/HomeNavigation.astro";
 import Footer from "../components/Footer.astro";
 import NextProjectBanner from "../components/NextProjectBanner.astro";
+import GhostRunner from "../components/GhostRunner.astro";
 import { Image } from "astro:assets";
 
 interface Props {
@@ -244,12 +245,16 @@ const hoverColor =
             )
         }
         <Footer />
+        <div class="game-bottom-wrapper">
+            <GhostRunner />
+        </div>
     </article>
 </Layout>
 
 <script>
     let cleanupTOC: (() => void) | null = null;
     let cleanupThemeToggle: (() => void) | null = null;
+    let cleanupSidebarFade: (() => void) | null = null;
 
     function setupTOCScroll() {
         if (cleanupTOC) {
@@ -476,10 +481,72 @@ const hoverColor =
         }
     }
 
+    // Fade the sidebar out as the next-project section scrolls in — fully
+    // faded once 80% of that section is on screen.
+    function setupSidebarFade() {
+        if (cleanupSidebarFade) {
+            cleanupSidebarFade();
+            cleanupSidebarFade = null;
+        }
+
+        const sidebar = document.querySelector(
+            ".project-sidebar-content",
+        ) as HTMLElement | null;
+        const nextSection = document.querySelector(
+            ".next-project-section",
+        ) as HTMLElement | null;
+        if (!sidebar || !nextSection) return;
+
+        let frame = 0;
+
+        const update = () => {
+            frame = 0;
+
+            // Stacked layout below 1024px — nothing to fade against
+            if (window.innerWidth <= 1024) {
+                sidebar.style.opacity = "";
+                sidebar.style.pointerEvents = "";
+                return;
+            }
+
+            const rect = nextSection.getBoundingClientRect();
+            const viewport = window.innerHeight;
+            // How much of the section is visible, as a fraction of the most
+            // that ever can be (its height, capped at one viewport).
+            const span = Math.min(rect.height, viewport) || 1;
+            const visible = Math.min(
+                span,
+                Math.max(0, viewport - rect.top),
+            );
+            const progress = Math.min(1, visible / span / 0.8);
+
+            sidebar.style.opacity = String(1 - progress);
+            sidebar.style.pointerEvents = progress > 0.95 ? "none" : "";
+        };
+
+        const onScroll = () => {
+            if (frame) return;
+            frame = requestAnimationFrame(update);
+        };
+
+        update();
+        window.addEventListener("scroll", onScroll, { passive: true });
+        window.addEventListener("resize", onScroll);
+
+        cleanupSidebarFade = () => {
+            if (frame) cancelAnimationFrame(frame);
+            window.removeEventListener("scroll", onScroll);
+            window.removeEventListener("resize", onScroll);
+            sidebar.style.opacity = "";
+            sidebar.style.pointerEvents = "";
+        };
+    }
+
     function init() {
         setupTOCScroll();
         setupThemeTogglePosition();
         setupTextModeToggle();
+        setupSidebarFade();
     }
 
     // Run initial setup and listen for page loads (Astro view transitions support)
@@ -495,6 +562,9 @@ const hoverColor =
         justify-content: space-between;
         height: 100%;
         font-family: var(--font-sans);
+        /* Scroll-driven fade near the next-project section (see script) */
+        transition: opacity 0.15s linear;
+        will-change: opacity;
     }
 
     /* Allow scrolling if content is too tall */
@@ -601,7 +671,7 @@ const hoverColor =
     .sidebar-cta-button:hover {
         background: var(--cta-hover-color, var(--accent-secondary));
         border-color: var(--cta-hover-color, var(--accent-secondary));
-        color: var(--bg-surface, #ffffff) !important;
+        color: #000000 !important;
     }
     .sidebar-cta-button:hover .sidebar-cta-arrow {
         transform: rotate(-45deg);
@@ -609,7 +679,7 @@ const hoverColor =
     .sidebar-cta-button:active {
         background: var(--cta-active-color, var(--accent-secondary));
         border-color: var(--cta-active-color, var(--accent-secondary));
-        color: var(--bg-surface, #ffffff) !important;
+        color: #000000 !important;
         filter: brightness(0.95);
     }
 
@@ -866,6 +936,9 @@ const hoverColor =
         .right-content {
             padding: 20px;
             padding-top: 0 !important;
+            /* No bottom padding — the Ghost Runner strip sits flush at the
+               very bottom of the page, same as on the home page */
+            padding-bottom: 0 !important;
         }
 
         .project-meta-table {
@@ -941,6 +1014,25 @@ const hoverColor =
 
     .right-content.has-next-project :global(.site-footer) {
         margin-top: 0 !important;
+    }
+
+    /* Ghost Runner strip under the footer — breaks out of .right-content's
+       20px side padding the same way .site-footer does */
+    .game-bottom-wrapper {
+        position: relative;
+        width: calc(100% + 40px);
+        margin-left: -20px;
+        margin-right: -20px;
+        margin-top: 0;
+        margin-bottom: 0;
+        z-index: 0;
+    }
+
+    .game-bottom-wrapper :global(.ghost-game-container) {
+        border-radius: 0;
+        border: none;
+        border-top: 1px solid var(--border-subtle);
+        width: 100%;
     }
 
     /* Bevel Effect ONLY for the top Hero Image in Case Study */
@@ -1074,6 +1166,17 @@ const hoverColor =
     @media (max-width: 1024px) {
         .right-content :global(p) {
             font-size: 12px !important;
+        }
+    }
+
+    /* The body-copy override above outranks Footer's own scoped styles (Astro
+       scoping bumps `.right-content`'s specificity), which shrank the footer
+       tagline on case studies. Restore the home-page size on mobile. */
+    @media (max-width: 768px) {
+        .right-content :global(.site-footer .contact-message) {
+            font-size: 36px !important;
+            line-height: 0.95 !important;
+            font-weight: 500 !important;
         }
     }
 
@@ -1256,19 +1359,49 @@ const hoverColor =
             display: none !important;
         }
 
-        /* Case-study media rounds down from --radius-md (8px) to 4px.
-           Targets image surfaces only — segmented controls, buttons and the
-           PDF toolbar keep the 8px token. */
-        .right-content :global(.full-width-image .image-wrapper),
-        .right-content :global(.full-width-image .optimized-image),
-        .right-content :global(.image-slider .slider-display),
-        .right-content :global(.image-slider .optimized-slide-image),
-        .right-content :global(.image-slider .slide video),
-        .right-content :global(.toggle-wrapper),
-        .right-content :global(.image-stack),
-        .right-content :global(.video-container),
-        .right-content :global(.video-display) {
-            border-radius: 4px !important;
+        /* Remove hero image bevel border, outline & box-shadow on mobile (in both dark and light modes) */
+        .right-content > :global(.full-width-image:first-child .image-wrapper),
+        .right-content > :global(.full-width-image:first-child .optimized-image),
+        :global([data-theme="light"]) .right-content > :global(.full-width-image:first-child .image-wrapper),
+        :global([data-theme="light"]) .right-content > :global(.full-width-image:first-child .optimized-image) {
+            border: none !important;
+            box-shadow: none !important;
+            outline: none !important;
+        }
+
+        /* Mobile image full-bleed provision: apply ONLY to images explicitly opted in via .mobile-full-bleed / .full-bleed-mobile */
+        .right-content :global(.full-bleed-mobile),
+        .right-content :global(.mobile-full-bleed),
+        :global([data-theme="light"]) .right-content :global(.full-bleed-mobile),
+        :global([data-theme="light"]) .right-content :global(.mobile-full-bleed),
+        /* Beat FullWidthImage's `.constrained.left-align { margin-left: 0 }`,
+           which otherwise keeps the 20px inset while the width still grows by
+           40px — pushing the image off the right edge. */
+        .right-content :global(.full-bleed-mobile.constrained.left-align),
+        .right-content :global(.mobile-full-bleed.constrained.left-align),
+        .right-content :global(.full-bleed-mobile.left-align),
+        .right-content :global(.mobile-full-bleed.left-align) {
+            margin-left: -20px !important;
+            margin-right: -20px !important;
+            width: calc(100% + 40px) !important;
+            max-width: none !important;
+            border: none !important;
+            box-shadow: none !important;
+            outline: none !important;
+        }
+
+        .right-content :global(.full-bleed-mobile .image-wrapper),
+        .right-content :global(.full-bleed-mobile .optimized-image),
+        .right-content :global(.mobile-full-bleed .image-wrapper),
+        .right-content :global(.mobile-full-bleed .optimized-image),
+        :global([data-theme="light"]) .right-content :global(.full-bleed-mobile .image-wrapper),
+        :global([data-theme="light"]) .right-content :global(.full-bleed-mobile .optimized-image),
+        :global([data-theme="light"]) .right-content :global(.mobile-full-bleed .image-wrapper),
+        :global([data-theme="light"]) .right-content :global(.mobile-full-bleed .optimized-image) {
+            border-radius: 0 !important;
+            border: none !important;
+            box-shadow: none !important;
+            outline: none !important;
         }
 
         /* The floating text/theme toggles park in the 20-72px band just above

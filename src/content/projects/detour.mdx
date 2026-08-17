@@ -34,15 +34,15 @@ import PdfEmbed from '../../components/PdfEmbed.astro';
 
 
 <div slot="intro">
-    <p>
+    <p class="left-align half-width">
         [Project Intro Placeholder] This project explores the intersection of design and technology. Replace this text with a specific summary of the work.
     </p>
 </div>
 
 <ProjectSection title="Premise" id="problem">
-    <p>Commutes follow the same routes, optimized for speed. People pass potential detours—parks, cafes, trails—but rarely deviate. Not because options don't exist, but because choosing where to go and what to do adds cognitive load to an already routine decision.</p>
+    <p class="left-align half-width">Commutes follow the same routes, optimized for speed. People pass potential detours—parks, cafes, trails—but rarely deviate. Not because options don't exist, but because choosing where to go and what to do adds cognitive load to an already routine decision.</p>
     <p class="centered-tagline">What if small nudges during movement you're already doing could shift behavior from pure efficiency to occasional unwinding experiences?</p>
-    <p>Detour explores whether lightweight interventions can make urban exploration feel less like a separate activity requiring planning and more like an option embedded in existing routines.</p>
+    <p class="left-align half-width">Detour explores whether lightweight interventions can make urban exploration feel less like a separate activity requiring planning and more like an option embedded in existing routines.</p>
 </ProjectSection>
 
 {/* PDF Viewer for premise */}
@@ -51,7 +51,7 @@ import PdfEmbed from '../../components/PdfEmbed.astro';
 <FullWidthImage height="400px" />
 
 <ProjectSection title="Outcome" id="outcome">
-    <p>The accompanying bodystorming and persona study validate the core hypothesis: that efficiency and exploration can coexist. By contrasting a standard commute with a Detour-enabled journey, the narrative highlights how "Artifact" collection shifts attention from the destination to the immediate environment. This habit is further reinforced through collaborative trails, where shared wayfinding creates enhanced scores—transforming a solitary walk into a collective ritual.</p>
+    <p class="left-align half-width">The accompanying bodystorming and persona study validate the core hypothesis: that efficiency and exploration can coexist. By contrasting a standard commute with a Detour-enabled journey, the narrative highlights how "Artifact" collection shifts attention from the destination to the immediate environment. This habit is further reinforced through collaborative trails, where shared wayfinding creates enhanced scores—transforming a solitary walk into a collective ritual.</p>
 
     <p class="centered-tagline">Shifting focus from the destination to the journey.</p>
 
@@ -67,7 +67,7 @@ import PdfEmbed from '../../components/PdfEmbed.astro';
     </ReviewContainer>
 
     <h3>Interaction Model</h3>
-    <p>The prototype build demonstrates the core loop in real-time: filtering intent, engaging with quests, and navigating generative paths.</p>
+    <p class="left-align half-width">The prototype build demonstrates the core loop in real-time: filtering intent, engaging with quests, and navigating generative paths.</p>
 
     <FigmaEmbed 
         src="https://www.figma.com/proto/U7Q19OfYZC42ioyAsme8i7/IxD?page-id=655%3A5588&scaling=contain&content-scaling=fixed&show-proto-sidebar=0&hide-ui=1&t=fgaXnQBrnzCQjb7Z-9&node-id=927-2990&starting-point-node-id=927%3A2990" 
@@ -78,22 +78,22 @@ import PdfEmbed from '../../components/PdfEmbed.astro';
 </ProjectSection>
 
 <ProjectSection title="Approach" id="research">
-    <p>Looking at prior art which were successful to integrate themselves into users' daily routines — to understand what makes behavior change stick.</p>
-    <p class="attribute-label">Three patterns emerged:</p>
+    <p class="left-align half-width">Looking at prior art which were successful to integrate themselves into users' daily routines — to understand what makes behavior change stick.</p>
+    <p class="attribute-label left-align half-width">Three patterns emerged:</p>
     <div class="attribute-pills">
         <span class="attribute-pill" style="background: #D31D31; color: #fff; text-align: left;">Reducing cognitive load<br />at decision points</span>
         <span class="attribute-pill" style="background: #39AD48; color: #fff; text-align: left;">Building habits through<br />consistent triggers & rewards</span>
         <span class="attribute-pill" style="background: #FBD104; color: #1a1a1a; text-align: left;">Giving users reasons that<br />feel personally meaningful</span>
     </div>
-    <p>How do these apply to making detours feel natural instead of effortful?</p>
-    <p><strong>Design direction:</strong> Lower the friction of choosing (daily quests, limited options), create habit loops through small wins and progression, frame detours as opportunities tied to user intent—relaxation, play, social connection, necessities.</p>
+    <p class="left-align half-width">How do these apply to making detours feel natural instead of effortful?</p>
+    <p class="left-align half-width"><strong>Design direction:</strong> Lower the friction of choosing (daily quests, limited options), create habit loops through small wins and progression, frame detours as opportunities tied to user intent—relaxation, play, social connection, necessities.</p>
 </ProjectSection>
 
 {/* PDF Viewer for approach */}
 <PdfEmbed src="/assets/projects/detur/approach.pdf" fullWidth={false} />
 
 <ProjectSection title="Implementation" id="process">
-    <p style="margin-bottom: 2rem;">Translating the prior art principles into a product system meant limiting variables at every decision point.</p>
+    <p class="left-align half-width" style="margin-bottom: 2rem;">Translating the prior art principles into a product system meant limiting variables at every decision point.</p>
     <ul style="list-style: none; padding: 0; margin-bottom: 2rem; padding-inline: max(0rem, calc(50% - 375px)); box-sizing: border-box;">
         <li style="margin-bottom: 1rem; display: flex; align-items: center; gap: 1rem;">
             <span style="display: inline-flex; width: 28px; height: 28px; background: #000; color: #ffffffff; border-radius: 50%; justify-content: center; align-items: center; font-weight: 700; flex-shrink: 0; text-decoration: none; padding-top: 2px; padding-right: 1px;">4</span>
@@ -112,7 +112,7 @@ import PdfEmbed from '../../components/PdfEmbed.astro';
             <span>trail to help associate experiences with memories.</span>
         </li>
     </ul>
-    <p>The goal is to create just enough friction to make choosing feel manageable. Each constraint addresses a specific behavioral barrier—categories give meaning, quests build habits, limited detours reduce overwhelm, single trail maintains memories.</p>
+    <p class="left-align half-width">The goal is to create just enough friction to make choosing feel manageable. Each constraint addresses a specific behavioral barrier—categories give meaning, quests build habits, limited detours reduce overwhelm, single trail maintains memories.</p>
     <p class="centered-tagline">Deliberately small to lower the cost of saying yes.</p>
 </ProjectSection>
 
@@ -120,29 +120,29 @@ import PdfEmbed from '../../components/PdfEmbed.astro';
 <PdfEmbed src="/assets/projects/detur/Rules.pdf" fullWidth={false} />
 
 <ProjectSection title="Interaction Framework" id="process">
-    <p>The interaction model tries to prioritize presence over precision.</p>
+    <p class="left-align half-width">The interaction model tries to prioritize presence over precision.</p>
 
     <h3>👀  Intent-Based Scoping</h3>
-    <p>Wandering without a goal can feel aimless, but wandering with a specific destination feels like a chore. The system bridges this by filtering the map through four emotional states:</p>
+    <p class="left-align half-width">Wandering without a goal can feel aimless, but wandering with a specific destination feels like a chore. The system bridges this by filtering the map through four emotional states:</p>
     <div class="attribute-pills" style="margin-top: 1rem;">
         <span class="attribute-pill" style="background: #38BB39; color: #fff;">Relax</span>
         <span class="attribute-pill" style="background: #EA5D49; color: #fff;">Play</span>
         <span class="attribute-pill" style="background: #F6F727; color: #1a1a1a;">Social</span>
         <span class="attribute-pill" style="background: #F64CB9; color: #fff;">Essentials</span>
     </div>
-    <p style="margin-top: 1rem;">This allows the backend to generate relevant waypoints while the user feels they are simply choosing a "vibe" rather than a coordinate.</p>
+    <p class="left-align half-width" style="margin-top: 1rem;">This allows the backend to generate relevant waypoints while the user feels they are simply choosing a "vibe" rather than a coordinate.</p>
 
     <p class="centered-tagline">Structure enables spontaneity by narrowing the paradox of choice.</p>
 
     <FullWidthImage src="/assets/projects/detur/artifact.png" height="400px" caption="Interaction Artifact" constrain={true} />
 
     <h3>🧭  Heads-Up Navigation</h3>
-    <p>Standard turn-by-turn directions optimize for certainty but demand constant screen attention. This "loose" navigation provides just enough information to keep the user oriented, shifting their primary focus from the screen back to the physical world.</p>
+    <p class="left-align half-width">Standard turn-by-turn directions optimize for certainty but demand constant screen attention. This "loose" navigation provides just enough information to keep the user oriented, shifting their primary focus from the screen back to the physical world.</p>
 
     <p class="centered-tagline">Reducing the interaction cost of wayfinding to keep users present.</p>
 
     <h3>🎰  Gamified Observation</h3>
-    <p>To break the habit of "tunnel vision" during commutes, the system interjects with Quests—prompts to find specific textures, colors, or objects (e.g., "Find bird poop," "Capture three doors"). These act as cognitive speed bumps, forcing the user to slow down and actively scan their environment to earn Daily XP.</p>
+    <p class="left-align half-width">To break the habit of "tunnel vision" during commutes, the system interjects with Quests—prompts to find specific textures, colors, or objects (e.g., "Find bird poop," "Capture three doors"). These act as cognitive speed bumps, forcing the user to slow down and actively scan their environment to earn Daily XP.</p>
 
     <p class="centered-tagline">Validating the detour by turning observation into a quantifiable achievement.</p>
 </ProjectSection>

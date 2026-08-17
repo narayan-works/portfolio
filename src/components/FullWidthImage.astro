@@ -11,6 +11,7 @@ interface Props {
     fetchPriority?: "high" | "low" | "auto";
     sizes?: string;
     constrain?: boolean;
+    fullBleedMobile?: boolean;
     marginTop?: string;
     scale?: number;
     objectFit?: "contain" | "cover";
@@ -30,6 +31,7 @@ const {
     fetchPriority = "auto",
     sizes = "(min-width: 1200px) 750px, (min-width: 768px) 85vw, 100vw",
     constrain = true,
+    fullBleedMobile = false,
     marginTop,
     scale = 1,
     objectFit = "contain",
@@ -48,7 +50,11 @@ const resolvedFetchPriority =
 ---
 
 <figure
-    class:list={["full-width-image", { constrained: constrain }, className]}
+    class:list={[
+        "full-width-image",
+        { constrained: constrain, "full-bleed-mobile": fullBleedMobile },
+        className,
+    ]}
     style={marginTop ? { marginTop } : {}}
 >
     {
@@ -145,6 +151,17 @@ const resolvedFetchPriority =
         /* object-fit handled inline */
         border-radius: var(--radius-md);
         transition: transform 0.3s ease;
+    }
+
+    /* EXPERIMENTAL: Mobile-only full bleed rule. Does not affect desktop web view. */
+    @media (max-width: 768px) {
+        .full-width-image.full-bleed-mobile .image-wrapper,
+        .full-width-image.full-bleed-mobile .optimized-image {
+            border-radius: 0 !important;
+            border: none !important;
+            box-shadow: none !important;
+            outline: none !important;
+        }
     }
     .placeholder-wrapper {
         width: 100%;
