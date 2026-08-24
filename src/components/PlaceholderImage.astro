@@ -2,15 +2,66 @@
 interface Props {
     height?: string;
     caption?: string;
+    message?: string;
 }
 
-const { height = "400px", caption } = Astro.props;
+const {
+    height = "500px",
+    caption,
+    message,
+} = Astro.props;
 ---
 
 <div class="placeholder-container">
-    <div class="placeholder-box" style={`height: ${height};`}></div>
+    <div class="placeholder-box" style={`height: ${height}; min-height: ${height !== "auto" ? height : "400px"};`}>
+        <div class="placeholder-inner">
+            <div class="spinner-progress-wrap">
+                <svg class="spinner-svg" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle class="spinner-track" cx="22" cy="22" r="18" stroke="currentColor" stroke-width="3" opacity="0.18" />
+                    <circle class="spinner-bar" cx="22" cy="22" r="18" stroke="currentColor" stroke-width="3" stroke-linecap="round" />
+                </svg>
+                <span class="progress-val">12%</span>
+            </div>
+            <div class="placeholder-text-group">
+                <h4 class="uhoh-heading">uh-oh</h4>
+                <p class="apology-line">sorry for the inconvenience,</p>
+                <p class="fun-line">this was supposed to load by now...</p>
+            </div>
+        </div>
+    </div>
     {caption && <p class="placeholder-caption">{caption}</p>}
 </div>
+
+<script>
+    function initPlaceholderSimulators() {
+        document.querySelectorAll(".placeholder-box:not([data-simulated])").forEach((box) => {
+            box.setAttribute("data-simulated", "true");
+            const bar = box.querySelector(".spinner-bar") as SVGCircleElement | null;
+            const val = box.querySelector(".progress-val") as HTMLElement | null;
+            if (!bar || !val) return;
+
+            let progress = Math.floor(Math.random() * 8) + 12;
+            const circumference = 2 * Math.PI * 18; // ~113.1
+            val.textContent = `${progress}%`;
+            bar.style.strokeDasharray = `${circumference}`;
+            bar.style.strokeDashoffset = `${circumference * (1 - progress / 100)}`;
+
+            const timer = setInterval(() => {
+                if (progress < 92) {
+                    progress += Math.floor(Math.random() * 8) + 2;
+                    if (progress > 92) progress = 92;
+                    val.textContent = `${progress}%`;
+                    bar.style.strokeDashoffset = `${circumference * (1 - progress / 100)}`;
+                } else {
+                    clearInterval(timer);
+                }
+            }, 180);
+        });
+    }
+
+    initPlaceholderSimulators();
+    document.addEventListener("astro:page-load", initPlaceholderSimulators);
+</script>
 
 <style>
     .placeholder-container {
@@ -20,14 +71,105 @@ const { height = "400px", caption } = Astro.props;
 
     .placeholder-box {
         width: 100%;
-        background-color: #f0f0f0; /* Light grey */
-        border-radius: var(--radius-sm);
+        background: var(--bg-surface, rgba(255, 255, 255, 0.03));
+        border: 1px dashed var(--border-subtle, rgba(255, 255, 255, 0.15));
+        border-radius: var(--radius-md, 8px);
+        box-sizing: border-box;
+        position: relative;
+        overflow: hidden;
+    }
+
+    :global(html[data-theme="light"]) .placeholder-box {
+        background: rgba(0, 0, 0, 0.02);
+        border-color: rgba(0, 0, 0, 0.12);
+    }
+
+    .placeholder-inner {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: flex-start;
+        padding: 20px;
+        box-sizing: border-box;
+        text-align: left;
+    }
+
+    .spinner-progress-wrap {
+        position: relative;
+        width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #22c55e;
+    }
+
+    .spinner-svg {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        transform: rotate(-90deg);
+    }
+
+    .spinner-track {
+        color: #22c55e;
+        opacity: 0.18;
+    }
+
+    .spinner-bar {
+        color: #22c55e;
+        transition: stroke-dashoffset 0.25s ease;
+    }
+
+    .progress-val {
+        font-family: var(--font-sans, "Google Sans", sans-serif);
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        color: var(--text-primary);
+    }
+
+    .placeholder-text-group {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        text-align: left;
+        gap: 2px;
+    }
+
+    .uhoh-heading {
+        font-family: var(--font-sans, "Google Sans", sans-serif);
+        font-size: 18px;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        color: var(--text-primary);
+        margin: 0 0 4px 0;
+        line-height: 1.1;
+    }
+
+    .apology-line,
+    .fun-line {
+        font-family: var(--font-sans, "Google Sans", sans-serif);
+        font-size: 13px;
+        font-weight: 400;
+        color: var(--text-secondary, rgba(255, 255, 255, 0.7));
+        margin: 0;
+        line-height: 1.35;
+        letter-spacing: -0.01em;
+    }
+
+    :global(html[data-theme="light"]) .apology-line,
+    :global(html[data-theme="light"]) .fun-line {
+        color: rgba(0, 0, 0, 0.65);
     }
 
     .placeholder-caption {
         margin-top: 0.5rem;
-        font-size: 0.875rem;
+        font-size: 12px;
         color: var(--text-muted);
-        font-style: italic;
+        text-align: center;
     }
 </style>

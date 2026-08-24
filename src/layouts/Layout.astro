@@ -210,6 +210,35 @@ const canonicalImageURL = new URL(image, Astro.site || "https://narayan.works").
 						}
 					}
 				});
+
+				// Shared Element Transition: dynamically tag clicked project hero image
+				const handleProjectTransition = (e: Event) => {
+					const target = e.target as HTMLElement;
+					const projectLink = target.closest('a[href*="/works/"]') as HTMLAnchorElement | null;
+					if (!projectLink) return;
+
+					const href = projectLink.getAttribute("href");
+					if (!href || href.startsWith("http")) return;
+
+					// Clear any previous view-transition-name in the document
+					document.querySelectorAll('[data-hero-vt-tagged]').forEach((el) => {
+						(el as HTMLElement).style.viewTransitionName = "";
+						(el as HTMLElement).removeAttribute("data-hero-vt-tagged");
+					});
+
+					// Find the image inside this card, row, or next-project banner
+					const img = projectLink.querySelector(
+						".card-image, .works-list-row__image, .next-project-image, .image-wrapper img, img",
+					) as HTMLElement | null;
+
+					if (img) {
+						img.style.viewTransitionName = "project-hero-active";
+						img.setAttribute("data-hero-vt-tagged", "true");
+					}
+				};
+
+				document.addEventListener("pointerdown", handleProjectTransition, { capture: true });
+				document.addEventListener("click", handleProjectTransition, { capture: true });
 			}
 
 			// Reset scroll on Astro view transitions

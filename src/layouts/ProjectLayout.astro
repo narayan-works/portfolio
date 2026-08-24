@@ -130,6 +130,11 @@ const hoverColor =
             >
         </button>
     </div>
+
+    <div class="theme-toggle-wrapper">
+        <ThemeToggle />
+    </div>
+
     <!-- LEFT SIDEBAR SLOT -->
     <div slot="sidebar" class="project-sidebar-content">
         <div class="sidebar-scroll-container">
@@ -220,9 +225,6 @@ const hoverColor =
                     }
                 </ul>
             </nav>
-            <div class="theme-toggle-wrapper">
-                <ThemeToggle />
-            </div>
         </div>
     </div>
 
@@ -398,6 +400,7 @@ const hoverColor =
                 // breakpoint. Can't be read from `style.top`: for a positioned
                 // element that resolves to a used px value, never "auto".
                 if (style.getPropertyValue("--anchor").trim() !== "bottom") {
+                    el.style.removeProperty("bottom");
                     return;
                 }
 
@@ -542,7 +545,18 @@ const hoverColor =
         };
     }
 
+    function setupHeroTransitionTag() {
+        const firstHeroImg = document.querySelector(
+            ".right-content figure.full-width-image .optimized-image, .right-content [data-hero-image='true'] .optimized-image, .right-content figure.full-width-image img, .right-content .full-width-image img",
+        ) as HTMLElement | null;
+
+        if (firstHeroImg) {
+            firstHeroImg.style.viewTransitionName = "project-hero-active";
+        }
+    }
+
     function init() {
+        setupHeroTransitionTag();
         setupTOCScroll();
         setupThemeTogglePosition();
         setupTextModeToggle();
@@ -555,6 +569,32 @@ const hoverColor =
 </script>
 
 <style>
+    /* Hero Image Shared Element Transition */
+    .right-content > :global(figure.full-width-image:first-of-type .optimized-image),
+    .right-content > :global(figure.full-width-image:first-child .optimized-image),
+    .right-content > :global(.full-width-image:first-of-type .optimized-image),
+    .right-content > :global([data-hero-image="true"] .optimized-image) {
+        view-transition-name: project-hero-active;
+    }
+
+    /* Choreographed 60% Overlapping Entrance Animation (Silky Smooth) */
+    @media (prefers-reduced-motion: no-preference) {
+        .sidebar-top {
+            animation: content-overlap-glide-in 0.48s cubic-bezier(0.25, 1, 0.5, 1) 0.22s both;
+        }
+
+        .sidebar-bottom {
+            animation: content-overlap-glide-in 0.48s cubic-bezier(0.25, 1, 0.5, 1) 0.28s both;
+        }
+
+        .right-content > :global([slot="intro"]),
+        .right-content > :global(div[slot="intro"]),
+        .right-content > :global(p:first-of-type),
+        .right-content > :global(.project-section:first-of-type) {
+            animation: content-overlap-glide-in 0.5s cubic-bezier(0.25, 1, 0.5, 1) 0.24s both;
+        }
+    }
+
     /* Sidebar Internal Styling */
     .project-sidebar-content {
         display: flex;
@@ -811,15 +851,15 @@ const hoverColor =
         line-height: 1.15;
     }
 
-    /* Bottom-right of the project section (the content column), 10px in from
+    /* Bottom-right of the project section (the content column), 20px in from
        the bottom edge. 340px = 320px sidebar + 20px content padding, matching
-       the text/no-text toggle's right edge. JS lifts it above the
+       the 20px bottom inset. JS lifts it above the
        next-project card on scroll. */
     .theme-toggle-wrapper {
         --anchor: bottom;
-        --rest-bottom: 10px;
+        --rest-bottom: 20px;
         position: fixed !important;
-        bottom: 10px !important;
+        bottom: 20px !important;
         right: 340px !important;
         left: auto !important;
         z-index: 100;
@@ -837,6 +877,8 @@ const hoverColor =
         position: fixed;
         top: 14px;
         right: 340px;
+        left: auto !important;
+        bottom: auto;
         z-index: 30000;
         display: flex;
         align-items: center;
@@ -849,10 +891,10 @@ const hoverColor =
         .case-study-controls {
             --anchor: bottom;
             --rest-bottom: 20px;
-            top: auto;
+            top: auto !important;
             bottom: 20px;
-            left: 20px;
-            right: auto;
+            left: 20px !important;
+            right: auto !important;
         }
     }
 
@@ -955,9 +997,9 @@ const hoverColor =
             --rest-bottom: 20px;
             position: fixed !important;
             bottom: 20px !important;
-            right: 48px !important;
+            right: 20px !important;
             left: auto !important;
-            z-index: 90;
+            z-index: 30000 !important;
             margin-top: 0;
         }
 
@@ -972,8 +1014,17 @@ const hoverColor =
             font-size: 12px !important;
         }
 
+        .sidebar-top {
+            padding-top: 52.5px !important;
+        }
+
+        .sidebar-header-divider {
+            display: none !important;
+        }
+
         .sidebar-project-title {
             font-size: 32px;
+            margin-top: 20px !important;
         }
 
         /* TOC is hidden and the theme toggle is fixed, so .sidebar-bottom is an
@@ -998,12 +1049,6 @@ const hoverColor =
 
         .right-content :global(.gaps-title) {
             font-size: 24px !important;
-        }
-    }
-
-    @media (max-width: 768px) {
-        .theme-toggle-wrapper {
-            right: 24px !important;
         }
     }
 
@@ -1281,8 +1326,12 @@ const hoverColor =
 
     @media (min-width: 1025px) {
         .right-content :global(p.half-width),
-        .right-content :global(p.half-width-left) {
-            padding-right: 50% !important;
+        .right-content :global(p.half-width-left),
+        .right-content :global(div.half-width),
+        .right-content :global(.half-width) {
+            max-width: 550px !important;
+            width: 100% !important;
+            padding-right: 0 !important;
             padding-left: 0 !important;
             margin-left: 0 !important;
             margin-right: auto !important;
@@ -1319,22 +1368,18 @@ const hoverColor =
     /* MOBILE SECTION SPACING — must come after the 40px/0px rules above,
        since a media query adds no specificity of its own. */
     @media (max-width: 1024px) {
-        /* Section divider gets 20px of clearance above it.
-           Case 1: sections carrying their own top margin. */
+        /* Section divider gets exactly 20px of clearance above it */
         .right-content :global(.project-section) {
-            margin-top: 20px !important;
+            margin-top: 0 !important;
         }
 
-        /* Case 2: sections whose top margin is zeroed because they follow media —
-           there the gap is the preceding element's 4rem bottom margin. */
-        .right-content :global(.full-width-image:has(+ .project-section)),
-        .right-content
-            :global(.interaction-media-container:has(+ .project-section)),
-        .right-content :global(figure:has(+ .project-section)),
-        .right-content :global([slot="intro"]:has(+ .project-section)),
-        .right-content :global(iframe:has(+ .project-section)),
-        .right-content :global(.figma-container:has(+ .project-section)),
-        .right-content :global(.pdf-viewer-wrapper:has(+ .project-section)) {
+        .right-content :global(.full-width-image),
+        .right-content :global(figure.full-width-image),
+        .right-content :global(.interaction-media-container),
+        .right-content :global([slot="intro"]),
+        .right-content :global(iframe),
+        .right-content :global(.figma-container),
+        .right-content :global(.pdf-viewer-wrapper) {
             margin-bottom: 20px !important;
         }
 

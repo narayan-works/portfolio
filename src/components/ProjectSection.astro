@@ -614,14 +614,29 @@ const {
     @media (min-width: 1025px) {
         .section-content :global(.half-width),
         .section-content :global(.half-width-left) {
-            padding-right: 50% !important;
+            max-width: 550px !important;
+            width: 100% !important;
+            padding-right: 0 !important;
+            margin-left: 0 !important;
+            margin-right: auto !important;
+            box-sizing: border-box !important;
         }
         .section-content :global(.half-width-right) {
-            padding-left: 50% !important;
+            max-width: 550px !important;
+            width: 100% !important;
+            padding-left: 0 !important;
+            margin-left: auto !important;
+            margin-right: 0 !important;
+            box-sizing: border-box !important;
         }
         .section-content :global(.half-width-center) {
-            padding-left: calc(50% - 187.5px) !important;
-            padding-right: calc(50% - 187.5px) !important;
+            max-width: 550px !important;
+            width: 100% !important;
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+            box-sizing: border-box !important;
         }
     }
 
