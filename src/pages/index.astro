@@ -144,7 +144,11 @@ const allProjects = (await getCollection("projects"))
 							title={project.data.title}
 							description={project.data.description}
 							tags={project.data.tags}
-							href={`/works/${project.slug}`}
+							href={
+								project.data.linkToCta && project.data.ctaUrl
+									? project.data.ctaUrl
+									: `/works/${project.slug}`
+							}
 							categories={CATEGORIES[project.slug]}
 							image={project.data.heroImage}
 							meta={project.data.meta}
@@ -172,7 +176,11 @@ const allProjects = (await getCollection("projects"))
 									project.data.heroImage
 								}
 								loading="lazy"
-								href={`/works/${project.slug}`}
+								href={
+									project.data.linkToCta && project.data.ctaUrl
+										? project.data.ctaUrl
+										: `/works/${project.slug}`
+								}
 								tags={project.data.tags}
 								meta={project.data.meta}
 								description={project.data.description}

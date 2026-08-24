@@ -222,7 +222,12 @@ const promptNodesProject = allProjects.find(
 										heyClickyProject.data.heroImage
 									}
 									loading="lazy"
-									href={`/works/${heyClickyProject.slug}`}
+									href={
+										heyClickyProject.data.linkToCta &&
+										heyClickyProject.data.ctaUrl
+											? heyClickyProject.data.ctaUrl
+											: `/works/${heyClickyProject.slug}`
+									}
 									tags={heyClickyProject.data.tags}
 									meta={heyClickyProject.data.meta}
 									description={
@@ -270,7 +275,12 @@ const promptNodesProject = allProjects.find(
 										lab4cProject.data.heroImage
 									}
 									loading="lazy"
-									href={`/works/${lab4cProject.slug}`}
+									href={
+										lab4cProject.data.linkToCta &&
+										lab4cProject.data.ctaUrl
+											? lab4cProject.data.ctaUrl
+											: `/works/${lab4cProject.slug}`
+									}
 									tags={lab4cProject.data.tags}
 									meta={lab4cProject.data.meta}
 									description={lab4cProject.data.description}

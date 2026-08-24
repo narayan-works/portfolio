@@ -55,7 +55,10 @@ const imageScales: Record<string, number> = {
 				archiveProjects.map((project) => {
 					const bgColor = categoryColors[project.slug] || "#258835";
 					const scale = imageScales[project.slug] || 1;
-					const targetUrl = project.data.ctaUrl || `/works/${project.slug}`;
+					const targetUrl =
+						project.data.linkToCta && project.data.ctaUrl
+							? project.data.ctaUrl
+							: `/works/${project.slug}`;
 					const isExternal = targetUrl.startsWith("http");
 					return (
 						<a

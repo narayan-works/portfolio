@@ -24,7 +24,12 @@ const isGif = image?.endsWith(".gif");
 ---
 
 <div class="works-list-row" data-categories={categories.join(" ")}>
-	<a href={href} class="works-list-row__link">
+	<a
+		href={href}
+		class="works-list-row__link"
+		target={href.startsWith("http") ? "_blank" : undefined}
+		rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
+	>
 		<div class="works-list-row__left">
 			<div class="works-list-row__left-top">
 				<h3 class="works-list-row__title">{title}</h3>
