@@ -2,7 +2,6 @@
 import SpeedInsights from "@vercel/speed-insights/astro";
 import "../styles/global.css";
 import CustomCursor from "../components/CustomCursor.astro";
-import PerfMonitor from "../components/PerfMonitor.astro";
 import { ViewTransitions } from "astro:transitions";
 
 interface Props {
@@ -164,7 +163,6 @@ const canonicalImageURL = new URL(image, Astro.site || "https://narayan.works")
 	</head>
 	<body>
 		<CustomCursor />
-		<PerfMonitor />
 		<div class={`universal-layout ${fullWidth ? "full-width" : ""}`}>
 			<!-- Sidebar Slot (Universal Left) -->
 			<aside class="layout-sidebar">
