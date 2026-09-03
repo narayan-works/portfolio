@@ -1,2009 +1,5 @@
 [
   {
-    "timestamp": "2026-09-03T04:48:28.341Z",
-    "event": "SPIKE",
-    "route": "/works/pointo",
-    "fps": 52,
-    "usedMemMb": 25,
-    "totalMemMb": 4192,
-    "spikeMs": 82,
-    "canvasesCount": 13,
-    "canvases": [
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "footer-ascii-fluid",
-        "width": 2898,
-        "height": 220
-      }
-    ],
-    "domNodes": 617,
-    "pdfCount": 10,
-    "heavyMedia": [
-      "cover.gif",
-      "demos.gif",
-      "pointing.gif",
-      "pointing-textbox.png",
-      "pointing.gif",
-      "pointing-textbox.png",
-      "pointing.gif",
-      "pointing-textbox.png",
-      "ref-0.gif",
-      "ref-1.png",
-      "ref-2.png",
-      "ref-0.gif",
-      "ref-1.png",
-      "ref-2.png",
-      "ref-0.gif",
-      "ref-1.png",
-      "ref-2.png",
-      "testing.gif",
-      "demos.gif"
-    ]
-  },
-  {
-    "timestamp": "2026-09-03T04:48:30.261Z",
-    "event": "PERIODIC",
-    "route": "/works/pointo",
-    "fps": 53,
-    "usedMemMb": 45,
-    "totalMemMb": 4192,
-    "spikeMs": 0,
-    "canvasesCount": 13,
-    "canvases": [
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "footer-ascii-fluid",
-        "width": 2898,
-        "height": 220
-      }
-    ],
-    "domNodes": 617,
-    "pdfCount": 10,
-    "heavyMedia": [
-      "cover.gif",
-      "demos.gif",
-      "pointing.gif",
-      "pointing-textbox.png",
-      "pointing.gif",
-      "pointing-textbox.png",
-      "pointing.gif",
-      "pointing-textbox.png",
-      "ref-0.gif",
-      "ref-1.png",
-      "ref-2.png",
-      "ref-0.gif",
-      "ref-1.png",
-      "ref-2.png",
-      "ref-0.gif",
-      "ref-1.png",
-      "ref-2.png",
-      "testing.gif",
-      "demos.gif"
-    ]
-  },
-  {
-    "timestamp": "2026-09-03T04:48:31.809Z",
-    "event": "PERIODIC",
-    "route": "/works/pointo",
-    "fps": 53,
-    "usedMemMb": 52,
-    "totalMemMb": 4192,
-    "spikeMs": 0,
-    "canvasesCount": 13,
-    "canvases": [
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "footer-ascii-fluid",
-        "width": 2898,
-        "height": 220
-      }
-    ],
-    "domNodes": 617,
-    "pdfCount": 10,
-    "heavyMedia": [
-      "cover.gif",
-      "demos.gif",
-      "pointing.gif",
-      "pointing-textbox.png",
-      "pointing.gif",
-      "pointing-textbox.png",
-      "pointing.gif",
-      "pointing-textbox.png",
-      "ref-0.gif",
-      "ref-1.png",
-      "ref-2.png",
-      "ref-0.gif",
-      "ref-1.png",
-      "ref-2.png",
-      "ref-0.gif",
-      "ref-1.png",
-      "ref-2.png",
-      "testing.gif",
-      "demos.gif"
-    ]
-  },
-  {
-    "timestamp": "2026-09-03T04:48:32.525Z",
-    "event": "MEM_CHANGE",
-    "route": "/",
-    "fps": 30,
-    "usedMemMb": 46,
-    "totalMemMb": 4192,
-    "spikeMs": 0,
-    "canvasesCount": 2,
-    "canvases": [
-      {
-        "id": "footer-ascii-fluid",
-        "width": 3538,
-        "height": 596
-      },
-      {
-        "id": "ghost-lane-canvas",
-        "width": 3538,
-        "height": 510
-      }
-    ],
-    "domNodes": 725,
-    "pdfCount": 0,
-    "heavyMedia": [
-      "hero-dothreads.gif",
-      "cover.gif",
-      "clicky.gif",
-      "hero-xfigura.png",
-      "hero.jpeg",
-      "hero-detur.png",
-      "hero-serendipidity.png",
-      "hero-xfigura.png"
-    ]
-  },
-  {
-    "timestamp": "2026-09-03T04:48:32.727Z",
-    "event": "PERIODIC",
-    "route": "/works/pointo",
-    "fps": 55,
-    "usedMemMb": 42,
-    "totalMemMb": 4192,
-    "spikeMs": 0,
-    "canvasesCount": 13,
-    "canvases": [
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "footer-ascii-fluid",
-        "width": 2898,
-        "height": 220
-      }
-    ],
-    "domNodes": 617,
-    "pdfCount": 10,
-    "heavyMedia": [
-      "cover.gif",
-      "demos.gif",
-      "pointing.gif",
-      "pointing-textbox.png",
-      "pointing.gif",
-      "pointing-textbox.png",
-      "pointing.gif",
-      "pointing-textbox.png",
-      "ref-0.gif",
-      "ref-1.png",
-      "ref-2.png",
-      "ref-0.gif",
-      "ref-1.png",
-      "ref-2.png",
-      "ref-0.gif",
-      "ref-1.png",
-      "ref-2.png",
-      "testing.gif",
-      "demos.gif"
-    ]
-  },
-  {
-    "timestamp": "2026-09-03T04:48:32.793Z",
-    "event": "MEM_CHANGE",
-    "route": "/",
-    "fps": 30,
-    "usedMemMb": 50,
-    "totalMemMb": 4192,
-    "spikeMs": 0,
-    "canvasesCount": 2,
-    "canvases": [
-      {
-        "id": "footer-ascii-fluid",
-        "width": 3538,
-        "height": 596
-      },
-      {
-        "id": "ghost-lane-canvas",
-        "width": 3538,
-        "height": 510
-      }
-    ],
-    "domNodes": 725,
-    "pdfCount": 0,
-    "heavyMedia": [
-      "hero-dothreads.gif",
-      "cover.gif",
-      "clicky.gif",
-      "hero-xfigura.png",
-      "hero.jpeg",
-      "hero-detur.png",
-      "hero-serendipidity.png",
-      "hero-xfigura.png"
-    ]
-  },
-  {
-    "timestamp": "2026-09-03T04:48:34.605Z",
-    "event": "SPIKE",
-    "route": "/works/pointo",
-    "fps": 51,
-    "usedMemMb": 25,
-    "totalMemMb": 4192,
-    "spikeMs": 94,
-    "canvasesCount": 13,
-    "canvases": [
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "footer-ascii-fluid",
-        "width": 2898,
-        "height": 220
-      }
-    ],
-    "domNodes": 617,
-    "pdfCount": 10,
-    "heavyMedia": [
-      "cover.gif",
-      "demos.gif",
-      "pointing.gif",
-      "pointing-textbox.png",
-      "pointing.gif",
-      "pointing-textbox.png",
-      "pointing.gif",
-      "pointing-textbox.png",
-      "ref-0.gif",
-      "ref-1.png",
-      "ref-2.png",
-      "ref-0.gif",
-      "ref-1.png",
-      "ref-2.png",
-      "ref-0.gif",
-      "ref-1.png",
-      "ref-2.png",
-      "testing.gif",
-      "demos.gif"
-    ]
-  },
-  {
-    "timestamp": "2026-09-03T04:48:34.636Z",
-    "event": "SPIKE",
-    "route": "/works/pointo",
-    "fps": 51,
-    "usedMemMb": 25,
-    "totalMemMb": 4192,
-    "spikeMs": 94,
-    "canvasesCount": 13,
-    "canvases": [
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "footer-ascii-fluid",
-        "width": 2898,
-        "height": 220
-      }
-    ],
-    "domNodes": 617,
-    "pdfCount": 10,
-    "heavyMedia": [
-      "cover.gif",
-      "demos.gif",
-      "pointing.gif",
-      "pointing-textbox.png",
-      "pointing.gif",
-      "pointing-textbox.png",
-      "pointing.gif",
-      "pointing-textbox.png",
-      "ref-0.gif",
-      "ref-1.png",
-      "ref-2.png",
-      "ref-0.gif",
-      "ref-1.png",
-      "ref-2.png",
-      "ref-0.gif",
-      "ref-1.png",
-      "ref-2.png",
-      "testing.gif",
-      "demos.gif"
-    ]
-  },
-  {
-    "timestamp": "2026-09-03T04:48:34.670Z",
-    "event": "SPIKE",
-    "route": "/works/pointo",
-    "fps": 51,
-    "usedMemMb": 25,
-    "totalMemMb": 4192,
-    "spikeMs": 94,
-    "canvasesCount": 13,
-    "canvases": [
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "footer-ascii-fluid",
-        "width": 2898,
-        "height": 220
-      }
-    ],
-    "domNodes": 617,
-    "pdfCount": 10,
-    "heavyMedia": [
-      "cover.gif",
-      "demos.gif",
-      "pointing.gif",
-      "pointing-textbox.png",
-      "pointing.gif",
-      "pointing-textbox.png",
-      "pointing.gif",
-      "pointing-textbox.png",
-      "ref-0.gif",
-      "ref-1.png",
-      "ref-2.png",
-      "ref-0.gif",
-      "ref-1.png",
-      "ref-2.png",
-      "ref-0.gif",
-      "ref-1.png",
-      "ref-2.png",
-      "testing.gif",
-      "demos.gif"
-    ]
-  },
-  {
-    "timestamp": "2026-09-03T04:48:35.277Z",
-    "event": "MEM_CHANGE",
-    "route": "/works/pointo",
-    "fps": 40,
-    "usedMemMb": 42,
-    "totalMemMb": 4192,
-    "spikeMs": 0,
-    "canvasesCount": 13,
-    "canvases": [
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "footer-ascii-fluid",
-        "width": 2898,
-        "height": 220
-      }
-    ],
-    "domNodes": 617,
-    "pdfCount": 10,
-    "heavyMedia": [
-      "cover.gif",
-      "demos.gif",
-      "pointing.gif",
-      "pointing-textbox.png",
-      "pointing.gif",
-      "pointing-textbox.png",
-      "pointing.gif",
-      "pointing-textbox.png",
-      "ref-0.gif",
-      "ref-1.png",
-      "ref-2.png",
-      "ref-0.gif",
-      "ref-1.png",
-      "ref-2.png",
-      "ref-0.gif",
-      "ref-1.png",
-      "ref-2.png",
-      "testing.gif",
-      "demos.gif"
-    ]
-  },
-  {
-    "timestamp": "2026-09-03T04:48:36.791Z",
-    "event": "PERIODIC",
-    "route": "/works/pointo",
-    "fps": 51,
-    "usedMemMb": 51,
-    "totalMemMb": 4192,
-    "spikeMs": 0,
-    "canvasesCount": 13,
-    "canvases": [
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "footer-ascii-fluid",
-        "width": 2898,
-        "height": 220
-      }
-    ],
-    "domNodes": 617,
-    "pdfCount": 10,
-    "heavyMedia": [
-      "cover.gif",
-      "demos.gif",
-      "pointing.gif",
-      "pointing-textbox.png",
-      "pointing.gif",
-      "pointing-textbox.png",
-      "pointing.gif",
-      "pointing-textbox.png",
-      "ref-0.gif",
-      "ref-1.png",
-      "ref-2.png",
-      "ref-0.gif",
-      "ref-1.png",
-      "ref-2.png",
-      "ref-0.gif",
-      "ref-1.png",
-      "ref-2.png",
-      "testing.gif",
-      "demos.gif"
-    ]
-  },
-  {
-    "timestamp": "2026-09-03T04:48:37.522Z",
-    "event": "MEM_CHANGE",
-    "route": "/",
-    "fps": 30,
-    "usedMemMb": 51,
-    "totalMemMb": 4192,
-    "spikeMs": 0,
-    "canvasesCount": 2,
-    "canvases": [
-      {
-        "id": "footer-ascii-fluid",
-        "width": 3538,
-        "height": 596
-      },
-      {
-        "id": "ghost-lane-canvas",
-        "width": 3538,
-        "height": 510
-      }
-    ],
-    "domNodes": 725,
-    "pdfCount": 0,
-    "heavyMedia": [
-      "hero-dothreads.gif",
-      "cover.gif",
-      "clicky.gif",
-      "hero-xfigura.png",
-      "hero.jpeg",
-      "hero-detur.png",
-      "hero-serendipidity.png",
-      "hero-xfigura.png"
-    ]
-  },
-  {
-    "timestamp": "2026-09-03T04:48:37.724Z",
-    "event": "PERIODIC",
-    "route": "/works/pointo",
-    "fps": 62,
-    "usedMemMb": 40,
-    "totalMemMb": 4192,
-    "spikeMs": 0,
-    "canvasesCount": 13,
-    "canvases": [
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "footer-ascii-fluid",
-        "width": 2898,
-        "height": 220
-      }
-    ],
-    "domNodes": 617,
-    "pdfCount": 10,
-    "heavyMedia": [
-      "cover.gif",
-      "demos.gif",
-      "pointing.gif",
-      "pointing-textbox.png",
-      "pointing.gif",
-      "pointing-textbox.png",
-      "pointing.gif",
-      "pointing-textbox.png",
-      "ref-0.gif",
-      "ref-1.png",
-      "ref-2.png",
-      "ref-0.gif",
-      "ref-1.png",
-      "ref-2.png",
-      "ref-0.gif",
-      "ref-1.png",
-      "ref-2.png",
-      "testing.gif",
-      "demos.gif"
-    ]
-  },
-  {
-    "timestamp": "2026-09-03T04:48:37.792Z",
-    "event": "MEM_CHANGE",
-    "route": "/",
-    "fps": 30,
-    "usedMemMb": 55,
-    "totalMemMb": 4192,
-    "spikeMs": 0,
-    "canvasesCount": 2,
-    "canvases": [
-      {
-        "id": "footer-ascii-fluid",
-        "width": 3538,
-        "height": 596
-      },
-      {
-        "id": "ghost-lane-canvas",
-        "width": 3538,
-        "height": 510
-      }
-    ],
-    "domNodes": 725,
-    "pdfCount": 0,
-    "heavyMedia": [
-      "hero-dothreads.gif",
-      "cover.gif",
-      "clicky.gif",
-      "hero-xfigura.png",
-      "hero.jpeg",
-      "hero-detur.png",
-      "hero-serendipidity.png",
-      "hero-xfigura.png"
-    ]
-  },
-  {
-    "timestamp": "2026-09-03T04:48:39.751Z",
-    "event": "SPIKE",
-    "route": "/works/pointo",
-    "fps": 55,
-    "usedMemMb": 25,
-    "totalMemMb": 4192,
-    "spikeMs": 73,
-    "canvasesCount": 13,
-    "canvases": [
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "footer-ascii-fluid",
-        "width": 2898,
-        "height": 220
-      }
-    ],
-    "domNodes": 617,
-    "pdfCount": 10,
-    "heavyMedia": [
-      "cover.gif",
-      "demos.gif",
-      "pointing.gif",
-      "pointing-textbox.png",
-      "pointing.gif",
-      "pointing-textbox.png",
-      "pointing.gif",
-      "pointing-textbox.png",
-      "ref-0.gif",
-      "ref-1.png",
-      "ref-2.png",
-      "ref-0.gif",
-      "ref-1.png",
-      "ref-2.png",
-      "ref-0.gif",
-      "ref-1.png",
-      "ref-2.png",
-      "testing.gif",
-      "demos.gif"
-    ]
-  },
-  {
-    "timestamp": "2026-09-03T04:48:39.760Z",
-    "event": "SPIKE",
-    "route": "/works/pointo",
-    "fps": 55,
-    "usedMemMb": 25,
-    "totalMemMb": 4192,
-    "spikeMs": 73,
-    "canvasesCount": 13,
-    "canvases": [
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "footer-ascii-fluid",
-        "width": 2898,
-        "height": 220
-      }
-    ],
-    "domNodes": 617,
-    "pdfCount": 10,
-    "heavyMedia": [
-      "cover.gif",
-      "demos.gif",
-      "pointing.gif",
-      "pointing-textbox.png",
-      "pointing.gif",
-      "pointing-textbox.png",
-      "pointing.gif",
-      "pointing-textbox.png",
-      "ref-0.gif",
-      "ref-1.png",
-      "ref-2.png",
-      "ref-0.gif",
-      "ref-1.png",
-      "ref-2.png",
-      "ref-0.gif",
-      "ref-1.png",
-      "ref-2.png",
-      "testing.gif",
-      "demos.gif"
-    ]
-  },
-  {
-    "timestamp": "2026-09-03T04:48:39.768Z",
-    "event": "SPIKE",
-    "route": "/works/pointo",
-    "fps": 55,
-    "usedMemMb": 25,
-    "totalMemMb": 4192,
-    "spikeMs": 73,
-    "canvasesCount": 13,
-    "canvases": [
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "footer-ascii-fluid",
-        "width": 2898,
-        "height": 220
-      }
-    ],
-    "domNodes": 617,
-    "pdfCount": 10,
-    "heavyMedia": [
-      "cover.gif",
-      "demos.gif",
-      "pointing.gif",
-      "pointing-textbox.png",
-      "pointing.gif",
-      "pointing-textbox.png",
-      "pointing.gif",
-      "pointing-textbox.png",
-      "ref-0.gif",
-      "ref-1.png",
-      "ref-2.png",
-      "ref-0.gif",
-      "ref-1.png",
-      "ref-2.png",
-      "ref-0.gif",
-      "ref-1.png",
-      "ref-2.png",
-      "testing.gif",
-      "demos.gif"
-    ]
-  },
-  {
-    "timestamp": "2026-09-03T04:48:40.282Z",
-    "event": "PERIODIC",
-    "route": "/works/pointo",
-    "fps": 48,
-    "usedMemMb": 41,
-    "totalMemMb": 4192,
-    "spikeMs": 0,
-    "canvasesCount": 13,
-    "canvases": [
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "footer-ascii-fluid",
-        "width": 2898,
-        "height": 220
-      }
-    ],
-    "domNodes": 617,
-    "pdfCount": 10,
-    "heavyMedia": [
-      "cover.gif",
-      "demos.gif",
-      "pointing.gif",
-      "pointing-textbox.png",
-      "pointing.gif",
-      "pointing-textbox.png",
-      "pointing.gif",
-      "pointing-textbox.png",
-      "ref-0.gif",
-      "ref-1.png",
-      "ref-2.png",
-      "ref-0.gif",
-      "ref-1.png",
-      "ref-2.png",
-      "ref-0.gif",
-      "ref-1.png",
-      "ref-2.png",
-      "testing.gif",
-      "demos.gif"
-    ]
-  },
-  {
-    "timestamp": "2026-09-03T04:48:41.795Z",
-    "event": "PERIODIC",
-    "route": "/works/pointo",
-    "fps": 52,
-    "usedMemMb": 49,
-    "totalMemMb": 4192,
-    "spikeMs": 0,
-    "canvasesCount": 13,
-    "canvases": [
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "footer-ascii-fluid",
-        "width": 2898,
-        "height": 220
-      }
-    ],
-    "domNodes": 617,
-    "pdfCount": 10,
-    "heavyMedia": [
-      "cover.gif",
-      "demos.gif",
-      "pointing.gif",
-      "pointing-textbox.png",
-      "pointing.gif",
-      "pointing-textbox.png",
-      "pointing.gif",
-      "pointing-textbox.png",
-      "ref-0.gif",
-      "ref-1.png",
-      "ref-2.png",
-      "ref-0.gif",
-      "ref-1.png",
-      "ref-2.png",
-      "ref-0.gif",
-      "ref-1.png",
-      "ref-2.png",
-      "testing.gif",
-      "demos.gif"
-    ]
-  },
-  {
-    "timestamp": "2026-09-03T04:48:42.523Z",
-    "event": "MEM_CHANGE",
-    "route": "/",
-    "fps": 30,
-    "usedMemMb": 35,
-    "totalMemMb": 4192,
-    "spikeMs": 0,
-    "canvasesCount": 2,
-    "canvases": [
-      {
-        "id": "footer-ascii-fluid",
-        "width": 3538,
-        "height": 596
-      },
-      {
-        "id": "ghost-lane-canvas",
-        "width": 3538,
-        "height": 510
-      }
-    ],
-    "domNodes": 725,
-    "pdfCount": 0,
-    "heavyMedia": [
-      "hero-dothreads.gif",
-      "cover.gif",
-      "clicky.gif",
-      "hero-xfigura.png",
-      "hero.jpeg",
-      "hero-detur.png",
-      "hero-serendipidity.png",
-      "hero-xfigura.png"
-    ]
-  },
-  {
-    "timestamp": "2026-09-03T04:48:42.736Z",
-    "event": "PERIODIC",
-    "route": "/works/pointo",
-    "fps": 58,
-    "usedMemMb": 41,
-    "totalMemMb": 4192,
-    "spikeMs": 0,
-    "canvasesCount": 13,
-    "canvases": [
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "footer-ascii-fluid",
-        "width": 2898,
-        "height": 220
-      }
-    ],
-    "domNodes": 617,
-    "pdfCount": 10,
-    "heavyMedia": [
-      "cover.gif",
-      "demos.gif",
-      "pointing.gif",
-      "pointing-textbox.png",
-      "pointing.gif",
-      "pointing-textbox.png",
-      "pointing.gif",
-      "pointing-textbox.png",
-      "ref-0.gif",
-      "ref-1.png",
-      "ref-2.png",
-      "ref-0.gif",
-      "ref-1.png",
-      "ref-2.png",
-      "ref-0.gif",
-      "ref-1.png",
-      "ref-2.png",
-      "testing.gif",
-      "demos.gif"
-    ]
-  },
-  {
-    "timestamp": "2026-09-03T04:48:42.798Z",
-    "event": "MEM_CHANGE",
-    "route": "/",
-    "fps": 30,
-    "usedMemMb": 39,
-    "totalMemMb": 4192,
-    "spikeMs": 0,
-    "canvasesCount": 2,
-    "canvases": [
-      {
-        "id": "footer-ascii-fluid",
-        "width": 3538,
-        "height": 596
-      },
-      {
-        "id": "ghost-lane-canvas",
-        "width": 3538,
-        "height": 510
-      }
-    ],
-    "domNodes": 725,
-    "pdfCount": 0,
-    "heavyMedia": [
-      "hero-dothreads.gif",
-      "cover.gif",
-      "clicky.gif",
-      "hero-xfigura.png",
-      "hero.jpeg",
-      "hero-detur.png",
-      "hero-serendipidity.png",
-      "hero-xfigura.png"
-    ]
-  },
-  {
-    "timestamp": "2026-09-03T04:48:45.266Z",
-    "event": "PERIODIC",
-    "route": "/works/pointo",
-    "fps": 58,
-    "usedMemMb": 45,
-    "totalMemMb": 4192,
-    "spikeMs": 0,
-    "canvasesCount": 13,
-    "canvases": [
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "footer-ascii-fluid",
-        "width": 2898,
-        "height": 220
-      }
-    ],
-    "domNodes": 617,
-    "pdfCount": 10,
-    "heavyMedia": [
-      "cover.gif",
-      "demos.gif",
-      "pointing.gif",
-      "pointing-textbox.png",
-      "pointing.gif",
-      "pointing-textbox.png",
-      "pointing.gif",
-      "pointing-textbox.png",
-      "ref-0.gif",
-      "ref-1.png",
-      "ref-2.png",
-      "ref-0.gif",
-      "ref-1.png",
-      "ref-2.png",
-      "ref-0.gif",
-      "ref-1.png",
-      "ref-2.png",
-      "testing.gif",
-      "demos.gif"
-    ]
-  },
-  {
-    "timestamp": "2026-09-03T04:48:46.790Z",
-    "event": "PERIODIC",
-    "route": "/works/pointo",
-    "fps": 57,
-    "usedMemMb": 53,
-    "totalMemMb": 4192,
-    "spikeMs": 0,
-    "canvasesCount": 13,
-    "canvases": [
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "anonymous-canvas",
-        "width": 2818,
-        "height": 1585
-      },
-      {
-        "id": "footer-ascii-fluid",
-        "width": 2898,
-        "height": 220
-      }
-    ],
-    "domNodes": 617,
-    "pdfCount": 10,
-    "heavyMedia": [
-      "cover.gif",
-      "demos.gif",
-      "pointing.gif",
-      "pointing-textbox.png",
-      "pointing.gif",
-      "pointing-textbox.png",
-      "pointing.gif",
-      "pointing-textbox.png",
-      "ref-0.gif",
-      "ref-1.png",
-      "ref-2.png",
-      "ref-0.gif",
-      "ref-1.png",
-      "ref-2.png",
-      "ref-0.gif",
-      "ref-1.png",
-      "ref-2.png",
-      "testing.gif",
-      "demos.gif"
-    ]
-  },
-  {
     "timestamp": "2026-09-03T04:48:47.521Z",
     "event": "MEM_CHANGE",
     "route": "/",
@@ -39408,6 +37404,1352 @@
       "koisk.html.png",
       "demos.gif",
       "hero-xfigura.png"
+    ]
+  },
+  {
+    "timestamp": "2026-09-03T04:52:58.831Z",
+    "event": "MEM_CHANGE",
+    "route": "/",
+    "fps": 29,
+    "usedMemMb": 50,
+    "totalMemMb": 4192,
+    "spikeMs": 0,
+    "canvasesCount": 2,
+    "canvases": [
+      {
+        "id": "footer-ascii-fluid",
+        "width": 3538,
+        "height": 596
+      },
+      {
+        "id": "ghost-lane-canvas",
+        "width": 3538,
+        "height": 510
+      }
+    ],
+    "domNodes": 738,
+    "pdfCount": 0,
+    "heavyMedia": [
+      "hero-dothreads.gif",
+      "cover.gif",
+      "clicky.gif",
+      "hero-xfigura.png",
+      "hero.jpeg",
+      "hero-detur.png",
+      "hero-serendipidity.png",
+      "hero-xfigura.png"
+    ]
+  },
+  {
+    "timestamp": "2026-09-03T04:53:00.734Z",
+    "event": "SPIKE",
+    "route": "/works/pointo",
+    "fps": 3,
+    "usedMemMb": 26,
+    "totalMemMb": 4192,
+    "spikeMs": 1168,
+    "canvasesCount": 13,
+    "canvases": [
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "footer-ascii-fluid",
+        "width": 2898,
+        "height": 516
+      }
+    ],
+    "domNodes": 631,
+    "pdfCount": 10,
+    "heavyMedia": [
+      "cover.gif",
+      "demos.gif",
+      "pointing.gif",
+      "pointing-textbox.png",
+      "pointing.gif",
+      "pointing-textbox.png",
+      "pointing.gif",
+      "pointing-textbox.png",
+      "ref-0.gif",
+      "ref-1.png",
+      "ref-2.png",
+      "ref-0.gif",
+      "ref-1.png",
+      "ref-2.png",
+      "ref-0.gif",
+      "ref-1.png",
+      "ref-2.png",
+      "testing.gif",
+      "koisk.html.png",
+      "demos.gif",
+      "hero-xfigura.png"
+    ]
+  },
+  {
+    "timestamp": "2026-09-03T04:53:00.753Z",
+    "event": "SPIKE",
+    "route": "/works/pointo",
+    "fps": 20,
+    "usedMemMb": 26,
+    "totalMemMb": 4192,
+    "spikeMs": 1168,
+    "canvasesCount": 13,
+    "canvases": [
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "footer-ascii-fluid",
+        "width": 2898,
+        "height": 516
+      }
+    ],
+    "domNodes": 631,
+    "pdfCount": 10,
+    "heavyMedia": [
+      "cover.gif",
+      "demos.gif",
+      "pointing.gif",
+      "pointing-textbox.png",
+      "pointing.gif",
+      "pointing-textbox.png",
+      "pointing.gif",
+      "pointing-textbox.png",
+      "ref-0.gif",
+      "ref-1.png",
+      "ref-2.png",
+      "ref-0.gif",
+      "ref-1.png",
+      "ref-2.png",
+      "ref-0.gif",
+      "ref-1.png",
+      "ref-2.png",
+      "testing.gif",
+      "koisk.html.png",
+      "demos.gif",
+      "hero-xfigura.png"
+    ]
+  },
+  {
+    "timestamp": "2026-09-03T04:53:00.787Z",
+    "event": "SPIKE",
+    "route": "/",
+    "fps": 29,
+    "usedMemMb": 31,
+    "totalMemMb": 4192,
+    "spikeMs": 140,
+    "canvasesCount": 2,
+    "canvases": [
+      {
+        "id": "footer-ascii-fluid",
+        "width": 3538,
+        "height": 596
+      },
+      {
+        "id": "ghost-lane-canvas",
+        "width": 3538,
+        "height": 510
+      }
+    ],
+    "domNodes": 738,
+    "pdfCount": 0,
+    "heavyMedia": [
+      "hero-dothreads.gif",
+      "cover.gif",
+      "clicky.gif",
+      "hero-xfigura.png",
+      "hero.jpeg",
+      "hero-detur.png",
+      "hero-serendipidity.png",
+      "hero-xfigura.png"
+    ]
+  },
+  {
+    "timestamp": "2026-09-03T04:53:00.815Z",
+    "event": "SPIKE",
+    "route": "/",
+    "fps": 29,
+    "usedMemMb": 31,
+    "totalMemMb": 4192,
+    "spikeMs": 140,
+    "canvasesCount": 2,
+    "canvases": [
+      {
+        "id": "footer-ascii-fluid",
+        "width": 3538,
+        "height": 596
+      },
+      {
+        "id": "ghost-lane-canvas",
+        "width": 3538,
+        "height": 510
+      }
+    ],
+    "domNodes": 738,
+    "pdfCount": 0,
+    "heavyMedia": [
+      "hero-dothreads.gif",
+      "cover.gif",
+      "clicky.gif",
+      "hero-xfigura.png",
+      "hero.jpeg",
+      "hero-detur.png",
+      "hero-serendipidity.png",
+      "hero-xfigura.png"
+    ]
+  },
+  {
+    "timestamp": "2026-09-03T04:53:00.830Z",
+    "event": "SPIKE",
+    "route": "/works/pointo",
+    "fps": 48,
+    "usedMemMb": 25,
+    "totalMemMb": 4192,
+    "spikeMs": 158,
+    "canvasesCount": 13,
+    "canvases": [
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "footer-ascii-fluid",
+        "width": 2898,
+        "height": 516
+      }
+    ],
+    "domNodes": 631,
+    "pdfCount": 10,
+    "heavyMedia": [
+      "cover.gif",
+      "demos.gif",
+      "pointing.gif",
+      "pointing-textbox.png",
+      "pointing.gif",
+      "pointing-textbox.png",
+      "pointing.gif",
+      "pointing-textbox.png",
+      "ref-0.gif",
+      "ref-1.png",
+      "ref-2.png",
+      "ref-0.gif",
+      "ref-1.png",
+      "ref-2.png",
+      "ref-0.gif",
+      "ref-1.png",
+      "ref-2.png",
+      "testing.gif",
+      "koisk.html.png",
+      "demos.gif",
+      "hero-xfigura.png"
+    ]
+  },
+  {
+    "timestamp": "2026-09-03T04:53:00.845Z",
+    "event": "SPIKE",
+    "route": "/works/pointo",
+    "fps": 48,
+    "usedMemMb": 25,
+    "totalMemMb": 4192,
+    "spikeMs": 158,
+    "canvasesCount": 13,
+    "canvases": [
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "footer-ascii-fluid",
+        "width": 2898,
+        "height": 516
+      }
+    ],
+    "domNodes": 631,
+    "pdfCount": 10,
+    "heavyMedia": [
+      "cover.gif",
+      "demos.gif",
+      "pointing.gif",
+      "pointing-textbox.png",
+      "pointing.gif",
+      "pointing-textbox.png",
+      "pointing.gif",
+      "pointing-textbox.png",
+      "ref-0.gif",
+      "ref-1.png",
+      "ref-2.png",
+      "ref-0.gif",
+      "ref-1.png",
+      "ref-2.png",
+      "ref-0.gif",
+      "ref-1.png",
+      "ref-2.png",
+      "testing.gif",
+      "koisk.html.png",
+      "demos.gif",
+      "hero-xfigura.png"
+    ]
+  },
+  {
+    "timestamp": "2026-09-03T04:53:00.881Z",
+    "event": "SPIKE",
+    "route": "/",
+    "fps": 27,
+    "usedMemMb": 31,
+    "totalMemMb": 4192,
+    "spikeMs": 84,
+    "canvasesCount": 2,
+    "canvases": [
+      {
+        "id": "footer-ascii-fluid",
+        "width": 3538,
+        "height": 596
+      },
+      {
+        "id": "ghost-lane-canvas",
+        "width": 3538,
+        "height": 510
+      }
+    ],
+    "domNodes": 738,
+    "pdfCount": 0,
+    "heavyMedia": [
+      "hero-dothreads.gif",
+      "cover.gif",
+      "clicky.gif",
+      "hero-xfigura.png",
+      "hero.jpeg",
+      "hero-detur.png",
+      "hero-serendipidity.png",
+      "hero-xfigura.png"
+    ]
+  },
+  {
+    "timestamp": "2026-09-03T04:53:01.107Z",
+    "event": "SPIKE",
+    "route": "/",
+    "fps": 30,
+    "usedMemMb": 31,
+    "totalMemMb": 4192,
+    "spikeMs": 84,
+    "canvasesCount": 2,
+    "canvases": [
+      {
+        "id": "footer-ascii-fluid",
+        "width": 3538,
+        "height": 596
+      },
+      {
+        "id": "ghost-lane-canvas",
+        "width": 3538,
+        "height": 510
+      }
+    ],
+    "domNodes": 738,
+    "pdfCount": 0,
+    "heavyMedia": [
+      "hero-dothreads.gif",
+      "cover.gif",
+      "clicky.gif",
+      "hero-xfigura.png",
+      "hero.jpeg",
+      "hero-detur.png",
+      "hero-serendipidity.png",
+      "hero-xfigura.png"
+    ]
+  },
+  {
+    "timestamp": "2026-09-03T04:53:01.514Z",
+    "event": "MEM_CHANGE",
+    "route": "/",
+    "fps": 29,
+    "usedMemMb": 40,
+    "totalMemMb": 4192,
+    "spikeMs": 0,
+    "canvasesCount": 2,
+    "canvases": [
+      {
+        "id": "footer-ascii-fluid",
+        "width": 3538,
+        "height": 596
+      },
+      {
+        "id": "ghost-lane-canvas",
+        "width": 3538,
+        "height": 510
+      }
+    ],
+    "domNodes": 738,
+    "pdfCount": 0,
+    "heavyMedia": [
+      "hero-dothreads.gif",
+      "cover.gif",
+      "clicky.gif",
+      "hero-xfigura.png",
+      "hero.jpeg",
+      "hero-detur.png",
+      "hero-serendipidity.png",
+      "hero-xfigura.png"
+    ]
+  },
+  {
+    "timestamp": "2026-09-03T04:53:01.551Z",
+    "event": "SPIKE",
+    "route": "/",
+    "fps": 30,
+    "usedMemMb": 31,
+    "totalMemMb": 4192,
+    "spikeMs": 59,
+    "canvasesCount": 2,
+    "canvases": [
+      {
+        "id": "footer-ascii-fluid",
+        "width": 3538,
+        "height": 596
+      },
+      {
+        "id": "ghost-lane-canvas",
+        "width": 3538,
+        "height": 510
+      }
+    ],
+    "domNodes": 738,
+    "pdfCount": 0,
+    "heavyMedia": [
+      "hero-dothreads.gif",
+      "cover.gif",
+      "clicky.gif",
+      "hero-xfigura.png",
+      "hero.jpeg",
+      "hero-detur.png",
+      "hero-serendipidity.png",
+      "hero-xfigura.png"
+    ]
+  },
+  {
+    "timestamp": "2026-09-03T04:53:01.679Z",
+    "event": "PERIODIC",
+    "route": "/works/pointo",
+    "fps": 45,
+    "usedMemMb": 48,
+    "totalMemMb": 4192,
+    "spikeMs": 0,
+    "canvasesCount": 13,
+    "canvases": [
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "footer-ascii-fluid",
+        "width": 2898,
+        "height": 516
+      }
+    ],
+    "domNodes": 631,
+    "pdfCount": 10,
+    "heavyMedia": [
+      "cover.gif",
+      "demos.gif",
+      "pointing.gif",
+      "pointing-textbox.png",
+      "pointing.gif",
+      "pointing-textbox.png",
+      "pointing.gif",
+      "pointing-textbox.png",
+      "ref-0.gif",
+      "ref-1.png",
+      "ref-2.png",
+      "ref-0.gif",
+      "ref-1.png",
+      "ref-2.png",
+      "ref-0.gif",
+      "ref-1.png",
+      "ref-2.png",
+      "testing.gif",
+      "koisk.html.png",
+      "demos.gif",
+      "hero-xfigura.png"
+    ]
+  },
+  {
+    "timestamp": "2026-09-03T04:53:01.716Z",
+    "event": "SPIKE",
+    "route": "/works/pointo",
+    "fps": 48,
+    "usedMemMb": 27,
+    "totalMemMb": 4192,
+    "spikeMs": 325,
+    "canvasesCount": 13,
+    "canvases": [
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "footer-ascii-fluid",
+        "width": 2898,
+        "height": 516
+      }
+    ],
+    "domNodes": 631,
+    "pdfCount": 10,
+    "heavyMedia": [
+      "cover.gif",
+      "demos.gif",
+      "pointing.gif",
+      "pointing-textbox.png",
+      "pointing.gif",
+      "pointing-textbox.png",
+      "pointing.gif",
+      "pointing-textbox.png",
+      "ref-0.gif",
+      "ref-1.png",
+      "ref-2.png",
+      "ref-0.gif",
+      "ref-1.png",
+      "ref-2.png",
+      "ref-0.gif",
+      "ref-1.png",
+      "ref-2.png",
+      "testing.gif",
+      "koisk.html.png",
+      "demos.gif",
+      "hero-xfigura.png"
+    ]
+  },
+  {
+    "timestamp": "2026-09-03T04:53:01.761Z",
+    "event": "SPIKE",
+    "route": "/works/pointo",
+    "fps": 48,
+    "usedMemMb": 27,
+    "totalMemMb": 4192,
+    "spikeMs": 325,
+    "canvasesCount": 13,
+    "canvases": [
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "footer-ascii-fluid",
+        "width": 2898,
+        "height": 516
+      }
+    ],
+    "domNodes": 631,
+    "pdfCount": 10,
+    "heavyMedia": [
+      "cover.gif",
+      "demos.gif",
+      "pointing.gif",
+      "pointing-textbox.png",
+      "pointing.gif",
+      "pointing-textbox.png",
+      "pointing.gif",
+      "pointing-textbox.png",
+      "ref-0.gif",
+      "ref-1.png",
+      "ref-2.png",
+      "ref-0.gif",
+      "ref-1.png",
+      "ref-2.png",
+      "ref-0.gif",
+      "ref-1.png",
+      "ref-2.png",
+      "testing.gif",
+      "koisk.html.png",
+      "demos.gif",
+      "hero-xfigura.png"
+    ]
+  },
+  {
+    "timestamp": "2026-09-03T04:53:01.812Z",
+    "event": "PERIODIC",
+    "route": "/works/pointo",
+    "fps": 48,
+    "usedMemMb": 25,
+    "totalMemMb": 4192,
+    "spikeMs": 0,
+    "canvasesCount": 13,
+    "canvases": [
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "anonymous-canvas",
+        "width": 2818,
+        "height": 1585
+      },
+      {
+        "id": "footer-ascii-fluid",
+        "width": 2898,
+        "height": 516
+      }
+    ],
+    "domNodes": 631,
+    "pdfCount": 10,
+    "heavyMedia": [
+      "cover.gif",
+      "demos.gif",
+      "pointing.gif",
+      "pointing-textbox.png",
+      "pointing.gif",
+      "pointing-textbox.png",
+      "pointing.gif",
+      "pointing-textbox.png",
+      "ref-0.gif",
+      "ref-1.png",
+      "ref-2.png",
+      "ref-0.gif",
+      "ref-1.png",
+      "ref-2.png",
+      "ref-0.gif",
+      "ref-1.png",
+      "ref-2.png",
+      "testing.gif",
+      "koisk.html.png",
+      "demos.gif",
+      "hero-xfigura.png"
+    ]
+  },
+  {
+    "timestamp": "2026-09-03T04:53:01.860Z",
+    "event": "SPIKE",
+    "route": "/",
+    "fps": 29,
+    "usedMemMb": 31,
+    "totalMemMb": 4192,
+    "spikeMs": 59,
+    "canvasesCount": 2,
+    "canvases": [
+      {
+        "id": "footer-ascii-fluid",
+        "width": 3538,
+        "height": 596
+      },
+      {
+        "id": "ghost-lane-canvas",
+        "width": 3538,
+        "height": 510
+      }
+    ],
+    "domNodes": 738,
+    "pdfCount": 0,
+    "heavyMedia": [
+      "hero-dothreads.gif",
+      "cover.gif",
+      "clicky.gif",
+      "hero-xfigura.png",
+      "hero.jpeg",
+      "hero-detur.png",
+      "hero-serendipidity.png",
+      "hero-xfigura.png"
+    ]
+  },
+  {
+    "timestamp": "2026-09-03T04:53:02.622Z",
+    "event": "SPIKE",
+    "route": "/",
+    "fps": 60,
+    "usedMemMb": 70,
+    "totalMemMb": 4192,
+    "spikeMs": 74,
+    "canvasesCount": 2,
+    "canvases": [
+      {
+        "id": "footer-ascii-fluid",
+        "width": 3538,
+        "height": 596
+      },
+      {
+        "id": "ghost-lane-canvas",
+        "width": 300,
+        "height": 150
+      }
+    ],
+    "domNodes": 737,
+    "pdfCount": 0,
+    "heavyMedia": [
+      "hero-dothreads.gif",
+      "cover.gif",
+      "clicky.gif",
+      "hero.jpeg"
+    ]
+  },
+  {
+    "timestamp": "2026-09-03T04:53:03.321Z",
+    "event": "INIT",
+    "route": "/",
+    "fps": 60,
+    "usedMemMb": 73,
+    "totalMemMb": 4192,
+    "spikeMs": 0,
+    "canvasesCount": 2,
+    "canvases": [
+      {
+        "id": "footer-ascii-fluid",
+        "width": 3538,
+        "height": 596
+      },
+      {
+        "id": "ghost-lane-canvas",
+        "width": 300,
+        "height": 150
+      }
+    ],
+    "domNodes": 738,
+    "pdfCount": 0,
+    "heavyMedia": [
+      "hero-dothreads.gif",
+      "cover.gif",
+      "clicky.gif",
+      "hero-xfigura.png",
+      "hero.jpeg",
+      "hero-detur.png",
+      "hero-serendipidity.png",
+      "hero-xfigura.png"
+    ]
+  },
+  {
+    "timestamp": "2026-09-03T04:53:03.438Z",
+    "event": "SPIKE",
+    "route": "/",
+    "fps": 60,
+    "usedMemMb": 60,
+    "totalMemMb": 4192,
+    "spikeMs": 65,
+    "canvasesCount": 2,
+    "canvases": [
+      {
+        "id": "footer-ascii-fluid",
+        "width": 3538,
+        "height": 596
+      },
+      {
+        "id": "ghost-lane-canvas",
+        "width": 300,
+        "height": 150
+      }
+    ],
+    "domNodes": 738,
+    "pdfCount": 0,
+    "heavyMedia": [
+      "hero-dothreads.gif",
+      "cover.gif",
+      "clicky.gif",
+      "hero-xfigura.png",
+      "hero.jpeg",
+      "hero-detur.png",
+      "hero-serendipidity.png",
+      "hero-xfigura.png"
+    ]
+  },
+  {
+    "timestamp": "2026-09-03T04:53:03.588Z",
+    "event": "SPIKE",
+    "route": "/works/pointo",
+    "fps": 60,
+    "usedMemMb": 29,
+    "totalMemMb": 4192,
+    "spikeMs": 76,
+    "canvasesCount": 1,
+    "canvases": [
+      {
+        "id": "footer-ascii-fluid",
+        "width": 2898,
+        "height": 516
+      }
+    ],
+    "domNodes": 619,
+    "pdfCount": 10,
+    "heavyMedia": [
+      "cover.gif",
+      "demos.gif",
+      "pointing.gif",
+      "pointing.gif",
+      "pointing.gif",
+      "ref-0.gif",
+      "ref-0.gif",
+      "ref-0.gif",
+      "testing.gif",
+      "koisk.html.png",
+      "demos.gif"
+    ]
+  },
+  {
+    "timestamp": "2026-09-03T04:53:03.635Z",
+    "event": "SPIKE",
+    "route": "/works/pointo",
+    "fps": 60,
+    "usedMemMb": 29,
+    "totalMemMb": 4192,
+    "spikeMs": 145,
+    "canvasesCount": 1,
+    "canvases": [
+      {
+        "id": "footer-ascii-fluid",
+        "width": 2898,
+        "height": 516
+      }
+    ],
+    "domNodes": 619,
+    "pdfCount": 10,
+    "heavyMedia": [
+      "cover.gif",
+      "demos.gif",
+      "pointing.gif",
+      "pointing.gif",
+      "pointing.gif",
+      "ref-0.gif",
+      "ref-0.gif",
+      "ref-0.gif",
+      "testing.gif",
+      "koisk.html.png",
+      "demos.gif"
+    ]
+  },
+  {
+    "timestamp": "2026-09-03T04:53:03.686Z",
+    "event": "SPIKE",
+    "route": "/works/pointo",
+    "fps": 60,
+    "usedMemMb": 35,
+    "totalMemMb": 4192,
+    "spikeMs": 53,
+    "canvasesCount": 1,
+    "canvases": [
+      {
+        "id": "footer-ascii-fluid",
+        "width": 2898,
+        "height": 516
+      }
+    ],
+    "domNodes": 619,
+    "pdfCount": 10,
+    "heavyMedia": [
+      "cover.gif",
+      "demos.gif",
+      "pointing.gif",
+      "pointing.gif",
+      "pointing.gif",
+      "ref-0.gif",
+      "ref-0.gif",
+      "ref-0.gif",
+      "testing.gif",
+      "koisk.html.png",
+      "demos.gif"
+    ]
+  },
+  {
+    "timestamp": "2026-09-03T04:53:03.753Z",
+    "event": "INIT",
+    "route": "/works/pointo",
+    "fps": 60,
+    "usedMemMb": 29,
+    "totalMemMb": 4192,
+    "spikeMs": 0,
+    "canvasesCount": 1,
+    "canvases": [
+      {
+        "id": "footer-ascii-fluid",
+        "width": 2898,
+        "height": 516
+      }
+    ],
+    "domNodes": 619,
+    "pdfCount": 10,
+    "heavyMedia": [
+      "cover.gif",
+      "demos.gif",
+      "pointing.gif",
+      "pointing.gif",
+      "pointing.gif",
+      "ref-0.gif",
+      "ref-0.gif",
+      "ref-0.gif",
+      "testing.gif",
+      "koisk.html.png",
+      "demos.gif"
+    ]
+  },
+  {
+    "timestamp": "2026-09-03T04:53:05.086Z",
+    "event": "SPIKE",
+    "route": "/works/pointo",
+    "fps": 63,
+    "usedMemMb": 28,
+    "totalMemMb": 4192,
+    "spikeMs": 77,
+    "canvasesCount": 1,
+    "canvases": [
+      {
+        "id": "footer-ascii-fluid",
+        "width": 2898,
+        "height": 516
+      }
+    ],
+    "domNodes": 619,
+    "pdfCount": 10,
+    "heavyMedia": [
+      "cover.gif",
+      "demos.gif",
+      "pointing.gif",
+      "pointing.gif",
+      "pointing.gif",
+      "ref-0.gif",
+      "ref-0.gif",
+      "ref-0.gif",
+      "testing.gif",
+      "koisk.html.png",
+      "demos.gif"
     ]
   }
 ]
