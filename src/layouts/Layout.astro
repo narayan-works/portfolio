@@ -2,6 +2,7 @@
 import SpeedInsights from "@vercel/speed-insights/astro";
 import "../styles/global.css";
 import CustomCursor from "../components/CustomCursor.astro";
+import PerfMonitor from "../components/PerfMonitor.astro";
 import { ViewTransitions } from "astro:transitions";
 
 interface Props {
@@ -20,7 +21,8 @@ const {
 	preloadImageHref,
 } = Astro.props;
 
-const canonicalImageURL = new URL(image, Astro.site || "https://narayan.works").href;
+const canonicalImageURL = new URL(image, Astro.site || "https://narayan.works")
+	.href;
 ---
 
 <!doctype html>
@@ -132,7 +134,8 @@ const canonicalImageURL = new URL(image, Astro.site || "https://narayan.works").
 							return localStorage.getItem("theme");
 						}
 						if (
-							window.matchMedia("(prefers-color-scheme: dark)").matches
+							window.matchMedia("(prefers-color-scheme: dark)")
+								.matches
 						) {
 							return "dark";
 						}
@@ -140,7 +143,10 @@ const canonicalImageURL = new URL(image, Astro.site || "https://narayan.works").
 					})();
 
 					if (theme === "light") {
-						document.documentElement.setAttribute("data-theme", "light");
+						document.documentElement.setAttribute(
+							"data-theme",
+							"light",
+						);
 					} else {
 						document.documentElement.removeAttribute("data-theme");
 					}
@@ -158,6 +164,7 @@ const canonicalImageURL = new URL(image, Astro.site || "https://narayan.works").
 	</head>
 	<body>
 		<CustomCursor />
+		<PerfMonitor />
 		<div class={`universal-layout ${fullWidth ? "full-width" : ""}`}>
 			<!-- Sidebar Slot (Universal Left) -->
 			<aside class="layout-sidebar">
@@ -172,6 +179,29 @@ const canonicalImageURL = new URL(image, Astro.site || "https://narayan.works").
 		<SpeedInsights />
 		<script>
 			import Lenis from "lenis";
+			import { playSound } from "../utils/sounds";
+
+			// Global interactive click sound
+			document.addEventListener(
+				"click",
+				(e) => {
+					const target = e.target as HTMLElement;
+					const clickable = target.closest(
+						"a, button, .project-card, .works-list-row, [role='button']",
+					);
+					if (clickable) {
+						// Let specific components handle their custom tones
+						if (
+							!clickable.closest(
+								"#theme-toggle, #sound-toggle, #works-segmented-control, .copy-btn, .slider-lightbox-close, .fc-fs-close, .sound-tile, .preset-btn, #synth-play-trigger, .sound-lab-container button, #ghost-lane-canvas, .ghost-game-container",
+							)
+						) {
+							playSound.click();
+						}
+					}
+				},
+				{ capture: true },
+			);
 
 			// Initialize Lenis for buttery smooth scrolling
 			const w = window as any;
@@ -214,17 +244,23 @@ const canonicalImageURL = new URL(image, Astro.site || "https://narayan.works").
 				// Shared Element Transition: dynamically tag clicked project hero image
 				const handleProjectTransition = (e: Event) => {
 					const target = e.target as HTMLElement;
-					const projectLink = target.closest('a[href*="/works/"]') as HTMLAnchorElement | null;
+					const projectLink = target.closest(
+						'a[href*="/works/"]',
+					) as HTMLAnchorElement | null;
 					if (!projectLink) return;
 
 					const href = projectLink.getAttribute("href");
 					if (!href || href.startsWith("http")) return;
 
 					// Clear any previous view-transition-name in the document
-					document.querySelectorAll('[data-hero-vt-tagged]').forEach((el) => {
-						(el as HTMLElement).style.viewTransitionName = "";
-						(el as HTMLElement).removeAttribute("data-hero-vt-tagged");
-					});
+					document
+						.querySelectorAll("[data-hero-vt-tagged]")
+						.forEach((el) => {
+							(el as HTMLElement).style.viewTransitionName = "";
+							(el as HTMLElement).removeAttribute(
+								"data-hero-vt-tagged",
+							);
+						});
 
 					// Find the image inside this card, row, or next-project banner
 					const img = projectLink.querySelector(
@@ -237,8 +273,14 @@ const canonicalImageURL = new URL(image, Astro.site || "https://narayan.works").
 					}
 				};
 
-				document.addEventListener("pointerdown", handleProjectTransition, { capture: true });
-				document.addEventListener("click", handleProjectTransition, { capture: true });
+				document.addEventListener(
+					"pointerdown",
+					handleProjectTransition,
+					{ capture: true },
+				);
+				document.addEventListener("click", handleProjectTransition, {
+					capture: true,
+				});
 			}
 
 			// Reset scroll on Astro view transitions
@@ -277,7 +319,10 @@ const canonicalImageURL = new URL(image, Astro.site || "https://narayan.works").
 
 	.universal-layout {
 		display: grid;
-		grid-template-columns: minmax(0, 1fr) 320px; /* Fluid Content (Left), Fixed Sidebar (Right) */
+		grid-template-columns: minmax(
+				0,
+				1fr
+			) 320px; /* Fluid Content (Left), Fixed Sidebar (Right) */
 		min-height: 100vh;
 	}
 

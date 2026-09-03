@@ -56,6 +56,15 @@ const isWorksPage = Astro.url.pathname.startsWith("/works");
                 About
             </a>
             <a
+                href="https://narayanthinks.notion.site/Thoughts-31b1da77c6ce80de92bafba08717bc69"
+                target="_blank"
+                rel="noopener noreferrer"
+                id="nav-blog-link"
+                class="home-nav-link"
+            >
+                Blog
+            </a>
+            <a
                 href="/archive"
                 target="_blank"
                 id="nav-archive-link"
@@ -281,11 +290,16 @@ const isWorksPage = Astro.url.pathname.startsWith("/works");
         padding: 0 20px;
     }
 
+    .home-navigation.is-works-page .home-nav-link,
+    .home-navigation.is-works-page .logo-name {
+        font-weight: 300;
+    }
+
     @media (min-width: 1025px) {
         .home-navigation.is-works-page .home-nav-links {
             width: calc(320px - 40px);
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(5, 1fr);
             gap: 0;
             align-items: center;
         }
@@ -295,11 +309,12 @@ const isWorksPage = Astro.url.pathname.startsWith("/works");
         }
 
         .home-navigation.is-works-page .home-nav-link:nth-child(2),
-        .home-navigation.is-works-page .home-nav-link:nth-child(3) {
+        .home-navigation.is-works-page .home-nav-link:nth-child(3),
+        .home-navigation.is-works-page .home-nav-link:nth-child(4) {
             text-align: center;
         }
 
-        .home-navigation.is-works-page .home-nav-link:nth-child(4) {
+        .home-navigation.is-works-page .home-nav-link:nth-child(5) {
             text-align: right;
         }
     }
@@ -351,7 +366,8 @@ const isWorksPage = Astro.url.pathname.startsWith("/works");
 
         :global(html:not([data-theme="light"])) .home-navigation {
             background: rgba(18, 18, 18, 0.82) !important;
-            border-bottom: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.1)) !important;
+            border-bottom: 1px solid
+                var(--border-subtle, rgba(255, 255, 255, 0.1)) !important;
         }
 
         .home-nav-container::before {

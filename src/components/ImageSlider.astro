@@ -927,6 +927,7 @@ const sliderId = `slider-${Math.random().toString(36).substr(2, 9)}`;
         const switchToSlide = (targetBtn) => {
             if (!targetBtn) return;
             const targetIndex = parseInt(targetBtn.getAttribute("data-target")) + totalSlides;
+            window.portfolioSound?.tab();
             switchToSlideByIndex(targetIndex);
         };
 
@@ -1077,6 +1078,7 @@ const sliderId = `slider-${Math.random().toString(36).substr(2, 9)}`;
             lightboxImg.alt = imgEl.alt || "";
             lightbox.setAttribute("data-open", "true");
             lightbox.setAttribute("aria-hidden", "false");
+            window.portfolioSound?.open();
             stopAutoplay();
             // Lenis drives scrolling on project pages; body overflow alone
             // would not hold it still behind the overlay.
@@ -1088,6 +1090,7 @@ const sliderId = `slider-${Math.random().toString(36).substr(2, 9)}`;
                 return;
             lightbox.setAttribute("data-open", "false");
             lightbox.setAttribute("aria-hidden", "true");
+            window.portfolioSound?.close();
             lightboxImg.src = "";
             if (window.lenis && window.lenis.start) window.lenis.start();
         };

@@ -1,0 +1,875 @@
+---
+// SoundLab.astro - Interactive Procedural Audio Studio & Synthesizer Playground
+---
+
+<div class="sound-lab-container">
+  <header class="experiments-header">
+    <h1 class="experiments-title">Sound Lab & Synthesizer</h1>
+    <p class="experiments-subtitle">
+      Audition all live portfolio micro-interaction sounds, tweak procedural Web Audio synthesizer parameters in real-time, test curated presets, and generate TypeScript definitions for <code>@web-kits/audio</code>.
+    </p>
+  </header>
+
+  <!-- SECTION 1: LIVE PORTFOLIO SOUND AUDITION MATRIX -->
+  <div class="sound-lab-section">
+    <div class="section-title-wrap">
+      <span class="option-badge">01</span>
+      <div>
+        <h2 class="section-title">Current Portfolio Sounds</h2>
+        <p class="section-desc">Click any tile to audition the live sound currently wired to that UI action.</p>
+      </div>
+    </div>
+
+    <div class="sound-matrix-grid">
+      <button class="sound-tile" data-sound-action="cardHover">
+        <div class="tile-icon">🎴</div>
+        <div class="tile-info">
+          <span class="tile-name">Card Hover Tick</span>
+          <span class="tile-meta">Keycap Snap &middot; Noise + 2400Hz</span>
+        </div>
+        <span class="tile-badge">Hover</span>
+      </button>
+
+      <button class="sound-tile" data-sound-action="click">
+        <div class="tile-icon">🔘</div>
+        <div class="tile-info">
+          <span class="tile-name">Button & Link Click</span>
+          <span class="tile-meta">Tactile Switch &middot; 2200Hz Bandpass</span>
+        </div>
+        <span class="tile-badge">Click</span>
+      </button>
+
+      <button class="sound-tile" data-sound-action="tab">
+        <div class="tile-icon">📑</div>
+        <div class="tile-info">
+          <span class="tile-name">Filter & Slider Tab</span>
+          <span class="tile-meta">Stepped Arpeggio &middot; 880Hz &rarr; 1320Hz</span>
+        </div>
+        <span class="tile-badge">Select</span>
+      </button>
+
+      <button class="sound-tile" data-sound-action="theme">
+        <div class="tile-icon">🌓</div>
+        <div class="tile-info">
+          <span class="tile-name">Theme Toggle</span>
+          <span class="tile-meta">Glass Chime &middot; C6 + E6 + G6 Chord</span>
+        </div>
+        <span class="tile-badge">Toggle</span>
+      </button>
+
+      <button class="sound-tile" data-sound-action="copySpark">
+        <div class="tile-icon">✨</div>
+        <div class="tile-info">
+          <span class="tile-name">Footer Copy Spark</span>
+          <span class="tile-meta">Crystal Sparkle &middot; 3-Step Arpeggio</span>
+        </div>
+        <span class="tile-badge">Success</span>
+      </button>
+
+      <button class="sound-tile" data-sound-action="asciiRipple">
+        <div class="tile-icon">💧</div>
+        <div class="tile-info">
+          <span class="tile-name">ASCII Canvas Ripple</span>
+          <span class="tile-meta">Upward Liquid Droplet &middot; 450Hz &rarr; 960Hz</span>
+        </div>
+        <span class="tile-badge">Touch</span>
+      </button>
+
+      <button class="sound-tile" data-sound-action="open">
+        <div class="tile-icon">↗️</div>
+        <div class="tile-info">
+          <span class="tile-name">Modal / Lightbox Open</span>
+          <span class="tile-meta">Airy Whoosh &middot; Filter 600Hz &rarr; 2600Hz</span>
+        </div>
+        <span class="tile-badge">Expand</span>
+      </button>
+
+      <button class="sound-tile" data-sound-action="close">
+        <div class="tile-icon">↘️</div>
+        <div class="tile-info">
+          <span class="tile-name">Modal / Lightbox Close</span>
+          <span class="tile-meta">Damped Tuck &middot; Filter 2400Hz &rarr; 400Hz</span>
+        </div>
+        <span class="tile-badge">Dismiss</span>
+      </button>
+
+      <button class="sound-tile" data-sound-action="gameJump">
+        <div class="tile-icon">👻</div>
+        <div class="tile-info">
+          <span class="tile-name">GhostRunner: Jump</span>
+          <span class="tile-meta">Arcade Chirp &middot; 340Hz &rarr; 780Hz</span>
+        </div>
+        <span class="tile-badge">Arcade</span>
+      </button>
+
+      <button class="sound-tile" data-sound-action="gameScore">
+        <div class="tile-icon">🪙</div>
+        <div class="tile-info">
+          <span class="tile-name">GhostRunner: Score</span>
+          <span class="tile-meta">Sparkling Bell &middot; 1175Hz + 1760Hz</span>
+        </div>
+        <span class="tile-badge">Arcade</span>
+      </button>
+
+      <button class="sound-tile" data-sound-action="gameHit">
+        <div class="tile-icon">💥</div>
+        <div class="tile-info">
+          <span class="tile-name">GhostRunner: Hit</span>
+          <span class="tile-meta">Low Impact Crunch &middot; Brown Noise</span>
+        </div>
+        <span class="tile-badge">Arcade</span>
+      </button>
+
+      <button class="sound-tile" data-sound-action="gameOver">
+        <div class="tile-icon">💀</div>
+        <div class="tile-info">
+          <span class="tile-name">GhostRunner: Game Over</span>
+          <span class="tile-meta">Minor Triad Fall &middot; C5 &rarr; G#4 &rarr; E4</span>
+        </div>
+        <span class="tile-badge">Arcade</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- SECTION 2: INTERACTIVE LIVE SYNTHESIZER PLAYGROUND -->
+  <div class="sound-lab-section synth-studio-card">
+    <div class="section-title-wrap">
+      <span class="option-badge">02 &middot; Interactive</span>
+      <div>
+        <h2 class="section-title">Procedural Synthesizer Studio</h2>
+        <p class="section-desc">Design custom sounds in real time. Adjust frequency sweeps, envelope timings, gain, and filters.</p>
+      </div>
+    </div>
+
+    <!-- PRESETS BAR -->
+    <div class="synth-presets-wrap">
+      <span class="presets-label">Presets:</span>
+      <div class="presets-buttons">
+        <button class="preset-btn" data-preset="mechanical">Crisp Mechanical Snap</button>
+        <button class="preset-btn" data-preset="wooden">Wooden Bento Pop</button>
+        <button class="preset-btn" data-preset="bubble">Bubble Droplet</button>
+        <button class="preset-btn" data-preset="glass">Glass Crystal Chime</button>
+        <button class="preset-btn" data-preset="whoosh">Airy UI Swoop</button>
+        <button class="preset-btn" data-preset="haptic">Subtle Haptic Tap</button>
+        <button class="preset-btn" data-preset="arcade">8-Bit Arcade Jump</button>
+      </div>
+    </div>
+
+    <div class="synth-studio-layout">
+      <!-- Controls Column -->
+      <div class="synth-controls-column">
+        <!-- Waveform Selector -->
+        <div class="control-row">
+          <label class="control-label">Waveform</label>
+          <div class="waveform-selector" id="synth-wave-selector">
+            <button class="wave-opt active" data-wave="sine">Sine</button>
+            <button class="wave-opt" data-wave="triangle">Triangle</button>
+            <button class="wave-opt" data-wave="square">Square</button>
+            <button class="wave-opt" data-wave="sawtooth">Sawtooth</button>
+          </div>
+        </div>
+
+        <!-- Frequency Controls -->
+        <div class="control-row">
+          <div class="control-header">
+            <label class="control-label">Start Frequency</label>
+            <span class="control-val" id="val-freq-start">720 Hz</span>
+          </div>
+          <input type="range" id="param-freq-start" min="50" max="2400" step="10" value="720" class="synth-range" />
+        </div>
+
+        <div class="control-row">
+          <div class="control-header">
+            <label class="control-label">End Frequency (Pitch Sweep)</label>
+            <span class="control-val" id="val-freq-end">320 Hz</span>
+          </div>
+          <input type="range" id="param-freq-end" min="50" max="2400" step="10" value="320" class="synth-range" />
+        </div>
+
+        <!-- Envelope Timings -->
+        <div class="controls-dual-grid">
+          <div class="control-row">
+            <div class="control-header">
+              <label class="control-label">Attack</label>
+              <span class="control-val" id="val-attack">1 ms</span>
+            </div>
+            <input type="range" id="param-attack" min="0" max="150" step="1" value="1" class="synth-range" />
+          </div>
+
+          <div class="control-row">
+            <div class="control-header">
+              <label class="control-label">Decay (Length)</label>
+              <span class="control-val" id="val-decay">40 ms</span>
+            </div>
+            <input type="range" id="param-decay" min="10" max="500" step="5" value="40" class="synth-range" />
+          </div>
+        </div>
+
+        <!-- Gain / Volume -->
+        <div class="control-row">
+          <div class="control-header">
+            <label class="control-label">Gain (Volume)</label>
+            <span class="control-val" id="val-gain">0.30</span>
+          </div>
+          <input type="range" id="param-gain" min="0.05" max="0.80" step="0.01" value="0.30" class="synth-range" />
+        </div>
+
+        <!-- Filter Controls -->
+        <div class="controls-dual-grid">
+          <div class="control-row">
+            <label class="control-label">Filter Type</label>
+            <select id="param-filter-type" class="synth-select">
+              <option value="none">None (Direct)</option>
+              <option value="lowpass">Lowpass</option>
+              <option value="highpass">Highpass</option>
+              <option value="bandpass">Bandpass</option>
+            </select>
+          </div>
+
+          <div class="control-row">
+            <div class="control-header">
+              <label class="control-label">Filter Cutoff</label>
+              <span class="control-val" id="val-filter-cutoff">2400 Hz</span>
+            </div>
+            <input type="range" id="param-filter-cutoff" min="100" max="8000" step="50" value="2400" class="synth-range" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Test & Code Output Column -->
+      <div class="synth-preview-column">
+        <!-- Trigger Card -->
+        <div class="trigger-hero-card">
+          <button id="synth-play-trigger" class="trigger-big-btn" type="button">
+            <span class="play-pulse-ring"></span>
+            <span class="play-icon">▶</span>
+            <span class="play-text">PLAY SOUND</span>
+            <span class="play-hint">or press Spacebar</span>
+          </button>
+        </div>
+
+        <!-- Live Code Box -->
+        <div class="code-generator-box">
+          <div class="code-box-header">
+            <span class="code-title">TypeScript Definition</span>
+            <button id="copy-synth-code" class="copy-code-btn" type="button">Copy Code</button>
+          </div>
+          <pre class="code-content"><code id="synth-code-display">// Generated definition</code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .sound-lab-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 16px 120px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .sound-lab-section {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg, 14px);
+    padding: 28px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  }
+
+  .section-title-wrap {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .section-title {
+    font-family: var(--font-sans);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 4px 0;
+  }
+
+  .section-desc {
+    font-family: var(--font-sans);
+    font-size: 13.5px;
+    color: var(--text-muted);
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  /* ── Matrix Grid ── */
+  .sound-matrix-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 12px;
+  }
+
+  .sound-tile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    background: rgba(128, 128, 128, 0.06);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md, 10px);
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .sound-tile:hover {
+    background: rgba(66, 189, 73, 0.1);
+    border-color: var(--accent-secondary, #42bd49);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+  }
+
+  .sound-tile:active {
+    transform: translateY(0);
+  }
+
+  .tile-icon {
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  .tile-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  .tile-name {
+    font-family: var(--font-sans);
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .tile-meta {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .tile-badge {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: rgba(128, 128, 128, 0.12);
+    color: var(--text-secondary);
+    flex-shrink: 0;
+  }
+
+  /* ── Presets Wrap ── */
+  .synth-presets-wrap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    padding: 12px 16px;
+    background: rgba(128, 128, 128, 0.04);
+    border-radius: var(--radius-md, 8px);
+    border: 1px solid var(--border-subtle);
+  }
+
+  .presets-label {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  .presets-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .preset-btn {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 500;
+    padding: 4px 10px;
+    border-radius: 6px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+
+  .preset-btn:hover {
+    background: rgba(66, 189, 73, 0.12);
+    border-color: var(--accent-secondary, #42bd49);
+    color: var(--accent-secondary, #42bd49);
+  }
+
+  /* ── Studio Layout ── */
+  .synth-studio-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+  }
+
+  @media (max-width: 860px) {
+    .synth-studio-layout {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .synth-controls-column {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .control-row {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .control-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .control-label {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-primary);
+  }
+
+  .control-val {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--accent-secondary, #42bd49);
+  }
+
+  .controls-dual-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  /* Waveform Buttons */
+  .waveform-selector {
+    display: flex;
+    background: rgba(128, 128, 128, 0.08);
+    padding: 3px;
+    border-radius: 8px;
+    gap: 4px;
+    border: 1px solid var(--border-subtle);
+  }
+
+  .wave-opt {
+    flex: 1;
+    background: transparent;
+    border: none;
+    padding: 6px 0;
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+
+  .wave-opt.active {
+    background: var(--bg-surface);
+    color: var(--text-primary);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Range Sliders */
+  .synth-range {
+    width: 100%;
+    accent-color: var(--accent-secondary, #42bd49);
+    cursor: pointer;
+  }
+
+  .synth-select {
+    padding: 6px 10px;
+    border-radius: 6px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    font-size: 13px;
+    outline: none;
+  }
+
+  /* Preview Column */
+  .synth-preview-column {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .trigger-hero-card {
+    background: rgba(128, 128, 128, 0.05);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md, 12px);
+    padding: 32px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .trigger-big-btn {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(66, 189, 73, 0.15), rgba(66, 189, 73, 0.05));
+    border: 2px solid var(--accent-secondary, #42bd49);
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 8px 24px rgba(66, 189, 73, 0.2);
+  }
+
+  .trigger-big-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 12px 32px rgba(66, 189, 73, 0.35);
+    background: linear-gradient(135deg, rgba(66, 189, 73, 0.25), rgba(66, 189, 73, 0.1));
+  }
+
+  .trigger-big-btn:active {
+    transform: scale(0.95);
+  }
+
+  .play-icon {
+    font-size: 28px;
+    color: var(--accent-secondary, #42bd49);
+  }
+
+  .play-text {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+  }
+
+  .play-hint {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-muted);
+  }
+
+  /* Code Generator Box */
+  .code-generator-box {
+    background: #111215;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-md, 10px);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .code-box-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 14px;
+    background: rgba(255, 255, 255, 0.04);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .code-title {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: #999;
+  }
+
+  .copy-code-btn {
+    background: rgba(66, 189, 73, 0.2);
+    border: 1px solid rgba(66, 189, 73, 0.4);
+    color: #42bd49;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+
+  .copy-code-btn:hover {
+    background: #42bd49;
+    color: #000;
+  }
+
+  .code-content {
+    margin: 0;
+    padding: 14px;
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    line-height: 1.5;
+    color: #e6e6e6;
+    overflow-x: auto;
+  }
+</style>
+
+<script>
+  import { defineSound } from "@web-kits/audio";
+  import { playSound } from "../utils/sounds";
+
+  function initSoundLab() {
+    // 1. Matrix Buttons Playback
+    const matrixButtons = document.querySelectorAll<HTMLButtonElement>(".sound-tile");
+    matrixButtons.forEach((btn) => {
+      btn.onclick = () => {
+        const action = btn.getAttribute("data-sound-action");
+        if (action && (playSound as any)[action]) {
+          (playSound as any)[action]();
+        }
+      };
+    });
+
+    // 2. Synthesizer State
+    let currentWave: "sine" | "triangle" | "square" | "sawtooth" = "triangle";
+    let freqStart = 720;
+    let freqEnd = 320;
+    let attackMs = 1;
+    let decayMs = 40;
+    let gainVal = 0.30;
+    let filterType: "none" | "lowpass" | "highpass" | "bandpass" = "none";
+    let filterCutoff = 2400;
+
+    // Elements
+    const waveButtons = document.querySelectorAll<HTMLButtonElement>("#synth-wave-selector .wave-opt");
+    const freqStartSlider = document.getElementById("param-freq-start") as HTMLInputElement;
+    const freqEndSlider = document.getElementById("param-freq-end") as HTMLInputElement;
+    const attackSlider = document.getElementById("param-attack") as HTMLInputElement;
+    const decaySlider = document.getElementById("param-decay") as HTMLInputElement;
+    const gainSlider = document.getElementById("param-gain") as HTMLInputElement;
+    const filterTypeSelect = document.getElementById("param-filter-type") as HTMLSelectElement;
+    const filterCutoffSlider = document.getElementById("param-filter-cutoff") as HTMLInputElement;
+
+    const valFreqStart = document.getElementById("val-freq-start");
+    const valFreqEnd = document.getElementById("val-freq-end");
+    const valAttack = document.getElementById("val-attack");
+    const valDecay = document.getElementById("val-decay");
+    const valGain = document.getElementById("val-gain");
+    const valFilterCutoff = document.getElementById("val-filter-cutoff");
+
+    const triggerBtn = document.getElementById("synth-play-trigger");
+    const codeDisplay = document.getElementById("synth-code-display");
+    const copyCodeBtn = document.getElementById("copy-synth-code");
+    const presetButtons = document.querySelectorAll<HTMLButtonElement>(".preset-btn");
+
+    function updateCodeDisplay() {
+      if (!codeDisplay) return;
+      const filterBlock = filterType !== "none" 
+        ? `\n  filter: {\n    type: "${filterType}",\n    frequency: ${filterCutoff},\n  },` 
+        : "";
+
+      const code = `const customSound = defineSound({
+  source: {
+    type: "${currentWave}",
+    frequency: { start: ${freqStart}, end: ${freqEnd} },
+  },${filterBlock}
+  envelope: {
+    attack: ${(attackMs / 1000).toFixed(3)},
+    decay: ${(decayMs / 1000).toFixed(3)},
+  },
+  gain: ${gainVal.toFixed(2)},
+});`;
+
+      codeDisplay.textContent = code;
+    }
+
+    function playSynthesizer() {
+      const soundDef: any = {
+        source: {
+          type: currentWave,
+          frequency: { start: freqStart, end: freqEnd },
+        },
+        envelope: {
+          attack: attackMs / 1000,
+          decay: decayMs / 1000,
+        },
+        gain: gainVal,
+      };
+
+      if (filterType !== "none") {
+        soundDef.filter = {
+          type: filterType,
+          frequency: filterCutoff,
+        };
+      }
+
+      try {
+        const soundFn = defineSound(soundDef);
+        soundFn();
+      } catch (err) {
+        console.error("Synthesizer audio error:", err);
+      }
+    }
+
+    // Wave Selector
+    waveButtons.forEach((btn) => {
+      btn.onclick = () => {
+        waveButtons.forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        currentWave = (btn.getAttribute("data-wave") || "sine") as any;
+        updateCodeDisplay();
+        playSynthesizer();
+      };
+    });
+
+    // Slider inputs
+    freqStartSlider?.addEventListener("input", () => {
+      freqStart = parseInt(freqStartSlider.value);
+      if (valFreqStart) valFreqStart.textContent = `${freqStart} Hz`;
+      updateCodeDisplay();
+    });
+
+    freqEndSlider?.addEventListener("input", () => {
+      freqEnd = parseInt(freqEndSlider.value);
+      if (valFreqEnd) valFreqEnd.textContent = `${freqEnd} Hz`;
+      updateCodeDisplay();
+    });
+
+    attackSlider?.addEventListener("input", () => {
+      attackMs = parseInt(attackSlider.value);
+      if (valAttack) valAttack.textContent = `${attackMs} ms`;
+      updateCodeDisplay();
+    });
+
+    decaySlider?.addEventListener("input", () => {
+      decayMs = parseInt(decaySlider.value);
+      if (valDecay) valDecay.textContent = `${decayMs} ms`;
+      updateCodeDisplay();
+    });
+
+    gainSlider?.addEventListener("input", () => {
+      gainVal = parseFloat(gainSlider.value);
+      if (valGain) valGain.textContent = gainVal.toFixed(2);
+      updateCodeDisplay();
+    });
+
+    filterTypeSelect?.addEventListener("change", () => {
+      filterType = filterTypeSelect.value as any;
+      updateCodeDisplay();
+    });
+
+    filterCutoffSlider?.addEventListener("input", () => {
+      filterCutoff = parseInt(filterCutoffSlider.value);
+      if (valFilterCutoff) valFilterCutoff.textContent = `${filterCutoff} Hz`;
+      updateCodeDisplay();
+    });
+
+    // Preset mappings
+    const PRESETS: Record<string, any> = {
+      mechanical: { wave: "triangle", start: 720, end: 320, attack: 1, decay: 40, gain: 0.28, filter: "none", cutoff: 2400 },
+      wooden: { wave: "sine", start: 480, end: 200, attack: 1, decay: 55, gain: 0.25, filter: "none", cutoff: 2400 },
+      bubble: { wave: "sine", start: 340, end: 680, attack: 3, decay: 65, gain: 0.24, filter: "none", cutoff: 2400 },
+      glass: { wave: "triangle", start: 620, end: 940, attack: 2, decay: 160, gain: 0.26, filter: "none", cutoff: 2400 },
+      whoosh: { wave: "sine", start: 260, end: 580, attack: 15, decay: 120, gain: 0.22, filter: "none", cutoff: 2400 },
+      haptic: { wave: "sine", start: 240, end: 90, attack: 1, decay: 45, gain: 0.26, filter: "lowpass", cutoff: 500 },
+      arcade: { wave: "triangle", start: 320, end: 720, attack: 2, decay: 70, gain: 0.30, filter: "none", cutoff: 2400 },
+    };
+
+    presetButtons.forEach((btn) => {
+      btn.onclick = () => {
+        const key = btn.getAttribute("data-preset");
+        if (!key || !PRESETS[key]) return;
+        const p = PRESETS[key];
+        currentWave = p.wave;
+        freqStart = p.start;
+        freqEnd = p.end;
+        attackMs = p.attack;
+        decayMs = p.decay;
+        gainVal = p.gain;
+        filterType = p.filter;
+        filterCutoff = p.cutoff;
+
+        // Sync UI
+        waveButtons.forEach((b) => b.classList.toggle("active", b.getAttribute("data-wave") === currentWave));
+        if (freqStartSlider) freqStartSlider.value = String(freqStart);
+        if (freqEndSlider) freqEndSlider.value = String(freqEnd);
+        if (attackSlider) attackSlider.value = String(attackMs);
+        if (decaySlider) decaySlider.value = String(decayMs);
+        if (gainSlider) gainSlider.value = String(gainVal);
+        if (filterTypeSelect) filterTypeSelect.value = filterType;
+        if (filterCutoffSlider) filterCutoffSlider.value = String(filterCutoff);
+
+        if (valFreqStart) valFreqStart.textContent = `${freqStart} Hz`;
+        if (valFreqEnd) valFreqEnd.textContent = `${freqEnd} Hz`;
+        if (valAttack) valAttack.textContent = `${attackMs} ms`;
+        if (valDecay) valDecay.textContent = `${decayMs} ms`;
+        if (valGain) valGain.textContent = gainVal.toFixed(2);
+        if (valFilterCutoff) valFilterCutoff.textContent = `${filterCutoff} Hz`;
+
+        updateCodeDisplay();
+        playSynthesizer();
+      };
+    });
+
+    // Play Trigger
+    if (triggerBtn) {
+      triggerBtn.onclick = () => playSynthesizer();
+    }
+
+    // Spacebar Trigger (when sound tab is active)
+    window.addEventListener("keydown", (e) => {
+      if (e.code === "Space" && !["INPUT", "TEXTAREA", "SELECT"].includes((e.target as HTMLElement).tagName)) {
+        const soundPanel = document.querySelector('.tab-panel[data-tab-panel="sound"]');
+        if (soundPanel && soundPanel.classList.contains("active")) {
+          e.preventDefault();
+          playSynthesizer();
+        }
+      }
+    });
+
+    // Copy Code Button
+    if (copyCodeBtn && codeDisplay) {
+      copyCodeBtn.onclick = () => {
+        if (codeDisplay.textContent) {
+          navigator.clipboard.writeText(codeDisplay.textContent).then(() => {
+            copyCodeBtn.textContent = "Copied!";
+            setTimeout(() => {
+              copyCodeBtn.textContent = "Copy Code";
+            }, 1200);
+          });
+        }
+      };
+    }
+
+    updateCodeDisplay();
+  }
+
+  initSoundLab();
+  document.addEventListener("astro:page-load", initSoundLab);
+</script>

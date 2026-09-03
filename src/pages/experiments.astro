@@ -8,6 +8,7 @@ import AsciiConstellation from "../components/ascii/AsciiConstellation.astro";
 import AsciiThermalLens from "../components/ascii/AsciiThermalLens.astro";
 import ImageSlider from "../components/ImageSlider.astro";
 import FloatingCanvas from "../components/FloatingCanvas.astro";
+import SoundLab from "../components/SoundLab.astro";
 import ThemeToggle from "../components/ThemeToggle.astro";
 import { FaLinkedin, FaGithub, FaInstagram } from "react-icons/fa6";
 
@@ -61,6 +62,9 @@ const canvasTestImages = [
         </button>
         <button class="sidebar-tab" data-tab="slider" type="button">
           <span class="sidebar-tab-label">Image Slider</span>
+        </button>
+        <button class="sidebar-tab" data-tab="sound" type="button">
+          <span class="sidebar-tab-label">Sound Lab & Synth</span>
         </button>
       </nav>
     </aside>
@@ -561,6 +565,11 @@ const canvasTestImages = [
         <div class="deck-exp-after">
           <p>Footer strip &mdash; the deck above exits as one rigid unit to reveal this.</p>
         </div>
+      </section>
+
+      <!-- Tab Panel 5: Sound Lab & Synthesizer -->
+      <section class="tab-panel" data-tab-panel="sound">
+        <SoundLab />
       </section>
     </main>
   </div>

@@ -1,10 +1,10 @@
 ---
 import Layout from "./Layout.astro";
 import ThemeToggle from "../components/ThemeToggle.astro";
+import SoundToggle from "../components/SoundToggle.astro";
 import HomeNavigation from "../components/HomeNavigation.astro";
 import Footer from "../components/Footer.astro";
 import NextProjectBanner from "../components/NextProjectBanner.astro";
-import GhostRunner from "../components/GhostRunner.astro";
 import { Image } from "astro:assets";
 
 interface Props {
@@ -132,6 +132,7 @@ const hoverColor =
     </div>
 
     <div class="theme-toggle-wrapper">
+        <SoundToggle />
         <ThemeToggle />
     </div>
 
@@ -247,9 +248,6 @@ const hoverColor =
             )
         }
         <Footer />
-        <div class="game-bottom-wrapper">
-            <GhostRunner />
-        </div>
     </article>
 </Layout>
 
@@ -467,6 +465,7 @@ const hoverColor =
 
             applyMode(newMode);
             localStorage.setItem("caseStudyTextMode", newMode);
+            (window as any).portfolioSound?.tab();
         };
 
         btn.addEventListener("click", handleToggle);
@@ -865,6 +864,9 @@ const hoverColor =
         z-index: 100;
         margin: 0 !important;
         padding: 0 !important;
+        display: flex;
+        gap: 8px;
+        align-items: center;
     }
 
     /* Case Study Text/No-Text Toggle Controls (Positioned at top right of main content area) */

@@ -2,6 +2,7 @@
 import Layout from "../layouts/Layout.astro";
 import HomeNavigation from "../components/HomeNavigation.astro";
 import ThemeToggle from "../components/ThemeToggle.astro";
+import SoundToggle from "../components/SoundToggle.astro";
 import Footer from "../components/Footer.astro";
 import GhostRunner from "../components/GhostRunner.astro";
 import ImageSlider from "../components/ImageSlider.astro";
@@ -156,6 +157,7 @@ const sliderSlides = [
 
 	<div class="toggle-floater">
 		<div class="sidebar-controls">
+			<SoundToggle />
 			<ThemeToggle />
 		</div>
 	</div>
@@ -344,4 +346,5 @@ const sliderSlides = [
 		border-top: 1px solid var(--border-subtle);
 		width: 100%;
 	}
+</style>
 </style>

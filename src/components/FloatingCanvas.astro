@@ -56,6 +56,8 @@ const { id, pan, images, height = "560px" } = Astro.props;
 </div>
 
 <script>
+  import { playSound } from "../utils/sounds";
+
   interface FCImage {
     src: string;
     alt: string;
@@ -615,6 +617,7 @@ const { id, pan, images, height = "560px" } = Astro.props;
 
       fsEl.classList.add("open");
       fsEl.setAttribute("aria-hidden", "false");
+      playSound.open();
       document.body.style.overflow = "hidden";
       fsEngine?.reconcileTiles();
     }
@@ -632,6 +635,7 @@ const { id, pan, images, height = "560px" } = Astro.props;
 
       fsEl.classList.remove("open");
       fsEl.setAttribute("aria-hidden", "true");
+      playSound.close();
       document.body.style.overflow = "";
       panelEngine?.reconcileTiles();
     }

@@ -2,6 +2,7 @@
 import Layout from "../layouts/Layout.astro";
 import HomeNavigation from "../components/HomeNavigation.astro";
 import ThemeToggle from "../components/ThemeToggle.astro";
+import SoundToggle from "../components/SoundToggle.astro";
 import Footer from "../components/Footer.astro";
 import GhostRunner from "../components/GhostRunner.astro";
 import { getCollection } from "astro:content";
@@ -111,6 +112,7 @@ const imageScales: Record<string, number> = {
 
 	<div class="toggle-floater">
 		<div class="sidebar-controls">
+			<SoundToggle />
 			<ThemeToggle />
 		</div>
 	</div>

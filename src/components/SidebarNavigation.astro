@@ -277,6 +277,8 @@ const sortedProjects = allProjects
 </div>
 
 <script>
+    import { playSound } from "../utils/sounds";
+
     function setupSidebarNavigation() {
         const wrapper = document.querySelector(".nav-bento-wrapper");
         const isHomePage = wrapper?.getAttribute("data-is-home") === "true";
@@ -336,6 +338,13 @@ const sortedProjects = allProjects
                                 btn?.classList.remove("active");
                             }
                         });
+                    }
+
+                    const willExpand = !currentFolder.classList.contains("expanded");
+                    if (willExpand) {
+                        playSound.open();
+                    } else {
+                        playSound.close();
                     }
 
                     currentFolder.classList.toggle("expanded");

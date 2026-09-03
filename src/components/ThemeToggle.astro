@@ -159,6 +159,7 @@
                 element.setAttribute("data-theme", "light");
                 localStorage.setItem("theme", "light");
             }
+            (window as any).portfolioSound?.theme();
         };
 
         const setupToggle = () => {

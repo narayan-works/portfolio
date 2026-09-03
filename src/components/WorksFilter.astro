@@ -60,7 +60,10 @@
         max-width: 100%;
         box-sizing: border-box;
         gap: 4px;
-        transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        transition:
+            background-color 0.3s ease,
+            border-color 0.3s ease,
+            box-shadow 0.3s ease;
     }
 
     :global([data-theme="dark"]) .segmented-control,
@@ -295,6 +298,8 @@
 </style>
 
 <script>
+    import { playSound } from "../utils/sounds";
+
     /*
      * Selected color for each filter (the color the glider would land on after click).
      * JS directly sets these as inline style properties on the button so the browser
@@ -377,6 +382,8 @@
             btn.addEventListener("click", (e) => {
                 const target = e.currentTarget as HTMLElement;
                 if (target.classList.contains("active")) return; // already selected
+
+                playSound.tab();
 
                 // Deselect current active button (dissolves slowly via 0.8s transition)
                 const currentActive = container.querySelector(

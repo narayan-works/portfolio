@@ -4,7 +4,7 @@ interface Props {
   id?: string;
 }
 
-const { color = '#42BD49', id = 'ascii-fluid-flow' } = Astro.props;
+const { color = "#42BD49", id = "ascii-fluid-flow" } = Astro.props;
 ---
 
 <div class="ascii-canvas-container" id={`${id}-container`}>
@@ -12,6 +12,8 @@ const { color = '#42BD49', id = 'ascii-fluid-flow' } = Astro.props;
 </div>
 
 <script>
+  import { playSound } from "../../utils/sounds";
+
   interface ClickRipple {
     x: number;
     y: number;
@@ -22,14 +24,18 @@ const { color = '#42BD49', id = 'ascii-fluid-flow' } = Astro.props;
   }
 
   function initFluidFlow() {
-    const containers = document.querySelectorAll('.ascii-canvas-container');
+    const containers = document.querySelectorAll(".ascii-canvas-container");
     containers.forEach((container) => {
-      const canvas = container.querySelector('canvas') as HTMLCanvasElement;
+      const canvas = container.querySelector("canvas") as HTMLCanvasElement;
       if (!canvas || canvas.dataset.fluidInitialized) return;
-      if (canvas.id.indexOf('fluid') === -1 && canvas.id.indexOf('option-2') === -1) return;
-      canvas.dataset.fluidInitialized = 'true';
+      if (
+        canvas.id.indexOf("fluid") === -1 &&
+        canvas.id.indexOf("option-2") === -1
+      )
+        return;
+      canvas.dataset.fluidInitialized = "true";
 
-      const ctx = canvas.getContext('2d');
+      const ctx = canvas.getContext("2d");
       if (!ctx) return;
 
       let animationFrameId: number;
@@ -52,8 +58,20 @@ const { color = '#42BD49', id = 'ascii-fluid-flow' } = Astro.props;
       let ripples: ClickRipple[] = [];
 
       // Directional & Density Characters
-      const dirChars = ['—', '/', '|', '\\', '—', '/', '|', '\\'];
-      const densityChars = ['.', '·', ':', '∴', '+', 'x', '*', '#', '%', '@', '█'];
+      const dirChars = ["—", "/", "|", "\\", "—", "/", "|", "\\"];
+      const densityChars = [
+        ".",
+        "·",
+        ":",
+        "∴",
+        "+",
+        "x",
+        "*",
+        "#",
+        "%",
+        "@",
+        "█",
+      ];
 
       function resize() {
         const rect = container.getBoundingClientRect();
@@ -68,12 +86,12 @@ const { color = '#42BD49', id = 'ascii-fluid-flow' } = Astro.props;
         rows = Math.ceil(height / cellSize);
       }
 
-      window.addEventListener('resize', resize);
+      window.addEventListener("resize", resize);
       resize();
 
       const targetElement = container.parentElement || container;
 
-      targetElement.addEventListener('mousemove', (e) => {
+      targetElement.addEventListener("mousemove", (e) => {
         const rect = container.getBoundingClientRect();
         const currentX = (e as MouseEvent).clientX - rect.left;
         const currentY = (e as MouseEvent).clientY - rect.top;
@@ -89,11 +107,14 @@ const { color = '#42BD49', id = 'ascii-fluid-flow' } = Astro.props;
         prevMouseY = currentY;
       });
 
-      // Interactive Click Ripple Trigger
-      targetElement.addEventListener('click', (e) => {
+      // Interactive Click Ripple Trigger (excluding buttons so button sound plays cleanly without overlap)
+      targetElement.addEventListener("click", (e) => {
+        if ((e.target as HTMLElement)?.closest(".copy-btn, button, a")) return;
         const rect = container.getBoundingClientRect();
         const clickX = (e as MouseEvent).clientX - rect.left;
         const clickY = (e as MouseEvent).clientY - rect.top;
+
+        playSound.asciiRipple();
 
         ripples.push({
           x: clickX,
@@ -119,10 +140,13 @@ const { color = '#42BD49', id = 'ascii-fluid-flow' } = Astro.props;
           });
         }
       };
-      container.addEventListener('trigger-ascii-ripple', triggerRippleHandler);
-      targetElement.addEventListener('trigger-ascii-ripple', triggerRippleHandler);
+      container.addEventListener("trigger-ascii-ripple", triggerRippleHandler);
+      targetElement.addEventListener(
+        "trigger-ascii-ripple",
+        triggerRippleHandler,
+      );
 
-      targetElement.addEventListener('mouseleave', () => {
+      targetElement.addEventListener("mouseleave", () => {
         mouseX = -1000;
         mouseY = -1000;
         mouseVelX = 0;
@@ -145,39 +169,65 @@ const { color = '#42BD49', id = 'ascii-fluid-flow' } = Astro.props;
           }
         }
 
-        let currentColor = container.getAttribute('data-color') || '#42BD49';
-        let bgFill = container.getAttribute('data-bg') || '#0a0a0a';
-        let highlightColor = container.getAttribute('data-highlight') || '#FFFFFF';
+        let currentColor = container.getAttribute("data-color") || "#42BD49";
+        let bgFill = container.getAttribute("data-bg") || "#0a0a0a";
+        let highlightColor =
+          container.getAttribute("data-highlight") || "#FFFFFF";
 
-        if (bgFill.startsWith('var(')) {
+        if (bgFill.startsWith("var(")) {
           const varName = bgFill.slice(4, -1).trim();
-          bgFill = getComputedStyle(document.documentElement).getPropertyValue(varName).trim() || '#0a0a0a';
+          bgFill =
+            getComputedStyle(document.documentElement)
+              .getPropertyValue(varName)
+              .trim() || "#0a0a0a";
         }
-        if (currentColor.startsWith('var(')) {
+        if (currentColor.startsWith("var(")) {
           const varName = currentColor.slice(4, -1).trim();
-          currentColor = getComputedStyle(document.documentElement).getPropertyValue(varName).trim() || '#42BD49';
+          currentColor =
+            getComputedStyle(document.documentElement)
+              .getPropertyValue(varName)
+              .trim() || "#42BD49";
         }
 
         ctx!.fillStyle = bgFill;
         ctx!.fillRect(0, 0, width, height);
 
         ctx!.font = '600 11px "Geist Mono", monospace';
-        ctx!.textAlign = 'center';
-        ctx!.textBaseline = 'middle';
+        ctx!.textAlign = "center";
+        ctx!.textBaseline = "middle";
 
-        const speedMag = Math.sqrt(mouseVelX * mouseVelX + mouseVelY * mouseVelY);
+        const speedMag = Math.sqrt(
+          mouseVelX * mouseVelX + mouseVelY * mouseVelY,
+        );
 
         // Measure exact bounding box of Line 1 (.built-message), Line 2 (.copyright), and Contact Buttons (.contact-buttons) independently
-        const builtMessageEl = container.parentElement?.querySelector('.built-message') as HTMLElement;
-        const copyrightEl = container.parentElement?.querySelector('.copyright') as HTMLElement;
-        const contactButtonsEl = container.parentElement?.querySelector('.contact-buttons') as HTMLElement;
-        
-        let bLeft = width - 290, bTop = height - 48, bRight = width - 10, bBottom = height - 28;
-        let cLeft = width - 260, cTop = height - 25, cRight = width - 10, cBottom = height - 10;
+        const builtMessageEl = container.parentElement?.querySelector(
+          ".built-message",
+        ) as HTMLElement;
+        const copyrightEl = container.parentElement?.querySelector(
+          ".copyright",
+        ) as HTMLElement;
+        const contactButtonsEl = container.parentElement?.querySelector(
+          ".contact-buttons",
+        ) as HTMLElement;
+
+        let bLeft = width - 290,
+          bTop = height - 48,
+          bRight = width - 10,
+          bBottom = height - 28;
+        let cLeft = width - 260,
+          cTop = height - 25,
+          cRight = width - 10,
+          cBottom = height - 10;
         // One zone per direct child (icons group, phone pill, email pill)
         // instead of a single box around all of them, so the gaps between
         // those elements aren't swallowed into one big suppressed region.
-        let contactButtonZones: { left: number; top: number; right: number; bottom: number }[] = [];
+        let contactButtonZones: {
+          left: number;
+          top: number;
+          right: number;
+          bottom: number;
+        }[] = [];
 
         if (builtMessageEl) {
           const containerRect = container.getBoundingClientRect();
@@ -205,7 +255,9 @@ const { color = '#42BD49', id = 'ascii-fluid-flow' } = Astro.props;
           // row - way past the actual left-aligned icons/pills inside it.
           // Measure each child (icons group, phone pill, email pill)
           // separately so each gets its own tight zone.
-          const children = Array.from(contactButtonsEl.children) as HTMLElement[];
+          const children = Array.from(
+            contactButtonsEl.children,
+          ) as HTMLElement[];
           contactButtonZones = children.map((el) => {
             const r = el.getBoundingClientRect();
             return {
@@ -229,7 +281,8 @@ const { color = '#42BD49', id = 'ascii-fluid-flow' } = Astro.props;
             const maxRadius = 180;
 
             // Vector field flowing continuously from Right to Left (<-)
-            const noiseVal = Math.sin(c * 0.12 + time * 1.8) + Math.cos(r * 0.10 + time * 0.6);
+            const noiseVal =
+              Math.sin(c * 0.12 + time * 1.8) + Math.cos(r * 0.1 + time * 0.6);
             let angle = Math.PI + noiseVal * 0.45;
             let intensity = 0.22;
             let isNearMouse = false;
@@ -237,8 +290,8 @@ const { color = '#42BD49', id = 'ascii-fluid-flow' } = Astro.props;
 
             if (dist < maxRadius) {
               isNearMouse = true;
-              const influence = (1 - dist / maxRadius);
-              
+              const influence = 1 - dist / maxRadius;
+
               if (speedMag > 0.5) {
                 const mouseAngle = Math.atan2(mouseVelY, mouseVelX);
                 angle = angle * (1 - influence) + mouseAngle * influence;
@@ -264,58 +317,66 @@ const { color = '#42BD49', id = 'ascii-fluid-flow' } = Astro.props;
                 rippleHit = Math.max(rippleHit, waveFactor);
 
                 const ripAngle = Math.atan2(rdy, rdx);
-                angle = angle * (1 - waveFactor) + ripAngle * waveFactor + waveFactor * Math.PI * 0.5;
+                angle =
+                  angle * (1 - waveFactor) +
+                  ripAngle * waveFactor +
+                  waveFactor * Math.PI * 0.5;
               }
             }
 
             // Organic wave wiggle
-            const organicWiggle = Math.sin(c * 0.35 + r * 0.35 + time * 1.2) * 4;
-            
+            const organicWiggle =
+              Math.sin(c * 0.35 + r * 0.35 + time * 1.2) * 4;
+
             // Separate Line 1 Force Field
-            const inLine1 = (
-              x >= (bLeft - 6 + organicWiggle) &&
-              x <= (bRight + 6 + organicWiggle) &&
-              y >= (bTop - 4 + organicWiggle) &&
-              y <= (bBottom + 4 + organicWiggle)
-            );
+            const inLine1 =
+              x >= bLeft - 6 + organicWiggle &&
+              x <= bRight + 6 + organicWiggle &&
+              y >= bTop - 4 + organicWiggle &&
+              y <= bBottom + 4 + organicWiggle;
 
             // Separate Line 2 Force Field
-            const inLine2 = (
-              x >= (cLeft - 6 + organicWiggle) &&
-              x <= (cRight + 6 + organicWiggle) &&
-              y >= (cTop - 4 + organicWiggle) &&
-              y <= (cBottom + 4 + organicWiggle)
-            );
+            const inLine2 =
+              x >= cLeft - 6 + organicWiggle &&
+              x <= cRight + 6 + organicWiggle &&
+              y >= cTop - 4 + organicWiggle &&
+              y <= cBottom + 4 + organicWiggle;
 
             // Separate Contact Buttons Force Field - each icon group/pill
             // gets its own zone rather than one box spanning all of them
-            const inContactButtons = contactButtonZones.some((z) =>
-              x >= (z.left - 8 + organicWiggle) &&
-              x <= (z.right + 8 + organicWiggle) &&
-              y >= (z.top - 6 + organicWiggle) &&
-              y <= (z.bottom + 6 + organicWiggle)
+            const inContactButtons = contactButtonZones.some(
+              (z) =>
+                x >= z.left - 8 + organicWiggle &&
+                x <= z.right + 8 + organicWiggle &&
+                y >= z.top - 6 + organicWiggle &&
+                y <= z.bottom + 6 + organicWiggle,
             );
 
             const isTextZone = inLine1 || inLine2 || inContactButtons;
-            const textOpacityCap = isTextZone ? 0.20 : 1.0;
+            const textOpacityCap = isTextZone ? 0.2 : 1.0;
 
             // Map angle to char index
-            const normalizedAngle = ((angle % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2);
-            const charIdx = Math.floor((normalizedAngle / (Math.PI * 2)) * dirChars.length) % dirChars.length;
-            
+            const normalizedAngle =
+              ((angle % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2);
+            const charIdx =
+              Math.floor((normalizedAngle / (Math.PI * 2)) * dirChars.length) %
+              dirChars.length;
+
             let charToDraw = dirChars[charIdx];
 
             // Restore ASCII character density morphing on hover & click
             if (rippleHit > 0.2 && !isTextZone) {
               const densityIdx = Math.min(
                 densityChars.length - 1,
-                Math.floor(rippleHit * densityChars.length)
+                Math.floor(rippleHit * densityChars.length),
               );
               charToDraw = densityChars[densityIdx];
             } else if (isNearMouse && dist < maxRadius * 0.4 && !isTextZone) {
               const densityIdx = Math.min(
                 densityChars.length - 1,
-                Math.floor((1 - dist / (maxRadius * 0.4)) * densityChars.length)
+                Math.floor(
+                  (1 - dist / (maxRadius * 0.4)) * densityChars.length,
+                ),
               );
               charToDraw = densityChars[densityIdx];
             }
@@ -328,13 +389,16 @@ const { color = '#42BD49', id = 'ascii-fluid-flow' } = Astro.props;
 
             if (!isTextZone && rippleHit > 0.45) {
               ctx!.fillStyle = highlightColor;
-              ctx!.globalAlpha = 0.90;
+              ctx!.globalAlpha = 0.9;
             } else if (rippleHit > 0.15) {
               ctx!.fillStyle = currentColor;
-              ctx!.globalAlpha = Math.min(1.0, (0.5 + rippleHit * 0.3) * textOpacityCap);
+              ctx!.globalAlpha = Math.min(
+                1.0,
+                (0.5 + rippleHit * 0.3) * textOpacityCap,
+              );
             } else if (!isTextZone && isNearMouse && dist < 60) {
               ctx!.fillStyle = highlightColor;
-              ctx!.globalAlpha = 0.90;
+              ctx!.globalAlpha = 0.9;
             } else {
               ctx!.fillStyle = currentColor;
               ctx!.globalAlpha = intensity * textOpacityCap;
@@ -352,8 +416,8 @@ const { color = '#42BD49', id = 'ascii-fluid-flow' } = Astro.props;
     });
   }
 
-  document.addEventListener('DOMContentLoaded', initFluidFlow);
-  document.addEventListener('astro:page-load', initFluidFlow);
+  document.addEventListener("DOMContentLoaded", initFluidFlow);
+  document.addEventListener("astro:page-load", initFluidFlow);
 </script>
 
 <style>
@@ -374,3 +438,5 @@ const { color = '#42BD49', id = 'ascii-fluid-flow' } = Astro.props;
     height: 100%;
   }
 </style>
+display: block; width: 100%; height: 100%; }
+

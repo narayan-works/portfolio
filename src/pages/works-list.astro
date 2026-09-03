@@ -4,6 +4,7 @@
 import Layout from "../layouts/Layout.astro";
 import HomeNavigation from "../components/HomeNavigation.astro";
 import ThemeToggle from "../components/ThemeToggle.astro";
+import SoundToggle from "../components/SoundToggle.astro";
 import Footer from "../components/Footer.astro";
 import WorksFilter from "../components/WorksFilter.astro";
 import WorksListRow from "../components/WorksListRow.astro";
@@ -204,6 +205,7 @@ const allProjects = (await getCollection("projects"))
 
 	<div class="toggle-floater">
 		<div class="sidebar-controls">
+			<SoundToggle />
 			<ThemeToggle />
 		</div>
 	</div>

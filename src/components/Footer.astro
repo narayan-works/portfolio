@@ -96,6 +96,8 @@ import { FaLinkedin, FaGithub, FaInstagram, FaXTwitter } from "react-icons/fa6";
 </footer>
 
 <script>
+    import { playSound } from "../utils/sounds";
+
     document.addEventListener("astro:page-load", () => {
         // Clipboard Copy Logic + Green State + ASCII Shockwave Reaction
         const copyBtns = document.querySelectorAll(".copy-btn");
@@ -114,6 +116,7 @@ import { FaLinkedin, FaGithub, FaInstagram, FaXTwitter } from "react-icons/fa6";
                     navigator.clipboard.writeText(text).then(() => {
                         if (btnTextSpan) btnTextSpan.textContent = "copied!";
                         btn.classList.add("copied");
+                        playSound.copySpark();
 
                         // Trigger ASCII canvas shockwave ripple at click location
                         const container = document.querySelector(
@@ -198,10 +201,7 @@ import { FaLinkedin, FaGithub, FaInstagram, FaXTwitter } from "react-icons/fa6";
         width: calc(100% + 40px) !important;
         margin-left: -20px !important;
         margin-right: -20px !important;
-        padding-top: 24px !important;
-        padding-left: 20px !important;
-        padding-right: 20px !important;
-        padding-bottom: 20px !important;
+        padding: 20px !important;
         background: var(--bg-surface);
         border-top: 1px solid var(--border-focus);
         box-sizing: border-box;
@@ -212,11 +212,12 @@ import { FaLinkedin, FaGithub, FaInstagram, FaXTwitter } from "react-icons/fa6";
         width: calc(100% + 2 * var(--total-side-padding)) !important;
         margin-left: calc(-1 * var(--total-side-padding)) !important;
         margin-right: calc(-1 * var(--total-side-padding)) !important;
-        padding-top: 24px !important;
-        padding-left: 20px !important;
-        padding-right: 20px !important;
-        padding-bottom: 20px !important;
+        padding: 20px !important;
         margin-bottom: 0px !important;
+    }
+
+    :global(.right-content) .site-footer {
+        padding: 20px !important;
     }
 
     .footer-divider,
@@ -483,10 +484,7 @@ import { FaLinkedin, FaGithub, FaInstagram, FaXTwitter } from "react-icons/fa6";
     /* Mobile Clean Vertical Stack Layout */
     @media (max-width: 600px) {
         .site-footer {
-            padding-left: 20px !important;
-            padding-right: 20px !important;
-            padding-top: 24px !important;
-            padding-bottom: 24px !important;
+            padding: 20px !important;
         }
 
         .footer-content {
