@@ -4,7 +4,6 @@ import GhostRunner from "../components/GhostRunner.astro";
 import HomeProjectCard from "../components/HomeProjectCard.astro";
 import HomeNavigation from "../components/HomeNavigation.astro";
 import ThemeToggle from "../components/ThemeToggle.astro";
-import SoundToggle from "../components/SoundToggle.astro";
 import Footer from "../components/Footer.astro";
 import WorksFilter from "../components/WorksFilter.astro";
 import { getCollection } from "astro:content";
@@ -91,7 +90,6 @@ const promptNodesProject = allProjects.find(
 
 	<div class="toggle-floater">
 		<div class="sidebar-controls">
-			<SoundToggle />
 			<ThemeToggle />
 		</div>
 	</div>

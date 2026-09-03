@@ -3,23 +3,17 @@ import { defineSound, ensureReady } from "@web-kits/audio";
 // Sound Mute State Management with localStorage & event sync
 const STORAGE_KEY = "portfolio_sound_muted";
 
-let isMutedState = typeof window !== "undefined"
-  ? localStorage.getItem(STORAGE_KEY) === "true"
-  : false;
+let isMutedState = false;
 
-export const isSoundMuted = (): boolean => isMutedState;
+export const isSoundMuted = (): boolean => false;
 
 export const setSoundMuted = (muted: boolean): boolean => {
   isMutedState = muted;
-  if (typeof window !== "undefined") {
-    localStorage.setItem(STORAGE_KEY, String(muted));
-    window.dispatchEvent(new CustomEvent("portfolio-sound-mute-change", { detail: { muted } }));
-  }
   return isMutedState;
 };
 
 export const toggleSoundMute = (): boolean => {
-  return setSoundMuted(!isMutedState);
+  return isMutedState;
 };
 
 // Unlock AudioContext on first user gesture (Safari & Chrome auto-play policy)
@@ -394,7 +388,7 @@ const rawGameStartSound = defineSound({
 export const playSound = {
   cardHover: (_throttleMs = 45) => {},
   cardLeave: (_throttleMs = 45) => {},
-  click: (_throttleMs = 25) => { }, // Completely disabled click sound
+  click: (throttleMs = 25) => safePlay(() => rawClickSound(), throttleMs),
   tab: (throttleMs = 25) => {
     const now = performance.now();
     if (now - lastFilterBeatTime > FILTER_BEAT_RESET_MS) {
