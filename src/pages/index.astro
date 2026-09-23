@@ -67,7 +67,7 @@ const allProjects = (await getCollection("projects"))
 
 <Layout
 	title="Narayan Ashanahalli"
-	description="👋 I'm Narayan, a Product Designer & Prototyper building 0-to-1 experiences across AI, hardware, and digital infrastructure."
+	description="👋 I'm Narayan Ashanahalli, a Design Engineer who builds end-to-end products and tools across digital and physical surfaces attempting to augment how people think/ live/ work with AI."
 	fullWidth={true}
 >
 	<HomeNavigation />
@@ -78,19 +78,12 @@ const allProjects = (await getCollection("projects"))
 				<div class="hero-headline bio-short">
 					<div class="bio-line-1">
 						<span class="dynamic-color-text"
-							>👋 <br />I'm Narayan Ashanahalli,</span
-						>
-					</div>
-					<div class="bio-line-1">
-						<span class="dynamic-color-text"
-							>a Product Designer & Prototyper</span
+							>👋 <br />I'm Narayan Ashanahalli, a Design Engineer</span
 						>
 					</div>
 					<div class="bio-line-2">
-						building <span style="white-space: nowrap;"
-							>[0-to-1]</span
-						> experiences across<br />AI, hardware, and digital
-						infrastructure.
+						who builds end-to-end products and tools to augment how
+						humans work and/or play.
 					</div>
 				</div>
 			</div>
@@ -160,6 +153,7 @@ const allProjects = (await getCollection("projects"))
 			<div
 				class="home-project-list works-mobile-cards"
 				id="works-mobile-cards"
+				data-initial-open="true"
 			>
 				{
 					allProjects.map((project) => (
@@ -177,7 +171,8 @@ const allProjects = (await getCollection("projects"))
 								}
 								loading="lazy"
 								href={
-									project.data.linkToCta && project.data.ctaUrl
+									project.data.linkToCta &&
+									project.data.ctaUrl
 										? project.data.ctaUrl
 										: `/works/${project.slug}`
 								}
@@ -521,6 +516,10 @@ const allProjects = (await getCollection("projects"))
 			margin-top: var(--card-margin-top, -160px);
 		}
 
+		.works-mobile-cards[data-initial-open="true"] .project-card-wrapper:nth-child(2) {
+			margin-top: var(--card-margin-top, 24px);
+		}
+
 		/* Mobile Unstacking Cards: Top Rounded, Sharp Bottom Corners with Clean 10px Flex Gap */
 		.works-mobile-cards :global(.home-project-card) {
 			display: flex !important;
@@ -530,7 +529,10 @@ const allProjects = (await getCollection("projects"))
 			padding: 10px !important;
 			backdrop-filter: blur(16px) !important;
 			-webkit-backdrop-filter: blur(16px) !important;
-			transition: background 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease !important;
+			transition:
+				background 0.35s ease,
+				border-color 0.35s ease,
+				box-shadow 0.35s ease !important;
 		}
 
 		.works-mobile-cards :global(.card-meta-panel) {
@@ -582,19 +584,29 @@ const allProjects = (await getCollection("projects"))
 			box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
 		}
 
-		.works-mobile-cards :global(.home-project-card[data-categories~="hardware-ux"] .meta-tag) {
+		.works-mobile-cards
+			:global(
+				.home-project-card[data-categories~="hardware-ux"] .meta-tag
+			) {
 			color: #82c6f6 !important;
 			background: rgba(85, 158, 213, 0.18) !important;
 		}
-		.works-mobile-cards :global(.home-project-card[data-categories~="web-ux"] .meta-tag) {
+		.works-mobile-cards
+			:global(.home-project-card[data-categories~="web-ux"] .meta-tag) {
 			color: #ff7e36 !important;
 			background: rgba(224, 81, 5, 0.18) !important;
 		}
-		.works-mobile-cards :global(.home-project-card[data-categories~="mobile-ux"] .meta-tag) {
+		.works-mobile-cards
+			:global(
+				.home-project-card[data-categories~="mobile-ux"] .meta-tag
+			) {
 			color: #ffe53b !important;
 			background: rgba(255, 229, 59, 0.22) !important;
 		}
-		.works-mobile-cards :global(.home-project-card[data-categories~="spatial-xd"] .meta-tag) {
+		.works-mobile-cards
+			:global(
+				.home-project-card[data-categories~="spatial-xd"] .meta-tag
+			) {
 			color: #61d56e !important;
 			background: rgba(37, 136, 53, 0.18) !important;
 		}
@@ -626,7 +638,9 @@ const allProjects = (await getCollection("projects"))
 
 		:global([data-theme="light"])
 			.works-mobile-cards
-			:global(.home-project-card[data-categories~="hardware-ux"] .meta-tag) {
+			:global(
+				.home-project-card[data-categories~="hardware-ux"] .meta-tag
+			) {
 			color: #0066b3 !important;
 			background: rgba(85, 158, 213, 0.12) !important;
 		}
@@ -638,13 +652,17 @@ const allProjects = (await getCollection("projects"))
 		}
 		:global([data-theme="light"])
 			.works-mobile-cards
-			:global(.home-project-card[data-categories~="mobile-ux"] .meta-tag) {
+			:global(
+				.home-project-card[data-categories~="mobile-ux"] .meta-tag
+			) {
 			color: #8c7200 !important;
 			background: rgba(230, 185, 0, 0.16) !important;
 		}
 		:global([data-theme="light"])
 			.works-mobile-cards
-			:global(.home-project-card[data-categories~="spatial-xd"] .meta-tag) {
+			:global(
+				.home-project-card[data-categories~="spatial-xd"] .meta-tag
+			) {
 			color: #176020 !important;
 			background: rgba(37, 136, 53, 0.12) !important;
 		}
@@ -860,6 +878,50 @@ const allProjects = (await getCollection("projects"))
 	setupDynamicBioColor();
 	document.addEventListener("astro:page-load", setupDynamicBioColor);
 
+	// Dot Threads row starts expanded on load; dismissed on first interaction
+	function setupDotThreadsInitialOpen() {
+		const firstRow = document.querySelector(
+			".works-list-rows .works-list-row",
+		) as HTMLElement | null;
+		if (!firstRow) return;
+
+		firstRow.classList.add("works-list-row--expanded");
+
+		let dismissed = false;
+
+		function dismiss() {
+			if (dismissed) return;
+			dismissed = true;
+			firstRow.classList.remove("works-list-row--expanded");
+			cleanup();
+		}
+
+		const allRows = Array.from(
+			document.querySelectorAll(".works-list-rows .works-list-row"),
+		);
+
+		function cleanup() {
+			allRows.forEach((row) => {
+				row.removeEventListener("mouseenter", dismiss);
+				row.removeEventListener("click", dismiss);
+				row.removeEventListener("touchstart", dismiss);
+			});
+			window.removeEventListener("works-filter-change", dismiss);
+		}
+
+		allRows.forEach((row) => {
+			row.addEventListener("mouseenter", dismiss, { once: true });
+			row.addEventListener("click", dismiss, { once: true });
+			row.addEventListener("touchstart", dismiss, { once: true });
+		});
+		window.addEventListener("works-filter-change", dismiss, {
+			once: true,
+		});
+	}
+
+	setupDotThreadsInitialOpen();
+	document.addEventListener("astro:page-load", setupDotThreadsInitialOpen);
+
 	// Smooth continuous scroll-driven card unstacking animation for mobile view
 	function setupMobileCardScrollAnimation() {
 		if (window.innerWidth > 768) return;
@@ -867,16 +929,67 @@ const allProjects = (await getCollection("projects"))
 		if (!container) return;
 
 		const cardWrappers = Array.from(
-			container.querySelectorAll(".project-card-wrapper")
+			container.querySelectorAll(".project-card-wrapper"),
 		);
 		if (!cardWrappers.length) return;
+
+		let initialDotThreadsOpen = true;
+		container.setAttribute("data-initial-open", "true");
+
+		function dismissInitialOpen(e?: Event) {
+			if (!initialDotThreadsOpen) return;
+			initialDotThreadsOpen = false;
+			container.removeAttribute("data-initial-open");
+
+			// Prevent initial navigation on that tap so it smoothly collapses back into the deck
+			if (e && e.type === "click") {
+				e.preventDefault();
+			}
+
+			// Add a temporary transition so the cards glide back into their scroll-based positions
+			cardWrappers.forEach((c) => {
+				(c as HTMLElement).style.transition =
+					"margin-top 0.4s cubic-bezier(0.16, 1, 0.3, 1)";
+			});
+			setTimeout(() => {
+				cardWrappers.forEach((c) => {
+					(c as HTMLElement).style.transition = "";
+				});
+			}, 450);
+
+			updateGradualCardScroll();
+			cleanupInitialListeners();
+		}
+
+		function onScrollCheck() {
+			if (initialDotThreadsOpen && window.scrollY > 30) {
+				dismissInitialOpen();
+			}
+			updateGradualCardScroll();
+		}
+
+		function cleanupInitialListeners() {
+			cardWrappers.forEach((card) => {
+				card.removeEventListener("mouseenter", dismissInitialOpen);
+				card.removeEventListener("pointerover", dismissInitialOpen);
+				card.removeEventListener("click", dismissInitialOpen);
+			});
+			window.removeEventListener("works-filter-change", dismissInitialOpen);
+		}
+
+		cardWrappers.forEach((card) => {
+			card.addEventListener("mouseenter", dismissInitialOpen, { once: true });
+			card.addEventListener("pointerover", dismissInitialOpen, { once: true });
+			card.addEventListener("click", dismissInitialOpen);
+		});
+		window.addEventListener("works-filter-change", dismissInitialOpen, { once: true });
 
 		function updateGradualCardScroll() {
 			const vh = window.innerHeight;
 			const containerRect = container.getBoundingClientRect();
 
 			// Distance container top has scrolled past 90% screen height
-			const startThreshold = vh * 0.90;
+			const startThreshold = vh * 0.9;
 			const scrolledDistance = startThreshold - containerRect.top;
 			const cardInterval = 100;
 
@@ -885,7 +998,7 @@ const allProjects = (await getCollection("projects"))
 			// still on screen can sit at DOM index 5 — by DOM index it would
 			// keep the -160px stack offset and ride up over the filter bar.
 			const visibleCards = cardWrappers.filter(
-				(card) => (card as HTMLElement).offsetParent !== null
+				(card) => (card as HTMLElement).offsetParent !== null,
 			);
 
 			visibleCards.forEach((card, index) => {
@@ -895,31 +1008,40 @@ const allProjects = (await getCollection("projects"))
 					// isn't also the first DOM child.
 					(card as HTMLElement).style.setProperty(
 						"--card-margin-top",
-						"0px"
+						"0px",
+					);
+					return;
+				}
+
+				if (index === 1 && initialDotThreadsOpen) {
+					(card as HTMLElement).style.setProperty(
+						"--card-margin-top",
+						"24px",
 					);
 					return;
 				}
 
 				const cardStart = (index - 1) * 70;
-				const rawProgress = (scrolledDistance - cardStart) / cardInterval;
+				const rawProgress =
+					(scrolledDistance - cardStart) / cardInterval;
 				const progress = Math.max(0, Math.min(1, rawProgress));
 
 				// Smooth mathematical linear interpolation: -160px when stacked, 24px when unstacked
 				const marginTop = -160 + progress * 184;
 				(card as HTMLElement).style.setProperty(
 					"--card-margin-top",
-					`${marginTop}px`
+					`${marginTop}px`,
 				);
 			});
 		}
 
-		window.addEventListener("scroll", updateGradualCardScroll, {
+		window.addEventListener("scroll", onScrollCheck, {
 			passive: true,
 		});
 		window.addEventListener("resize", updateGradualCardScroll);
 		// Which cards are visible changes with the filter, so re-index then too
 		window.addEventListener("works-filter-change", () =>
-			requestAnimationFrame(updateGradualCardScroll)
+			requestAnimationFrame(updateGradualCardScroll),
 		);
 		updateGradualCardScroll();
 	}
@@ -1014,7 +1136,8 @@ const allProjects = (await getCollection("projects"))
 			}
 
 			if (!isDragging) {
-				const currentSpeed = 30 + Math.sin(elapsed * 0.8 + speedPhase) * 12;
+				const currentSpeed =
+					30 + Math.sin(elapsed * 0.8 + speedPhase) * 12;
 				baseX = clampX(baseX + currentSpeed * dt);
 
 				const wobbleX =
@@ -1036,7 +1159,8 @@ const allProjects = (await getCollection("projects"))
 		w._bioGhostRAF = requestAnimationFrame(tick);
 
 		const startFrameCycle = (frameList: string[]) => {
-			if (w._bioGhostFrameInterval) clearInterval(w._bioGhostFrameInterval);
+			if (w._bioGhostFrameInterval)
+				clearInterval(w._bioGhostFrameInterval);
 			ghost.src = frameList[frameIndex % frameList.length];
 			w._bioGhostFrameInterval = window.setInterval(() => {
 				frameIndex++;
@@ -1092,5 +1216,4 @@ const allProjects = (await getCollection("projects"))
 
 	setupBioGhost();
 	document.addEventListener("astro:page-load", setupBioGhost);
-</script>
 </script>

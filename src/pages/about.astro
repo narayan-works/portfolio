@@ -58,7 +58,7 @@ const sliderSlides = [
 
 <Layout
 	title="About | Narayan Ashanahalli"
-	description="Product Designer & Prototyper building 0-to-1 experiences across AI, hardware, and digital infrastructure."
+	description="I'm Narayan Ashanahalli, a Design Engineer who builds end-to-end products and tools across digital and physical surfaces attempting to augment how people think/ live/ work with AI."
 	fullWidth={true}
 >
 	<HomeNavigation />
@@ -86,18 +86,31 @@ const sliderSlides = [
 			<div class="about-left-col">
 				<div class="about-body">
 					<p>
-						👋 I'm Narayan Ashanahalli, a Product Designer &
-						Prototyper building [0-to-1]&nbsp;experiences across AI,
-						hardware, and digital infrastructure. With a foundation in
-						architecture, I apply systems thinking and rapid
-						prototyping to create digital products that feel responsive
-						and grounded in existing ecosystems.
+						👋 I'm Narayan Ashanahalli, a Design Engineer who builds
+						end-to-end products and tools across digital and
+						physical surfaces attempting to augment how people work
+						and/or play with AI. With a foundation in architecture,
+						I apply systems thinking and rapid prototyping to create
+						products that feel responsive and grounded in existing
+						ecosystems.
 					</p>
 					<p>
-						🎯 I'm looking to work with people and teams shaping a new era of human–AI interaction—across physical AI, intelligent tools, and products that augment how people think, build, and live. People who are genuinely excited about this future and care as much about how these systems feel in use as what they can technically do.
+						🎯 I'm looking to work with people and teams shaping a
+						new era of human–AI interaction—across physical AI,
+						intelligent tools, and products that augment how people
+						think, build, and live. People who are genuinely excited
+						about this future and care as much about how these
+						systems feel in use as what they can technically do.
 					</p>
 					<p>
-						❓The question I keep coming back to: how do we design AI that understands the context around what people are doing and becomes part of how they think and act, rather than another system they have to manage? And at the core how to build for the technology can work alongside people while the interaction stays grounded in the task, the environment, and what they are actually trying to do.
+						❓The question I keep coming back to: how do we design
+						AI that understands the context around what people are
+						doing and becomes part of how they think and act, rather
+						than another system they have to manage? And at the core
+						how to build for the technology can work alongside
+						people while the interaction stays grounded in the task,
+						the environment, and what they are actually trying to
+						do.
 					</p>
 					<p>
 						🔧 I'm currently working as a Design Researcher at Lab 4
@@ -123,18 +136,28 @@ const sliderSlides = [
 						🤖 My thesis project, supported by the <a
 							href="https://studioforcreativeinquiry.org/frff-grants-microgrants"
 							target="_blank"
-							rel="noopener noreferrer">Frank-Ratchye Further Fund</a
-						>, explores how physically embodied AI can provide spatial
-						task assistance through laser-pointing, bridging LLM
-						reasoning with physical spatial referencing.
+							rel="noopener noreferrer"
+							>Frank-Ratchye Further Fund</a
+						>, explores how physically embodied AI can provide
+						spatial task assistance through laser-pointing, bridging
+						LLM reasoning with physical spatial referencing.
 					</p>
 					<p>
-						💡 I'm learning that the best way to understand a new interaction is by building it. I design through building—moving between research, interaction design, prototyping, and code, using each to sharpen the others without losing the original intent. AI makes this process even more powerful by letting us build and learn in the same loop, while developing the judgment and heuristics to know what to preserve, what to question, and what the interaction should become.
+						💡 I'm learning that the best way to understand a new
+						interaction is by building it. I design through
+						building—moving between research, interaction design,
+						prototyping, and code, using each to sharpen the others
+						without losing the original intent. AI makes this
+						process even more powerful by letting us build and learn
+						in the same loop, while developing the judgment and
+						heuristics to know what to preserve, what to question,
+						and what the interaction should become.
 					</p>
 				</div>
 			</div>
 
-			{/* DISABLED INFINITE CANVAS PANEL:
+			{
+				/* DISABLED INFINITE CANVAS PANEL:
 			<div class="about-right-col">
 				<div class="about-canvas-container">
 					<FloatingCanvas
@@ -145,7 +168,8 @@ const sliderSlides = [
 					/>
 				</div>
 			</div>
-			*/}
+			*/
+			}
 		</div>
 
 		<Footer />
@@ -281,44 +305,52 @@ const sliderSlides = [
 		width: 100% !important;
 	}
 
-	.about-slider-section :global(.image-slider[data-variant="carousel"] .slider-frame) {
+	.about-slider-section
+		:global(.image-slider[data-variant="carousel"] .slider-frame) {
 		max-width: 68%;
 		width: 68%;
 		margin: 0 auto;
 		aspect-ratio: 4 / 3 !important;
 	}
 
-	.about-slider-section :global(.image-slider[data-variant="carousel"] .slider-display) {
+	.about-slider-section
+		:global(.image-slider[data-variant="carousel"] .slider-display) {
 		aspect-ratio: unset !important;
 		height: 100% !important;
 		transition: none !important;
 	}
 
 	@media (max-width: 768px) {
-		.about-slider-section :global(.image-slider[data-variant="carousel"] .slider-frame) {
+		.about-slider-section
+			:global(.image-slider[data-variant="carousel"] .slider-frame) {
 			max-width: 72% !important;
 			width: 72% !important;
 		}
 
-		.about-slider-section :global(.image-slider[data-variant="carousel"] .slide) {
+		.about-slider-section
+			:global(.image-slider[data-variant="carousel"] .slide) {
 			padding: 0 4px !important;
 		}
 	}
 
-	.about-slider-section :global(.image-slider[data-variant="carousel"] .slider-track) {
+	.about-slider-section
+		:global(.image-slider[data-variant="carousel"] .slider-track) {
 		height: 100%;
 		align-items: center;
 	}
 
-	.about-slider-section :global(.image-slider[data-variant="carousel"] .slide) {
+	.about-slider-section
+		:global(.image-slider[data-variant="carousel"] .slide) {
 		height: 100%;
 		display: flex;
 		justify-content: center;
 		align-items: center;
 	}
 
-	.about-slider-section :global(.image-slider[data-variant="carousel"] .slide.prev),
-	.about-slider-section :global(.image-slider[data-variant="carousel"] .slide.next) {
+	.about-slider-section
+		:global(.image-slider[data-variant="carousel"] .slide.prev),
+	.about-slider-section
+		:global(.image-slider[data-variant="carousel"] .slide.next) {
 		transform: scale(0.88);
 	}
 
@@ -344,5 +376,4 @@ const sliderSlides = [
 		border-top: 1px solid var(--border-subtle);
 		width: 100%;
 	}
-</style>
 </style>
