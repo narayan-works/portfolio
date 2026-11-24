@@ -75,6 +75,11 @@ const allProjects = (await getCollection("projects"))
 	<div class="works-list-layout">
 		<section class="hero-bio" id="about">
 			<div class="bio-content">
+				<div class="site-intro-summary sr-only">
+					<h2>Narayan Ashanahalli</h2>
+					<p>👋 I'm Narayan Ashanahalli, a Design Engineer who builds end-to-end products and tools across digital and physical surfaces attempting to augment how people think/ live/ work with AI.</p>
+					<p>With a foundation in architecture, I apply systems thinking and rapid prototyping to create products that feel responsive and grounded in existing ecosystems. My work spans embodied AI, intelligent tools, and spatial interaction across hardware and web—including Dot Threads (a shipped Chrome extension for spatial graph knowledge tools), Pointobot (a voice-driven robot in CMU’s Spatial Experience Lab exploring embodied AI and pointing), Hey Clicky (ambient correction and embodiment for AI teaching assistants), Prompt Nodes (a generative text-to-node workflow editor on an infinite spatial canvas), and Lab for Cybernetics (a digital platform, CMS, and AI matching tool).</p>
+				</div>
 				<div class="hero-headline bio-short">
 					<div class="bio-line-1">
 						<span class="dynamic-color-text"
@@ -201,6 +206,18 @@ const allProjects = (await getCollection("projects"))
 </Layout>
 
 <style>
+	.sr-only {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		padding: 0;
+		margin: -1px;
+		overflow: hidden;
+		clip: rect(0, 0, 0, 0);
+		white-space: normal;
+		border: 0;
+	}
+
 	.works-list-layout {
 		--content-col: 750px;
 		width: 100%;

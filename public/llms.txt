@@ -1,0 +1,34 @@
+# Narayan Ashanahalli
+
+> A Design Engineer who builds end-to-end products and tools across digital and physical surfaces attempting to augment how people think/ live/ work with AI.
+
+## About
+
+Narayan Ashanahalli is a Design Engineer and HCI researcher based in Pittsburgh, PA. With a foundation in architecture, he applies systems thinking and rapid prototyping to create products that feel responsive and grounded in existing ecosystems. His work focuses on embodied AI, intelligent tools, and products that augment how people work and play.
+
+- Personal site: https://www.narayan.works/
+- About: https://www.narayan.works/about
+- Works: https://www.narayan.works/works-list
+- Archive: https://www.narayan.works/archive
+- CV: https://drive.google.com/file/d/1PcdJ52A1hec-0XFzHHCelg89N1d4cDHw/view?usp=sharing
+
+## Work
+
+- [Dot Threads](https://www.narayan.works/works/dot-threads): A shipped Chrome extension inspired by MEMEX’s associative thinking, turning saved web links into a spatial graph organized by context and relationships. Chrome Web Store: https://chromewebstore.google.com/detail/dotthreads/lecgoimdckmlkkfniojcjpfabfgoaijb?hl=en-US | GitHub: https://github.com/narayan-works/dot.threads
+- [Pointobot](https://www.narayan.works/works/pointo): A voice-driven robot in CMU’s Spatial Experience Lab exploring what happens when AI can point to "this" and "that" through gesture and pointing. Video: https://www.youtube.com/watch?v=VGBu_orMgT4
+- [Hey Clicky](https://www.narayan.works/works/hey-clicky): Ambient correction and embodiment for AI teaching assistants, exploring subtle guidance, progression state tracking, and shared attention mechanics. Demo: https://heyclicky.narayan.works
+- [Prompt Nodes](https://www.narayan.works/works/prompt-nodes): A generative text-to-node product architecture editor, mapping design opportunities directly to workflow primitives on an infinite spatial canvas. Demo: https://xfigura.narayan.works/
+- [Lab for Cybernetics](https://www.narayan.works/works/lab4c): A live digital platform for CMU’s Lab for Cybernetics, connecting its people, projects, concepts, and practitioner-scholar network through a website, CMS, knowledge system, and matching tool. Platform: https://cybernetics.cmu.edu
+- [Detour](https://www.narayan.works/works/detour): A gamified mobile app that nudges people into taking detours by simplifying decisions and turning exploration into small, playful choices.
+- [Serendipity](https://www.narayan.works/works/serendipidity): A hackathon XR experiment that lets physical objects hold digital memories, turning everyday spaces into moments of unexpected connection.
+- [Piko](https://www.narayan.works/works/piko): A soft robotic companion that detects doom-scrolling through computer vision and lets users talk to it, responding with peripheral feedback and emotion-based gestures.
+- [MusiBuddy](https://www.narayan.works/works/musibuddy): An interactive AI speaker inspired by Gordon Pask’s Conversation Theory, responding to music and user state to turn listening into a feedback loop between listener and device.
+
+## Contact
+
+- Email: hello@narayan.works
+- Phone: 412-626-2332
+- LinkedIn: https://linkedin.com/in/narayan-ashanahalli/
+- GitHub: https://github.com/narayan-works
+- Instagram: https://www.instagram.com/narayan.3dm/
+- X: https://x.com/narayan3dm
